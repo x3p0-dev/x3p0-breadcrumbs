@@ -1,0 +1,38 @@
+{
+	"name": "x3p0-breadcrumbs",
+	"version": "1.0.0",
+	"description": "Exhale is a clean and modern theme.",
+	"author": "Justin Tadlock",
+	"license": "GPL-2.0+",
+	"homepage": "https://themehybrid.com/themes/exhale",
+	"main": "resources/js/block.js",
+	"scripts": {
+		"dev": "mix",
+		"watch": "mix watch",
+		"prod": "mix --production",
+		"export": "mix export=1 NODE_ENV=production"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/justintadlock/breadcrumb-trail.git"
+	},
+	"bugs": {
+		"url": "https://github.com/justintadlock/exhale/issues"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.14.6",
+		"@babel/preset-react": "^7.14.5",
+		"copy-webpack-plugin": "^4.6.0",
+		"cross-env": "^5.2.1",
+		"imagemin-mozjpeg": "^6.0.0",
+		"imagemin-webpack-plugin": "^2.4.2",
+		"laravel-mix": "^6.0.25",
+		"postcss-preset-env": "^6.7.0",
+		"react": "^17.0.2",
+		"sass": "^1.35.1",
+		"sass-loader": "^12.1.0"
+	},
+	"dependencies": {
+		"classnames": "^2.3.1"
+	}
+}

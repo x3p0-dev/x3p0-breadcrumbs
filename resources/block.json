@@ -1,0 +1,50 @@
+{
+	"apiVersion": 2,
+	"name": "x3p0/breadcrumbs",
+	"title": "Breadcrumbs",
+	"category": "widgets",
+	"description": "Add a breadcrumb trail back to the site homepage.",
+        "keywords": [ "breadcrumb", "trail", "navigation" ],
+	"textdomain": "x3p0-breadcrumbs",
+        "icon": "",
+	"example": {},
+	"attributes" : {
+		"itemsJustification": {
+			"type": "string",
+			"default": ""
+		},
+		"showOnHomepage": {
+			"type": "boolean",
+			"default": false
+		},
+		"showTrailEnd": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": true,
+		"html": false,
+		"__experimentalBorder": true,
+		"color": {
+			"gradients": true,
+			"link": true
+		},
+		"spacing": {
+			"margin": true,
+			"padding": true
+		},
+		"typography": {
+			"fontSize": true,
+			"lineHeight": true,
+			"__experimentalFontStyle": true,
+			"__experimentalFontWeight": true,
+			"__experimentalFontFamily": true,
+			"__experimentalTextTransform": true
+		}
+	},
+	"style": "x3p0-breadcrumbs",
+	"editorStyle": "x3p0-breadcrumbs-editor",
+	"editorScript": "x3p0-breadcrumbs-editor"
+}

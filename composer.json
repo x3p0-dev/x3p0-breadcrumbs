@@ -19,7 +19,10 @@
 	"autoload"    : {
 		"psr-4" : {
 			"X3P0\\Breadcrumbs\\" : "src/"
-		}
+		},
+		"files" : [
+			"src/functions-helpers.php"
+		]
 	},
 	"require"     : {
                 "php" : ">=7.0",

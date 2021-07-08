@@ -1,6 +1,6 @@
 # Contributing
 
-The code for the project is handled via its [GitHub Repository](https://github.com/justintadlock/breadcrumb-trail).  You can open tickets, create patches, and send pull requests there.
+The code for the project is handled via its [GitHub Repository](https://github.com/x3p0-dev/x3p0-breadcrumbs).  You can open tickets, create patches, and send pull requests there.
 
 ## Pull requests
 

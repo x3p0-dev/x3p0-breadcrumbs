@@ -1,12 +1,12 @@
-=== Breadcrumb Trail ===
+=== X3P0 Breadcrumbs ===
 
 Contributors: greenshady
 Donate link: https://themehybrid.com/donate
 Tags: breadcrumbs, navigation, menu
-Requires at least: 4.7
-Tested up to: 4.8.2
-Requires PHP: 5.2
-Stable tag: 1.1.0
+Requires at least: 5.8
+Tested up to: 5.8
+Requires PHP: 7.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.htm
 
@@ -17,11 +17,6 @@ A powerful script for adding breadcrumbs to your site that supports Schema.org H
 == Frequently Asked Questions ==
 
 == Screenshots ==
-
-1. Breadcrumbs in Google search results.
-2. Date-based permalink structure in breadcrumbs.
-3. Custom post type + taxonomy (portfolio).
-4. Image attachment of a blog post.
 
 == Upgrade Notice ==
 

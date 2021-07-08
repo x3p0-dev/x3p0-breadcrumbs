@@ -1,8 +1,8 @@
 {
-	"name"        : "x3p0/x3p0-breadcrumbs",
+	"name"        : "x3p0-dev/x3p0-breadcrumbs",
 	"description" : "Breadcrumbs for WordPress.",
 	"keywords"    : [ "wordpress" ],
-	"homepage"    : "https://themehybrid.com/hybrid-core",
+	"homepage"    : "https://github.com/x3p0-dev/x3p0-breadcrumbs",
 	"license"     : "GPL-2.0-or-later",
 	"authors"     : [
 		{
@@ -13,8 +13,7 @@
 		}
 	],
 	"support"     : {
-		"issues" : "https://github.com/themehybrid/hybrid-core/issues",
-		"forum"  : "https://themehybrid.com/board/forums/hybrid-core"
+		"issues" : "https://github.com/x3p0-dev/x3p0-breadcrumbs/issues"
 	},
 	"autoload"    : {
 		"psr-4" : {

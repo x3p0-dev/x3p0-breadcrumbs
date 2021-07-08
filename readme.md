@@ -1,6 +1,8 @@
 # X3P0 Breadcrumbs
 
-## Documentation
+X3PO Breadcrumbs is a breadcrumb trail block for WordPress.  The front end is powered by the [Hybrid Breadcrumbs](https://github.com/themehybrid/hybrid-breadcrumbs) script.
+
+**Note:** Plugin currently only tested with Gutenberg 10.9+.
 
 ## Copyright and License
 

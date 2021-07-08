@@ -19,9 +19,9 @@
 		text-indent: 0;
 	}
 
-	&.items-justified-right &__trail  { justify-content: flex-end; }
-	&.items-justified-left &__trail   { justify-content: flex-start; }
-	&.items-justified-center &__trail { justify-content: center; }
+	&.items-justified-right .breadcrumbs__trail  { justify-content: flex-end; }
+	&.items-justified-left .breadcrumbs__trail   { justify-content: flex-start; }
+	&.items-justified-center .breadcrumbs__trail { justify-content: center; }
 
 	&__crumb {
 

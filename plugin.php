@@ -28,6 +28,6 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 # Bootstrap plugin.
 # ------------------------------------------------------------------------------
 #
-# Just runs a small bootstraping routine.
+# Just runs a small bootstrapping routine.
 
 app();

@@ -110,6 +110,5 @@ class Block {
 			$wrapper_attributes,
 			$trail
 		);
-
 	}
 }

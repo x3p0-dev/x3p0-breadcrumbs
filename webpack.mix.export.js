@@ -13,15 +13,14 @@ const rimraf = require( 'rimraf' );
 const fs     = require( 'fs' );
 
 // Folder name to export the files to.
-let exportPathParent = `${process.env.npm_package_name}-${process.env.npm_package_version}`;
-let exportPath       = `${exportPathParent}/${process.env.npm_package_name}`;
+let exportPath = `${process.env.npm_package_name}`;
 
 // Root-level files to include.
 let files = [
 	'changelog.md',
 	'plugin.php',
 	'license.md',
-	'readme.txt',
+	'readme.txt'
 ];
 
 // Folders to include.
@@ -39,7 +38,7 @@ let deleteFiles = [
 ];
 
 // Delete the previous export to start clean.
-rimraf.sync( exportPathParent );
+rimraf.sync( exportPath );
 
 // Copy files to export folder.
 mix.copy( files, exportPath );

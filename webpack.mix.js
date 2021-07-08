@@ -8,11 +8,8 @@
  */
 
 // Import required packages.
-const mix               = require( 'laravel-mix' );
-const del               = require( 'del' );
-const ImageminPlugin    = require( 'imagemin-webpack-plugin' ).default;
-const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
-const imageminMozjpeg   = require( 'imagemin-mozjpeg' );
+const mix = require( 'laravel-mix' );
+const del = require( 'del' );
 
 // Sets the development path for assets to the `/resources` folder.
 const devPath    = 'resources';

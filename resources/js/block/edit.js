@@ -24,26 +24,33 @@ const preventDefault = ( event ) => event.preventDefault();
 const justifyControls = [ 'left', 'center', 'right' ];
 
 // Exports the breadcrumbs block type edit function.
-export default function BreadcrumbsEdit( props ) {
+export default function BreadcrumbsEdit( {
+	attributes,
+	setAttributes,
+	clientId
+} ) {
+
+	let {
+		itemsJustification,
+		showOnHomepage,
+		showTrailEnd
+	} = attributes;
 
 	// Gets the home URL from WordPress.
-	const { homeUrl } = useSelect(
-		( select ) => {
-			const {
-				getUnstableBase, //site index
-			} = select( coreStore );
-			return {
-				homeUrl: getUnstableBase()?.home,
-			};
-		},
-		[ props.clientId ]
-	);
+	const { homeUrl } = useSelect( ( select ) => {
+
+		// Get site index.
+		let { getUnstableBase } = select( coreStore );
+
+		return { homeUrl: getUnstableBase()?.home };
+
+	}, [ clientId ] );
 
 	// Get the blockProps and add custom classes.
 	let blockProps = useBlockProps( {
 		className: classnames( {
 			'breadcrumbs' : true,
-			[ `items-justified-${ props.attributes.itemsJustification }` ] : props.attributes.itemsJustification
+			[ `items-justified-${ itemsJustification }` ] : itemsJustification
 		} )
 	} );
 
@@ -53,9 +60,9 @@ export default function BreadcrumbsEdit( props ) {
 		<BlockControls group="block">
 			<JustifyContentControl
 				allowedControls={ justifyControls }
-				value={ props.attributes.itemsJustification }
+				value={ itemsJustification }
 				onChange={ ( value ) =>
-					props.setAttributes( {
+					setAttributes( {
 						itemsJustification: value
 					} )
 				}
@@ -72,28 +79,28 @@ export default function BreadcrumbsEdit( props ) {
 			<ToggleControl
 				label={ __( 'Show on homepage', 'x3p0-breadcrumbs' ) }
 				help={
-					props.attributes.showOnHomepage
+					showOnHomepage
 						? __( 'Breadcrumbs display on the homepage.', 'x3p0-breadcrumbs' )
 						: __( 'Breadcrumbs hidden on the homepage.', 'x3p0-breadcrumbs' )
 				}
-				checked={ props.attributes.showOnHomepage }
+				checked={ showOnHomepage }
 				onChange={ () =>
-					props.setAttributes( {
-						showOnHomepage: ! props.attributes.showOnHomepage
+					setAttributes( {
+						showOnHomepage: ! showOnHomepage
 					} )
 				}
 			/>
 			<ToggleControl
 				label={ __( 'Show last breadcrumb', 'x3p0-breadcrumbs' ) }
 				help={
-					props.attributes.showTrailEnd
+					showTrailEnd
 						? __( 'Current page item is shown.', 'x3p0-breadcrumbs' )
 						: __( 'Current page item is hidden.', 'x3p0-breadcrumbs' )
 				}
-				checked={ props.attributes.showTrailEnd }
+				checked={ showTrailEnd }
 				onChange={ () =>
-					props.setAttributes( {
-						showTrailEnd: ! props.attributes.showTrailEnd
+					setAttributes( {
+						showTrailEnd: ! showTrailEnd
 					} )
 				}
 			/>
@@ -113,7 +120,7 @@ export default function BreadcrumbsEdit( props ) {
 					</a>
 					<meta itemprop="position" content="2" />
 				</li>
-				{ props.attributes.showTrailEnd && (
+				{ showTrailEnd && (
 					<li class="breadcrumbs__crumb breadcrumbs__crumb--post" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
 						<span class="breadcrumbs__crumb-content" itemscope="" itemtype="https://schema.org/WebPage" itemprop="item">
 							<span itemprop="name">{ __( 'Current Crumb', 'x3p0-breadcrumbs' ) }</span>

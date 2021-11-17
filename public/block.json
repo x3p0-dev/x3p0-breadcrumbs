@@ -1,7 +1,7 @@
 {
 	"apiVersion": 2,
 	"name": "x3p0/breadcrumbs",
-	"title": "Breadcrumbs",
+	"title": "X3P0 Breadcrumbs",
 	"category": "widgets",
 	"description": "Add a breadcrumb trail back to the site homepage. Breadcrumb items appear as placeholders in the editor and will populate with the correct data on the site front end.",
         "keywords": [ "breadcrumb", "trail", "navigation" ],

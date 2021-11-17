@@ -98,6 +98,10 @@ class Block {
 
 		$trail = Trail::render( $args );
 
+		if ( ! $trail ) {
+			return '';
+		}
+
 		$wrapper_attributes = get_block_wrapper_attributes( [
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),

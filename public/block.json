@@ -26,14 +26,31 @@
 		"anchor": true,
 		"align": true,
 		"html": false,
-		"__experimentalBorder": true,
+		"__experimentalBorder": {
+			"radius": true,
+			"color": true,
+			"width": true,
+			"style": true,
+			"__experimentalDefaultControls": {
+				"width": true,
+				"color": true
+			}
+		},
 		"color": {
 			"gradients": true,
-			"link": true
+			"link": true,
+			"__experimentalDefaultControls": {
+				"background": true,
+				"text": true,
+				"link": true
+			}
 		},
 		"spacing": {
 			"margin": true,
-			"padding": true
+			"padding": true,
+			"__experimentalDefaultControls": {
+				"padding": true
+			}
 		},
 		"typography": {
 			"fontSize": true,
@@ -41,7 +58,13 @@
 			"__experimentalFontStyle": true,
 			"__experimentalFontWeight": true,
 			"__experimentalFontFamily": true,
-			"__experimentalTextTransform": true
+			"__experimentalTextTransform": true,
+			"__experimentalDefaultControls": {
+				"fontSize": true,
+				"__experimentalFontFamily": true,
+				"__experimentalFontStyle": true,
+				"__experimentalFontWeight": true
+			}
 		}
 	},
 	"style": "x3p0-breadcrumbs",

@@ -1,2 +1,68 @@
-@import 'var';
-@import 'common';
+////
+/// Block stylesheet.
+///
+/// @author Justin Tadlock <justintadlock@gmail.com>
+/// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
+////
+
+.wp-block-x3p0-breadcrumbs {
+	// Set up some default custom properties. Theme authors can overrule
+	// these via `settings.custom.x3p0Breadcrumbs.{name}` in their`theme.json`
+	// files. Don't blame me for the crazy hyphens. That's all on WP for
+	// hyphenating numbers + letters instead of by letter case.  Regardless,
+	// I'm fixing it in the actual CSS here so that it's somewhat readable.
+
+	// Set the separator via `settings.custom.x3p0Breadcrumbs.separator`.
+	// https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right:&icon.query=chevron&icon.style=Outlined&icon.set=Material+Icons
+	--x3p0-breadcrumbs--separator: var(
+		--wp--custom--x-3-p-0-breadcrumbs--separator,
+		url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"/></svg>')
+	);
+
+	// Set the gap via `settings.custom.x3p0Breadcrumbs.gap`.
+	--x3p0-breadcrumbs--gap: var(
+		--wp--custom--x-3-p-0-breadcrumbs--gap,
+		0.5rem
+	);
+
+	box-sizing: border-box;
+
+	&__trail,
+	&__crumb,
+	&__crumb-content {
+		box-sizing: border-box;
+		display:     flex;
+		flex-wrap:   wrap;
+		align-items: center;
+		gap:         var( --x3p0-breadcrumbs--gap );
+		margin: 0;
+		padding: 0;
+		text-indent: 0;
+	}
+
+	&__trail {
+		list-style:  none;
+		margin:      0;
+		padding:     0;
+		border:      none;
+		background:  transparent;
+		text-indent: 0;
+	}
+
+	&.items-justified-right .wp-block-x3p0-breadcrumbs__trail  { justify-content: flex-end; }
+	&.items-justified-left .wp-block-x3p0-breadcrumbs__trail   { justify-content: flex-start; }
+	&.items-justified-center .wp-block-x3p0-breadcrumbs__trail { justify-content: center; }
+
+	&__crumb {
+
+		&:where( :not( :first-child ) )::before {
+			content: '';
+			mask: no-repeat 50% 50% var( --x3p0-breadcrumbs--separator );
+			mask-size: cover;
+			background: currentColor;
+			display: inline-block;
+			width: 1em;
+			height: 1em;
+		}
+	}
+}

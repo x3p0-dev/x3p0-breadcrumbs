@@ -14,22 +14,12 @@
 
 namespace X3P0\Breadcrumbs;
 
-# ------------------------------------------------------------------------------
-# Run the Composer autoloader.
-# ------------------------------------------------------------------------------
-#
-# Auto-load classes and files via the Composer autoloader. Be sure to check if
-# the file exists in case someone's using Composer to load their dependencies in
-# a different directory.
+# Register autoloader for classes.
+require_once 'src/Autoload.php';
+Autoload::register();
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
-}
+# Load functions files.
+require_once 'src/functions-helpers.php';
 
-# ------------------------------------------------------------------------------
-# Bootstrap plugin.
-# ------------------------------------------------------------------------------
-#
-# Just runs a small bootstrapping routine.
-
-app();
+# Bootstrap the plugin.
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\plugin', PHP_INT_MIN );

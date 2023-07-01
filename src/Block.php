@@ -1,86 +1,77 @@
 <?php
 /**
- * Block class.
- *
- * Registers and renders the block type on the front end.
+ * Block class registers and renders the block type on the front end.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2021, Justin Tadlock
+ * @copyright Copyright (c) 2009-2023, Justin Tadlock
+ * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
- * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 namespace X3P0\Breadcrumbs;
 
-use Hybrid\Breadcrumbs\Trail;
+use WP_Block;
+use X3P0\Breadcrumbs\Contracts\Bootable;
 
-/**
- * Handles the block type.
- *
- * @since  1.0.0
- * @access public
- */
-class Block {
-
+class Block implements Bootable
+{
 	/**
-	 * Path to the `block.json` file.
+	 * Stores the plugin path.
 	 *
-	 * @since  1.0.0
-	 * @access private
-	 * @var    string
+	 * @since 1.0.0
+ 	 * @todo  Move this to the constructor with PHP 8-only support.
 	 */
-	private $json_path = '';
+	protected string $path;
 
-	/**
-	 * Sets up object state.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $json_path
-	 * @return void
-	 */
-	public function __construct( string $json_path ) {
-		$this->json_path = $json_path;
+        /**
+         * Sets up object state.
+         *
+         * @since 1.0.0
+         */
+        public function __construct( string $path )
+	{
+		$this->path = $path;
 	}
 
 	/**
 	 * Boots the class, running its actions/filters.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function boot() {
+	public function boot(): void
+	{
 		add_action( 'init', [ $this, 'register' ] );
 	}
 
 	/**
 	 * Registers the block with WordPress.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function register() {
-
-		register_block_type( $this->json_path, [
-			'render_callback' => [ $this, 'render' ]
-		] );
+	public function register(): void
+	{
+                register_block_type( $this->path . '/public', [
+                        'render_callback' => [ $this, 'render' ]
+                ] );
 	}
 
 	/**
-	 * Registers assets with WordPress.
+	 * Renders the block on the front end.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  array  $attr
-	 * @param  string  $content
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function render( $attr, $content ) {
+        public function render( array $attr, string $content, WP_Block $block ): string
+        {
 		$args = [
 			'labels'        => [ 'title' => '' ],
-			'container_tag' => ''
+			'container_tag' => '',
+			'container_class'    => 'wp-block-x3p0-breadcrumbs',
+			'title_class'        => 'wp-block-x3p0-breadcrumbs__title',
+			'list_class'         => 'wp-block-x3p0-breadcrumbs__trail',
+			'item_class'         => 'wp-block-x3p0-breadcrumbs__crumb',
+			'item_content_class' => 'wp-block-x3p0-breadcrumbs__crumb-content',
+			'post_taxonomy'      => [ 'post' => 'category' ],
+			'post_rewrite_tags'  => false
 		];
 
 		if ( isset( $attr['showOnHomepage'] ) ) {
@@ -106,7 +97,7 @@ class Block {
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "breadcrumbs {$justify_class_name}"
+			'class'      => "wp-block-x3p0-breadcrumbs {$justify_class_name}"
 		] );
 
 		return sprintf(

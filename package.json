@@ -6,10 +6,8 @@
 	"license": "GPL-2.0+",
 	"homepage": "https://github.com/x3p0-dev/x3p0-breadcrumbs",
 	"scripts": {
-		"dev": "mix",
-		"watch": "mix watch",
-		"prod": "mix --production",
-		"export": "npx mix --mix-config=webpack.mix.export.js --production"
+		"start": "wp-scripts start --webpack-src-dir=resources --output-path=public",
+		"build": "wp-scripts build --webpack-src-dir=resources --output-path=public"
 	},
 	"repository": {
 		"type": "git",
@@ -19,17 +17,9 @@
 		"url": "https://github.com/x3p0-dev/x3p0-breadcrumbs/issues"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.14.6",
-		"@babel/preset-react": "^7.14.5",
-		"cross-env": "^5.2.1",
-		"laravel-mix": "^6.0.25",
-		"postcss-preset-env": "^6.7.0",
-		"react": "^17.0.2",
-		"rimraf": "^3.0.2",
-		"sass": "^1.35.1",
-		"sass-loader": "^12.1.0"
+		"@wordpress/scripts": "^26.5.0"
 	},
 	"dependencies": {
-		"classnames": "^2.3.1"
+		"classnames": "^2.3.2"
 	}
 }

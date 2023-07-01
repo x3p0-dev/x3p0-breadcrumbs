@@ -5,9 +5,6 @@
 	"category": "widgets",
 	"description": "Add a breadcrumb trail back to the site homepage. Breadcrumb items appear as placeholders in the editor and will populate with the correct data on the site front end.",
         "keywords": [ "breadcrumb", "trail", "navigation" ],
-	"textdomain": "x3p0-breadcrumbs",
-        "icon": "",
-	"example": {},
 	"attributes" : {
 		"itemsJustification": {
 			"type": "string",
@@ -23,7 +20,7 @@
 		}
 	},
 	"supports": {
-		"anchor": true,
+		"anchor": false,
 		"align": true,
 		"html": false,
 		"__experimentalBorder": {
@@ -38,11 +35,9 @@
 		},
 		"color": {
 			"gradients": true,
-			"link": true,
 			"__experimentalDefaultControls": {
 				"background": true,
-				"text": true,
-				"link": true
+				"text": true
 			}
 		},
 		"spacing": {
@@ -60,14 +55,11 @@
 			"__experimentalFontFamily": true,
 			"__experimentalTextTransform": true,
 			"__experimentalDefaultControls": {
-				"fontSize": true,
-				"__experimentalFontFamily": true,
-				"__experimentalFontStyle": true,
-				"__experimentalFontWeight": true
+				"fontSize": true
 			}
 		}
 	},
-	"style": "x3p0-breadcrumbs",
-	"editorStyle": "x3p0-breadcrumbs-editor",
-	"editorScript": "x3p0-breadcrumbs-editor"
+	"textdomain": "x3p0-breadcrumbs",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css"
 }

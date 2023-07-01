@@ -1,73 +1,69 @@
 {
-	"apiVersion": 2,
-	"name": "x3p0/breadcrumbs",
-	"title": "X3P0 Breadcrumbs",
-	"category": "widgets",
-	"description": "Add a breadcrumb trail back to the site homepage. Breadcrumb items appear as placeholders in the editor and will populate with the correct data on the site front end.",
-        "keywords": [ "breadcrumb", "trail", "navigation" ],
-	"textdomain": "x3p0-breadcrumbs",
-        "icon": "",
-	"example": {},
-	"attributes" : {
-		"itemsJustification": {
-			"type": "string",
-			"default": ""
-		},
-		"showOnHomepage": {
-			"type": "boolean",
-			"default": false
-		},
-		"showTrailEnd": {
-			"type": "boolean",
-			"default": true
-		}
-	},
-	"supports": {
-		"anchor": true,
-		"align": true,
-		"html": false,
-		"__experimentalBorder": {
-			"radius": true,
-			"color": true,
-			"width": true,
-			"style": true,
-			"__experimentalDefaultControls": {
-				"width": true,
-				"color": true
-			}
-		},
-		"color": {
-			"gradients": true,
-			"link": true,
-			"__experimentalDefaultControls": {
-				"background": true,
-				"text": true,
-				"link": true
-			}
-		},
-		"spacing": {
-			"margin": true,
-			"padding": true,
-			"__experimentalDefaultControls": {
-				"padding": true
-			}
-		},
-		"typography": {
-			"fontSize": true,
-			"lineHeight": true,
-			"__experimentalFontStyle": true,
-			"__experimentalFontWeight": true,
-			"__experimentalFontFamily": true,
-			"__experimentalTextTransform": true,
-			"__experimentalDefaultControls": {
-				"fontSize": true,
-				"__experimentalFontFamily": true,
-				"__experimentalFontStyle": true,
-				"__experimentalFontWeight": true
-			}
-		}
-	},
-	"style": "x3p0-breadcrumbs",
-	"editorStyle": "x3p0-breadcrumbs-editor",
-	"editorScript": "x3p0-breadcrumbs-editor"
+  "apiVersion": 2,
+  "name": "x3p0/breadcrumbs",
+  "title": "X3P0 Breadcrumbs",
+  "category": "widgets",
+  "description": "Add a breadcrumb trail back to the site homepage. Breadcrumb items appear as placeholders in the editor and will populate with the correct data on the site front end.",
+  "keywords": [
+    "breadcrumb",
+    "trail",
+    "navigation"
+  ],
+  "attributes": {
+    "itemsJustification": {
+      "type": "string",
+      "default": ""
+    },
+    "showOnHomepage": {
+      "type": "boolean",
+      "default": false
+    },
+    "showTrailEnd": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "supports": {
+    "anchor": false,
+    "align": true,
+    "html": false,
+    "__experimentalBorder": {
+      "radius": true,
+      "color": true,
+      "width": true,
+      "style": true,
+      "__experimentalDefaultControls": {
+        "width": true,
+        "color": true
+      }
+    },
+    "color": {
+      "gradients": true,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "padding": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalFontWeight": true,
+      "__experimentalFontFamily": true,
+      "__experimentalTextTransform": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    }
+  },
+  "textdomain": "x3p0-breadcrumbs",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
 }

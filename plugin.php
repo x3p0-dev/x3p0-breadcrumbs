@@ -2,12 +2,12 @@
 /**
  * Plugin Name:       X3P0 - Breadcrumbs
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-breadcrumbs
- * Description:       A breadcrumbs block for WordPress built from the robust Hybrid Breadcrumbs library.
- * Version:           1.0.0-beta-20210708
- * Requires at least: 5.0
- * Requires PHP:      5.6
+ * Description:       A breadcrumbs block for WordPress.
+ * Version:           1.0.0-beta-2023
+ * Requires at least: 6.2
+ * Requires PHP:      7.4
  * Author:            Justin Tadlock
- * Author URI:        https://x3p0.com
+ * Author URI:        https://justintadlock.com
  * Text Domain:       x3p0-breadcrumbs
  * Domain Path:       /public/lang
  */

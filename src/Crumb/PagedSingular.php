@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Paged singular crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PagedSingular extends Base {
-
+class PagedSingular extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return sprintf(
 			$this->breadcrumbs->label( 'paged' ),
 			number_format_i18n( absint( get_query_var( 'page' ) ) )

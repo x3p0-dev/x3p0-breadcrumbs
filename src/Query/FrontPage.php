@@ -14,23 +14,15 @@ namespace X3P0\Breadcrumbs\Query;
 
 use X3P0\Breadcrumbs\Util\Helpers;
 
-/**
- * Front page query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class FrontPage extends Base {
-
+class FrontPage extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		if ( $this->breadcrumbs->option( 'show_on_front' ) || Helpers::isPagedView() ) {
 
 			// Build network crumbs.

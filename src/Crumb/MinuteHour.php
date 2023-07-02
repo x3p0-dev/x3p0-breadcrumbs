@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Minute + Hour crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class MinuteHour extends Base {
-
+class MinuteHour extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -32,12 +26,10 @@ class MinuteHour extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return sprintf(
 			$this->breadcrumbs->label( 'archive_minute_hour' ),
 			get_the_time(

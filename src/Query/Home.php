@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Home query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Home extends Base {
-
+class Home extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		is_front_page()
 			? $this->breadcrumbs->query( 'FrontPage' )
 			: $this->breadcrumbs->query( 'Singular' );

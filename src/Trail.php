@@ -11,12 +11,8 @@
 
 namespace X3P0\Breadcrumbs;
 
-/**
- * Trail class.
- *
- * @since  1.0.0
- * @access public
- */
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs as BreadcrumbsContract;
+
 class Trail
 {
 	/**
@@ -24,7 +20,7 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function breadcrumbs( array $args = [] ): Breadcrumbs
+	public static function breadcrumbs( array $args = [] ): BreadcrumbsContract
 	{
 		return new Breadcrumbs( $args );
 	}
@@ -34,7 +30,7 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function make( array $args = [] ): Breadcrumbs
+	public static function make( array $args = [] ): BreadcrumbsContract
 	{
 		return static::breadcrumbs( $args )->make();
 	}

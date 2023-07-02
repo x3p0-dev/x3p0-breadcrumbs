@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Paged comments crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PagedComments extends Base {
-
+class PagedComments extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return sprintf(
 			$this->breadcrumbs->label( 'paged_comments' ),
 			number_format_i18n( absint( get_query_var( 'cpage' ) ) )

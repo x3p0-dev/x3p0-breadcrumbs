@@ -14,14 +14,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Paged build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Paged extends Base {
-
+class Paged extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -34,12 +28,10 @@ class Paged extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// If viewing a paged archive-type page.
 		if ( is_paged() ) {
 

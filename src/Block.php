@@ -60,7 +60,7 @@ class Block implements Bootable
 	 *
 	 * @since 1.0.0
 	 */
-        public function render( array $attr, string $content, WP_Block $block ): string
+        public function render( array $attr ): string
         {
 		$args = [
 			'labels'        => [ 'title' => '' ],

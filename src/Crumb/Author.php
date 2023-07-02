@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Author crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Author extends Base {
-
+class Author extends Base
+{
 	/**
 	 * User object.
 	 *
@@ -32,24 +26,20 @@ class Author extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return get_the_author_meta( 'display_name', $this->user->ID );
 	}
 
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return get_author_posts_url( $this->user->ID );
 	}
 }

@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Week crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Week extends Base {
-
+class Week extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return sprintf(
 			$this->breadcrumbs->label( 'archive_week' ),
 			get_the_time(
@@ -40,12 +32,10 @@ class Week extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return add_query_arg( [
 			'm' => get_the_time( 'Y' ),
 			'w' => get_the_time( 'W' )

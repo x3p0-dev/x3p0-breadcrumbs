@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Singular query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Singular extends Base {
-
+class Singular extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -32,12 +26,10 @@ class Singular extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$post = $this->post ?: get_queried_object();
 
 		// Build network crumbs.

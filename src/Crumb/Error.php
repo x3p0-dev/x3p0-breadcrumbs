@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Error 404 crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Error extends Base {
-
+class Error extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return $this->breadcrumbs->label( 'error_404' );
 	}
 }

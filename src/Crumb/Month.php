@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Month crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Month extends Base {
-
+class Month extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -32,12 +26,10 @@ class Month extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return sprintf(
 			$this->breadcrumbs->label( 'archive_month' ),
 			get_the_time(
@@ -50,12 +42,10 @@ class Month extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return get_month_link(
 			get_the_time( 'Y', $this->post ),
 			get_the_time( 'm', $this->post )

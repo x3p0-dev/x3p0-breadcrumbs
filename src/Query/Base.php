@@ -18,38 +18,25 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Query;
 
-/**
- * Base query class.
- *
- * @since  1.0.0
- * @access public
- */
-abstract class Base implements Query {
-
+abstract class Base implements Query
+{
 	/**
 	 * Breadcrumbs object.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    Breadcrumbs
+	 * @since 1.0.0
 	 */
-	protected $breadcrumbs;
+	protected Breadcrumbs $breadcrumbs;
 
 	/**
 	 * Creates a new query object. Any data passed in within the `$data`
 	 * array will be automatically assigned to any existing properties, which
 	 * can be useful for sub-classes that have custom properties.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  Breadcrumbs $breadcrumbs
-	 * @param  array       $data
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] ) {
-
+	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] )
+	{
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
-
 			if ( isset( $data[ $key ] ) ) {
 				$this->$key = $data[ $key ];
 			}
@@ -61,9 +48,7 @@ abstract class Base implements Query {
 	/**
 	 * Override this method in sub-classes to build out breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	abstract public function make();
+	abstract public function make(): void;
 }

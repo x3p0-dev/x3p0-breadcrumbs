@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Home crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Home extends Base {
-
+class Home extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		$network = $this->breadcrumbs->option( 'network' ) && ! is_main_site();
 
 		return $network ? get_bloginfo( 'name' ) : $this->breadcrumbs->label( 'home' );
@@ -37,12 +29,10 @@ class Home extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return user_trailingslashit( home_url() );
 	}
 }

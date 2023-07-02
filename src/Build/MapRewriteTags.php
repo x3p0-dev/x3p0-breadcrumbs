@@ -17,14 +17,8 @@ namespace X3P0\Breadcrumbs\Build;
 
 use WP_User;
 
-/**
- * Map rewrite tags build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class MapRewriteTags extends Base {
-
+class MapRewriteTags extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -46,15 +40,13 @@ class MapRewriteTags extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Bail early if rewrite tag mapping is disabled.
 		if ( 'post' === $this->post->post_type && ! $this->breadcrumbs->option( 'post_rewrite_tags' ) ) {
-			return false;
+			return;
 		}
 
 		// Trim '/' from both sides of `$this->path`.

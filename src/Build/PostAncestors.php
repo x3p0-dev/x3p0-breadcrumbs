@@ -13,14 +13,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Post ancestors build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostAncestors extends Base {
-
+class PostAncestors extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -33,12 +27,10 @@ class PostAncestors extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$post    = $this->post;
 		$post_id = $post->post_parent;
 		$parents = [];

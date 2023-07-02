@@ -16,22 +16,15 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Rewrite front build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class RewriteFront extends Base {
-
+class RewriteFront extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
+	public function make(): void
+	{
 		global $wp_rewrite;
 
 		if ( $wp_rewrite->front ) {

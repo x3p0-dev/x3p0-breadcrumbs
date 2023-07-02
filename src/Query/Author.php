@@ -14,14 +14,8 @@ namespace X3P0\Breadcrumbs\Query;
 
 use WP_User;
 
-/**
- * Author query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Author extends Base {
-
+class Author extends Base
+{
 	/**
 	 * User object.
 	 *
@@ -34,11 +28,10 @@ class Author extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
+	public function make(): void
+	{
 		global $wp_rewrite;
 
 		$user = $this->user ?: new WP_User( get_query_var( 'author' ) );

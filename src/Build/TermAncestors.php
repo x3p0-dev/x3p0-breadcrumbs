@@ -13,14 +13,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Term ancestors build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class TermAncestors extends Base {
-
+class TermAncestors extends Base
+{
 	/**
 	 * Term object.
 	 *
@@ -33,12 +27,10 @@ class TermAncestors extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$term_id  = $this->term->parent;
 		$taxonomy = $this->term->taxonomy;
 		$parents  = [];

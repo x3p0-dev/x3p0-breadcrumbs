@@ -15,14 +15,8 @@ namespace X3P0\Breadcrumbs\Build;
 
 use X3P0\Breadcrumbs\Util\Helpers;
 
-/**
- * Path build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Path extends Base {
-
+class Path extends Base
+{
 	/**
 	 * Path to search.
 	 *
@@ -35,12 +29,10 @@ class Path extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$path = trim( $this->path, '/' );
 
 		// If there's no path, return.

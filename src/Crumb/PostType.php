@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Post type crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostType extends Base {
-
+class PostType extends Base
+{
 	/**
 	 * Post type object.
 	 *
@@ -32,12 +26,10 @@ class PostType extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		if ( is_post_type_archive( $this->post_type->name ) ) {
 
 			return post_type_archive_title( '', false );
@@ -55,12 +47,10 @@ class PostType extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return get_post_type_archive_link( $this->post_type->name );
 	}
 }

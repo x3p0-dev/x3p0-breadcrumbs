@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Post terms build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostTerms extends Base {
-
+class PostTerms extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -41,12 +35,10 @@ class PostTerms extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Get the post type.
 		$post_type = get_post_type( $this->post->ID );
 

@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Hour query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Hour extends Base {
-
+class Hour extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Build network crumbs.
 		$this->breadcrumbs->build( 'Network' );
 

@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Network build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Network extends Base {
-
+class Network extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		if ( is_multisite() && $this->breadcrumbs->option( 'network' ) && ! is_main_site() ) {
 
 			$this->breadcrumbs->crumb( 'Network' );

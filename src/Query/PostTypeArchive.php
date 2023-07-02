@@ -13,16 +13,11 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
+use WP_User;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-/**
- * Post type archive query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostTypeArchive extends Base {
-
+class PostTypeArchive extends Base
+{
 	/**
 	 * Post type object.
 	 *
@@ -44,12 +39,10 @@ class PostTypeArchive extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$type = $this->post_type ?: get_post_type_object( get_query_var( 'post_type' ) );
 
 		$done_post_type = false;

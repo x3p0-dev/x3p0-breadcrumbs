@@ -14,23 +14,15 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Paged query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Paged extends Base {
-
+class Paged extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Build network crumbs.
 		$this->breadcrumbs->build( 'Network' );
 

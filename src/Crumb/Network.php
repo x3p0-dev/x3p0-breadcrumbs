@@ -12,35 +12,25 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Network crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Network extends Base {
-
+class Network extends Base
+{
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		return $this->breadcrumbs->label( 'home' );
 	}
 
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return network_home_url();
 	}
 }

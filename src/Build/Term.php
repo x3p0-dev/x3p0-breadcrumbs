@@ -13,16 +13,9 @@
 namespace X3P0\Breadcrumbs\Build;
 
 use X3P0\Breadcrumbs\Crumb\PostType;
-use X3P0\Breadcrumbs\Util\Helpers;
 
-/**
- * Term build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Term extends Base {
-
+class Term extends Base
+{
 	/**
 	 * Term object.
 	 *
@@ -35,12 +28,10 @@ class Term extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$taxonomy       = get_taxonomy( $this->term->taxonomy );
 		$done_post_type = false;
 

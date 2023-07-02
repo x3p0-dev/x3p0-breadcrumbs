@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Post type build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostType extends Base {
-
+class PostType extends Base
+{
 	/**
 	 * Post type slug.
 	 *
@@ -32,12 +26,10 @@ class PostType extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-		global $wp_rewrite;
+	public function make(): void
+	{		global $wp_rewrite;
 
 		$type = is_string( $this->post_type )
 		        ? get_post_type_object( $this->post_type )

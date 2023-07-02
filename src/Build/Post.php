@@ -13,14 +13,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-/**
- * Post build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Post extends Base {
-
+class Post extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -33,12 +27,10 @@ class Post extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// If the post has a parent, follow the parent trail.
 		if ( 0 < $this->post->post_parent ) {
 

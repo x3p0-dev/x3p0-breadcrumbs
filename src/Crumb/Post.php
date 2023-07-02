@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Post crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Post extends Base {
-
+class Post extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -32,12 +26,10 @@ class Post extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		$post_id = $this->post->ID;
 
 		if ( is_single( $post_id ) || is_page( $post_id ) || is_attachment( $post_id ) ) {
@@ -51,12 +43,10 @@ class Post extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return get_permalink( $this->post->ID );
 	}
 }

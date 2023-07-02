@@ -12,23 +12,15 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Archive query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Archive extends Base {
-
+class Archive extends Base
+{
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Run through the conditionals to determine which type of
 		// archive breadcrumbs to build.
 		if ( is_post_type_archive() ) {

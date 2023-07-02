@@ -18,38 +18,25 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Crumb;
 
-/**
- * Base crumb class.
- *
- * @since  1.0.0
- * @access public
- */
-abstract class Base implements Crumb {
-
+abstract class Base implements Crumb
+{
 	/**
 	 * Breadcrumbs object.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    Breadcrumbs
+	 * @since 1.0.0
 	 */
-	protected $breadcrumbs;
+	protected Breadcrumbs $breadcrumbs;
 
 	/**
 	 * Creates a new crumb object. Any data passed in within the `$data`
 	 * array will be automatically assigned to any existing properties, which
 	 * can be useful for sub-classes that have custom properties.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  Breadcrumbs $breadcrumbs
-	 * @param  array       $data
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] ) {
-
+	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] )
+	{
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
-
 			if ( isset( $data[ $key ] ) ) {
 				$this->$key = $data[ $key ];
 			}
@@ -63,12 +50,10 @@ abstract class Base implements Crumb {
 	 * name to build the type.  If wanting something custom, this should be
 	 * handled in a sub-class.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function type() {
-
+	public function type(): string
+	{
 		$class = explode( '\\', get_class( $this ) );
 		$class = array_pop( $class );
 
@@ -80,22 +65,20 @@ abstract class Base implements Crumb {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
+	public function label(): string
+	{
 		return '';
 	}
 
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
+	public function url(): string
+	{
 		return '';
 	}
 }

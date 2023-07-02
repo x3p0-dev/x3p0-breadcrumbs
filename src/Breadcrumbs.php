@@ -12,42 +12,29 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs as BreadcrumbsContract;
 
-/**
- * Breadcrumbs class.
- *
- * @since  1.0.0
- * @access public
- */
-class Breadcrumbs implements BreadcrumbsContract {
-
+class Breadcrumbs implements BreadcrumbsContract
+{
 	/**
 	 * The parsed arguments passed into the class.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    array
+	 * @since 1.0.0
 	 */
-	protected $args = [];
+	protected array $args = [];
 
 	/**
 	 * Array of `Crumb` objects.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    array
+	 * @since 1.0.0
 	 */
-	protected $crumbs = [];
+	protected array $crumbs = [];
 
 	/**
 	 * Creates a new breadcrumbs object.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  array  $args
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function __construct( array $args = [] ) {
-
+	public function __construct( array $args = [] )
+	{
 		$defaults = [
 			'labels'             => [],
 			'post_taxonomy'      => [],
@@ -88,12 +75,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Returns an array of default labels.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @return array
+	 * @since 1.0.0
 	 */
-	protected function defaultLabels() {
-
+	protected function defaultLabels(): array
+	{
 		return [
 			'title'               => __( 'Browse:',                               'x3p0-breadcrumbs' ),
 			'aria_label'          => _x( 'Breadcrumbs', 'breadcrumbs aria label', 'x3p0-breadcrumbs' ),
@@ -123,12 +108,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Returns an array of default post taxonomies.
 	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @return array
+	 * @since 1.0.0
 	 */
-	protected function defaultPostTaxonomies() {
-
+	protected function defaultPostTaxonomies(): array
+	{
 		$defaults = [];
 
 		// If post permalink is set to `%postname%`, use the `category` taxonomy.
@@ -142,36 +125,30 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Returns an array of `Crumb` objects.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return array
+	 * @since 1.0.0
 	 */
-	public function all() {
-
+	public function all(): array
+	{
 		return $this->crumbs;
 	}
 
 	/**
 	 * Renders the breadcrumbs HTML output.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function display() {
-
+	public function display(): void
+	{
 		echo $this->render();
 	}
 
 	/**
 	 * Returns the breadcrumbs HTML output.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function render() {
-
+	public function render(): string
+	{
 		$html = $container = $list = $title = '';
 
 		// Get an array of all the available breadcrumbs from the builder.
@@ -298,12 +275,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	 * query. Once we figure out which page we're viewing, we create a new
 	 * `Query` object and let it build the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return Breadcrumbs
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): BreadcrumbsContract
+	{
 		// Call the query class associated with an object passed in.
 		if ( $this->option( 'post' ) ) {
 			$this->query( 'Singular', [ 'post' => $this->option( 'post' ) ] );
@@ -335,14 +310,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Creates a new `Query` object and runs its `make()` method.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $type
-	 * @param  array   $data
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function query( $type, array $data = [] ) {
-
+	public function query( string $type, array $data = [] ): void
+	{
 		$class = apply_filters(
 			"x3p0/breadcrumbs/query/{$type}",
 			"\\X3P0\\Breadcrumbs\\Query\\{$type}",
@@ -357,14 +328,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Creates a new `Build` object and runs its `make()` method.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $type
-	 * @param  array   $data
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function build( $type, array $data = [] ) {
-
+	public function build( string $type, array $data = [] ): void
+	{
 		$class = apply_filters(
 			"x3p0/breadcrumbs/build/{$type}",
 			"\\X3P0\\Breadcrumbs\\Build\\{$type}",
@@ -379,14 +346,10 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Creates a new `Crumb` object and adds it to the array of crumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $type
-	 * @param  array   $data
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function crumb( $type, array $data = [] ) {
-
+	public function crumb( string $type, array $data = [] ): void
+	{
 		$class = apply_filters(
 			"x3p0/breadcrumbs/crumb/{$type}",
 			"\\X3P0\\Breadcrumbs\\Crumb\\{$type}",
@@ -399,43 +362,35 @@ class Breadcrumbs implements BreadcrumbsContract {
 	/**
 	 * Returns a specific option or `false` if the option doesn't exist.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $name
+	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function option( $name ) {
-
+	public function option( string $name )
+	{
 		return isset( $this->args[ $name ] ) ? $this->args[ $name ] : false;
 	}
 
 	/**
 	 * Returns a specific label or an empty string if it doesn't exist.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $name
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label( $name ) {
-
+	public function label( string $name ): string
+	{
 		$labels = $this->option( 'labels' );
 
-		return isset( $labels[ $name ] ) ? $labels[ $name ] : '';
+		return $labels[ $name ] ?? '';
 	}
 
 	/**
 	 * Returns a specific post taxonomy or an empty string if one isn't set.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $post_type
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function postTaxonomy( $post_type ) {
-
+	public function postTaxonomy( string $post_type ): string
+	{
 		$taxes = $this->option( 'post_taxonomy' );
 
-		return isset( $taxes[ $post_type ] ) ? $taxes[ $post_type ] : '';
+		return $taxes[ $post_type ] ?? '';
 	}
 }

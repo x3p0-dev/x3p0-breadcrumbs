@@ -13,23 +13,15 @@
 
 namespace X3P0\Breadcrumbs\Util;
 
-/**
- * Helpers class.
- *
- * @since  1.0.0
- * @access public
- */
-class Helpers {
-
+class Helpers
+{
 	/**
 	 * Helper function for determining whether we're viewing a paginated page.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return bool
+	 * @since 1.0.0
 	 */
-	public static function isPagedView() {
-
+	public static function isPagedView(): bool
+	{
 		return is_paged() || 1 < get_query_var( 'page' ) || 1 < get_query_var( 'cpage' );
 	}
 
@@ -38,13 +30,10 @@ class Helpers {
 	 * function doesn't exactly match the `has_archive` argument when it's
 	 * set as a string instead of a boolean.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $slug
-	 * @return array
+	 * @since 1.0.0
 	 */
-	 public static function getPostTypesBySlug( $slug ) {
-
+	 public static function getPostTypesBySlug( string $slug ): array
+	 {
 		$return = [];
 
 		$post_types = get_post_types( [], 'objects' );

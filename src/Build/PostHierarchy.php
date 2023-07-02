@@ -15,14 +15,8 @@ namespace X3P0\Breadcrumbs\Build;
 
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-/**
- * Post hierarchy build sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class PostHierarchy extends Base {
-
+class PostHierarchy extends Base
+{
 	/**
 	 * Post object.
 	 *
@@ -35,12 +29,10 @@ class PostHierarchy extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		// Get the post type.
 		$type = get_post_type_object( get_post_type( $this->post->ID ) );
 

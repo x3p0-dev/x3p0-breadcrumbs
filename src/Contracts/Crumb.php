@@ -12,38 +12,26 @@
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-/**
- * Crumb interface.
- *
- * @since  1.0.0
- * @access public
- */
 interface Crumb {
 
 	/**
 	 * Returns a type for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function type();
+	public function type(): string;
 
 	/**
 	 * Returns a text label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label();
+	public function label(): string;
 
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url();
+	public function url(): string;
 }

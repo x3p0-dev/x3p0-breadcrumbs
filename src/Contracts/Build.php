@@ -12,20 +12,12 @@
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-/**
- * Build interface.
- *
- * @since  1.0.0
- * @access public
- */
-interface Build {
-
+interface Build
+{
 	/**
 	 * Builds breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make();
+	public function make(): void;
 }

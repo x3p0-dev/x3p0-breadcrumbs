@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-/**
- * Taxonomy query sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Tax extends Base {
-
+class Tax extends Base
+{
 	/**
 	 * Term object.
 	 *
@@ -32,12 +26,10 @@ class Tax extends Base {
 	/**
 	 * Builds the breadcrumbs.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
+	 * @since 1.0.0
 	 */
-	public function make() {
-
+	public function make(): void
+	{
 		$term = $this->term ?: get_queried_object();
 
 		// Build network crumbs.

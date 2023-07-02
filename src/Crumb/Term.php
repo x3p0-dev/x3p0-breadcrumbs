@@ -12,14 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-/**
- * Term crumb sub-class.
- *
- * @since  1.0.0
- * @access public
- */
-class Term extends Base {
-
+class Term extends Base
+{
 	/**
 	 * Term object.
 	 *
@@ -32,12 +26,10 @@ class Term extends Base {
 	/**
 	 * Returns a label for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function label() {
-
+	public function label(): string
+	{
 		$tax     = $this->term->taxonomy;
 		$term_id = $this->term->term_id;
 
@@ -52,12 +44,10 @@ class Term extends Base {
 	/**
 	 * Returns a URL for the crumb.
 	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return string
+	 * @since 1.0.0
 	 */
-	public function url() {
-
+	public function url(): string
+	{
 		return get_term_link( $this->term, $this->term->taxonomy );
 	}
 }

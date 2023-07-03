@@ -1,5 +1,6 @@
 {
 	"apiVersion": 2,
+	"version": "1.0.0",
 	"name": "x3p0/breadcrumbs",
 	"title": "X3P0 Breadcrumbs",
 	"category": "widgets",
@@ -17,6 +18,10 @@
 		"showTrailEnd": {
 			"type": "boolean",
 			"default": true
+		},
+		"separator": {
+			"type": "string",
+			"default": "icon-chevron"
 		}
 	},
 	"supports": {
@@ -62,5 +67,6 @@
 	},
 	"textdomain": "x3p0-breadcrumbs",
 	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }

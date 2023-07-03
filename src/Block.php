@@ -63,8 +63,8 @@ class Block implements Bootable
         public function render( array $attr ): string
         {
 		$args = [
-			'labels'        => [ 'title' => '' ],
-			'container_tag' => '',
+			'labels'             => [ 'title' => '' ],
+			'container_tag'      => '',
 			'container_class'    => 'wp-block-x3p0-breadcrumbs',
 			'title_class'        => 'wp-block-x3p0-breadcrumbs__title',
 			'list_class'         => 'wp-block-x3p0-breadcrumbs__trail',
@@ -82,6 +82,11 @@ class Block implements Bootable
 			$args['show_trail_end'] = $attr['showTrailEnd'];
 		}
 
+		$sep_class_name =
+			empty( $attr['separator'] )
+			? 'has-sep-icon-chevron'
+			: "has-sep-{$attr['separator'] }";
+
 		$justify_class_name =
 			empty( $attr['itemsJustification'] )
 			? ''
@@ -97,7 +102,7 @@ class Block implements Bootable
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "wp-block-x3p0-breadcrumbs {$justify_class_name}"
+			'class'      => "wp-block-x3p0-breadcrumbs {$justify_class_name} {$sep_class_name}"
 		] );
 
 		return sprintf(

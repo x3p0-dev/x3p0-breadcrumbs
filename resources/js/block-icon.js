@@ -3,8 +3,7 @@
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2023, Justin Tadlock
- * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
- * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @license   GPL-2.0-or-later
  */
 
 export default (

@@ -6,63 +6,113 @@
 ////
 
 .wp-block-x3p0-breadcrumbs {
-	// Set up some default custom properties. Theme authors can overrule
-	// these via `settings.custom.x3p0Breadcrumbs.{name}` in their`theme.json`
-	// files. Don't blame me for the crazy hyphens. That's all on WP for
-	// hyphenating numbers + letters instead of by letter case.  Regardless,
-	// I'm fixing it in the actual CSS here so that it's somewhat readable.
-
-	// Set the separator via `settings.custom.x3p0Breadcrumbs.separator`.
-	// https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right:&icon.query=chevron&icon.style=Outlined&icon.set=Material+Icons
-	--x3p0-breadcrumbs--separator: var(
-		--wp--custom--x-3-p-0-breadcrumbs--separator,
-		url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"/></svg>')
-	);
-
-	// Set the gap via `settings.custom.x3p0Breadcrumbs.gap`.
-	--x3p0-breadcrumbs--gap: var(
-		--wp--custom--x-3-p-0-breadcrumbs--gap,
-		0.5rem
-	);
-
 	box-sizing: border-box;
 
-	&__trail {
+	// Styling the nested elements of the block wrapper.
+	// `.wp-block-x3p0-breadcrumbs__trail` is the `<ul>` element.
+	// `.wp-block-x3p0-breadcrumbs__crumb` is the `<li>` element.
+	// `.wp-block-x3p0-breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
+
+	&__trail,
+	&__crumb {
 		list-style: none;
 		border: none;
 		background: transparent;
-		text-indent: 0;
 	}
 
 	&__trail,
 	&__crumb,
 	&__crumb-content {
+		// Set the gap via `settings.custom.x3p0Breadcrumbs.gap`.
+		gap: var(
+			--wp--custom--x-3-p-0-breadcrumbs--gap,
+			0.5rem
+		);
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: var( --x3p0-breadcrumbs--gap );
 		margin: 0;
 		padding: 0;
-		text-indent: 0;
+		text-indent: none;
 	}
 
+	// This zeroes out any margin/padding from global padding in core.
 	&.alignfull > ul.wp-block-x3p0-breadcrumbs__trail {
 		margin: 0;
 		padding: 0;
 	}
 
-	&.items-justified-right .wp-block-x3p0-breadcrumbs__trail  { justify-content: flex-end; }
-	&.items-justified-left .wp-block-x3p0-breadcrumbs__trail   { justify-content: flex-start; }
-	&.items-justified-center .wp-block-x3p0-breadcrumbs__trail { justify-content: center; }
-
+	// Handles the separator element.
 	&__crumb:where( :not( :first-child ) )::before {
+		// Default `/` character.
+		content: var( --breadcrumbs-sep, "\002F" );
+		width: 1em;
+		text-align: center;
+	}
+
+	// Icon-based separators.
+	&[class*=has-sep-icon-] &__crumb:where( :not( :first-child ) )::before {
+		// https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right:&icon.query=chevron&icon.style=Outlined&icon.set=Material+Icons
+		mask: no-repeat 50% 50% var(
+			--breadcrumbs-sep,
+			url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"/></svg>')
+		);
 		content: '';
-		mask: no-repeat 50% 50% var( --x3p0-breadcrumbs--separator );
 		mask-size: cover;
 		background: currentColor;
 		display: inline-block;
 		width: 1em;
 		height: 1em;
 	}
+
+	// arrow right
+	// https://fonts.google.com/icons?icon.query=arrow&selected=Material+Icons+Outlined:arrow_right_alt:&icon.set=Material+Icons
+	&.has-sep-icon-arrow {
+		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3z"/></svg>');
+	}
+
+	// WP next icon
+	&.has-sep-icon-chevron-double {
+		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M6.6 6L5.4 7l4.5 5-4.5 5 1.1 1 5.5-6-5.4-6zm6 0l-1.1 1 4.5 5-4.5 5 1.1 1 5.5-6-5.5-6z"></path></svg>');
+	}
+
+	// https://fonts.google.com/icons?icon.query=arrow&selected=Material+Symbols+Outlined:arrow_right:FILL@0;wght@400;GRAD@0;opsz@48
+	&.has-sep-icon-triangle {
+		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 17l5-5-5-5v10z"/></svg>');
+	}
+
+	&.has-sep-vertical-bar {
+		--breadcrumbs-sep: "\007C"
+	}
+
+	&.has-sep-middot {
+		--breadcrumbs-sep: "\00B7";
+	}
+
+	&.has-sep-black-circle {
+		--breadcrumbs-sep: "\25cf";
+	}
+
+	&.has-sep-white-circle {
+		--breadcrumbs-sep: "\25cb";
+	}
+
+	&.has-sep-black-square {
+		--breadcrumbs-sep: "\25a0";
+	}
+
+	&.has-sep-white-square {
+		--breadcrumbs-sep: "\25a1";
+	}
+}
+
+// Items justification.
+.items-justified-right > .wp-block-x3p0-breadcrumbs__trail  { justify-content: flex-end; }
+.items-justified-left > .wp-block-x3p0-breadcrumbs__trail   { justify-content: flex-start; }
+.items-justified-center > .wp-block-x3p0-breadcrumbs__trail { justify-content: center; }
+
+// Flip icons for RTL.
+:where( [dir=rtl], .rtl ) .wp-block-x3p0-breadcrumbs__crumb:where( :not( :first-child ) )::before {
+	transform: scaleX(-1);
 }

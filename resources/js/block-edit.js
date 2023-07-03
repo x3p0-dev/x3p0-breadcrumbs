@@ -3,12 +3,11 @@
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2023, Justin Tadlock
- * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
- * @license   http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @license   GPL-2.0-or-later
  */
 
-// Third-party dependencies.
-import classnames from 'classnames';
+// Internal dependencies.
+import SeparatorControl from './control-separator';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -21,6 +20,9 @@ import {
 	useBlockProps
 } from '@wordpress/block-editor';
 
+// Third-party dependencies.
+import classnames from 'classnames';
+
 // Prevent breadcrumb link events when users click them.
 const preventDefault = ( event ) => event.preventDefault();
 
@@ -32,7 +34,8 @@ export default ( {
 	attributes: {
 		itemsJustification,
 		showOnHomepage,
-		showTrailEnd
+		showTrailEnd,
+		separator
 	},
 	setAttributes
 } ) => {
@@ -40,7 +43,7 @@ export default ( {
 	// Build the block toolbar controls.
 	// =====================================================================
 
-	const toolbarControls = (
+	const blockToolbarControls = (
 		<BlockControls group="block">
 			<JustifyContentControl
 				allowedControls={ justifyOptions }
@@ -54,6 +57,22 @@ export default ( {
 				} }
 			/>
 		</BlockControls>
+	);
+
+	const otherToolbarControls = (
+		<BlockControls group="other">
+			<SeparatorControl
+				separator={ separator }
+				setAttributes={ setAttributes }
+			/>
+		</BlockControls>
+	);
+
+	const toolbarControls = (
+		<>
+			{ blockToolbarControls }
+			{ otherToolbarControls }
+		</>
 	);
 
 	// =====================================================================
@@ -84,11 +103,9 @@ export default ( {
 				: __( 'Current page item is hidden.', 'x3p0-breadcrumbs' )
 			}
 			checked={ showTrailEnd }
-			onChange={ () =>
-				setAttributes( {
-					showTrailEnd: ! showTrailEnd
-				} )
-			}
+			onChange={ () => setAttributes( {
+				showTrailEnd: ! showTrailEnd
+			} ) }
 		/>
 	);
 
@@ -110,16 +127,22 @@ export default ( {
 	// Get the blockProps and add custom classes.
 	const blockProps = useBlockProps( {
 		className: classnames( {
+			[ `has-sep-${ separator }` ]: separator,
 			[ `items-justified-${ itemsJustification }` ] : itemsJustification
 		} )
 	} );
 
-	const crumbs = [
+	// Build an array of faux breadcrumb items to show.
+	let crumbs = [
 		{ type: 'home', label: __( 'Home',         'x3p0-breadcrumbs' ), link: true  },
-		{ type: 'post', label: __( 'Parent Page',  'x3p0-breadcrumbs' ), link: true  },
-		{ type: 'post', label: __( 'Current Page', 'x3p0-breadcrumbs' ), link: false }
+		{ type: 'post', label: __( 'Parent Page',  'x3p0-breadcrumbs' ), link: true  }
 	];
 
+	if ( showTrailEnd ) {
+		crumbs.push( { type: 'post', label: __( 'Current Page', 'x3p0-breadcrumbs' ), link: false } );
+	}
+
+	// Creates a breadcrumb trail list item.
 	const crumb = ( crumb, index ) => {
 		const CrumbContent = crumb.link ? 'a' : 'span';
 
@@ -144,7 +167,7 @@ export default ( {
 		)
 	};
 
-	// Builds an preview breadcrumbs trail for the editor.
+	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
 		<ul className="wp-block-x3p0-breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
 			{ crumbs.map( ( item, index ) => crumb( item, index ) ) }

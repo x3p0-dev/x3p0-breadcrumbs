@@ -1,0 +1,42 @@
+////
+/// Editor stylesheet for the text separator icons component.
+///
+/// @author Justin Tadlock <justintadlock@gmail.com>
+/// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
+////
+
+// Import the WordPress variables Sass file. We'll use this to make sure we're
+// using the core UI units and values.
+//
+// @link https://github.com/WordPress/gutenberg/tree/trunk/packages/base-styles
+@use '~@wordpress/base-styles/variables';
+
+// In the future, we can switch to using `<DropdownContentWrapper>` if we want,
+// but it is currently experimental.
+// @link https://github.com/WordPress/gutenberg/blob/trunk/packages/components/src/dropdown/dropdown-content-wrapper.tsx
+.x3p0-breadcrumbs-sep-popover .components-popover__content {
+	padding: variables.$grid-unit-20;
+}
+
+.x3p0-breadcrumbs-sep-picker {
+	&__description {
+		margin: 0 0 variables.$grid-unit-20;
+	}
+
+	&__button {
+		font-size: 20px;
+	}
+
+	&__button-text {
+		width: 24px;
+		text-align: center;
+	}
+}
+
+// Flip icons for RTL.
+:where( [dir=rtl], .rtl ) :where(
+	.x3p0-breadcrumbs-sep-picker__button svg,
+	.x3p0-breadcrumbs-sep-picker__button-text
+) {
+	transform: scaleX(-1);
+}

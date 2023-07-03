@@ -71,6 +71,13 @@ class Breadcrumbs implements BreadcrumbsContract
 			$this->args['post_taxonomy'],
 			$this->defaultPostTaxonomies()
 		);
+
+		// Allow developers to filter the arguments.
+		$this->args = apply_filters(
+			'x3p0/breadcrumbs/args',
+			$this->args,
+			$this
+		);
 	}
 
 	/**

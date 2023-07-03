@@ -160,7 +160,12 @@ export default ( {
 					className="wp-block-x3p0-breadcrumbs__crumb-content"
 					itemProp="item"
 				>
-					<span itemProp="name">{ crumb.label }</span>
+					<span
+						class="wp-block-x3p0-breadcrumbs__crumb-label"
+						itemProp="name"
+					>
+						{ crumb.label }
+					</span>
 				</CrumbContent>
 				<meta itemProp="position" content={ index + 1 } />
 			</li>

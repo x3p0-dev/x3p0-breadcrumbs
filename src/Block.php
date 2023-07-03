@@ -70,6 +70,7 @@ class Block implements Bootable
 			'list_class'         => 'wp-block-x3p0-breadcrumbs__trail',
 			'item_class'         => 'wp-block-x3p0-breadcrumbs__crumb',
 			'item_content_class' => 'wp-block-x3p0-breadcrumbs__crumb-content',
+			'item_label_class'   => 'wp-block-x3p0-breadcrumbs__crumb-label',
 			'post_taxonomy'      => [ 'post' => 'category' ],
 			'post_rewrite_tags'  => false
 		];
@@ -102,7 +103,7 @@ class Block implements Bootable
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "wp-block-x3p0-breadcrumbs {$justify_class_name} {$sep_class_name}"
+			'class'      => "{$sep_class_name} {$justify_class_name}"
 		] );
 
 		return sprintf(

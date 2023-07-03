@@ -52,6 +52,7 @@ class Breadcrumbs implements BreadcrumbsContract
 			'list_class'         => 'breadcrumbs__trail',
 			'item_class'         => 'breadcrumbs__crumb',
 			'item_content_class' => 'breadcrumbs__crumb-content',
+			'item_label_class'   => 'breadcrumbs__crumb-label',
 			'post_rewrite_tags'  => true,
 			'post'               => null,
 			'post_type'          => null,
@@ -182,7 +183,8 @@ class Breadcrumbs implements BreadcrumbsContract
 
 				// Filter out any unwanted HTML from the label.
 				$label = sprintf(
-					'<span itemprop="name">%s</span>',
+					'<span class="%s" itemprop="name">%s</span>',
+					esc_attr( $this->option( 'item_label_class' ) ),
 					wp_kses( $crumb->label(), $allowed_html )
 				);
 

@@ -59,7 +59,8 @@
 	}
 
 	&[class*=has-home-emoji-] &__crumb--home &__crumb-content::before {
-		content: var( --breadcrumbs-home, 🏠 );
+		// 🏠 default.
+		content: var( --breadcrumbs-home, "\1f3e0" );
 		width: 1em;
 		text-align: center;
 		display: inline-block;
@@ -94,9 +95,9 @@
 		height: max( 1em, 24px );
 	}
 
-	&.has-home-emoji-🏠 { --breadcrumbs-home: "🏠"; }
-	&.has-home-emoji-🏡 { --breadcrumbs-home: "🏡"; }
-	&.has-home-emoji-🛖 { --breadcrumbs-home: "🛖"; }
+	//&.has-home-emoji-🏠 { --breadcrumbs-home: "🏠"; }
+	&.has-home-emoji-🏡 { --breadcrumbs-home: "\1f3e1"; }
+	&.has-home-emoji-🛖 { --breadcrumbs-home: "\1f6d6"; }
 
 	&.has-home-icon-home-fill {
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');

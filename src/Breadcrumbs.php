@@ -53,6 +53,7 @@ class Breadcrumbs implements BreadcrumbsContract
 			'item_class'         => 'breadcrumbs__crumb',
 			'item_content_class' => 'breadcrumbs__crumb-content',
 			'item_label_class'   => 'breadcrumbs__crumb-label',
+			'show_home_label'    => true,
 			'post_rewrite_tags'  => true,
 			'post'               => null,
 			'post_type'          => null,
@@ -181,6 +182,12 @@ class Breadcrumbs implements BreadcrumbsContract
 
 			// Loop through each of the crumbs and build out a list.
 			foreach ( $crumbs as $crumb ) {
+				// Add `.screen-reader-text` class for crumbs
+				// with hidden labels. Usually applied to the
+				// home crumb when it's replaced with an icon.
+				$hidden = $crumb->visuallyHidden()
+					? ' screen-reader-text'
+					: '';
 
 				// Break out of the loop if this is the last item
 				// and we're not supposed to show the trail end.
@@ -191,7 +198,7 @@ class Breadcrumbs implements BreadcrumbsContract
 				// Filter out any unwanted HTML from the label.
 				$label = sprintf(
 					'<span class="%s" itemprop="name">%s</span>',
-					esc_attr( $this->option( 'item_label_class' ) ),
+					esc_attr( $this->option( 'item_label_class' ) . $hidden ),
 					wp_kses( $crumb->label(), $allowed_html )
 				);
 

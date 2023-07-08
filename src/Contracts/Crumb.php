@@ -34,4 +34,11 @@ interface Crumb {
 	 * @since 1.0.0
 	 */
 	public function url(): string;
+
+	/**
+	 * Returns whether the crumb should be visually hidden on display.
+	 *
+	 * @since 1.0.0
+	 */
+	public function visuallyHidden(): bool;
 }

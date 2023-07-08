@@ -83,6 +83,16 @@ class Block implements Bootable
 			$args['show_trail_end'] = $attr['showTrailEnd'];
 		}
 
+		$home_icon_class_name = '';
+
+		if ( ! empty( $attr['homeIcon'] ) ) {
+			$home_icon_class_name = "has-home-{$attr['homeIcon'] }";
+
+			if ( isset( $attr['showHomeLabel'] ) ) {
+				$args['show_home_label'] = $attr['showHomeLabel'];
+			}
+		}
+
 		$sep_class_name =
 			empty( $attr['separator'] )
 			? 'has-sep-icon-chevron'
@@ -103,7 +113,7 @@ class Block implements Bootable
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "{$sep_class_name} {$justify_class_name}"
+			'class'      => "{$home_icon_class_name} {$sep_class_name} {$justify_class_name}"
 		] );
 
 		return sprintf(

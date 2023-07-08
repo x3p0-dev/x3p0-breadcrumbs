@@ -1,6 +1,6 @@
 {
   "apiVersion": 2,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "x3p0/breadcrumbs",
   "title": "X3P0 Breadcrumbs",
   "category": "widgets",
@@ -15,6 +15,10 @@
       "type": "string",
       "default": ""
     },
+    "showHomeLabel": {
+      "type": "boolean",
+      "default": true
+    },
     "showOnHomepage": {
       "type": "boolean",
       "default": false
@@ -23,13 +27,17 @@
       "type": "boolean",
       "default": true
     },
+    "homeIcon": {
+      "type": "string",
+      "default": ""
+    },
     "separator": {
       "type": "string",
       "default": "icon-chevron"
     }
   },
   "supports": {
-    "anchor": false,
+    "anchor": true,
     "align": true,
     "html": false,
     "__experimentalBorder": {

@@ -7,6 +7,7 @@
  */
 
 // Internal dependencies.
+import HomeIconControl  from './control-home-icon';
 import SeparatorControl from './control-separator';
 
 // WordPress dependencies.
@@ -32,7 +33,9 @@ const justifyOptions = [ 'left', 'center', 'right' ];
 // Exports the breadcrumbs block type edit function.
 export default ( {
 	attributes: {
+		homeIcon,
 		itemsJustification,
+		showHomeLabel,
 		showOnHomepage,
 		showTrailEnd,
 		separator
@@ -61,6 +64,11 @@ export default ( {
 
 	const otherToolbarControls = (
 		<BlockControls group="other">
+			<HomeIconControl
+				homeIcon={ homeIcon }
+				showHomeLabel={ showHomeLabel }
+				setAttributes={ setAttributes }
+			/>
 			<SeparatorControl
 				separator={ separator }
 				setAttributes={ setAttributes }
@@ -127,6 +135,7 @@ export default ( {
 	// Get the blockProps and add custom classes.
 	const blockProps = useBlockProps( {
 		className: classnames( {
+			[ `has-home-${ homeIcon }` ]: homeIcon,
 			[ `has-sep-${ separator }` ]: separator,
 			[ `items-justified-${ itemsJustification }` ] : itemsJustification
 		} )
@@ -134,12 +143,27 @@ export default ( {
 
 	// Build an array of faux breadcrumb items to show.
 	let crumbs = [
-		{ type: 'home', label: __( 'Home',         'x3p0-breadcrumbs' ), link: true  },
-		{ type: 'post', label: __( 'Parent Page',  'x3p0-breadcrumbs' ), link: true  }
+		{
+			type: 'home',
+			label: __( 'Home', 'x3p0-breadcrumbs' ),
+			link: true,
+			hide: ! showHomeLabel
+		},
+		{
+			type: 'post',
+			label: __( 'Parent Page', 'x3p0-breadcrumbs' ),
+			link: true,
+			hide: false
+		}
 	];
 
 	if ( showTrailEnd ) {
-		crumbs.push( { type: 'post', label: __( 'Current Page', 'x3p0-breadcrumbs' ), link: false } );
+		crumbs.push( {
+			type: 'post',
+			label: __( 'Current Page', 'x3p0-breadcrumbs' ),
+			link: false,
+			hide: false
+		} );
 	}
 
 	// Creates a breadcrumb trail list item.
@@ -161,7 +185,7 @@ export default ( {
 					itemProp="item"
 				>
 					<span
-						class="wp-block-x3p0-breadcrumbs__crumb-label"
+						class={ `wp-block-x3p0-breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
 						itemProp="name"
 					>
 						{ crumb.label }

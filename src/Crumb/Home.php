@@ -43,6 +43,8 @@ class Home extends Base
 	 */
 	public function visuallyHidden(): bool
 	{
-		return ! $this->breadcrumbs->option( 'show_home_label' );
+		$network = $this->breadcrumbs->option( 'network' ) && ! is_main_site();
+
+		return $network ? false : ! $this->breadcrumbs->option( 'show_home_label' );
 	}
 }

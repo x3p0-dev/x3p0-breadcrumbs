@@ -5,21 +5,16 @@
 /// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
 ////
 
+// `.breadcrumbs` is the `<nav>` wrapping element.
+// `.breadcrumbs__title` is the `<h2>` heading element.
+// `.breadcrumbs__trail` is the `<ul>` element.
+// `.breadcrumbs__crumb` is the `<li>` element.
+// `.breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
 .breadcrumbs {
-	box-sizing: border-box;
 
-	// Styling the nested elements of the block wrapper.
-	// `.breadcrumbs__trail` is the `<ul>` element.
-	// `.breadcrumbs__crumb` is the `<li>` element.
-	// `.breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
+	&__title { font: inherit; }
 
-	&__trail,
-	&__crumb {
-		list-style: none;
-		border: none;
-		background: transparent;
-	}
-
+	&,
 	&__trail,
 	&__crumb,
 	&__crumb-content {
@@ -29,9 +24,16 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		text-indent: 0;
+	}
+
+	&__trail,
+	&__crumb {
+		list-style: none;
 		margin: 0;
 		padding: 0;
-		text-indent: 0;
+		border: none;
+		background: transparent;
 	}
 
 	// This zeroes out any margin/padding from global padding in core.

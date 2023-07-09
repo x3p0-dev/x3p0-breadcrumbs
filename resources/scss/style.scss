@@ -42,6 +42,11 @@
 		padding: 0;
 	}
 
+	// Content justification.
+	&.is-content-justification-right  { justify-content: flex-end;   }
+	&.is-content-justification-left   { justify-content: flex-start; }
+	&.is-content-justification-center { justify-content: center;     }
+
 	// Icon defaults.
 	&[class*=has-home-icon-] &__crumb--home &__crumb-content::before,
 	&[class*=has-sep-icon-] &__crumb:where( :not( :first-child ) )::before {
@@ -138,11 +143,6 @@
 	&.has-sep-black-circle { --breadcrumbs-sep: "\25cf"; }
 	&.has-sep-white-circle { --breadcrumbs-sep: "\25cb"; }
 }
-
-// Content justification.
-.is-content-justification-right  > .breadcrumbs__trail { justify-content: flex-end;   }
-.is-content-justification-left   > .breadcrumbs__trail { justify-content: flex-start; }
-.is-content-justification-center > .breadcrumbs__trail { justify-content: center;     }
 
 // Flip icons for RTL.
 :where( [dir=rtl], .rtl ) .breadcrumbs__crumb:where( :not( :first-child ) )::before {

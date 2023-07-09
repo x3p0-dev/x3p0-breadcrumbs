@@ -52,6 +52,8 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 			key={ index }
 			isPressed={ homeIcon === sep.value }
 			className="x3p0-breadcrumbs-sep-picker__button"
+			label={ sep.label }
+			showTooltip
 			onClick={ () => setAttributes( {
 				homeIcon: sep.value
 			} ) }
@@ -97,6 +99,7 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 		<Dropdown
 			className="x3p0-breadcrumbs-sep-dropdown"
 			contentClassName="x3p0-breadcrumbs-sep-popover"
+			focusOnMount
 			popoverProps={ {
 				headerTitle: __( 'Home Icon', 'x3p0-ideas' ),
 				variant: 'toolbar'

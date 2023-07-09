@@ -41,6 +41,8 @@ export default ( { separator, setAttributes } ) => {
 			key={ index }
 			isPressed={ separator === sep.value }
 			className="x3p0-breadcrumbs-sep-picker__button"
+			label={ sep.label }
+			showTooltip
 			onClick={ () => setAttributes( {
 				separator: sep.value
 			} ) }
@@ -75,6 +77,7 @@ export default ( { separator, setAttributes } ) => {
 		<Dropdown
 			className="x3p0-breadcrumbs-sep-dropdown"
 			contentClassName="x3p0-breadcrumbs-sep-popover"
+			focusOnMount
 			popoverProps={ {
 				headerTitle: __( 'Separator', 'x3p0-ideas' ),
 				variant: 'toolbar'

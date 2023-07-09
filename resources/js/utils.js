@@ -129,7 +129,7 @@ const SEPARATORS = [
 	},
 	{
 		value: 'slash',
-		label: __( 'Forward Slash', 'x3p0-breadcrumbs' ),
+		label: __( 'Slash', 'x3p0-breadcrumbs' ),
 		content: "/"
 	},
 	{
@@ -144,12 +144,12 @@ const SEPARATORS = [
 	},
 	{
 		value: 'black-circle',
-		label: __( 'Black Circle', 'x3p0-breadcrumbs' ),
+		label: __( 'Circle: Filled', 'x3p0-breadcrumbs' ),
 		content: "●"
 	},
 	{
 		value: 'white-circle',
-		label: __( 'Circle', 'x3p0-breadcrumbs' ),
+		label: __( 'Circle: Outlined', 'x3p0-breadcrumbs' ),
 		content: "○"
 	}
 ];

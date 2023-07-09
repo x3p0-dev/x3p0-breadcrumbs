@@ -44,7 +44,7 @@ const HOME_ICONS = [
 		value: 'icon-house-outline',
 		label: __( 'House: Outlined', 'x3p0-breadcrumbs' ),
 		icon: (
-			<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<g>
 					<rect fill="none" height="24" width="24"/>
 				</g>
@@ -59,33 +59,13 @@ const HOME_ICONS = [
 		value: 'icon-house-fill',
 		label: __( 'House: Filled', 'x3p0-breadcrumbs' ),
 		icon: (
-			<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<g>
 					<rect fill="none" height="24" width="24"/>
 				</g>
 				<g>
 					<path d="M19,9.3V4h-3v2.6L12,3L2,12h3v8h5v-6h4v6h5v-8h3L19,9.3z M10,10c0-1.1,0.9-2,2-2s2,0.9,2,2H10z"/>
 				</g>
-			</svg>
-		)
-	},
-	{
-		value: 'icon-cottage-outline',
-		label: __( 'Cottage: Outlined', 'x3p0-breadcrumbs' ),
-		icon: (
-			<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-				<rect fill="none" height="24" width="24"/>
-				<path d="M12,3L6,7.58V6H4v3.11L1,11.4l1.21,1.59L4,11.62V21h16v-9.38l1.79,1.36L23,11.4L12,3z M18,19h-5v-4h-2v4H6v-8.9l6-4.58 l6,4.58V19z M10,1c0,1.66-1.34,3-3,3C6.45,4,6,4.45,6,5H4c0-1.66,1.34-3,3-3c0.55,0,1-0.45,1-1H10z"/>
-			</svg>
-		)
-	},
-	{
-		value: 'icon-cottage-fill',
-		label: __( 'Cottage: Filled', 'x3p0-breadcrumbs' ),
-		icon: (
-			<svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-				<rect fill="none" height="24" width="24"/>
-				<path d="M12,3L6,7.58V6H4v3.11L1,11.4l1.21,1.59L4,11.62V21h7v-6h2v6h7v-9.38l1.79,1.36L23,11.4L12,3z M10,1c0,1.66-1.34,3-3,3 C6.45,4,6,4.45,6,5H4c0-1.66,1.34-3,3-3c0.55,0,1-0.45,1-1H10z"/>
 			</svg>
 		)
 	},
@@ -100,9 +80,9 @@ const HOME_ICONS = [
 		content: '🏡'
 	},
 	{
-		value: 'emoji-🛖',
-		label: __( 'Emoji: Hut', 'x3p0-breadcrumbs' ),
-		content: '🛖'
+		value: 'emoji-🏘',
+		label: __( 'Emoji: Houses', 'x3p0-breadcrumbs' ),
+		content: '🏘'
 	}
 ];
 
@@ -171,16 +151,6 @@ const SEPARATORS = [
 		value: 'white-circle',
 		label: __( 'Circle', 'x3p0-breadcrumbs' ),
 		content: "○"
-	},
-	{
-		value: 'black-square',
-		label: __( 'Black Square', 'x3p0-breadcrumbs' ),
-		content: "■"
-	},
-	{
-		value: 'white-square',
-		label: __( 'White Square', 'x3p0-breadcrumbs' ),
-		content: "□"
 	}
 ];
 

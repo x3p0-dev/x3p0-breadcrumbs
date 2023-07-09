@@ -1,6 +1,6 @@
 {
   "apiVersion": 2,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "x3p0/breadcrumbs",
   "title": "X3P0 Breadcrumbs",
   "category": "widgets",
@@ -11,7 +11,7 @@
     "navigation"
   ],
   "attributes": {
-    "itemsJustification": {
+    "justifyContent": {
       "type": "string",
       "default": ""
     },

@@ -65,12 +65,6 @@ class Block implements Bootable
 		$args = [
 			'labels'             => [ 'title' => '' ],
 			'container_tag'      => '',
-			'container_class'    => 'wp-block-x3p0-breadcrumbs',
-			'title_class'        => 'wp-block-x3p0-breadcrumbs__title',
-			'list_class'         => 'wp-block-x3p0-breadcrumbs__trail',
-			'item_class'         => 'wp-block-x3p0-breadcrumbs__crumb',
-			'item_content_class' => 'wp-block-x3p0-breadcrumbs__crumb-content',
-			'item_label_class'   => 'wp-block-x3p0-breadcrumbs__crumb-label',
 			'post_taxonomy'      => [ 'post' => 'category' ],
 			'post_rewrite_tags'  => false
 		];
@@ -99,9 +93,9 @@ class Block implements Bootable
 			: "has-sep-{$attr['separator'] }";
 
 		$justify_class_name =
-			empty( $attr['itemsJustification'] )
+			empty( $attr['justifyContent'] )
 			? ''
-			: "items-justified-{$attr['itemsJustification']}";
+			: "is-content-justification-{$attr['justifyContent']}";
 
 		$trail = Trail::render( $args );
 
@@ -113,7 +107,7 @@ class Block implements Bootable
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "{$home_icon_class_name} {$sep_class_name} {$justify_class_name}"
+			'class'      => "breadcrumbs {$home_icon_class_name} {$sep_class_name} {$justify_class_name}"
 		] );
 
 		return sprintf(

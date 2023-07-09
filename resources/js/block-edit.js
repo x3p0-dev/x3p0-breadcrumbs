@@ -34,7 +34,7 @@ const justifyOptions = [ 'left', 'center', 'right' ];
 export default ( {
 	attributes: {
 		homeIcon,
-		itemsJustification,
+		justifyContent,
 		showHomeLabel,
 		showOnHomepage,
 		showTrailEnd,
@@ -50,9 +50,9 @@ export default ( {
 		<BlockControls group="block">
 			<JustifyContentControl
 				allowedControls={ justifyOptions }
-				value={ itemsJustification }
+				value={ justifyContent }
 				onChange={ ( value ) => setAttributes( {
-					itemsJustification: value
+					justifyContent: value
 				} ) }
 				popoverProps={ {
 					position: 'bottom right',
@@ -135,9 +135,10 @@ export default ( {
 	// Get the blockProps and add custom classes.
 	const blockProps = useBlockProps( {
 		className: classnames( {
+			'breadcrumbs': true,
 			[ `has-home-${ homeIcon }` ]: homeIcon,
 			[ `has-sep-${ separator }` ]: separator,
-			[ `items-justified-${ itemsJustification }` ] : itemsJustification
+			[ `is-content-justification-${ justifyContent }` ] : justifyContent
 		} )
 	} );
 
@@ -173,7 +174,7 @@ export default ( {
 		return (
 			<li
 				key={ index }
-				className={ `wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--${ crumb.type }` }
+				className={ `breadcrumbs__crumb breadcrumbs__crumb--${ crumb.type }` }
 				itemProp="itemListElement"
 				itemScope
 				itemType="https://schema.org/ListItem"
@@ -181,11 +182,11 @@ export default ( {
 				<CrumbContent
 					href={ crumb.link ? '#breadcrumbs-pseudo-link' : null }
 					onClick={ preventDefault }
-					className="wp-block-x3p0-breadcrumbs__crumb-content"
+					className="breadcrumbs__crumb-content"
 					itemProp="item"
 				>
 					<span
-						class={ `wp-block-x3p0-breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
+						class={ `breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
 						itemProp="name"
 					>
 						{ crumb.label }
@@ -198,7 +199,7 @@ export default ( {
 
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
-		<ul className="wp-block-x3p0-breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
+		<ul className="breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
 			{ crumbs.map( ( item, index ) => crumb( item, index ) ) }
 		</ul>
 	);

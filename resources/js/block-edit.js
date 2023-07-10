@@ -199,9 +199,9 @@ export default ( {
 
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
-		<ul className="breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
+		<ol className="breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
 			{ crumbs.map( ( item, index ) => crumb( item, index ) ) }
-		</ul>
+		</ol>
 	);
 
 	// Return the final block edit component.

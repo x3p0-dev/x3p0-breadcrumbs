@@ -45,7 +45,7 @@ class Breadcrumbs implements BreadcrumbsContract
 			'after'              => '',
 			'container_tag'      => 'nav',
 			'title_tag'          => 'h2',
-			'list_tag'           => 'ul',
+			'list_tag'           => 'ol',
 			'item_tag'           => 'li',
 			'container_class'    => 'breadcrumbs',
 			'title_class'        => 'breadcrumbs__title',

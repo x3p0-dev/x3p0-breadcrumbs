@@ -37,7 +37,8 @@
 	}
 
 	// This zeroes out any margin/padding from global padding in core.
-	&.alignfull > ul.breadcrumbs__trail {
+	.editor-styles-wrapper &.alignfull > .breadcrumbs__trail,
+	&.alignfull > .breadcrumbs__trail {
 		margin: 0;
 		padding: 0;
 	}

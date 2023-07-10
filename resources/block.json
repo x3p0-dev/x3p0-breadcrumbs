@@ -51,7 +51,8 @@
 			"gradients": true,
 			"__experimentalDefaultControls": {
 				"background": true,
-				"text": true
+				"text": true,
+				"link": true
 			}
 		},
 		"spacing": {

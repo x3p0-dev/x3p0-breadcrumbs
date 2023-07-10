@@ -18,6 +18,10 @@ A powerful script for adding breadcrumbs to your site that supports Schema.org H
 
 == Screenshots ==
 
+1. Breadcrumbs block in the Site Editor.
+2. Home icon picker.
+3. Separator icon picker.
+
 == Upgrade Notice ==
 
 == Changelog ==

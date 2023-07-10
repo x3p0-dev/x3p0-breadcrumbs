@@ -68,6 +68,7 @@
 			"__experimentalFontStyle": true,
 			"__experimentalFontWeight": true,
 			"__experimentalFontFamily": true,
+			"__experimentalLetterSpacing": true,
 			"__experimentalTextTransform": true,
 			"__experimentalDefaultControls": {
 				"fontSize": true

@@ -90,7 +90,7 @@ class Block implements Bootable
 		$sep_class_name =
 			! empty( $attr['separator'] ) && ! empty( $attr['separatorType'] )
 			? "has-sep-{$attr['separatorType']}-{$attr['separator']}"
-			: 'has-sep-image-chevron';
+			: 'has-sep-mask-chevron';
 
 		$justify_class_name =
 			empty( $attr['justifyContent'] )

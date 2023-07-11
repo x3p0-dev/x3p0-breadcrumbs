@@ -23,14 +23,8 @@ import {
 
 /**
  * @description Creates a separator separator control.
- * @example
- * <SeparatorSeparatorControl
- * 	attributes={props.attributes}
- * 	setAttributes={props.setAttributes}
- * 	clientId={props.clientId}
- * />
  */
-export default ( { separator, separatorType, setAttributes } ) => {
+export default ( { separator, setAttributes } ) => {
 
 	// Get the separator options.
 	const separators = getSeparators();

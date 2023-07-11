@@ -1,5 +1,5 @@
 /**
- * Home Icon component.
+ * Home Prefix component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2023, Justin Tadlock
@@ -7,7 +7,7 @@
  */
 
 // Internal dependencies.
-import { getHomeIcons } from './utils';
+import { getHomePrefixes } from './utils';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -26,14 +26,8 @@ import {
 
 /**
  * @description Creates a home icon control.
- * @example
- * <HomeIconControl
- * 	attributes={props.attributes}
- * 	setAttributes={props.setAttributes}
- * 	clientId={props.clientId}
- * />
  */
-export default ( { homePrefix, homePrefixType, showHomeLabel, setAttributes } ) => {
+export default ( { homePrefix, showHomeLabel, setAttributes } ) => {
 
 	useEffect( () => {
 		if ( ! showHomeLabel && ! homePrefix ) {
@@ -44,7 +38,7 @@ export default ( { homePrefix, homePrefixType, showHomeLabel, setAttributes } ) 
 	}, [ homePrefix ] );
 
 	// Get the homePrefix options.
-	const homePrefixes = getHomeIcons();
+	const homePrefixes = getHomePrefixes();
 
 	// Builds a menu item for an homePrefix.
 	const homePrefixButton = ( sep, index ) => (
@@ -93,7 +87,7 @@ export default ( { homePrefix, homePrefixType, showHomeLabel, setAttributes } ) 
 			} ) }
 			disabled={ ! homePrefix }
 		/>
-	)
+	);
 
 	// Returns the dropdown menu item.
 	return (

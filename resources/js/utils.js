@@ -9,7 +9,7 @@
 import { __ }           from '@wordpress/i18n';
 import { applyFilters } from '@wordpress/hooks';
 
-const HOME_ICONS = [
+const HOME_PREFIXES = [
 	{
 		value: '',
 		label: __( 'None', 'x3p0-breadcrumbs' ),
@@ -176,9 +176,9 @@ const SEPARATORS = [
  *
  * @returns {array}
  */
-export const getHomeIcons = () => Array.from( applyFilters(
+export const getHomePrefixes = () => Array.from( applyFilters(
 	'x3p0.breadcrumbs.home.prefixes',
-	new Set( HOME_ICONS )
+	new Set( HOME_PREFIXES )
 ) );
 
 /**

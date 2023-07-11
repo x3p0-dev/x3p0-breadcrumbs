@@ -7,7 +7,7 @@
  */
 
 // Internal dependencies.
-import HomeIconControl  from './control-home-icon';
+import HomeIconControl  from './control-home-prefix';
 import SeparatorControl from './control-separator';
 
 // WordPress dependencies.
@@ -68,13 +68,11 @@ export default ( {
 		<BlockControls group="other">
 			<HomeIconControl
 				homePrefix={ homePrefix }
-				homePrefixType={ homePrefixType }
 				showHomeLabel={ showHomeLabel }
 				setAttributes={ setAttributes }
 			/>
 			<SeparatorControl
 				separator={ separator }
-				separatorType={ separatorType }
 				setAttributes={ setAttributes }
 			/>
 		</BlockControls>

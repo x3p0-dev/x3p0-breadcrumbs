@@ -188,7 +188,7 @@ export default ( {
 					itemProp="item"
 				>
 					<span
-						class={ `breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
+						className={ `breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
 						itemProp="name"
 					>
 						{ crumb.label }

@@ -27,13 +27,21 @@
       "type": "boolean",
       "default": true
     },
-    "homeIcon": {
+    "homePrefix": {
+      "type": "string",
+      "default": ""
+    },
+    "homePrefixType": {
       "type": "string",
       "default": ""
     },
     "separator": {
       "type": "string",
-      "default": "icon-chevron"
+      "default": "chevron"
+    },
+    "separatorType": {
+      "type": "string",
+      "default": "image"
     }
   },
   "supports": {

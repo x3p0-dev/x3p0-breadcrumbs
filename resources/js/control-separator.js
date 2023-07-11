@@ -30,7 +30,7 @@ import {
  * 	clientId={props.clientId}
  * />
  */
-export default ( { separator, setAttributes } ) => {
+export default ( { separator, separatorType, setAttributes } ) => {
 
 	// Get the separator options.
 	const separators = getSeparators();
@@ -44,12 +44,13 @@ export default ( { separator, setAttributes } ) => {
 			label={ sep.label }
 			showTooltip
 			onClick={ () => setAttributes( {
-				separator: sep.value
+				separator:     sep.value,
+				separatorType: sep.type
 			} ) }
 		>
-			{ sep.icon ? sep.icon : (
+			{ 'image' === sep.type ? sep.icon : (
 				<span className="x3p0-breadcrumbs-sep-picker__button-text">
-					{ sep.content }
+					{ sep.icon }
 				</span>
 			) }
 		</Button>

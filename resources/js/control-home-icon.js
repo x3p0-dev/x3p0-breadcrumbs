@@ -33,41 +33,42 @@ import {
  * 	clientId={props.clientId}
  * />
  */
-export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
+export default ( { homePrefix, homePrefixType, showHomeLabel, setAttributes } ) => {
 
 	useEffect( () => {
-		if ( ! showHomeLabel && ! homeIcon ) {
+		if ( ! showHomeLabel && ! homePrefix ) {
 			setAttributes( {
 				showHomeLabel: true
 			} );
 		}
-	}, [ homeIcon ] );
+	}, [ homePrefix ] );
 
-	// Get the homeIcon options.
-	const homeIcons = getHomeIcons();
+	// Get the homePrefix options.
+	const homePrefixes = getHomeIcons();
 
-	// Builds a menu item for an homeIcon.
-	const homeIconButton = ( sep, index ) => (
+	// Builds a menu item for an homePrefix.
+	const homePrefixButton = ( sep, index ) => (
 		<Button
 			key={ index }
-			isPressed={ homeIcon === sep.value }
+			isPressed={ homePrefix === sep.value }
 			className="x3p0-breadcrumbs-sep-picker__button"
 			label={ sep.label }
 			showTooltip
 			onClick={ () => setAttributes( {
-				homeIcon: sep.value
+				homePrefix:     sep.value,
+				homePrefixType: sep.type
 			} ) }
 		>
-			{ sep.icon ? sep.icon : (
+			{ 'image' === sep.type ? sep.icon : (
 				<span className="x3p0-breadcrumbs-sep-picker__button-text">
-					{ sep.content }
+					{ sep.icon }
 				</span>
 			) }
 		</Button>
 	);
 
-	// Builds an homeIcon picker in a 6-column grid.
-	const homeIconPicker = (
+	// Builds an homePrefix picker in a 6-column grid.
+	const homePrefixPicker = (
 		<BaseControl
 			className="x3p0-breadcrumbs-sep-picker"
 			label={ __( 'Home Icon', 'x3p0-ideas' ) }
@@ -76,8 +77,8 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 				{ __( 'Pick an icon or symbol for the home breadcrumb item.', 'x3p0-ideas' ) }
 			</div>
 			<Grid className="x3p0-breadcrumbs-sep-picker__grid" columns="6">
-				{ homeIcons.map( ( sep, index ) =>
-					homeIconButton( sep, index )
+				{ homePrefixes.map( ( sep, index ) =>
+					homePrefixButton( sep, index )
 				) }
 			</Grid>
 		</BaseControl>
@@ -90,7 +91,7 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 			onChange={ () => setAttributes( {
 				showHomeLabel: ! showHomeLabel
 			} ) }
-			disabled={ ! homeIcon }
+			disabled={ ! homePrefix }
 		/>
 	)
 
@@ -111,7 +112,7 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 					label={ __( 'Home Icon', 'x3p0-ideas' ) }
 					onClick={ onToggle }
 					aria-expanded={ isOpen }
-					isPressed={ !! homeIcon }
+					isPressed={ !! homePrefix }
 				/>
 			) }
 			renderContent={ () => (
@@ -119,7 +120,7 @@ export default ( { homeIcon, showHomeLabel, setAttributes } ) => {
 					direction="column"
 					gap="4"
 				>
-					{ homeIconPicker }
+					{ homePrefixPicker }
 					{ showHomeLabelControl }
 				</Flex>
 			) }

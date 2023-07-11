@@ -79,8 +79,8 @@ class Block implements Bootable
 
 		$home_icon_class_name = '';
 
-		if ( ! empty( $attr['homeIcon'] ) ) {
-			$home_icon_class_name = "has-home-{$attr['homeIcon'] }";
+		if ( ! empty( $attr['homePrefix'] ) && ! empty( $attr['homePrefixType'] ) ) {
+			$home_icon_class_name = "has-home-{$attr['homePrefixType']}-{$attr['homePrefix']}";
 
 			if ( isset( $attr['showHomeLabel'] ) ) {
 				$args['show_home_label'] = $attr['showHomeLabel'];
@@ -88,9 +88,9 @@ class Block implements Bootable
 		}
 
 		$sep_class_name =
-			empty( $attr['separator'] )
-			? 'has-sep-icon-chevron'
-			: "has-sep-{$attr['separator'] }";
+			! empty( $attr['separator'] ) && ! empty( $attr['separatorType'] )
+			? "has-sep-{$attr['separatorType']}-{$attr['separator']}"
+			: 'has-sep-image-chevron';
 
 		$justify_class_name =
 			empty( $attr['justifyContent'] )

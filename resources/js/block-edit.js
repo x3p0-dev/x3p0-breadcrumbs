@@ -33,12 +33,14 @@ const justifyOptions = [ 'left', 'center', 'right' ];
 // Exports the breadcrumbs block type edit function.
 export default ( {
 	attributes: {
-		homeIcon,
+		homePrefix,
+		homePrefixType,
 		justifyContent,
 		showHomeLabel,
 		showOnHomepage,
 		showTrailEnd,
-		separator
+		separator,
+		separatorType
 	},
 	setAttributes
 } ) => {
@@ -65,12 +67,14 @@ export default ( {
 	const otherToolbarControls = (
 		<BlockControls group="other">
 			<HomeIconControl
-				homeIcon={ homeIcon }
+				homePrefix={ homePrefix }
+				homePrefixType={ homePrefixType }
 				showHomeLabel={ showHomeLabel }
 				setAttributes={ setAttributes }
 			/>
 			<SeparatorControl
 				separator={ separator }
+				separatorType={ separatorType }
 				setAttributes={ setAttributes }
 			/>
 		</BlockControls>
@@ -136,8 +140,8 @@ export default ( {
 	const blockProps = useBlockProps( {
 		className: classnames( {
 			'breadcrumbs': true,
-			[ `has-home-${ homeIcon }` ]: homeIcon,
-			[ `has-sep-${ separator }` ]: separator,
+			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : homePrefixType && homePrefix,
+			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
 			[ `is-content-justification-${ justifyContent }` ] : justifyContent
 		} )
 	} );

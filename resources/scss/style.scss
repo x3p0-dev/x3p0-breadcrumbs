@@ -49,8 +49,8 @@
 	&.is-content-justification-center { justify-content: center;     }
 
 	// Icon defaults.
-	&[class*=has-home-image-] &__crumb--home &__crumb-content::before,
-	&[class*=has-sep-image-] &__crumb:where( :not( :first-child ) )::before {
+	&[class*=has-home-mask-] &__crumb--home &__crumb-content::before,
+	&[class*=has-sep-mask-] &__crumb:where( :not( :first-child ) )::before {
 		content: '';
 		background: currentColor;
 		display: inline-block;
@@ -75,7 +75,7 @@
 	}
 
 	// Home icon.
-	&[class*=has-home-image-] &__crumb--home &__crumb-content::before {
+	&[class*=has-home-mask-] &__crumb--home &__crumb-content::before {
 		mask: no-repeat 50% 50% / cover var( --breadcrumbs-home );
 		width: max( 1em, 24px );
 		height: max( 1em, 24px );
@@ -85,19 +85,19 @@
 	&.has-home-text-🏘 { --breadcrumbs-home: "\1f3d8"; }
 
 	// https://fonts.google.com/icons?icon.query=home&selected=Material+Icons+Outlined:home:&icon.set=Material+Icons
-	&.has-home-image-outline {
+	&.has-home-mask-outline {
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 5.69l5 4.5V18h-2v-6H9v6H7v-7.81l5-4.5M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>');
 	}
 
-	&.has-home-image-fill {
+	&.has-home-mask-fill {
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
 	}
 
-	&.has-home-image-house-outline {
+	&.has-home-mask-house-outline {
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M19,9.3V4h-3v2.6L12,3L2,12h3v8h6v-6h2v6h6v-8h3L19,9.3z M17,18h-2v-6H9v6H7v-7.81l5-4.5l5,4.5V18z"/><path d="M10,10h4c0-1.1-0.9-2-2-2S10,8.9,10,10z"/></g></g></svg>');
 	}
 
-	&.has-home-image-house-fill {
+	&.has-home-mask-house-fill {
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><g><rect fill="none" height="24" width="24"/></g><g><path d="M19,9.3V4h-3v2.6L12,3L2,12h3v8h5v-6h4v6h5v-8h3L19,9.3z M10,10c0-1.1,0.9-2,2-2s2,0.9,2,2H10z"/></g></svg>');
 	}
 
@@ -113,29 +113,29 @@
 		text-align: center;
 	}
 
-	&[class*=has-sep-image-] &__crumb:where( :not( :first-child ) )::before {
+	&[class*=has-sep-mask-] &__crumb:where( :not( :first-child ) )::before {
 		mask: no-repeat 50% 50% / cover var( --breadcrumbs-sep );
 		height: 1em;
 	}
 
 	// https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right:&icon.query=chevron&icon.style=Outlined&icon.set=Material+Icons
-	&.has-sep-image-chevron {
+	&.has-sep-mask-chevron {
 		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"/></svg>');
 	}
 
 	// WP next icon
-	&.has-sep-image-chevron-double {
+	&.has-sep-mask-chevron-double {
 		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M6.6 6L5.4 7l4.5 5-4.5 5 1.1 1 5.5-6-5.4-6zm6 0l-1.1 1 4.5 5-4.5 5 1.1 1 5.5-6-5.5-6z"></path></svg>');
 	}
 
 	// arrow right
 	// https://fonts.google.com/icons?icon.query=arrow&selected=Material+Icons+Outlined:arrow_right_alt:&icon.set=Material+Icons
-	&.has-sep-image-arrow {
+	&.has-sep-mask-arrow {
 		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16.01 11H4v2h12.01v3L20 12l-3.99-4v3z"/></svg>');
 	}
 
 	// https://fonts.google.com/icons?icon.query=arrow&selected=Material+Symbols+Outlined:arrow_right:FILL@0;wght@400;GRAD@0;opsz@48
-	&.has-sep-image-triangle {
+	&.has-sep-mask-triangle {
 		--breadcrumbs-sep: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 17l5-5-5-5v10z"/></svg>');
 	}
 

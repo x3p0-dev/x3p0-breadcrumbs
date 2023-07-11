@@ -1,6 +1,6 @@
 {
   "apiVersion": 3,
-  "version": "202307102051",
+  "version": "20230712108",
   "name": "x3p0/breadcrumbs",
   "title": "X3P0 Breadcrumbs",
   "category": "widgets",
@@ -41,7 +41,7 @@
     },
     "separatorType": {
       "type": "string",
-      "default": "image"
+      "default": "mask"
     }
   },
   "supports": {

@@ -24,7 +24,7 @@ const HOME_PREFIXES = [
 	{
 		value: 'outline',
 		label: __( 'Home: Outlined', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon:  (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<path d="M0 0h24v24H0V0z" fill="none"/>
@@ -35,7 +35,7 @@ const HOME_PREFIXES = [
 	{
 		value: 'fill',
 		label: __( 'Home: Filled', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<path d="M0 0h24v24H0z" fill="none"/>
@@ -46,7 +46,7 @@ const HOME_PREFIXES = [
 	{
 		value: 'house-outline',
 		label: __( 'House: Outlined', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<g>
@@ -62,7 +62,7 @@ const HOME_PREFIXES = [
 	{
 		value: 'house-fill',
 		label: __( 'House: Filled', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<g>
@@ -98,7 +98,7 @@ const SEPARATORS = [
 	{
 		value: 'chevron',
 		label: __( 'Chevron', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000">
 				<path d="M0 0h24v24H0V0z" fill="none"/>
@@ -109,7 +109,7 @@ const SEPARATORS = [
 	{
 		value: 'chevron-double',
 		label: __( 'Double Chevron', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
 				<path d="M6.6 6L5.4 7l4.5 5-4.5 5 1.1 1 5.5-6-5.4-6zm6 0l-1.1 1 4.5 5-4.5 5 1.1 1 5.5-6-5.5-6z">
@@ -120,7 +120,7 @@ const SEPARATORS = [
 	{
 		value: 'arrow',
 		label: __( 'Arrow', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000">
 				<path d="M0 0h24v24H0V0z" fill="none"/>
@@ -131,7 +131,7 @@ const SEPARATORS = [
 	{
 		value: 'triangle',
 		label: __( 'Triangle', 'x3p0-breadcrumbs' ),
-		type:  'image',
+		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 				<path d="M0 0h24v24H0V0z" fill="none"/>

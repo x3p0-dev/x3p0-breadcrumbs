@@ -330,12 +330,7 @@ class Breadcrumbs implements BreadcrumbsContract
 	 */
 	public function query( string $type, array $data = [] ): void
 	{
-		$class = apply_filters(
-			"x3p0/breadcrumbs/query/{$type}",
-			"\\X3P0\\Breadcrumbs\\Query\\{$type}",
-			$data
-		);
-
+		$class = "\\X3P0\\Breadcrumbs\\Query\\{$type}";
 		$query = new $class( $this, $data );
 
 		$query->make();
@@ -348,12 +343,7 @@ class Breadcrumbs implements BreadcrumbsContract
 	 */
 	public function build( string $type, array $data = [] ): void
 	{
-		$class = apply_filters(
-			"x3p0/breadcrumbs/build/{$type}",
-			"\\X3P0\\Breadcrumbs\\Build\\{$type}",
-			$data
-		);
-
+		$class = "\\X3P0\\Breadcrumbs\\Build\\{$type}";
 		$build = new $class( $this, $data );
 
 		$build->make();
@@ -366,12 +356,7 @@ class Breadcrumbs implements BreadcrumbsContract
 	 */
 	public function crumb( string $type, array $data = [] ): void
 	{
-		$class = apply_filters(
-			"x3p0/breadcrumbs/crumb/{$type}",
-			"\\X3P0\\Breadcrumbs\\Crumb\\{$type}",
-			$data
-		);
-
+		$class = "\\X3P0\\Breadcrumbs\\Crumb\\{$type}";
 		$this->crumbs[] = new $class( $this, $data );
 	}
 

@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"description": "Breadcrumbs block for WordPress.",
 	"author": "Justin Tadlock",
-	"license": "GPL-2.0+",
 	"homepage": "https://github.com/x3p0-dev/x3p0-breadcrumbs",
 	"scripts": {
 		"start": "wp-scripts start --webpack-src-dir=resources --output-path=public",

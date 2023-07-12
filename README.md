@@ -19,3 +19,9 @@ But everything changed when WordPress launched the block editor and site editing
 With that change---and this new block plugin---users no longer need to rely on their theme author to keep the script updated. They can simply install this X3P0 - breadcrumbs and put the block wherever they want. Theme authors can still integrate with it, but they no longer have to worry about maintaining an updated codebase for their breadcrumbs.
 
 Today, this breadcrumbs script is finally what it was always meant to be. It took 14 years or so for it to become a reality, but we're finally here.
+
+## License
+
+X3P0 Breadcrumbs is licensed under the GPL version 3.0 or later.
+
+The project includes resources from [Material Icons](https://fonts.google.com/icons), which are licensed under [Apache 2.0](http://www.apache.org/licenses/LICENSE-2.0.txt).

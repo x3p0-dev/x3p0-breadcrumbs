@@ -7,8 +7,8 @@ Requires at least: 6.2
 Tested up to: 6.3
 Requires PHP: 7.4
 Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.htm
+License: GPL-3.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Breadcrumbs block for WordPress that supports Schema.org HTML5-valid microdata.
 

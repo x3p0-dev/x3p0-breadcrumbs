@@ -14,6 +14,8 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use X3P0\Breadcrumbs\Util\Helpers;
+
 class Paged extends Base
 {
 	/**
@@ -46,6 +48,11 @@ class Paged extends Base
 		} elseif ( is_singular() && get_option( 'page_comments' ) && 1 < get_query_var( 'cpage' ) ) {
 
 			$this->breadcrumbs->crumb( 'PagedComments' );
+
+		// If viewing a paged Query Loop block view.
+		} elseif ( Helpers::isPagedQueryBlock() ) {
+
+			$this->breadcrumbs->crumb( 'PagedQueryBlock' );
 		}
 	}
 }

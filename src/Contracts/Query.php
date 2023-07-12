@@ -12,8 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-interface Query {
-
+interface Query
+{
 	/**
 	 * Builds breadcrumbs.
 	 *

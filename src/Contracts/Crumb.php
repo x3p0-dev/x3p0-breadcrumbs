@@ -12,8 +12,8 @@
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-interface Crumb {
-
+interface Crumb
+{
 	/**
 	 * Returns a type for the crumb.
 	 *

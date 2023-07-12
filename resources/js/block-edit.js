@@ -7,7 +7,7 @@
  */
 
 // Internal dependencies.
-import HomeIconControl  from './control-home-prefix';
+import HomePrefixControl  from './control-home-prefix';
 import SeparatorControl from './control-separator';
 
 // WordPress dependencies.
@@ -66,7 +66,7 @@ export default ( {
 
 	const otherToolbarControls = (
 		<BlockControls group="other">
-			<HomeIconControl
+			<HomePrefixControl
 				homePrefix={ homePrefix }
 				showHomeLabel={ showHomeLabel }
 				setAttributes={ setAttributes }

@@ -164,7 +164,6 @@ class Breadcrumbs implements BreadcrumbsContract
 		$crumbs = $this->all();
 
 		if ( $crumbs ) {
-
 			// HTML allowed in labels. Everything else gets stripped out.
 			$allowed_html = [
 				'abbr'    => [ 'title' => true ],
@@ -208,16 +207,13 @@ class Breadcrumbs implements BreadcrumbsContract
 				// Wrap the label with a link if the crumb has
 				// one and this isn't the last item.
 				if ( $url && $i !== $count  ) {
-
 					$item = sprintf(
 						'<a href="%s" class="%s" itemprop="item">%s</a>',
 						esc_url( $url ),
 						esc_attr( $this->option( 'item_content_class' ) ),
 						$label
 					);
-
 				} else {
-
 					$item = sprintf(
 						'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
 						esc_attr( $this->option( 'item_content_class' ) ),
@@ -257,7 +253,6 @@ class Breadcrumbs implements BreadcrumbsContract
 
 			// Build the title HTML only if there's a label for it.
 			if ( $this->label( 'title' ) ) {
-
 				$title = sprintf(
 					'<%1$s class="%2$s">%3$s</%1$s>',
 					tag_escape( $this->option( 'title_tag' ) ),
@@ -266,7 +261,7 @@ class Breadcrumbs implements BreadcrumbsContract
 				);
 			}
 
-			if ( $tag = $this->option( 'container_tag' ) ) {
+			if ( $this->option( 'container_tag' ) ) {
 				$container = sprintf(
 					'<%1$s class="%2$s" role="navigation" aria-label="%3$s" itemprop="breadcrumb">%4$s</%1$s>',
 					tag_escape( $this->option( 'container_tag' ) ),

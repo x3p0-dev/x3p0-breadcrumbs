@@ -10,7 +10,6 @@
 
 namespace X3P0\Breadcrumbs;
 
-use WP_Block;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
 class Block implements Bootable
@@ -60,56 +59,72 @@ class Block implements Bootable
 	 *
 	 * @since 1.0.0
 	 */
-        public function render( array $attr ): string
+        public function render( array $attributes ): string
         {
-		$args = [
-			'labels'             => [ 'title' => '' ],
-			'container_tag'      => '',
-			'post_taxonomy'      => [ 'post' => 'category' ],
-			'post_rewrite_tags'  => false
+		// Arguments to pass to the `Trail` class.
+		$trail_args = [
+			'labels'            => [ 'title' => '' ],
+			'container_tag'     => '',
+			'post_taxonomy'     => [ 'post' => 'category' ],
+			'post_rewrite_tags' => false,
+			'show_on_front'     => $attributes['showOnHomepage'] ?? false,
+			'show_trail_end'    => $attributes['showTrailEnd']   ?? true
 		];
 
-		if ( isset( $attr['showOnHomepage'] ) ) {
-			$args['show_on_front'] = $attr['showOnHomepage'];
+		// Set up some default class names.
+		$home_class    = '';
+		$sep_class     = 'has-sep-mask-chevron';
+		$justify_class = '';
+
+		// If there is a selected home prefix, define the class.
+		if ( ! empty( $attributes['homePrefix'] ) && ! empty( $attributes['homePrefixType'] ) ) {
+			$home_class = sprintf(
+				'has-home-%s-%s',
+				$attributes['homePrefixType'],
+				$attributes['homePrefix']
+			);
+
+			// Set whether the home label should be shown. This is
+			// wrapped within the prefix check because the home label
+			// should always be shown if there's no prefix/icon.
+			$trail_args['show_home_label'] = $attributes['showHomeLabel'] ?? true;
 		}
 
-		if ( isset( $attr['showTrailEnd'] ) ) {
-			$args['show_trail_end'] = $attr['showTrailEnd'];
+		// If there's a selected separator, define the class for it.
+		if ( ! empty( $attributes['separator'] ) && ! empty( $attributes['separatorType'] ) ) {
+			$sep_class = sprintf(
+				'has-sep-%s-%s',
+				$attributes['separatorType'],
+				$attributes['separator']
+			);
 		}
 
-		$home_icon_class_name = '';
-
-		if ( ! empty( $attr['homePrefix'] ) && ! empty( $attr['homePrefixType'] ) ) {
-			$home_icon_class_name = "has-home-{$attr['homePrefixType']}-{$attr['homePrefix']}";
-
-			if ( isset( $attr['showHomeLabel'] ) ) {
-				$args['show_home_label'] = $attr['showHomeLabel'];
-			}
+		// If there's a selected content justification, add a class.
+		if ( ! empty( $attributes['justifyContent'] ) ) {
+			$justify_class = sprintf(
+				'is-content-justification-%s',
+				$attributes['justifyContent']
+			);
 		}
 
-		$sep_class_name =
-			! empty( $attr['separator'] ) && ! empty( $attr['separatorType'] )
-			? "has-sep-{$attr['separatorType']}-{$attr['separator']}"
-			: 'has-sep-mask-chevron';
+		// Get the breadcrumb trail.
+		$trail = Trail::render( $trail_args );
 
-		$justify_class_name =
-			empty( $attr['justifyContent'] )
-			? ''
-			: "is-content-justification-{$attr['justifyContent']}";
-
-		$trail = Trail::render( $args );
-
+		// If there is no trail based on the arguments, bail.
 		if ( ! $trail ) {
 			return '';
 		}
 
+		// Passes custom attributes to the block wrapper function and
+		// gets an escaped and formatted wrapper attribute string.
 		$wrapper_attributes = get_block_wrapper_attributes( [
 			'role'       => 'navigation',
 			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
 			'itemprop'   => 'breadcrumb',
-			'class'      => "breadcrumbs {$home_icon_class_name} {$sep_class_name} {$justify_class_name}"
+			'class'      => "breadcrumbs {$home_class} {$sep_class} {$justify_class}"
 		] );
 
+		// And, finally! Returning the breadcrumb trail.
 		return sprintf(
 			'<nav %1$s>%2$s</nav>',
 			$wrapper_attributes,

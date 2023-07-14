@@ -12,7 +12,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class WeekArchive extends Base
+class Week extends Base
 {
 	/**
 	 * Builds the breadcrumbs.

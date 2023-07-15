@@ -1,4 +1,4 @@
-=== X3P0 Breadcrumbs ===
+=== X3P0: Breadcrumbs ===
 
 Contributors: greenshady
 Donate link: https://themehybrid.com/donate

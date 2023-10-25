@@ -1,6 +1,6 @@
 {
-	"apiVersion": 2,
-	"version": "202307151320",
+	"apiVersion": 3,
+	"version": "20231025",
 	"name": "x3p0/breadcrumbs",
 	"title": "X3P0: Breadcrumbs",
 	"category": "widgets",

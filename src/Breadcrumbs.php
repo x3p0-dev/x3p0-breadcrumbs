@@ -278,7 +278,7 @@ class Breadcrumbs implements BreadcrumbsContract
 			$html = $this->option( 'before' ) . $html . $this->option( 'after' );
 		}
 
-		return apply_filters( "x3p0/breadcrumbs/trail", $html, $crumbs, $this );
+		return $html;
 	}
 
 	/**

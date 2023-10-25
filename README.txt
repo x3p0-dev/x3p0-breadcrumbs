@@ -24,11 +24,9 @@ For **block themes**, you can insert it into any template or template part via t
 
 For **classic themes**, you must manually add the PHP code to your theme to call the breadcrumb trail like so:
 
-```
-<?php if ( class_exists( '\X3P0\Breadcrumbs\Trail' ) ) {
-	\X3P0\Breadcrumbs\Trail::display();
-} ?>
-```
+	<?php if ( class_exists( '\X3P0\Breadcrumbs\Trail' ) ) {
+		\X3P0\Breadcrumbs\Trail::display();
+	} ?>
 
 ### How It Works
 

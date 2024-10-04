@@ -55,5 +55,8 @@ class Author extends Base
 
 		// Add author crumb.
 		$this->breadcrumbs->crumb( 'Author', [ 'user' => $user ] );
+
+		// Build paged crumbs.
+		$this->breadcrumbs->build( 'Paged' );
 	}
 }

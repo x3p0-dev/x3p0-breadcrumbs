@@ -49,32 +49,26 @@ class Helpers
 	 */
 	public static function getQueryBlockPage(): int
 	{
-		// Quick check for `query-page`.
-		// False-positive for nonce.
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if (isset($_GET['query-page'])) {
-			return absint(wp_unslash($_GET['query-page']));
-		}
-		// phpcs:enable WordPress.Security.NonceVerification.Recommended
-
 		// Get the URL query for the requested URI.
-		$url_query = parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_QUERY);
+		$request = isset($_SERVER['REQUEST_URI'])
+			? esc_url_raw(wp_unslash($_SERVER['REQUEST_URI']))
+			: '';
+
+		$query = wp_parse_url($request, PHP_URL_QUERY);
 
 		// Bail early if this is not a paginated page.
-		if (! $url_query || ! str_contains($url_query, 'page=')) {
+		if (
+			! $query
+			|| ! str_contains($query, 'query-')
+			|| ! str_contains($query, 'page=')
+		) {
 			return 0;
 		}
 
-		// Queries are based on a specific ID, and there's no surefire
-		// way to know what the query ID might be. So, we're checking
-		// the URL query for the page here.
-		preg_match("#query-[0-9]\d*-page=([0-9]\d*)#i", $url_query, $matches);
+		// Checks for `?query-page={x}` and `query-{x}-page={y}`.
+		preg_match('#query-([0-9]\d*-)?page=([0-9]\d*)#i', $query, $matches);
 
-		if (isset($matches[0], $matches[1])) {
-			return absint($matches[1]);
-		}
-
-		return 0;
+		return isset($matches[2]) ? absint($matches[2]) : 0;
 	}
 
 	/**
@@ -84,8 +78,8 @@ class Helpers
 	 *
 	 * @since 1.0.0
 	 */
-	 public static function getPostTypesBySlug(string $slug): array
-	 {
+	public static function getPostTypesBySlug(string $slug): array
+	{
 		$return = [];
 
 		$post_types = get_post_types([], 'objects');

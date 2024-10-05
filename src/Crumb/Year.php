@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Year crumb class.
  *
@@ -31,9 +32,9 @@ class Year extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'archive_year' ),
+			$this->breadcrumbs->label('archive_year'),
 			get_the_time(
-				esc_html_x( 'Y', 'yearly archives date format', 'x3p0-breadcrumbs' ),
+				esc_html_x('Y', 'yearly archives date format', 'x3p0-breadcrumbs'),
 				$this->post
 			)
 		);
@@ -46,6 +47,6 @@ class Year extends Base
 	 */
 	public function url(): string
 	{
-		return get_year_link( get_the_time( 'Y', $this->post ) );
+		return get_year_link(get_the_time('Y', $this->post));
 	}
 }

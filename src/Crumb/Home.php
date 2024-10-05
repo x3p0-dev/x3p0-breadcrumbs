@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Home crumb class.
  *
@@ -21,9 +22,9 @@ class Home extends Base
 	 */
 	public function label(): string
 	{
-		$network = $this->breadcrumbs->option( 'network' ) && ! is_main_site();
+		$network = $this->breadcrumbs->option('network') && ! is_main_site();
 
-		return $network ? get_bloginfo( 'name' ) : $this->breadcrumbs->label( 'home' );
+		return $network ? get_bloginfo('name') : $this->breadcrumbs->label('home');
 	}
 
 	/**
@@ -33,7 +34,7 @@ class Home extends Base
 	 */
 	public function url(): string
 	{
-		return user_trailingslashit( home_url() );
+		return user_trailingslashit(home_url());
 	}
 
 	/**
@@ -43,8 +44,8 @@ class Home extends Base
 	 */
 	public function visuallyHidden(): bool
 	{
-		$network = $this->breadcrumbs->option( 'network' ) && ! is_main_site();
+		$network = $this->breadcrumbs->option('network') && ! is_main_site();
 
-		return $network ? false : ! $this->breadcrumbs->option( 'show_home_label' );
+		return $network ? false : ! $this->breadcrumbs->option('show_home_label');
 	}
 }

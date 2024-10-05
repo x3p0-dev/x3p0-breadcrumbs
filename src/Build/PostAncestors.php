@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post ancestors build class.
  *
@@ -35,24 +36,23 @@ class PostAncestors extends Base
 		$post_id = $post->post_parent;
 		$parents = [];
 
-		while ( $post_id ) {
-
-			$show_on_front = get_option( 'show_on_front' );
-			$page_on_front = get_option( 'page_on_front' );
+		while ($post_id) {
+			$show_on_front = get_option('show_on_front');
+			$page_on_front = get_option('page_on_front');
 
 			// If we hit a post that's set as the front page, bail.
-			if ( 'posts' !== $show_on_front && $post_id === $page_on_front ) {
+			if ('posts' !== $show_on_front && $post_id === $page_on_front) {
 				break;
 			}
 
 			// Get the parent post.
-			$post = get_post( $post_id );
+			$post = get_post($post_id);
 
 			// Add the formatted post item to the array of parents.
 			$parents[] = $post;
 
 			// If there's no longer a post parent, break out of the loop.
-			if ( 0 >= $post->post_parent ) {
+			if (0 >= $post->post_parent) {
 				break;
 			}
 
@@ -61,24 +61,20 @@ class PostAncestors extends Base
 		}
 
 		// Get the post hierarchy based off the final parent post.
-		$this->breadcrumbs->build( 'PostHierarchy', [ 'post' => $post ] );
+		$this->breadcrumbs->build('PostHierarchy', [ 'post' => $post ]);
 
 		// Display terms for specific post type taxonomy if requested.
-		if ( $this->breadcrumbs->postTaxonomy( $post->post_type ) ) {
-
-			$this->breadcrumbs->build( 'PostTerms', [
+		if ($this->breadcrumbs->postTaxonomy($post->post_type)) {
+			$this->breadcrumbs->build('PostTerms', [
 				'post'     => $post,
-				'taxonomy' => $this->breadcrumbs->postTaxonomy( $post->post_type )
-			] );
+				'taxonomy' => $this->breadcrumbs->postTaxonomy($post->post_type)
+			]);
 		}
 
-		if ( $parents ) {
-
-			array_map( function( $parent ) {
-
-				$this->breadcrumbs->crumb( 'Post', [ 'post' => $parent ] );
-
-			}, array_reverse( $parents ) );
+		if ($parents) {
+			array_map(function ($parent) {
+				$this->breadcrumbs->crumb('Post', [ 'post' => $parent ]);
+			}, array_reverse($parents));
 		}
 	}
 }

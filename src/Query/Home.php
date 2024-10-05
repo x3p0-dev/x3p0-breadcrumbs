@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Home query class.
  *
@@ -22,7 +23,7 @@ class Home extends Base
 	public function make(): void
 	{
 		is_front_page()
-			? $this->breadcrumbs->query( 'FrontPage' )
-			: $this->breadcrumbs->query( 'Singular' );
+			? $this->breadcrumbs->query('FrontPage')
+			: $this->breadcrumbs->query('Singular');
 	}
 }

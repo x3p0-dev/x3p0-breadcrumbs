@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Rewrite front build class.
  *
@@ -27,11 +28,10 @@ class RewriteFront extends Base
 	{
 		global $wp_rewrite;
 
-		if ( $wp_rewrite->front ) {
-
-			$this->breadcrumbs->build( 'Path', [
+		if ($wp_rewrite->front) {
+			$this->breadcrumbs->build('Path', [
 				'path' => $wp_rewrite->front
-			] );
+			]);
 		}
 	}
 }

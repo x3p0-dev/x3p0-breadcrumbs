@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Archive crumb class.
  *
@@ -21,6 +22,6 @@ class Archive extends Base
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label( 'archives' );
+		return $this->breadcrumbs->label('archives');
 	}
 }

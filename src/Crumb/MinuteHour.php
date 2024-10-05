@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Minute + Hour crumb class.
  *
@@ -31,9 +32,9 @@ class MinuteHour extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'archive_minute_hour' ),
+			$this->breadcrumbs->label('archive_minute_hour'),
 			get_the_time(
-				esc_html_x( 'g:i a', 'minute and hour archives time format', 'x3p0-breadcrumbs' ),
+				esc_html_x('g:i a', 'minute and hour archives time format', 'x3p0-breadcrumbs'),
 				$this->post
 			)
 		);

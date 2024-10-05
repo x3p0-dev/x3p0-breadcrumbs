@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Search query class.
  *
@@ -22,18 +23,18 @@ class Search extends Base
 	public function make(): void
 	{
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build rewrite front crumbs.
-		$this->breadcrumbs->build( 'RewriteFront' );
+		$this->breadcrumbs->build('RewriteFront');
 
 		// Add search crumb.
-		$this->breadcrumbs->crumb( 'Search' );
+		$this->breadcrumbs->crumb('Search');
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

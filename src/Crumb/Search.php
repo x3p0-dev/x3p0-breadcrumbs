@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Search crumb class.
  *
@@ -21,7 +22,7 @@ class Search extends Base
 	 */
 	public function label(): string
 	{
-		return sprintf( $this->breadcrumbs->label( 'search' ), get_search_query() );
+		return sprintf($this->breadcrumbs->label('search'), get_search_query());
 	}
 
 	/**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Plugin Name:       X3P0: Breadcrumbs
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -21,4 +22,4 @@ Autoload::register();
 require_once 'src/functions-helpers.php';
 
 # Bootstrap the plugin.
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\plugin', PHP_INT_MIN );
+add_action('plugins_loaded', __NAMESPACE__ . '\\plugin', PHP_INT_MIN);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Singular query class.
  *
@@ -33,18 +34,18 @@ class Singular extends Base
 		$post = $this->post ?: get_queried_object();
 
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build post crumbs.
-		$this->breadcrumbs->build( 'Post', [ 'post' => $post ] );
+		$this->breadcrumbs->build('Post', [ 'post' => $post ]);
 
 		// Add post crumb.
-		$this->breadcrumbs->crumb( 'Post', [ 'post' => $post ] );
+		$this->breadcrumbs->crumb('Post', [ 'post' => $post ]);
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

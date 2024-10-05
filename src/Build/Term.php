@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Term build class.
  *
@@ -32,28 +33,27 @@ class Term extends Base
 	 */
 	public function make(): void
 	{
-		$taxonomy       = get_taxonomy( $this->term->taxonomy );
+		$taxonomy       = get_taxonomy($this->term->taxonomy);
 		$done_post_type = false;
 
 		// Will either be `false` or an array.
 		$rewrite = $taxonomy->rewrite;
 
 		// Build rewrite front crumbs if taxonomy uses it.
-		if ( $rewrite && $rewrite['with_front'] ) {
-			$this->breadcrumbs->build( 'RewriteFront' );
+		if ($rewrite && $rewrite['with_front']) {
+			$this->breadcrumbs->build('RewriteFront');
 		}
 
 		// Build crumbs based on the rewrite slug.
-		if ( $rewrite && $rewrite['slug'] ) {
-
-			$path = trim( $rewrite['slug'], '/' );
+		if ($rewrite && $rewrite['slug']) {
+			$path = trim($rewrite['slug'], '/');
 
 			// Build path crumbs.
-			$this->breadcrumbs->build( 'Path', [ 'path' => $path ] );
+			$this->breadcrumbs->build('Path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
-			foreach ( $this->breadcrumbs->all() as $crumb ) {
-				if ( $crumb instanceof PostType ) {
+			foreach ($this->breadcrumbs->all() as $crumb) {
+				if ($crumb instanceof PostType) {
 					$done_post_type = true;
 					break;
 				}
@@ -61,16 +61,15 @@ class Term extends Base
 		}
 
 		// If the taxonomy has a single post type.
-		if ( ! $done_post_type && 1 === count( $taxonomy->object_type ) ) {
-			$this->breadcrumbs->build( 'PostType', [
-				'post_type' => get_post_type_object( $taxonomy->object_type[0] )
-			] );
+		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
+			$this->breadcrumbs->build('PostType', [
+				'post_type' => get_post_type_object($taxonomy->object_type[0])
+			]);
 		}
 
 		// If the taxonomy is hierarchical, list the parent terms.
-		if ( is_taxonomy_hierarchical( $taxonomy->name ) && $this->term->parent ) {
-
-			$this->breadcrumbs->build( 'TermAncestors', [ 'term' => $this->term ] );
+		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
+			$this->breadcrumbs->build('TermAncestors', [ 'term' => $this->term ]);
 		}
 	}
 }

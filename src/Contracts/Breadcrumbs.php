@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Breadcrumbs interface.
  *
@@ -48,7 +49,7 @@ interface Breadcrumbs
 	 *
 	 * @since 1.0.0
 	 */
-	public function query( string $type, array $data = [] ): void;
+	public function query(string $type, array $data = []): void;
 
 	/**
 	 * Creates a new `\X3P0\Breadcrumbs\Contracts\Build` object and runs
@@ -56,7 +57,7 @@ interface Breadcrumbs
 	 *
 	 * @since 1.0.0
 	 */
-	public function build( string $type, array $data = [] ): void;
+	public function build(string $type, array $data = []): void;
 
 	/**
 	 * Creates a new `\X3P0\Breadcrumbs\Contracts\Crumb` object and adds
@@ -64,7 +65,7 @@ interface Breadcrumbs
 	 *
 	 * @since 1.0.0
 	 */
-	public function crumb( string $type, array $data = [] ): void;
+	public function crumb(string $type, array $data = []): void;
 
 	/**
 	 * Returns a specific option or `false` if the option doesn't exist.
@@ -72,19 +73,19 @@ interface Breadcrumbs
 	 * @since 1.0.0
 	 * @return mixed
 	 */
-	public function option( string $name );
+	public function option(string $name);
 
 	/**
 	 * Returns a specific label or an empty string if it doesn't exist.
 	 *
 	 * @since 1.0.0
 	 */
-	public function label( string $name ): string;
+	public function label(string $name): string;
 
 	/**
 	 * Returns a specific post taxonomy or an empty string if one isn't set.
 	 *
 	 * @since 1.0.0
 	 */
-	public function postTaxonomy( string $post_type ): string;
+	public function postTaxonomy(string $post_type): string;
 }

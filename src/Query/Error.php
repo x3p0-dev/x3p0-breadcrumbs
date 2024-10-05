@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Error query class.
  *
@@ -22,12 +23,12 @@ class Error extends Base
 	public function make(): void
 	{
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Add 404 crumb.
-		$this->breadcrumbs->crumb( 'Error' );
+		$this->breadcrumbs->crumb('Error');
 	}
 }

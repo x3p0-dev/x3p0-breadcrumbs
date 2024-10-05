@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Network crumb class.
  *
@@ -21,7 +22,7 @@ class Network extends Base
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label( 'home' );
+		return $this->breadcrumbs->label('home');
 	}
 
 	/**
@@ -41,6 +42,6 @@ class Network extends Base
 	 */
 	public function visuallyHidden(): bool
 	{
-		return ! $this->breadcrumbs->option( 'show_home_label' );
+		return ! $this->breadcrumbs->option('show_home_label');
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Monthy crumb class.
  *
@@ -31,9 +32,9 @@ class Month extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'archive_month' ),
+			$this->breadcrumbs->label('archive_month'),
 			get_the_time(
-				esc_html_x( 'F', 'monthly archives date format', 'x3p0-breadcrumbs' ),
+				esc_html_x('F', 'monthly archives date format', 'x3p0-breadcrumbs'),
 				$this->post
 			)
 		);
@@ -47,8 +48,8 @@ class Month extends Base
 	public function url(): string
 	{
 		return get_month_link(
-			get_the_time( 'Y', $this->post ),
-			get_the_time( 'm', $this->post )
+			get_the_time('Y', $this->post),
+			get_the_time('m', $this->post)
 		);
 	}
 }

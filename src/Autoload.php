@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Autoloader.
  *
@@ -19,7 +20,7 @@ class Autoload
 	 */
 	public static function register(): bool
 	{
-		return spl_autoload_register( [ __CLASS__, 'autoload' ], true, true );
+		return spl_autoload_register([ __CLASS__, 'autoload' ], true, true);
 	}
 
 	/**
@@ -27,20 +28,20 @@ class Autoload
 	 *
 	 * @since 1.0.0
 	 */
-	public static function autoload( string $class ): void
+	public static function autoload(string $class): void
 	{
 		// Bail if the class is not in our namespace.
-		if ( 0 !== strpos( $class, __NAMESPACE__ ) ) {
+		if (0 !== strpos($class, __NAMESPACE__)) {
 			return;
 		}
 
-		$filename = __DIR__ .  sprintf( '/%s.php', str_replace(
+		$filename = __DIR__ .  sprintf('/%s.php', str_replace(
 			[ __NAMESPACE__ . '\\', '\\' ],
 			[ '', DIRECTORY_SEPARATOR ],
 			$class
-		) );
+		));
 
-		if ( file_exists( $filename ) ) {
+		if (file_exists($filename)) {
 			require_once $filename;
 		}
 	}

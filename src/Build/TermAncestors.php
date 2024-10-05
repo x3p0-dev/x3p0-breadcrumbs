@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Term ancestors build class.
  *
@@ -35,10 +36,9 @@ class TermAncestors extends Base
 		$taxonomy = $this->term->taxonomy;
 		$parents  = [];
 
-		while ( $term_id ) {
-
+		while ($term_id) {
 			// Get the parent term.
-			$term = get_term( $term_id, $taxonomy );
+			$term = get_term($term_id, $taxonomy);
 
 			// Add the term link to the array of parent terms.
 			$parents[] = $term;
@@ -49,13 +49,10 @@ class TermAncestors extends Base
 
 		// If we have parent terms, reverse the array to put them in the
 		// proper order for the trail.
-		if ( $parents ) {
-
-			array_map( function( $parent ) {
-
-				$this->breadcrumbs->crumb( 'Term', [ 'term' => $parent ] );
-
-			}, array_reverse( $parents ) );
+		if ($parents) {
+			array_map(function ($parent) {
+				$this->breadcrumbs->crumb('Term', [ 'term' => $parent ]);
+			}, array_reverse($parents));
 		}
 	}
 }

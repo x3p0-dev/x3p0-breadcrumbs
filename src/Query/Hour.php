@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Hour query class.
  *
@@ -22,18 +23,18 @@ class Hour extends Base
 	public function make(): void
 	{
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build rewrite front crumbs.
-		$this->breadcrumbs->build( 'RewriteFront' );
+		$this->breadcrumbs->build('RewriteFront');
 
 		// Add hour crumb.
-		$this->breadcrumbs->crumb( 'Hour' );
+		$this->breadcrumbs->crumb('Hour');
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

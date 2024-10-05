@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Day query class.
  *
@@ -22,20 +23,20 @@ class Day extends Base
 	public function make(): void
 	{
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build rewrite front crumbs.
-		$this->breadcrumbs->build( 'RewriteFront' );
+		$this->breadcrumbs->build('RewriteFront');
 
 		// Add year, month, and day crumbs.
-		$this->breadcrumbs->crumb( 'Year' );
-		$this->breadcrumbs->crumb( 'Month' );
-		$this->breadcrumbs->crumb( 'Day' );
+		$this->breadcrumbs->crumb('Year');
+		$this->breadcrumbs->crumb('Month');
+		$this->breadcrumbs->crumb('Day');
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

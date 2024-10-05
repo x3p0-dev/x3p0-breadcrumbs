@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Front page query class.
  *
@@ -23,16 +24,15 @@ class FrontPage extends Base
 	 */
 	public function make(): void
 	{
-		if ( $this->breadcrumbs->option( 'show_on_front' ) || Helpers::isPagedView() ) {
-
+		if ($this->breadcrumbs->option('show_on_front') || Helpers::isPagedView()) {
 			// Build network crumbs.
-			$this->breadcrumbs->build( 'Network' );
+			$this->breadcrumbs->build('Network');
 
 			// Add site home crumb.
-			$this->breadcrumbs->crumb( 'Home' );
+			$this->breadcrumbs->crumb('Home');
 
 			// Build paged crumbs.
-			$this->breadcrumbs->build( 'Paged' );
+			$this->breadcrumbs->build('Paged');
 		}
 	}
 }

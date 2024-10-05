@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Paged Query Block crumb class.
  *
@@ -25,8 +26,8 @@ class PagedQueryBlock extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'paged' ),
-			number_format_i18n( absint( Helpers::getQueryBlockPage() ) )
+			$this->breadcrumbs->label('paged'),
+			number_format_i18n(absint(Helpers::getQueryBlockPage()))
 		);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Week crumb class.
  *
@@ -22,9 +23,9 @@ class Week extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'archive_week' ),
+			$this->breadcrumbs->label('archive_week'),
 			get_the_time(
-				esc_html_x( 'W', 'weekly archives date format', 'x3p0-breadcrumbs' )
+				esc_html_x('W', 'weekly archives date format', 'x3p0-breadcrumbs')
 			)
 		);
 	}
@@ -36,9 +37,9 @@ class Week extends Base
 	 */
 	public function url(): string
 	{
-		return add_query_arg( [
-			'm' => get_the_time( 'Y' ),
-			'w' => get_the_time( 'W' )
-		], user_trailingslashit( home_url() ) );
+		return add_query_arg([
+			'm' => get_the_time('Y'),
+			'w' => get_the_time('W')
+		], user_trailingslashit(home_url()));
 	}
 }

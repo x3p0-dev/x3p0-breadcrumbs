@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Error crumb class.
  *
@@ -21,6 +22,6 @@ class Error extends Base
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label( 'error_404' );
+		return $this->breadcrumbs->label('error_404');
 	}
 }

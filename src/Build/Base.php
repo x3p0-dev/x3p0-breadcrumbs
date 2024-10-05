@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Build class.
  *
@@ -34,10 +35,10 @@ abstract class Base implements Build
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] )
+	public function __construct(Breadcrumbs $breadcrumbs, array $data = [])
 	{
-		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
-			if ( isset( $data[ $key ] ) ) {
+		foreach (array_keys(get_object_vars($this)) as $key) {
+			if (isset($data[ $key ])) {
 				$this->$key = $data[ $key ];
 			}
 		}

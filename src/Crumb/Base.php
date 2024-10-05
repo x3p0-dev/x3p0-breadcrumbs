@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Crumb class.
  *
@@ -34,10 +35,10 @@ abstract class Base implements Crumb
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct( Breadcrumbs $breadcrumbs, array $data = [] )
+	public function __construct(Breadcrumbs $breadcrumbs, array $data = [])
 	{
-		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
-			if ( isset( $data[ $key ] ) ) {
+		foreach (array_keys(get_object_vars($this)) as $key) {
+			if (isset($data[ $key ])) {
 				$this->$key = $data[ $key ];
 			}
 		}
@@ -54,12 +55,12 @@ abstract class Base implements Crumb
 	 */
 	public function type(): string
 	{
-		$class = explode( '\\', get_class( $this ) );
-		$class = array_pop( $class );
+		$class = explode('\\', get_class($this));
+		$class = array_pop($class);
 
-		$pascal = preg_split( '/((?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z]))/', $class, -1, PREG_SPLIT_NO_EMPTY );
+		$pascal = preg_split('/((?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z]))/', $class, -1, PREG_SPLIT_NO_EMPTY);
 
-		return strtolower( join( '-', $pascal ) );
+		return strtolower(join('-', $pascal));
 	}
 
 	/**

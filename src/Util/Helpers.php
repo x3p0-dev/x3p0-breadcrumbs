@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Helpers class.
  *
@@ -23,9 +24,9 @@ class Helpers
 	public static function isPagedView(): bool
 	{
 		return is_paged()
-		       || 1 < absint( get_query_var( 'page' ) )
-		       || 1 < absint( get_query_var( 'cpage' ) )
-		       || static::isPagedQueryBlock();
+			|| 1 < absint(get_query_var('page'))
+			|| 1 < absint(get_query_var('cpage'))
+			|| static::isPagedQueryBlock();
 	}
 
 	/**
@@ -49,25 +50,28 @@ class Helpers
 	public static function getQueryBlockPage(): int
 	{
 		// Quick check for `query-page`.
-		if ( isset( $_GET['query-page'] ) ) {
-			return absint( wp_unslash( $_GET['query-page'] ) );
+		// False-positive for nonce.
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if (isset($_GET['query-page'])) {
+			return absint(wp_unslash($_GET['query-page']));
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		// Get the URL query for the requested URI.
-		$url_query = parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_QUERY );
+		$url_query = parse_url(wp_unslash($_SERVER['REQUEST_URI']), PHP_URL_QUERY);
 
 		// Bail early if this is not a paginated page.
-		if ( ! $url_query || ! str_contains( $url_query, 'page=' ) ) {
+		if (! $url_query || ! str_contains($url_query, 'page=')) {
 			return 0;
 		}
 
 		// Queries are based on a specific ID, and there's no surefire
 		// way to know what the query ID might be. So, we're checking
 		// the URL query for the page here.
-		preg_match( "#query-[0-9]\d*-page=([0-9]\d*)#i", $url_query, $matches );
+		preg_match("#query-[0-9]\d*-page=([0-9]\d*)#i", $url_query, $matches);
 
-		if ( isset( $matches[0], $matches[1] ) ) {
-			return absint( $matches[1] );
+		if (isset($matches[0], $matches[1])) {
+			return absint($matches[1]);
 		}
 
 		return 0;
@@ -80,16 +84,14 @@ class Helpers
 	 *
 	 * @since 1.0.0
 	 */
-	 public static function getPostTypesBySlug( string $slug ): array
+	 public static function getPostTypesBySlug(string $slug): array
 	 {
 		$return = [];
 
-		$post_types = get_post_types( [], 'objects' );
+		$post_types = get_post_types([], 'objects');
 
-		foreach ( $post_types as $type ) {
-
-			if ( $slug === $type->has_archive || ( true === $type->has_archive && $slug === $type->rewrite['slug'] ) ) {
-
+		foreach ($post_types as $type) {
+			if ($slug === $type->has_archive || (true === $type->has_archive && $slug === $type->rewrite['slug'])) {
 				$return[] = $type;
 			}
 		}

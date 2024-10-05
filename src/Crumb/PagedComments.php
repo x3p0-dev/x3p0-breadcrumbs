@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Paged comments crumb class.
  *
@@ -22,8 +23,8 @@ class PagedComments extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'paged_comments' ),
-			number_format_i18n( absint( get_query_var( 'cpage' ) ) )
+			$this->breadcrumbs->label('paged_comments'),
+			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Taxonomy query class.
  *
@@ -33,18 +34,18 @@ class Tax extends Base
 		$term = $this->term ?: get_queried_object();
 
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build term crumbs.
-		$this->breadcrumbs->build( 'Term', [ 'term' => $term ] );
+		$this->breadcrumbs->build('Term', [ 'term' => $term ]);
 
 		// Add term crumb.
-		$this->breadcrumbs->crumb( 'Term', [ 'term' => $term ] );
+		$this->breadcrumbs->crumb('Term', [ 'term' => $term ]);
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Paged singular crumb class.
  *
@@ -22,8 +23,8 @@ class PagedSingular extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'paged' ),
-			number_format_i18n( absint( get_query_var( 'page' ) ) )
+			$this->breadcrumbs->label('paged'),
+			number_format_i18n(absint(get_query_var('page')))
 		);
 	}
 }

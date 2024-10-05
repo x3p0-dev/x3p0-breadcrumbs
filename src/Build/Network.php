@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Network build class.
  *
@@ -21,9 +22,8 @@ class Network extends Base
 	 */
 	public function make(): void
 	{
-		if ( is_multisite() && $this->breadcrumbs->option( 'network' ) && ! is_main_site() ) {
-
-			$this->breadcrumbs->crumb( 'Network' );
+		if (is_multisite() && $this->breadcrumbs->option('network') && ! is_main_site()) {
+			$this->breadcrumbs->crumb('Network');
 		}
 	}
 }

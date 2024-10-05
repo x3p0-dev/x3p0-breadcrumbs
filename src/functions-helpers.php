@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The helpers functions file houses any necessary PHP functions for the plugin.
  *
@@ -23,22 +24,21 @@ use X3P0\Breadcrumbs\Contracts\Bootable;
  * @return mixed
  * @todo   Add `mixed` return type declaration with PHP 8-only support.
  */
-function plugin( string $component = '' )
+function plugin(string $component = '')
 {
 	static $bindings = [];
 
 	// If there are no bound components, register and boot them.
-	if ( [] === $bindings ) {
-
+	if ([] === $bindings) {
 		// Bind instances of the plugin's component classes that need to
 		// be booted when the plugin launches.
 		$bindings = [
-			'block' => new Block( untrailingslashit( __DIR__ . '/..' ) )
+			'block' => new Block(untrailingslashit(__DIR__ . '/..'))
 		];
 
 		// Boot each of the components.
-		foreach ( $bindings as $binding ) {
-			if ( $binding instanceof Bootable ) {
+		foreach ($bindings as $binding) {
+			if ($binding instanceof Bootable) {
 				$binding->boot();
 			}
 		}

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Month query class.
  *
@@ -22,19 +23,19 @@ class Month extends Base
 	public function make(): void
 	{
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build rewrite front crumbs.
-		$this->breadcrumbs->build( 'RewriteFront' );
+		$this->breadcrumbs->build('RewriteFront');
 
 		// Add year and month crumbs.
-		$this->breadcrumbs->crumb( 'Year' );
-		$this->breadcrumbs->crumb( 'Month' );
+		$this->breadcrumbs->crumb('Year');
+		$this->breadcrumbs->crumb('Month');
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

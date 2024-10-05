@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Day crumb class.
  *
@@ -31,9 +32,9 @@ class Day extends Base
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label( 'archive_day' ),
+			$this->breadcrumbs->label('archive_day'),
 			get_the_time(
-				esc_html_x( 'j', 'daily archives date format', 'x3p0-breadcrumbs' ),
+				esc_html_x('j', 'daily archives date format', 'x3p0-breadcrumbs'),
 				$this->post
 			)
 		);
@@ -47,9 +48,9 @@ class Day extends Base
 	public function url(): string
 	{
 		return get_day_link(
-			get_the_time( 'Y', $this->post ),
-			get_the_time( 'm', $this->post ),
-			get_the_time( 'd', $this->post )
+			get_the_time('Y', $this->post),
+			get_the_time('m', $this->post),
+			get_the_time('d', $this->post)
 		);
 	}
 }

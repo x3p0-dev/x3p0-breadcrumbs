@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post type archive query class.
  *
@@ -43,30 +44,29 @@ class PostTypeArchive extends Base
 	 */
 	public function make(): void
 	{
-		$type = $this->post_type ?: get_post_type_object( get_query_var( 'post_type' ) );
+		$type = $this->post_type ?: get_post_type_object(get_query_var('post_type'));
 
 		$done_post_type = false;
 
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
-		if ( false !== $type->rewrite ) {
-
+		if (false !== $type->rewrite) {
 			// Build rewrite front crumbs if post type uses it.
-			if ( $type->rewrite['with_front'] ) {
-				$this->breadcrumbs->build( 'RewriteFront' );
+			if ($type->rewrite['with_front']) {
+				$this->breadcrumbs->build('RewriteFront');
 			}
 
 			// If there's a rewrite slug, check for parents.
-			if ( ! empty( $type->rewrite['slug'] ) ) {
-				$this->breadcrumbs->build( 'Path', [ 'path' => $type->rewrite['slug'] ] );
+			if (! empty($type->rewrite['slug'])) {
+				$this->breadcrumbs->build('Path', [ 'path' => $type->rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
-				foreach ( $this->breadcrumbs->all() as $crumb ) {
-					if ( $crumb instanceof PostType ) {
+				foreach ($this->breadcrumbs->all() as $crumb) {
+					if ($crumb instanceof PostType) {
 						$done_post_type = true;
 						break;
 					}
@@ -75,27 +75,25 @@ class PostTypeArchive extends Base
 		}
 
 		// Add post type crumb.
-		if ( ! $done_post_type ) {
-			$this->breadcrumbs->crumb( 'PostType', [ 'post_type' => $type ] );
+		if (! $done_post_type) {
+			$this->breadcrumbs->crumb('PostType', [ 'post_type' => $type ]);
 		}
 
 		// If viewing a search page for the post type archive.
-		if ( is_search() ) {
-
+		if (is_search()) {
 			// Add search crumb.
-			$this->breadcrumbs->crumb( 'Search' );
+			$this->breadcrumbs->crumb('Search');
 		}
 
 		// If viewing a post type archive by author.
-		if ( is_author() ) {
-
-			$user = $this->user ?: new WP_User( get_query_var( 'author' ) );
+		if (is_author()) {
+			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->breadcrumbs->crumb( 'Author', [ 'user' => $user ] );
+			$this->breadcrumbs->crumb('Author', [ 'user' => $user ]);
 		}
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

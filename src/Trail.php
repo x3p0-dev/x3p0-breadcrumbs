@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Trail is a static helper class that works as an easy-to-use wrapper for the
  * `Breadcrumbs` class.
@@ -20,9 +21,9 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function breadcrumbs( array $args = [] ): BreadcrumbsContract
+	public static function breadcrumbs(array $args = []): BreadcrumbsContract
 	{
-		return new Breadcrumbs( $args );
+		return new Breadcrumbs($args);
 	}
 
 	/**
@@ -30,9 +31,9 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function make( array $args = [] ): BreadcrumbsContract
+	public static function make(array $args = []): BreadcrumbsContract
 	{
-		return static::breadcrumbs( $args )->make();
+		return static::breadcrumbs($args)->make();
 	}
 
 	/**
@@ -40,9 +41,9 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function all( array $args = [] ): array
+	public static function all(array $args = []): array
 	{
-		return static::make( $args )->all();
+		return static::make($args)->all();
 	}
 
 	/**
@@ -50,9 +51,9 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function display( array $args = [] ): void
+	public static function display(array $args = []): void
 	{
-		static::make( $args )->display();
+		static::make($args)->display();
 	}
 
 	/**
@@ -60,8 +61,8 @@ class Trail
 	 *
 	 * @since 1.0.0
 	 */
-	public static function render( array $args = [] ): string
+	public static function render(array $args = []): string
 	{
-		return static::make( $args )->render();
+		return static::make($args)->render();
 	}
 }

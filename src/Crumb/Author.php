@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Author crumb class.
  *
@@ -30,7 +31,7 @@ class Author extends Base
 	 */
 	public function label(): string
 	{
-		return get_the_author_meta( 'display_name', $this->user->ID );
+		return get_the_author_meta('display_name', $this->user->ID);
 	}
 
 	/**
@@ -40,6 +41,6 @@ class Author extends Base
 	 */
 	public function url(): string
 	{
-		return get_author_posts_url( $this->user->ID );
+		return get_author_posts_url($this->user->ID);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post build class.
  *
@@ -32,27 +33,24 @@ class Post extends Base
 	public function make(): void
 	{
 		// If the post has a parent, follow the parent trail.
-		if ( 0 < $this->post->post_parent ) {
-
-			$this->breadcrumbs->build( 'PostAncestors', [
+		if (0 < $this->post->post_parent) {
+			$this->breadcrumbs->build('PostAncestors', [
 				'post' => $this->post
-			] );
+			]);
 
 		// If the post doesn't have a parent, get its hierarchy based off the post type.
 		} else {
-
-			$this->breadcrumbs->build( 'PostHierarchy', [
+			$this->breadcrumbs->build('PostHierarchy', [
 				'post' => $this->post
-			] );
+			]);
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ( $this->breadcrumbs->postTaxonomy( $this->post->post_type ) ) {
-
-			$this->breadcrumbs->build( 'PostTerms', [
+		if ($this->breadcrumbs->postTaxonomy($this->post->post_type)) {
+			$this->breadcrumbs->build('PostTerms', [
 				'post'     => $this->post,
-				'taxonomy' => $this->breadcrumbs->postTaxonomy( $this->post->post_type )
-			] );
+				'taxonomy' => $this->breadcrumbs->postTaxonomy($this->post->post_type)
+			]);
 		}
 	}
 }

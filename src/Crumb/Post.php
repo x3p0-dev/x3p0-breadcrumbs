@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post crumb class.
  *
@@ -32,12 +33,11 @@ class Post extends Base
 	{
 		$post_id = $this->post->ID;
 
-		if ( is_single( $post_id ) || is_page( $post_id ) || is_attachment( $post_id ) ) {
-
-			return single_post_title( '', false );
+		if (is_single($post_id) || is_page($post_id) || is_attachment($post_id)) {
+			return single_post_title('', false);
 		}
 
-		return get_the_title( $this->post->ID );
+		return get_the_title($this->post->ID);
 	}
 
 	/**
@@ -47,6 +47,6 @@ class Post extends Base
 	 */
 	public function url(): string
 	{
-		return get_permalink( $this->post->ID );
+		return get_permalink($this->post->ID);
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Path build class.
  *
@@ -33,62 +34,58 @@ class Path extends Base
 	 */
 	public function make(): void
 	{
-		$path = trim( $this->path, '/' );
+		$path = trim($this->path, '/');
 
 		// If there's no path, return.
-		if ( ! $path ) {
+		if (! $path) {
 			return;
 		}
 
 		// Get parent post by the path.
-		$post = get_page_by_path( $path );
+		$post = get_page_by_path($path);
 
 		// If the path is a post, run the parent crumbs and bail early.
-		if ( $post ) {
-			$this->breadcrumbs->build( 'PostAncestors', [ 'post' => $post ] );
+		if ($post) {
+			$this->breadcrumbs->build('PostAncestors', [ 'post' => $post ]);
 
-			$this->breadcrumbs->crumb( 'Post', [ 'post' => $post ] );
+			$this->breadcrumbs->crumb('Post', [ 'post' => $post ]);
 
 			return;
 		}
 
 		// Split the $path into an array of strings.
-		$matches = explode( '/', $path );
+		$matches = explode('/', $path);
 
 		// If matches are found for the path.
-		if ( $matches ) {
-
+		if ($matches) {
 			// Reverse the array of matches to search for posts in
 			// the proper order.
-			$matches = array_reverse( $matches );
+			$matches = array_reverse($matches);
 
 			// Loop through each of the path matches.
-			foreach ( $matches as $slug ) {
-
+			foreach ($matches as $slug) {
 				// Get the parent post by the given path.
-				$post = get_page_by_path( $slug );
+				$post = get_page_by_path($slug);
 
 				// If a parent post is found, build the crumbs
 				// and break out of the loop.
-				if ( ! empty( $post ) && 0 < $post->ID ) {
-
-					$this->breadcrumbs->build( 'PostAncestors', [
+				if (! empty($post) && 0 < $post->ID) {
+					$this->breadcrumbs->build('PostAncestors', [
 						'post' => $post
-					] );
+					]);
 
-					$this->breadcrumbs->crumb( 'Post', [
+					$this->breadcrumbs->crumb('Post', [
 						'post' => $post
-					] );
+					]);
 
 					break;
 
 				// If the slug matches a post type, let's build
 				// that and break out of the loop.
-				} elseif ( $types = Helpers::getPostTypesBySlug( $slug ) ) {
-
-					$this->breadcrumbs->build( 'PostType', [
+				} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
+					$this->breadcrumbs->build('PostType', [
 						'post_type' => $types[0]
-					] );
+					]);
 
 					break;
 				}

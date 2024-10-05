@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Block class registers and renders the block type on the front end.
  *
@@ -18,16 +19,16 @@ class Block implements Bootable
 	 * Stores the plugin path.
 	 *
 	 * @since 1.0.0
- 	 * @todo  Move this to the constructor with PHP 8-only support.
+	 * @todo  Move this to the constructor with PHP 8-only support.
 	 */
 	protected string $path;
 
-        /**
-         * Sets up object state.
-         *
-         * @since 1.0.0
-         */
-        public function __construct( string $path )
+	/**
+	 * Sets up object state.
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct(string $path)
 	{
 		$this->path = $path;
 	}
@@ -39,7 +40,7 @@ class Block implements Bootable
 	 */
 	public function boot(): void
 	{
-		add_action( 'init', [ $this, 'register' ] );
+		add_action('init', [ $this, 'register' ]);
 	}
 
 	/**
@@ -49,9 +50,9 @@ class Block implements Bootable
 	 */
 	public function register(): void
 	{
-                register_block_type( $this->path . '/public', [
-                        'render_callback' => [ $this, 'render' ]
-                ] );
+		register_block_type($this->path . '/public', [
+			'render_callback' => [ $this, 'render' ]
+		]);
 	}
 
 	/**
@@ -59,11 +60,11 @@ class Block implements Bootable
 	 *
 	 * @since 1.0.0
 	 */
-        public function render( array $attributes ): string
-        {
+	public function render(array $attributes): string
+	{
 		// Arguments to pass to the `Trail` class.
 		$trail_args = [
-			'labels'            => [ 'title' => '' ],
+			'labels'	    => [ 'title' => '' ],
 			'container_tag'     => '',
 			'post_taxonomy'     => [ 'post' => 'category' ],
 			'post_rewrite_tags' => false,
@@ -77,7 +78,7 @@ class Block implements Bootable
 		$justify_class = '';
 
 		// If there is a selected home prefix, define the class.
-		if ( ! empty( $attributes['homePrefix'] ) && ! empty( $attributes['homePrefixType'] ) ) {
+		if (! empty($attributes['homePrefix']) && ! empty($attributes['homePrefixType'])) {
 			$home_class = sprintf(
 				'has-home-%s-%s',
 				$attributes['homePrefixType'],
@@ -91,7 +92,7 @@ class Block implements Bootable
 		}
 
 		// If there's a selected separator, define the class for it.
-		if ( ! empty( $attributes['separator'] ) && ! empty( $attributes['separatorType'] ) ) {
+		if (! empty($attributes['separator']) && ! empty($attributes['separatorType'])) {
 			$sep_class = sprintf(
 				'has-sep-%s-%s',
 				$attributes['separatorType'],
@@ -100,7 +101,7 @@ class Block implements Bootable
 		}
 
 		// If there's a selected content justification, add a class.
-		if ( ! empty( $attributes['justifyContent'] ) ) {
+		if (! empty($attributes['justifyContent'])) {
 			$justify_class = sprintf(
 				'is-content-justification-%s',
 				$attributes['justifyContent']
@@ -108,21 +109,21 @@ class Block implements Bootable
 		}
 
 		// Get the breadcrumb trail.
-		$trail = Trail::render( $trail_args );
+		$trail = Trail::render($trail_args);
 
 		// If there is no trail based on the arguments, bail.
-		if ( ! $trail ) {
+		if (! $trail) {
 			return '';
 		}
 
 		// Passes custom attributes to the block wrapper function and
 		// gets an escaped and formatted wrapper attribute string.
-		$wrapper_attributes = get_block_wrapper_attributes( [
+		$wrapper_attributes = get_block_wrapper_attributes([
 			'role'       => 'navigation',
-			'aria-label' => __( 'Breadcrumbs', 'x3p0-breadcrumbs' ),
+			'aria-label' => __('Breadcrumbs', 'x3p0-breadcrumbs'),
 			'itemprop'   => 'breadcrumb',
 			'class'      => "breadcrumbs {$home_class} {$sep_class} {$justify_class}"
-		] );
+		]);
 
 		// And, finally! Returning the breadcrumb trail.
 		return sprintf(

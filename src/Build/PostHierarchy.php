@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post hierarchy build class.
  *
@@ -34,20 +35,19 @@ class PostHierarchy extends Base
 	public function make(): void
 	{
 		// Get the post type.
-		$type = get_post_type_object( get_post_type( $this->post->ID ) );
+		$type = get_post_type_object(get_post_type($this->post->ID));
 
 		// If this is the 'post' post type, get the rewrite front items,
 		// map the rewrite tags, and bail early.
-		if ( 'post' === $type->name ) {
-
+		if ('post' === $type->name) {
 			// Add $wp_rewrite->front to the trail.
-			$this->breadcrumbs->build( 'RewriteFront' );
+			$this->breadcrumbs->build('RewriteFront');
 
 			// Map the rewrite tags.
-			$this->breadcrumbs->build( 'MapRewriteTags', [
+			$this->breadcrumbs->build('MapRewriteTags', [
 				'post' => $this->post,
-				'path' => get_option( 'permalink_structure' )
-			] );
+				'path' => get_option('permalink_structure')
+			]);
 
 			return;
 		}
@@ -56,21 +56,19 @@ class PostHierarchy extends Base
 		$done_post_type = false;
 
 		// If the post type has rewrite rules.
-		if ( $rewrite ) {
-
+		if ($rewrite) {
 			// Build the rewrite front crumbs.
-			if ( $rewrite['with_front'] ) {
-
-				$this->breadcrumbs->build( 'RewriteFront' );
+			if ($rewrite['with_front']) {
+				$this->breadcrumbs->build('RewriteFront');
 			}
 
 			// If there's a path, check for parents.
-			if ( $rewrite['slug'] ) {
-				$this->breadcrumbs->build( 'Path', [ 'path' => $rewrite['slug'] ] );
+			if ($rewrite['slug']) {
+				$this->breadcrumbs->build('Path', [ 'path' => $rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
-				foreach ( $this->breadcrumbs->all() as $crumb ) {
-					if ( $crumb instanceof PostType ) {
+				foreach ($this->breadcrumbs->all() as $crumb) {
+					if ($crumb instanceof PostType) {
 						$done_post_type = true;
 						break;
 					}
@@ -79,17 +77,16 @@ class PostHierarchy extends Base
 		}
 
 		// Fall back to the post type crumb if not getting from path.
-		if ( ! $done_post_type && $type->has_archive ) {
-			$this->breadcrumbs->build( 'PostType', [ 'post_type' => $type ] );
+		if (! $done_post_type && $type->has_archive) {
+			$this->breadcrumbs->build('PostType', [ 'post_type' => $type ]);
 		}
 
 		// Map the rewrite tags if there's a `%` in the slug.
-		if ( $rewrite && false !== strpos( $rewrite['slug'], '%' ) ) {
-
-			$this->breadcrumbs->build( 'MapRewriteTags', [
+		if ($rewrite && false !== strpos($rewrite['slug'], '%')) {
+			$this->breadcrumbs->build('MapRewriteTags', [
 				'post' => $this->post,
 				'path' => $rewrite['slug']
-			] );
+			]);
 		}
 	}
 }

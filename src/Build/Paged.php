@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Paged build class.
  *
@@ -35,24 +36,20 @@ class Paged extends Base
 	public function make(): void
 	{
 		// If viewing a paged archive-type page.
-		if ( is_paged() ) {
-
-			$this->breadcrumbs->crumb( 'Paged' );
+		if (is_paged()) {
+			$this->breadcrumbs->crumb('Paged');
 
 		// If viewing a paged singular post.
-		} elseif ( is_singular() && 1 < get_query_var( 'page' ) ) {
-
-			$this->breadcrumbs->crumb( 'PagedSingular' );
+		} elseif (is_singular() && 1 < get_query_var('page')) {
+			$this->breadcrumbs->crumb('PagedSingular');
 
 		// If viewing a singular post with paged comments.
-		} elseif ( is_singular() && get_option( 'page_comments' ) && 1 < get_query_var( 'cpage' ) ) {
-
-			$this->breadcrumbs->crumb( 'PagedComments' );
+		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
+			$this->breadcrumbs->crumb('PagedComments');
 
 		// If viewing a paged Query Loop block view.
-		} elseif ( Helpers::isPagedQueryBlock() ) {
-
-			$this->breadcrumbs->crumb( 'PagedQueryBlock' );
+		} elseif (Helpers::isPagedQueryBlock()) {
+			$this->breadcrumbs->crumb('PagedQueryBlock');
 		}
 	}
 }

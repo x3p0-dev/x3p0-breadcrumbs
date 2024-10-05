@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Term crumb class.
  *
@@ -33,9 +34,8 @@ class Term extends Base
 		$tax     = $this->term->taxonomy;
 		$term_id = $this->term->term_id;
 
-		if ( is_tax( $tax, $term_id ) || is_category( $term_id ) || is_tag( $term_id ) ) {
-
-			return single_term_title( '', false );
+		if (is_tax($tax, $term_id) || is_category($term_id) || is_tag($term_id)) {
+			return single_term_title('', false);
 		}
 
 		return $this->term->name;
@@ -48,6 +48,6 @@ class Term extends Base
 	 */
 	public function url(): string
 	{
-		return get_term_link( $this->term, $this->term->taxonomy );
+		return get_term_link($this->term, $this->term->taxonomy);
 	}
 }

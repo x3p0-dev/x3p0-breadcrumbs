@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Post type build class.
  *
@@ -29,35 +30,33 @@ class PostType extends Base
 	 * @since 1.0.0
 	 */
 	public function make(): void
-	{		global $wp_rewrite;
+	{
+		global $wp_rewrite;
 
-		$type = is_string( $this->post_type )
-		        ? get_post_type_object( $this->post_type )
+		$type = is_string($this->post_type)
+			? get_post_type_object($this->post_type)
 			: $this->post_type;
 
-		if ( ! $type ) {
+		if (! $type) {
 			return;
 		}
 
 		// If this the post type is `post`, add the posts page and bail.
-		if ( 'post' === $type->name ) {
-
-			$show_on_front = get_option( 'show_on_front'  );
-			$post_id       = get_option( 'page_for_posts' );
+		if ('post' === $type->name) {
+			$show_on_front = get_option('show_on_front');
+			$post_id       = get_option('page_for_posts');
 
 			// Add post crumb if we have a posts page.
-			if ( 'posts' !== $show_on_front && 0 < $post_id ) {
-
-				$post = get_post( $post_id );
+			if ('posts' !== $show_on_front && 0 < $post_id) {
+				$post = get_post($post_id);
 
 				// If the posts page is the same as the rewrite
 				// front path, we should've already handled that
 				// scenario at this point.
-				if ( trim( $wp_rewrite->front, '/' ) !== $post->post_name ) {
-
-					$this->breadcrumbs->crumb( 'Post', [
+				if (trim($wp_rewrite->front, '/') !== $post->post_name) {
+					$this->breadcrumbs->crumb('Post', [
 						'post' => $post
-					] );
+					]);
 				}
 			}
 
@@ -65,6 +64,6 @@ class PostType extends Base
 		}
 
 		// Add post type crumb.
-		$this->breadcrumbs->crumb( 'PostType', [ 'post_type' => $type ] );
+		$this->breadcrumbs->crumb('PostType', [ 'post_type' => $type ]);
 	}
 }

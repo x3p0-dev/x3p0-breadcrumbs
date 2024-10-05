@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Author query class.
  *
@@ -34,29 +35,28 @@ class Author extends Base
 	{
 		global $wp_rewrite;
 
-		$user = $this->user ?: new WP_User( get_query_var( 'author' ) );
+		$user = $this->user ?: new WP_User(get_query_var('author'));
 
 		// Build network crumbs.
-		$this->breadcrumbs->build( 'Network' );
+		$this->breadcrumbs->build('Network');
 
 		// Add site home crumb.
-		$this->breadcrumbs->crumb( 'Home' );
+		$this->breadcrumbs->crumb('Home');
 
 		// Build rewrite front crumbs.
-		$this->breadcrumbs->build( 'RewriteFront' );
+		$this->breadcrumbs->build('RewriteFront');
 
 		// If $author_base exists, check for parent pages.
-		if ( ! empty( $wp_rewrite->author_base ) ) {
-
-			$this->breadcrumbs->build( 'Path', [
+		if (! empty($wp_rewrite->author_base)) {
+			$this->breadcrumbs->build('Path', [
 				'page' => $wp_rewrite->author_base
-			] );
+			]);
 		}
 
 		// Add author crumb.
-		$this->breadcrumbs->crumb( 'Author', [ 'user' => $user ] );
+		$this->breadcrumbs->crumb('Author', [ 'user' => $user ]);
 
 		// Build paged crumbs.
-		$this->breadcrumbs->build( 'Paged' );
+		$this->breadcrumbs->build('Paged');
 	}
 }

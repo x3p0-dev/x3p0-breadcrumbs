@@ -1,0 +1,45 @@
+{
+	"name": "x3p0-dev/x3p0-breadcrumbs",
+	"type": "wordpress-theme",
+	"license": "GPL-3.0-or-later",
+	"scripts": {
+		"build": [
+			"composer update --no-dev",
+			"composer dump-autoload -o --no-dev"
+		],
+		"dev": [
+			"composer update",
+			"composer dump-autoload"
+		],
+		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
+		"zip": "composer archive --file=x3p0-breadcrumbs"
+	},
+	"require": {
+                "php": ">=7.4"
+	},
+	"require-dev": {
+		"wp-coding-standards/wpcs": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true,
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"archive-dir": "./",
+		"archive-format": "zip"
+	},
+	"archive": {
+		"exclude": [
+			"/vendor"
+		]
+	},
+	"authors": [
+		{
+			"name": "Justin Tadlock",
+			"email": "justintadlock@gmail.com"
+		}
+	]
+}

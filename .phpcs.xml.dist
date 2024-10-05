@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<ruleset name="X3P0">
+
+	<!-- Only check the PHP files. -->
+	<arg name="extensions" value="php"/>
+
+	<!-- Exclude files and folders. -->
+	<exclude-pattern>*/(.ideas|.notes|node_modules|public|vendor)/*</exclude-pattern>
+
+	<!--
+	########################################################################
+	Include relevant WordPress rules. We're not using the entire set because
+	many of them conflict with our preferred coding style.
+	########################################################################
+	-->
+	<rule ref="WordPress.CodeAnalysis"/>
+	<rule ref="WordPress.DateTime"/>
+	<rule ref="WordPress.DB"/>
+	<rule ref="WordPress.PHP"/>
+	<rule ref="WordPress.Security"/>
+
+	<!-- This always recommends `wp_remote_get()` when it shouldn't be used. -->
+	<rule ref="WordPress.WP">
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+	</rule>
+
+	<!--
+	########################################################################
+	Check PHP compatibility.
+	########################################################################
+	-->
+	<rule ref="PHPCompatibilityWP">
+		<!-- Configure PHP version to test. -->
+		<config name="testVersion" value="8.0-"/>
+		<include-pattern>*\.php$</include-pattern>
+	</rule>
+
+	<!--
+	########################################################################
+	Include PSR12 rules.
+	########################################################################
+	-->
+	<rule ref="PSR12">
+		<!-- Tabs forever. -->
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+
+		<!-- Disabling line length checks for long strings. -->
+		<exclude name="Generic.Files.LineLength"/>
+
+		<!-- This is excluded because it catches empty constructors. -->
+		<exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore"/>
+	</rule>
+
+	<!-- Enforce tabbed indentation. -->
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+
+</ruleset>

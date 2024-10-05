@@ -296,6 +296,7 @@ class Breadcrumbs implements BreadcrumbsContract
 	public function make(): BreadcrumbsContract
 	{
 		// Call the query class associated with an object passed in.
+		// phpcs:disable
 		if ($this->option('post')) {
 			$this->query('Singular', [ 'post' => $this->option('post') ]);
 		} elseif ($this->option('post_type')) {
@@ -308,7 +309,6 @@ class Breadcrumbs implements BreadcrumbsContract
 
 		// This may not follow any sort of standards-based code
 		// formatting rules, but you can damn well read it better!
-		// phpcs:disable
 		elseif (is_front_page()) { $this->query('FrontPage'); }
 		elseif (is_home()      ) { $this->query('Home'     ); }
 		elseif (is_singular()  ) { $this->query('Singular' ); }

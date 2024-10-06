@@ -12,7 +12,7 @@ import SeparatorControl from './control-separator';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { CustomSelectControl, PanelBody, ToggleControl } from '@wordpress/components';
 
 import {
 	BlockControls,
@@ -30,12 +30,29 @@ const preventDefault = ( event ) => event.preventDefault();
 // Define allowed justification controls.
 const justifyOptions = [ 'left', 'center', 'right' ];
 
+// Define the markup options.
+const markupOptions = [
+	{
+		key: 'html',
+		name: __('Plain HTML', 'x3p0-breadcrumbs')
+	},
+	{
+		key: 'microdata',
+		name: __('Microdata', 'x3p0-breadcrumbs')
+	},
+	{
+		key: 'rdfa',
+		name: __('RDFa', 'x3p0-breadcrumbs')
+	}
+];
+
 // Exports the breadcrumbs block type edit function.
 export default ( {
 	attributes: {
 		homePrefix,
 		homePrefixType,
 		justifyContent,
+		markup,
 		showHomeLabel,
 		showOnHomepage,
 		showTrailEnd,
@@ -119,6 +136,19 @@ export default ( {
 		/>
 	);
 
+	const markupControl = (
+		<CustomSelectControl
+			label={ __('Markup style', 'x3p0-breadcrumbs' ) }
+			options={ markupOptions }
+			value={ markupOptions.find(
+				(option) => option.key === markup
+			)}
+			onChange={ ({ selectedItem }) => setAttributes({
+				markup: selectedItem.key
+			})}
+		/>
+	);
+
 	const settingsControls = (
 		<InspectorControls group="settings">
 			<PanelBody title={
@@ -126,6 +156,7 @@ export default ( {
 			}>
 				{ showOnHomepageControl }
 				{ showTrailEndControl }
+				{ markupControl }
 			</PanelBody>
 		</InspectorControls>
 	);
@@ -177,15 +208,11 @@ export default ( {
 			<li
 				key={ index }
 				className={ `breadcrumbs__crumb breadcrumbs__crumb--${ crumb.type }` }
-				itemProp="itemListElement"
-				itemScope
-				itemType="https://schema.org/ListItem"
 			>
 				<CrumbContent
 					href={ crumb.link ? '#breadcrumbs-pseudo-link' : null }
 					onClick={ preventDefault }
 					className="breadcrumbs__crumb-content"
-					itemProp="item"
 				>
 					<span
 						className={ `breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
@@ -194,14 +221,13 @@ export default ( {
 						{ crumb.label }
 					</span>
 				</CrumbContent>
-				<meta itemProp="position" content={ index + 1 } />
 			</li>
 		)
 	};
 
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
-		<ol className="breadcrumbs__trail" itemScope="" itemType="https://schema.org/BreadcrumbList">
+		<ol className="breadcrumbs__trail">
 			{ crumbs.map( ( item, index ) => crumb( item, index ) ) }
 		</ol>
 	);

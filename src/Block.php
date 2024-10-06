@@ -97,8 +97,15 @@ class Block implements Bootable
 		// Build the breadcrumb trail.
 		$environment = new Environment();
 		$breadcrumbs = new Breadcrumbs($environment, $breadcrumb_options);
-		$markup      = new Microdata($breadcrumbs, $markup_options);
-		$trail       = $markup->render();
+
+		// Get the breadcrumb trail markup.
+		$markup = match ($attributes['markup'] ?? 'microdata') {
+			'microdata' => new Microdata($breadcrumbs, $markup_options),
+			'rdfa'      => new Rdfa($breadcrumbs, $markup_options),
+			default     => new Html($breadcrumbs, $markup_options)
+		};
+
+		$trail = $markup->render();
 
 		// If there is no trail based on the arguments, bail.
 		if (! $trail) {

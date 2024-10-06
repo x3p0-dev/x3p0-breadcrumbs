@@ -1,6 +1,6 @@
 {
 	"apiVersion": 3,
-	"version": "20231025",
+	"version": "20241006",
 	"name": "x3p0/breadcrumbs",
 	"title": "X3P0: Breadcrumbs",
 	"category": "widgets",
@@ -30,6 +30,10 @@
 		"homePrefixType": {
 			"type": "string",
 			"default": ""
+		},
+		"markup": {
+			"type": "string",
+			"default": "microdata"
 		},
 		"separator": {
 			"type": "string",

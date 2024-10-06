@@ -17,4 +17,4 @@ import icon                  from './js/block-icon';
 import edit                  from './js/block-edit';
 
 // Register block type.
-registerBlockType( metadata, { icon, edit } );
+registerBlockType(metadata, { icon, edit });

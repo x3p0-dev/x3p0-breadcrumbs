@@ -34,7 +34,7 @@
 }
 
 // Flip icons for RTL.
-:where( [dir=rtl], .rtl ) :where(
+:where([dir=rtl], .rtl) :where(
 	.x3p0-breadcrumbs-sep-picker__button svg,
 	.x3p0-breadcrumbs-sep-picker__button-text
 ) {

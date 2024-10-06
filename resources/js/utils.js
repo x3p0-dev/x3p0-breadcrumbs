@@ -12,7 +12,7 @@ import { applyFilters } from '@wordpress/hooks';
 const HOME_PREFIXES = [
 	{
 		value: '',
-		label: __( 'None', 'x3p0-breadcrumbs' ),
+		label: __('None', 'x3p0-breadcrumbs'),
 		type:  '',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -23,7 +23,7 @@ const HOME_PREFIXES = [
 	},
 	{
 		value: 'outline',
-		label: __( 'Home: Outlined', 'x3p0-breadcrumbs' ),
+		label: __('Home: Outlined', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon:  (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -34,7 +34,7 @@ const HOME_PREFIXES = [
 	},
 	{
 		value: 'fill',
-		label: __( 'Home: Filled', 'x3p0-breadcrumbs' ),
+		label: __('Home: Filled', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -45,7 +45,7 @@ const HOME_PREFIXES = [
 	},
 	{
 		value: 'house-outline',
-		label: __( 'House: Outlined', 'x3p0-breadcrumbs' ),
+		label: __('House: Outlined', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -61,7 +61,7 @@ const HOME_PREFIXES = [
 	},
 	{
 		value: 'house-fill',
-		label: __( 'House: Filled', 'x3p0-breadcrumbs' ),
+		label: __('House: Filled', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -76,19 +76,19 @@ const HOME_PREFIXES = [
 	},
 	{
 		value: '🏠',
-		label: __( 'Emoji: House', 'x3p0-breadcrumbs' ),
+		label: __('Emoji: House', 'x3p0-breadcrumbs'),
 		type:  'text',
 		icon: '🏠'
 	},
 	{
 		value: '🏡',
-		label: __( 'Emoji: House Garden', 'x3p0-breadcrumbs' ),
+		label: __('Emoji: House Garden', 'x3p0-breadcrumbs'),
 		type:  'text',
 		icon: '🏡'
 	},
 	{
 		value: '🏘',
-		label: __( 'Emoji: Houses', 'x3p0-breadcrumbs' ),
+		label: __('Emoji: Houses', 'x3p0-breadcrumbs'),
 		type:  'text',
 		icon: '🏘'
 	}
@@ -97,29 +97,29 @@ const HOME_PREFIXES = [
 const SEPARATORS = [
 	{
 		value: 'chevron',
-		label: __( 'Chevron', 'x3p0-breadcrumbs' ),
+		label: __('Chevron', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000">
 				<path d="M0 0h24v24H0V0z" fill="none"/>
 				<path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"/>
 			</svg>
-		),
+		)
 	},
 	{
 		value: 'chevron-double',
-		label: __( 'Double Chevron', 'x3p0-breadcrumbs' ),
+		label: __('Double Chevron', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
 				<path d="M6.6 6L5.4 7l4.5 5-4.5 5 1.1 1 5.5-6-5.4-6zm6 0l-1.1 1 4.5 5-4.5 5 1.1 1 5.5-6-5.5-6z">
 				</path>
 			</svg>
-		),
+		)
 	},
 	{
 		value: 'arrow',
-		label: __( 'Arrow', 'x3p0-breadcrumbs' ),
+		label: __('Arrow', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000">
@@ -130,7 +130,7 @@ const SEPARATORS = [
 	},
 	{
 		value: 'triangle',
-		label: __( 'Triangle', 'x3p0-breadcrumbs' ),
+		label: __('Triangle', 'x3p0-breadcrumbs'),
 		type:  'mask',
 		icon: (
 			<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -141,33 +141,33 @@ const SEPARATORS = [
 	},
 	{
 		value: 'slash',
-		label: __( 'Slash', 'x3p0-breadcrumbs' ),
+		label: __('Slash', 'x3p0-breadcrumbs'),
 		type:  'text',
-		icon: "/"
+		icon:  "/"
 	},
 	{
 		value: 'bar',
-		label: __( 'Vertical Bar', 'x3p0-breadcrumbs' ),
+		label: __('Vertical Bar', 'x3p0-breadcrumbs'),
 		type:  'text',
-		icon: "|"
+		icon:  "|"
 	},
 	{
 		value: 'middot',
-		label: __( 'Middle Dot', 'x3p0-breadcrumbs' ),
+		label: __('Middle Dot', 'x3p0-breadcrumbs'),
 		type:  'text',
-		icon: "·"
+		icon:  "·"
 	},
 	{
 		value: 'black-circle',
-		label: __( 'Circle: Filled', 'x3p0-breadcrumbs' ),
+		label: __('Circle: Filled', 'x3p0-breadcrumbs'),
 		type:  'text',
-		icon: "●"
+		icon:  "●"
 	},
 	{
 		value: 'white-circle',
-		label: __( 'Circle: Outlined', 'x3p0-breadcrumbs' ),
+		label: __('Circle: Outlined', 'x3p0-breadcrumbs'),
 		type:  'text',
-		icon: "○"
+		icon:  "○"
 	}
 ];
 
@@ -176,17 +176,17 @@ const SEPARATORS = [
  *
  * @returns {array}
  */
-export const getHomePrefixes = () => Array.from( applyFilters(
+export const getHomePrefixes = () => Array.from(applyFilters(
 	'x3p0.breadcrumbs.home.prefixes',
-	new Set( HOME_PREFIXES )
-) );
+	new Set(HOME_PREFIXES)
+));
 
 /**
  * @description Wraps the separators in a filter hook and returns them.
  *
  * @returns {array}
  */
-export const getSeparators = () => Array.from( applyFilters(
+export const getSeparators = () => Array.from(applyFilters(
 	'x3p0.breadcrumbs.separators',
-	new Set( SEPARATORS )
-) );
+	new Set(SEPARATORS)
+));

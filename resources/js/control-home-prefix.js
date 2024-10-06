@@ -27,31 +27,29 @@ import {
 /**
  * @description Creates a home icon control.
  */
-export default ( { homePrefix, showHomeLabel, setAttributes } ) => {
+export default ({ homePrefix, showHomeLabel, setAttributes }) => {
 
-	useEffect( () => {
-		if ( ! showHomeLabel && ! homePrefix ) {
-			setAttributes( {
-				showHomeLabel: true
-			} );
+	useEffect(() => {
+		if (! showHomeLabel && ! homePrefix) {
+			setAttributes({ showHomeLabel: true });
 		}
-	}, [ homePrefix ] );
+	}, [ homePrefix ]);
 
 	// Get the homePrefix options.
 	const homePrefixes = getHomePrefixes();
 
 	// Builds a menu item for an homePrefix.
-	const homePrefixButton = ( sep, index ) => (
+	const homePrefixButton = (sep, index) => (
 		<Button
 			key={ index }
 			isPressed={ homePrefix === sep.value }
 			className="x3p0-breadcrumbs-sep-picker__button"
 			label={ sep.label }
 			showTooltip
-			onClick={ () => setAttributes( {
+			onClick={ () => setAttributes({
 				homePrefix:     sep.value,
 				homePrefixType: sep.type
-			} ) }
+			}) }
 		>
 			{ 'image' === sep.type ? sep.icon : (
 				<span className="x3p0-breadcrumbs-sep-picker__button-text">
@@ -65,14 +63,14 @@ export default ( { homePrefix, showHomeLabel, setAttributes } ) => {
 	const homePrefixPicker = (
 		<BaseControl
 			className="x3p0-breadcrumbs-sep-picker"
-			label={ __( 'Home Icon', 'x3p0-ideas' ) }
+			label={ __('Home Icon', 'x3p0-ideas') }
 		>
 			<div className="x3p0-breadcrumbs-sep-picker__description">
-				{ __( 'Pick an icon or symbol for the home breadcrumb item.', 'x3p0-ideas' ) }
+				{ __('Pick an icon or symbol for the home breadcrumb item.', 'x3p0-ideas') }
 			</div>
 			<Grid className="x3p0-breadcrumbs-sep-picker__grid" columns="6">
-				{ homePrefixes.map( ( sep, index ) =>
-					homePrefixButton( sep, index )
+				{ homePrefixes.map(
+					(sep, index) => homePrefixButton(sep, index)
 				) }
 			</Grid>
 		</BaseControl>
@@ -80,11 +78,11 @@ export default ( { homePrefix, showHomeLabel, setAttributes } ) => {
 
 	const showHomeLabelControl = (
 		<ToggleControl
-			label={ __( 'Show home label', 'x3p0-breadcrumbs' ) }
+			label={ __('Show home label', 'x3p0-breadcrumbs') }
 			checked={ showHomeLabel }
-			onChange={ () => setAttributes( {
+			onChange={ () => setAttributes({
 				showHomeLabel: ! showHomeLabel
-			} ) }
+			}) }
 			disabled={ ! homePrefix }
 		/>
 	);
@@ -96,24 +94,21 @@ export default ( { homePrefix, showHomeLabel, setAttributes } ) => {
 			contentClassName="x3p0-breadcrumbs-sep-popover"
 			focusOnMount
 			popoverProps={ {
-				headerTitle: __( 'Home Icon', 'x3p0-ideas' ),
+				headerTitle: __('Home Icon', 'x3p0-ideas'),
 				variant: 'toolbar'
 			} }
-			renderToggle={ ( { isOpen, onToggle } ) => (
+			renderToggle={ ({ isOpen, onToggle }) => (
 				<ToolbarButton
 					className="x3p0-breadcrumbs-sep-dropdown__button"
 					icon={ controlIcon }
-					label={ __( 'Home Icon', 'x3p0-ideas' ) }
+					label={ __('Home Icon', 'x3p0-ideas') }
 					onClick={ onToggle }
 					aria-expanded={ isOpen }
 					isPressed={ !! homePrefix }
 				/>
 			) }
 			renderContent={ () => (
-				<Flex
-					direction="column"
-					gap="4"
-				>
+				<Flex direction="column" gap="4">
 					{ homePrefixPicker }
 					{ showHomeLabelControl }
 				</Flex>

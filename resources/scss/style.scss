@@ -5,21 +5,27 @@
 /// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
 ////
 
-// `.breadcrumbs` is the `<nav>` wrapping element.
-// `.breadcrumbs__title` is the `<h2>` heading element.
-// `.breadcrumbs__trail` is the `<ul>` element.
-// `.breadcrumbs__crumb` is the `<li>` element.
-// `.breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
+///
+/// Styles the breadcrumb trail.
+///
+/// `.breadcrumbs` is the `<nav>` wrapping element.
+/// `.breadcrumbs__title` is the `<h2>` heading element.
+/// `.breadcrumbs__trail` is the `<ul>` element.
+/// `.breadcrumbs__crumb` is the `<li>` element.
+/// `.breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
+/// `.breadcrumbs__crumb-label` is the inner `<span>` element.
+///
 .breadcrumbs {
-
-	&__title { font: inherit; }
+	&__title {
+		font: inherit;
+	}
 
 	&,
 	&__trail,
 	&__crumb,
 	&__crumb-content {
 		// Set the gap via `settings.custom.x3p0Breadcrumbs.gap`.
-		gap: var( --wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem );
+		gap: var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem);
 		box-sizing: border-box;
 		display: flex;
 		flex-wrap: wrap;
@@ -106,15 +112,15 @@
 	// ---------------------------------------------------------------------
 
 	// Handles the separator element.
-	&__crumb:where( :not( :first-child ) )::before {
+	&__crumb:where(:not(:first-child))::before {
 		// Default `/` character.
-		content: var( --breadcrumbs-sep, "\002F" );
+		content: var(--breadcrumbs-sep, "\002F");
 		width: 1em;
 		text-align: center;
 	}
 
-	&[class*=has-sep-mask-] &__crumb:where( :not( :first-child ) )::before {
-		mask: no-repeat 50% 50% / cover var( --breadcrumbs-sep );
+	&[class*=has-sep-mask-] &__crumb:where(:not(:first-child))::before {
+		mask: no-repeat 50% 50% / cover var(--breadcrumbs-sep);
 		height: 1em;
 	}
 
@@ -146,6 +152,6 @@
 }
 
 // Flip icons for RTL.
-:where( [dir=rtl], .rtl ) .breadcrumbs__crumb:where( :not( :first-child ) )::before {
-	transform: scaleX( -1 );
+:where([dir=rtl], .rtl) .breadcrumbs__crumb:where(:not(:first-child))::before {
+	transform: scaleX(-1);
 }

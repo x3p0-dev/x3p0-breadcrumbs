@@ -25,7 +25,7 @@ import {
 import classnames from 'classnames';
 
 // Prevent breadcrumb link events when users click them.
-const preventDefault = ( event ) => event.preventDefault();
+const preventDefault = (event) => event.preventDefault();
 
 // Define allowed justification controls.
 const justifyOptions = [ 'left', 'center', 'right' ];
@@ -47,7 +47,7 @@ const markupOptions = [
 ];
 
 // Exports the breadcrumbs block type edit function.
-export default ( {
+export default ({
 	attributes: {
 		homePrefix,
 		homePrefixType,
@@ -60,7 +60,7 @@ export default ( {
 		separatorType
 	},
 	setAttributes
-} ) => {
+}) => {
 	// =====================================================================
 	// Build the block toolbar controls.
 	// =====================================================================
@@ -70,9 +70,9 @@ export default ( {
 			<JustifyContentControl
 				allowedControls={ justifyOptions }
 				value={ justifyContent }
-				onChange={ ( value ) => setAttributes( {
+				onChange={ (value) => setAttributes({
 					justifyContent: value
-				} ) }
+				}) }
 				popoverProps={ {
 					position: 'bottom right',
 					variant: 'toolbar'
@@ -108,37 +108,37 @@ export default ( {
 
 	const showOnHomepageControl = (
 		<ToggleControl
-			label={ __( 'Show on homepage', 'x3p0-breadcrumbs' ) }
+			label={ __('Show on homepage', 'x3p0-breadcrumbs') }
 			help={
 				showOnHomepage
-				? __( 'Breadcrumbs display on the homepage.', 'x3p0-breadcrumbs' )
-				: __( 'Breadcrumbs hidden on the homepage.', 'x3p0-breadcrumbs' )
+				? __('Breadcrumbs display on the homepage.', 'x3p0-breadcrumbs')
+				: __('Breadcrumbs hidden on the homepage.', 'x3p0-breadcrumbs')
 			}
 			checked={ showOnHomepage }
-			onChange={ () => setAttributes( {
+			onChange={ () => setAttributes({
 				showOnHomepage: ! showOnHomepage
-			} ) }
+			}) }
 		/>
 	);
 
 	const showTrailEndControl = (
 		<ToggleControl
-			label={ __( 'Show last breadcrumb', 'x3p0-breadcrumbs' ) }
+			label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
 			help={
 				showTrailEnd
-				? __( 'Current page item is shown.', 'x3p0-breadcrumbs' )
-				: __( 'Current page item is hidden.', 'x3p0-breadcrumbs' )
+				? __('Current page item is shown.', 'x3p0-breadcrumbs')
+				: __('Current page item is hidden.', 'x3p0-breadcrumbs')
 			}
 			checked={ showTrailEnd }
-			onChange={ () => setAttributes( {
+			onChange={ () => setAttributes({
 				showTrailEnd: ! showTrailEnd
-			} ) }
+			}) }
 		/>
 	);
 
 	const markupControl = (
 		<CustomSelectControl
-			label={ __('Markup style', 'x3p0-breadcrumbs' ) }
+			label={ __('Markup style', 'x3p0-breadcrumbs') }
 			options={ markupOptions }
 			value={ markupOptions.find(
 				(option) => option.key === markup
@@ -152,7 +152,7 @@ export default ( {
 	const settingsControls = (
 		<InspectorControls group="settings">
 			<PanelBody title={
-				__( 'Breadcrumb settings', 'x3p0-breadcrumbs' )
+				__('Breadcrumb settings', 'x3p0-breadcrumbs')
 			}>
 				{ showOnHomepageControl }
 				{ showTrailEndControl }
@@ -166,42 +166,42 @@ export default ( {
 	// =====================================================================
 
 	// Get the blockProps and add custom classes.
-	const blockProps = useBlockProps( {
-		className: classnames( {
+	const blockProps = useBlockProps({
+		className: classnames({
 			'breadcrumbs': true,
 			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : homePrefixType && homePrefix,
 			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
 			[ `is-content-justification-${ justifyContent }` ] : justifyContent
-		} )
-	} );
+		})
+	});
 
 	// Build an array of faux breadcrumb items to show.
 	let crumbs = [
 		{
 			type: 'home',
-			label: __( 'Home', 'x3p0-breadcrumbs' ),
+			label: __('Home', 'x3p0-breadcrumbs'),
 			link: true,
 			hide: ! showHomeLabel
 		},
 		{
 			type: 'post',
-			label: __( 'Parent Page', 'x3p0-breadcrumbs' ),
+			label: __('Parent Page', 'x3p0-breadcrumbs'),
 			link: true,
 			hide: false
 		}
 	];
 
-	if ( showTrailEnd ) {
-		crumbs.push( {
+	if (showTrailEnd) {
+		crumbs.push({
 			type: 'post',
-			label: __( 'Current Page', 'x3p0-breadcrumbs' ),
+			label: __('Current Page', 'x3p0-breadcrumbs'),
 			link: false,
 			hide: false
-		} );
+		});
 	}
 
 	// Creates a breadcrumb trail list item.
-	const crumb = ( crumb, index ) => {
+	const crumb = (crumb, index) => {
 		const CrumbContent = crumb.link ? 'a' : 'span';
 
 		return (
@@ -214,10 +214,9 @@ export default ( {
 					onClick={ preventDefault }
 					className="breadcrumbs__crumb-content"
 				>
-					<span
-						className={ `breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }` }
-						itemProp="name"
-					>
+					<span className={
+						`breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }`
+					}>
 						{ crumb.label }
 					</span>
 				</CrumbContent>
@@ -228,7 +227,7 @@ export default ( {
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
 		<ol className="breadcrumbs__trail">
-			{ crumbs.map( ( item, index ) => crumb( item, index ) ) }
+			{ crumbs.map((item, index) => crumb(item, index)) }
 		</ol>
 	);
 

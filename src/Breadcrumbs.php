@@ -96,8 +96,9 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function query(string $type, array $data = []): void
 	{
-		$query = $this->environment->getQuery($type);
-		(new $query($this, ...$data))->make();
+		if ($query = $this->environment->getQuery($type)) {
+			(new $query($this, ...$data))->make();
+		}
 	}
 
 	/**
@@ -105,8 +106,9 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function build(string $type, array $data = []): void
 	{
-		$builder = $this->environment->getBuilder($type);
-		(new $builder($this, ...$data))->make();
+		if ($builder = $this->environment->getBuilder($type)) {
+			(new $builder($this, ...$data))->make();
+		}
 	}
 
 	/**
@@ -114,8 +116,9 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function crumb(string $type, array $data = []): void
 	{
-		$crumb = $this->environment->getCrumb($type);
-		$this->crumbs[] = new $crumb($this, ...$data);
+		if ($crumb = $this->environment->getCrumb($type)) {
+			$this->crumbs[] = new $crumb($this, ...$data);
+		}
 	}
 
 	/**

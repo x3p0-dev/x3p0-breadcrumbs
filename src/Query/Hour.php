@@ -15,26 +15,11 @@ namespace X3P0\Breadcrumbs\Query;
 
 class Hour extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build rewrite front crumbs.
-		$this->breadcrumbs->build('RewriteFront');
-
-		// Add hour crumb.
-		$this->breadcrumbs->crumb('Hour');
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->crumb('hour');
+		$this->breadcrumbs->build('paged');
 	}
 }

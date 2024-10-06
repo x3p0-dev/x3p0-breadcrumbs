@@ -18,11 +18,6 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class PagedQueryBlock extends Base
 {
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return sprintf(

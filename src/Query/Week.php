@@ -15,27 +15,12 @@ namespace X3P0\Breadcrumbs\Query;
 
 class Week extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build rewrite front crumbs.
-		$this->breadcrumbs->build('RewriteFront');
-
-		// Add the year and week crumbs.
-		$this->breadcrumbs->crumb('Year');
-		$this->breadcrumbs->crumb('Week');
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->crumb('year');
+		$this->breadcrumbs->crumb('week');
+		$this->breadcrumbs->build('paged');
 	}
 }

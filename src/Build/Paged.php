@@ -19,37 +19,23 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class Paged extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post;
-
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		// If viewing a paged archive-type page.
 		if (is_paged()) {
-			$this->breadcrumbs->crumb('Paged');
+			$this->breadcrumbs->crumb('paged');
 
 		// If viewing a paged singular post.
 		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->breadcrumbs->crumb('PagedSingular');
+			$this->breadcrumbs->crumb('paged-singular');
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
-			$this->breadcrumbs->crumb('PagedComments');
+			$this->breadcrumbs->crumb('paged-comments');
 
 		// If viewing a paged Query Loop block view.
 		} elseif (Helpers::isPagedQueryBlock()) {
-			$this->breadcrumbs->crumb('PagedQueryBlock');
+			$this->breadcrumbs->crumb('paged-query-block');
 		}
 	}
 }

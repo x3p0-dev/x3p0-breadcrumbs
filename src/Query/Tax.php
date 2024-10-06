@@ -13,39 +13,23 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
+use WP_Term;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class Tax extends Base
 {
-	/**
-	 * Term object.
-	 *
-	 * @since  1.2.0
-	 * @access protected
-	 * @var    \WP_Term
-	 */
-	protected $term;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_Term $term = null
+	) {}
 
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$term = $this->term ?: get_queried_object();
 
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build term crumbs.
-		$this->breadcrumbs->build('Term', [ 'term' => $term ]);
-
-		// Add term crumb.
-		$this->breadcrumbs->crumb('Term', [ 'term' => $term ]);
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('term', [ 'term' => $term ]);
+		$this->breadcrumbs->crumb('term', [ 'term' => $term ]);
+		$this->breadcrumbs->build('paged');
 	}
 }

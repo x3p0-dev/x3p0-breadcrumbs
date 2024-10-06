@@ -20,17 +20,13 @@ namespace X3P0\Breadcrumbs\Build;
 class RewriteFront extends Base
 {
 	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
+	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
 	public function make(): void
 	{
-		global $wp_rewrite;
-
-		if ($wp_rewrite->front) {
-			$this->breadcrumbs->build('Path', [
-				'path' => $wp_rewrite->front
+		if ($GLOBALS['wp_rewrite']->front) {
+			$this->breadcrumbs->build('path', [
+				'path' => $GLOBALS['wp_rewrite']->front
 			]);
 		}
 	}

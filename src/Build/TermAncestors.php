@@ -14,22 +14,16 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Term;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class TermAncestors extends Base
 {
-	/**
-	 * Term object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Term
-	 */
-	protected $term;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Term $term
+	) {}
 
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$term_id  = $this->term->parent;
@@ -51,7 +45,7 @@ class TermAncestors extends Base
 		// proper order for the trail.
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->breadcrumbs->crumb('Term', [ 'term' => $parent ]);
+				$this->breadcrumbs->crumb('term', [ 'term' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

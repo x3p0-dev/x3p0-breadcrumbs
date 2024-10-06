@@ -15,21 +15,11 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 class Search extends Base
 {
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return sprintf($this->breadcrumbs->label('search'), get_search_query());
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return get_search_link();

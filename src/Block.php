@@ -12,31 +12,19 @@
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Environment\Environment;
+use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 
 class Block implements Bootable
 {
 	/**
-	 * Stores the plugin path.
-	 *
-	 * @since 1.0.0
-	 * @todo  Move this to the constructor with PHP 8-only support.
-	 */
-	protected string $path;
-
-	/**
 	 * Sets up object state.
-	 *
-	 * @since 1.0.0
 	 */
-	public function __construct(string $path)
-	{
-		$this->path = $path;
-	}
+	public function __construct(protected string $path)
+	{}
 
 	/**
 	 * Boots the class, running its actions/filters.
-	 *
-	 * @since 1.0.0
 	 */
 	public function boot(): void
 	{
@@ -45,8 +33,6 @@ class Block implements Bootable
 
 	/**
 	 * Registers the block with WordPress.
-	 *
-	 * @since 1.0.0
 	 */
 	public function register(): void
 	{
@@ -57,19 +43,19 @@ class Block implements Bootable
 
 	/**
 	 * Renders the block on the front end.
-	 *
-	 * @since 1.0.0
 	 */
 	public function render(array $attributes): string
 	{
-		// Arguments to pass to the `Trail` class.
-		$trail_args = [
+		$breadcrumb_options = [
 			'labels'	    => [ 'title' => '' ],
-			'container_tag'     => '',
 			'post_taxonomy'     => [ 'post' => 'category' ],
 			'post_rewrite_tags' => false,
-			'show_on_front'     => $attributes['showOnHomepage'] ?? false,
-			'show_trail_end'    => $attributes['showTrailEnd']   ?? true
+		];
+
+		$markup_options = [
+			'container_tag'  => '',
+			'show_on_front'  => $attributes['showOnHomepage'] ?? false,
+			'show_trail_end' => $attributes['showTrailEnd']   ?? true
 		];
 
 		// Set up some default class names.
@@ -88,7 +74,7 @@ class Block implements Bootable
 			// Set whether the home label should be shown. This is
 			// wrapped within the prefix check because the home label
 			// should always be shown if there's no prefix/icon.
-			$trail_args['show_home_label'] = $attributes['showHomeLabel'] ?? true;
+			$breadcrumb_options['show_home_label'] = $attributes['showHomeLabel'] ?? true;
 		}
 
 		// If there's a selected separator, define the class for it.
@@ -108,8 +94,11 @@ class Block implements Bootable
 			);
 		}
 
-		// Get the breadcrumb trail.
-		$trail = Trail::render($trail_args);
+		// Build the breadcrumb trail.
+		$environment = new Environment();
+		$breadcrumbs = new Breadcrumbs($environment, $breadcrumb_options);
+		$markup      = new Microdata($breadcrumbs, $markup_options);
+		$trail       = $markup->render();
 
 		// If there is no trail based on the arguments, bail.
 		if (! $trail) {
@@ -121,7 +110,6 @@ class Block implements Bootable
 		$wrapper_attributes = get_block_wrapper_attributes([
 			'role'       => 'navigation',
 			'aria-label' => __('Breadcrumbs', 'x3p0-breadcrumbs'),
-			'itemprop'   => 'breadcrumb',
 			'class'      => "breadcrumbs {$home_class} {$sep_class} {$justify_class}"
 		]);
 

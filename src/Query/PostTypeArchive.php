@@ -14,55 +14,36 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
+use WP_Post_Type;
 use WP_User;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
 class PostTypeArchive extends Base
 {
-	/**
-	 * Post type object.
-	 *
-	 * @since  1.2.0
-	 * @access protected
-	 * @var    \WP_Post_Type
-	 */
-	protected $post_type;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_Post_Type $post_type = null,
+		protected ?WP_User $user = null
+	) {}
 
-	/**
-	 * User object.
-	 *
-	 * @since  1.2.0
-	 * @access protected
-	 * @var    \WP_User
-	 */
-	protected $user;
-
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$type = $this->post_type ?: get_post_type_object(get_query_var('post_type'));
 
 		$done_post_type = false;
 
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
+		$this->breadcrumbs->build('home');
 
 		if (false !== $type->rewrite) {
 			// Build rewrite front crumbs if post type uses it.
 			if ($type->rewrite['with_front']) {
-				$this->breadcrumbs->build('RewriteFront');
+				$this->breadcrumbs->build('rewrite-front');
 			}
 
 			// If there's a rewrite slug, check for parents.
 			if (! empty($type->rewrite['slug'])) {
-				$this->breadcrumbs->build('Path', [ 'path' => $type->rewrite['slug'] ]);
+				$this->breadcrumbs->build('path', [ 'path' => $type->rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
 				foreach ($this->breadcrumbs->all() as $crumb) {
@@ -76,24 +57,24 @@ class PostTypeArchive extends Base
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->breadcrumbs->crumb('PostType', [ 'post_type' => $type ]);
+			$this->breadcrumbs->crumb('post-type', [ 'post_type' => $type ]);
 		}
 
-		// If viewing a search page for the post type archive.
+		// If viewing a post type search, add the search crumb. This
+		// handles URLs like `/?s={search}&post_type={type}`.
 		if (is_search()) {
-			// Add search crumb.
-			$this->breadcrumbs->crumb('Search');
+			$this->breadcrumbs->crumb('search');
 		}
 
-		// If viewing a post type archive by author.
+		// If viewing a post type archive by author, add author crumb.
+		// This handles URLs like `/{type}?=author={author}`.
 		if (is_author()) {
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->breadcrumbs->crumb('Author', [ 'user' => $user ]);
+			$this->breadcrumbs->crumb('author', [ 'user' => $user ]);
 		}
 
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('paged');
 	}
 }

@@ -15,31 +15,16 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 class Network extends Base
 {
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return $this->breadcrumbs->label('home');
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return network_home_url();
 	}
 
-	/**
-	 * Returns whether the crumb should be visually hidden on display.
-	 *
-	 * @since 1.0.0
-	 */
 	public function visuallyHidden(): bool
 	{
 		return ! $this->breadcrumbs->option('show_home_label');

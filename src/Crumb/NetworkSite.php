@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Build interface.
+ * Home crumb class.
  *
- * Defines the interface that build classes must use.
+ * Creates the home crumb.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -11,12 +11,17 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Contracts;
+namespace X3P0\Breadcrumbs\Crumb;
 
-interface Build
+class NetworkSite extends Base
 {
-	/**
-	 * Builds breadcrumbs.
-	 */
-	public function make(): void;
+	public function label(): string
+	{
+		return get_bloginfo('name');
+	}
+
+	public function url(): string
+	{
+		return user_trailingslashit(home_url());
+	}
 }

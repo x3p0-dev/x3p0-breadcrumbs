@@ -19,12 +19,8 @@ use X3P0\Breadcrumbs\Contracts\Bootable;
  * `plugin()` function acts as the single instance of the plugin, and devs can
  * access any class/component by passing in its reference via the `$component`
  * parameter (useful for accessing hooks within classes).
- *
- * @since  1.0.0
- * @return mixed
- * @todo   Add `mixed` return type declaration with PHP 8-only support.
  */
-function plugin(string $component = '')
+function plugin(string $component = ''): mixed
 {
 	static $bindings = [];
 

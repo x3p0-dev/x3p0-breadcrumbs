@@ -13,22 +13,16 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use WP_Term;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class Term extends Base
 {
-	/**
-	 * Term object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Term
-	 */
-	protected $term;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Term $term
+	) {}
 
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		$tax     = $this->term->taxonomy;
@@ -41,11 +35,6 @@ class Term extends Base
 		return $this->term->name;
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return get_term_link($this->term, $this->term->taxonomy);

@@ -13,22 +13,16 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use WP_Post;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class MinuteHour extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post = null;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_Post $post = null
+	) {}
 
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return sprintf(

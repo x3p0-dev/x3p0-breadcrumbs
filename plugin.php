@@ -6,7 +6,7 @@
  * Description:       A breadcrumbs block for WordPress.
  * Version:           1.0.1
  * Requires at least: 6.3
- * Requires PHP:      7.4
+ * Requires PHP:      8.0
  * Author:            Justin Tadlock
  * Author URI:        https://justintadlock.com
  * Text Domain:       x3p0-breadcrumbs

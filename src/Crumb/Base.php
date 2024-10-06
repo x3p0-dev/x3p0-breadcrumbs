@@ -22,36 +22,18 @@ use X3P0\Breadcrumbs\Contracts\Crumb;
 abstract class Base implements Crumb
 {
 	/**
-	 * Breadcrumbs object.
-	 *
-	 * @since 1.0.0
-	 */
-	protected Breadcrumbs $breadcrumbs;
-
-	/**
 	 * Creates a new crumb object. Any data passed in within the `$data`
 	 * array will be automatically assigned to any existing properties, which
 	 * can be useful for sub-classes that have custom properties.
-	 *
-	 * @since 1.0.0
 	 */
-	public function __construct(Breadcrumbs $breadcrumbs, array $data = [])
-	{
-		foreach (array_keys(get_object_vars($this)) as $key) {
-			if (isset($data[ $key ])) {
-				$this->$key = $data[ $key ];
-			}
-		}
-
-		$this->breadcrumbs = $breadcrumbs;
-	}
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs
+	) {}
 
 	/**
 	 * Returns the type for the crumb. By default, we just use the PHP class
 	 * name to build the type.  If wanting something custom, this should be
 	 * handled in a sub-class.
-	 *
-	 * @since 1.0.0
 	 */
 	public function type(): string
 	{
@@ -65,8 +47,6 @@ abstract class Base implements Crumb
 
 	/**
 	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
 	 */
 	public function label(): string
 	{
@@ -75,8 +55,6 @@ abstract class Base implements Crumb
 
 	/**
 	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
 	 */
 	public function url(): string
 	{
@@ -85,8 +63,6 @@ abstract class Base implements Crumb
 
 	/**
 	 * Returns whether the crumb should be visually hidden on display.
-	 *
-	 * @since 1.0.0
 	 */
 	public function visuallyHidden(): bool
 	{

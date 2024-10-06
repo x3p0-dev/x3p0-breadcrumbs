@@ -15,26 +15,11 @@ namespace X3P0\Breadcrumbs\Query;
 
 class MinuteHour extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build rewrite front crumbs.
-		$this->breadcrumbs->build('RewriteFront');
-
-		// Add minute-hour crumb.
-		$this->breadcrumbs->crumb('MinuteHour');
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->crumb('minute-hour');
+		$this->breadcrumbs->build('paged');
 	}
 }

@@ -13,31 +13,23 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Post_Type;
+use WP_Rewrite;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class PostType extends Base
 {
-	/**
-	 * Post type slug.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post_Type
-	 */
-	protected $post_type = '';
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_Post_Type $post_type = null
+	) {}
 
 	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
+	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
 	public function make(): void
 	{
-		global $wp_rewrite;
-
-		$type = is_string($this->post_type)
-			? get_post_type_object($this->post_type)
-			: $this->post_type;
-
-		if (! $type) {
+		if (! $type = $this->post_type) {
 			return;
 		}
 
@@ -53,8 +45,8 @@ class PostType extends Base
 				// If the posts page is the same as the rewrite
 				// front path, we should've already handled that
 				// scenario at this point.
-				if (trim($wp_rewrite->front, '/') !== $post->post_name) {
-					$this->breadcrumbs->crumb('Post', [
+				if (trim($GLOBALS['wp_rewrite']->front, '/') !== $post->post_name) {
+					$this->breadcrumbs->crumb('post', [
 						'post' => $post
 					]);
 				}
@@ -64,6 +56,6 @@ class PostType extends Base
 		}
 
 		// Add post type crumb.
-		$this->breadcrumbs->crumb('PostType', [ 'post_type' => $type ]);
+		$this->breadcrumbs->crumb('post-type', [ 'post_type' => $type ]);
 	}
 }

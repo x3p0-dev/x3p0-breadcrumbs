@@ -17,8 +17,6 @@ interface Query
 {
 	/**
 	 * Builds breadcrumbs.
-	 *
-	 * @since 1.0.0
 	 */
 	public function make(): void;
 }

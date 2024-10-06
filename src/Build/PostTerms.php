@@ -13,55 +13,42 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Post;
+use WP_Taxonomy;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class PostTerms extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post;
-
-	/**
-	 * Taxonomy slug.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    string
-	 */
-	protected $taxonomy;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Post $post,
+		protected WP_Taxonomy $taxonomy
+	) {}
 
 	/**
 	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
 	 */
 	public function make(): void
 	{
-		// Get the post type.
-		$post_type = get_post_type($this->post->ID);
-
 		// Get the post categories.
-		$terms = get_the_terms($this->post->ID, $this->taxonomy);
+		$terms = get_the_terms($this->post->ID, $this->taxonomy->name);
 
 		// Check that categories were returned.
 		if ($terms && ! is_wp_error($terms)) {
 			// Sort the terms by ID and get the first category.
 			$terms = wp_list_sort($terms, 'term_id');
 
-			$term = get_term($terms[0], $this->taxonomy);
+			$term = get_term($terms[0], $this->taxonomy->name);
 
 			// If the category has a parent, add the hierarchy to the trail.
 			if (0 < $term->parent) {
-				$this->breadcrumbs->build('TermAncestors', [
+				$this->breadcrumbs->build('term-ancestors', [
 					'term' => $term
 				]);
 			}
 
 			// Add term crumb.
-			$this->breadcrumbs->crumb('Term', [ 'term' => $term ]);
+			$this->breadcrumbs->crumb('term', [ 'term' => $term ]);
 		}
 	}
 }

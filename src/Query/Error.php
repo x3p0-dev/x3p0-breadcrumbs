@@ -15,20 +15,9 @@ namespace X3P0\Breadcrumbs\Query;
 
 class Error extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Add 404 crumb.
-		$this->breadcrumbs->crumb('Error');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->crumb('error-404');
 	}
 }

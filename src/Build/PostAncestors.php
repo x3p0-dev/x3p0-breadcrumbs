@@ -14,22 +14,16 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Post;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class PostAncestors extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Post $post
+	) {}
 
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$post    = $this->post;
@@ -61,19 +55,21 @@ class PostAncestors extends Base
 		}
 
 		// Get the post hierarchy based off the final parent post.
-		$this->breadcrumbs->build('PostHierarchy', [ 'post' => $post ]);
+		$this->breadcrumbs->build('post-hierarchy', [ 'post' => $post ]);
 
 		// Display terms for specific post type taxonomy if requested.
 		if ($this->breadcrumbs->postTaxonomy($post->post_type)) {
-			$this->breadcrumbs->build('PostTerms', [
+			$this->breadcrumbs->build('post-terms', [
 				'post'     => $post,
-				'taxonomy' => $this->breadcrumbs->postTaxonomy($post->post_type)
+				'taxonomy' => get_taxonomy(
+					$this->breadcrumbs->postTaxonomy($post->post_type)
+				)
 			]);
 		}
 
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->breadcrumbs->crumb('Post', [ 'post' => $parent ]);
+				$this->breadcrumbs->crumb('post', [ 'post' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

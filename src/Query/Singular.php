@@ -13,39 +13,23 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
+use WP_Post;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class Singular extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.2.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_Post $post = null
+	) {}
 
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$post = $this->post ?: get_queried_object();
 
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build post crumbs.
-		$this->breadcrumbs->build('Post', [ 'post' => $post ]);
-
-		// Add post crumb.
-		$this->breadcrumbs->crumb('Post', [ 'post' => $post ]);
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('post', [ 'post' => $post ]);
+		$this->breadcrumbs->crumb('post', [ 'post' => $post ]);
+		$this->breadcrumbs->build('paged');
 	}
 }

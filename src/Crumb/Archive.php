@@ -15,11 +15,6 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 class Archive extends Base
 {
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return $this->breadcrumbs->label('archives');

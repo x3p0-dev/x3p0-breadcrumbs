@@ -13,50 +13,35 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
+use WP_Rewrite;
 use WP_User;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class Author extends Base
 {
-	/**
-	 * User object.
-	 *
-	 * @since  1.2.0
-	 * @access protected
-	 * @var    \WP_User
-	 */
-	protected $user;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected ?WP_User $user = null
+	) {}
 
 	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
+	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
 	public function make(): void
 	{
-		global $wp_rewrite;
-
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build rewrite front crumbs.
-		$this->breadcrumbs->build('RewriteFront');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('rewrite-front');
 
 		// If $author_base exists, check for parent pages.
-		if (! empty($wp_rewrite->author_base)) {
-			$this->breadcrumbs->build('Path', [
-				'page' => $wp_rewrite->author_base
+		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
+			$this->breadcrumbs->build('path', [
+				'path' => $GLOBALS['wp_rewrite']->author_base
 			]);
 		}
 
-		// Add author crumb.
-		$this->breadcrumbs->crumb('Author', [ 'user' => $user ]);
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->crumb('author', [ 'user' => $user ]);
+		$this->breadcrumbs->build('paged');
 	}
 }

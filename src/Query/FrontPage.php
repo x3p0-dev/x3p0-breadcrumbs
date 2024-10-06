@@ -17,22 +17,14 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class FrontPage extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		if ($this->breadcrumbs->option('show_on_front') || Helpers::isPagedView()) {
-			// Build network crumbs.
-			$this->breadcrumbs->build('Network');
-
-			// Add site home crumb.
-			$this->breadcrumbs->crumb('Home');
-
-			// Build paged crumbs.
-			$this->breadcrumbs->build('Paged');
+		if (
+			$this->breadcrumbs->option('show_on_front')
+			|| Helpers::isPagedView()
+		) {
+			$this->breadcrumbs->build('home');
+			$this->breadcrumbs->build('paged');
 		}
 	}
 }

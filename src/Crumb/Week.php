@@ -15,11 +15,6 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 class Week extends Base
 {
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		return sprintf(
@@ -30,11 +25,6 @@ class Week extends Base
 		);
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return add_query_arg([

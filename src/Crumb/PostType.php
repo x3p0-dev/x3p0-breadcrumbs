@@ -13,22 +13,16 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use WP_Post_Type;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class PostType extends Base
 {
-	/**
-	 * Post type object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post_Type
-	 */
-	protected $post_type;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Post_Type $post_type
+	) {}
 
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		if (is_post_type_archive($this->post_type->name)) {
@@ -44,11 +38,6 @@ class PostType extends Base
 		);
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return get_post_type_archive_link($this->post_type->name);

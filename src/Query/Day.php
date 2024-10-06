@@ -15,28 +15,13 @@ namespace X3P0\Breadcrumbs\Query;
 
 class Day extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
-		// Build network crumbs.
-		$this->breadcrumbs->build('Network');
-
-		// Add site home crumb.
-		$this->breadcrumbs->crumb('Home');
-
-		// Build rewrite front crumbs.
-		$this->breadcrumbs->build('RewriteFront');
-
-		// Add year, month, and day crumbs.
-		$this->breadcrumbs->crumb('Year');
-		$this->breadcrumbs->crumb('Month');
-		$this->breadcrumbs->crumb('Day');
-
-		// Build paged crumbs.
-		$this->breadcrumbs->build('Paged');
+		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->crumb('year');
+		$this->breadcrumbs->crumb('month');
+		$this->breadcrumbs->crumb('day');
+		$this->breadcrumbs->build('paged');
 	}
 }

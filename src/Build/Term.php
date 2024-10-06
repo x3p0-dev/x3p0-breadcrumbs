@@ -13,24 +13,17 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Term;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
 class Term extends Base
 {
-	/**
-	 * Term object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Term
-	 */
-	protected $term;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Term $term
+	) {}
 
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		$taxonomy       = get_taxonomy($this->term->taxonomy);
@@ -41,7 +34,7 @@ class Term extends Base
 
 		// Build rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
-			$this->breadcrumbs->build('RewriteFront');
+			$this->breadcrumbs->build('rewrite-front');
 		}
 
 		// Build crumbs based on the rewrite slug.
@@ -49,7 +42,7 @@ class Term extends Base
 			$path = trim($rewrite['slug'], '/');
 
 			// Build path crumbs.
-			$this->breadcrumbs->build('Path', [ 'path' => $path ]);
+			$this->breadcrumbs->build('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
 			foreach ($this->breadcrumbs->all() as $crumb) {
@@ -62,14 +55,16 @@ class Term extends Base
 
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
-			$this->breadcrumbs->build('PostType', [
-				'post_type' => get_post_type_object($taxonomy->object_type[0])
+			$this->breadcrumbs->build('post-type', [
+				'post_type' => get_post_type_object(
+					$taxonomy->object_type[0]
+				)
 			]);
 		}
 
 		// If the taxonomy is hierarchical, list the parent terms.
 		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
-			$this->breadcrumbs->build('TermAncestors', [ 'term' => $this->term ]);
+			$this->breadcrumbs->build('term-ancestors', [ 'term' => $this->term ]);
 		}
 	}
 }

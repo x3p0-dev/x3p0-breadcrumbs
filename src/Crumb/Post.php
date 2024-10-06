@@ -13,22 +13,16 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use WP_Post;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+
 class Post extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post = null;
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Post $post
+	) {}
 
-	/**
-	 * Returns a label for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function label(): string
 	{
 		$post_id = $this->post->ID;
@@ -40,11 +34,6 @@ class Post extends Base
 		return get_the_title($this->post->ID);
 	}
 
-	/**
-	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
-	 */
 	public function url(): string
 	{
 		return get_permalink($this->post->ID);

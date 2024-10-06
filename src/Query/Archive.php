@@ -15,52 +15,40 @@ namespace X3P0\Breadcrumbs\Query;
 
 class Archive extends Base
 {
-	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
-	 */
 	public function make(): void
 	{
 		// Run through the conditionals to determine which type of
 		// archive breadcrumbs to build.
 		if (is_post_type_archive()) {
-			$this->breadcrumbs->query('PostTypeArchive');
+			$this->breadcrumbs->query('post-type-archive');
 		} elseif (is_category() || is_tag() || is_tax()) {
-			$this->breadcrumbs->query('Tax');
+			$this->breadcrumbs->query('taxonomy');
 		} elseif (is_author()) {
-			$this->breadcrumbs->query('Author');
+			$this->breadcrumbs->query('author');
 		} elseif (get_query_var('minute') && get_query_var('hour')) {
-			$this->breadcrumbs->query('MinuteHour');
+			$this->breadcrumbs->query('minute-hour');
 		} elseif (get_query_var('minute')) {
-			$this->breadcrumbs->query('Minute');
+			$this->breadcrumbs->query('minute');
 		} elseif (get_query_var('hour')) {
-			$this->breadcrumbs->query('Hour');
+			$this->breadcrumbs->query('hour');
 		} elseif (is_day()) {
-			$this->breadcrumbs->query('Day');
+			$this->breadcrumbs->query('day');
 		} elseif (get_query_var('week')) {
-			$this->breadcrumbs->query('Week');
+			$this->breadcrumbs->query('week');
 		} elseif (is_month()) {
-			$this->breadcrumbs->query('Month');
+			$this->breadcrumbs->query('month');
 		} elseif (is_year()) {
-			$this->breadcrumbs->query('Year');
+			$this->breadcrumbs->query('year');
 		} else {
-			// Build network crumbs.
-			$this->breadcrumbs->build('Network');
-
-			// Add site home crumb.
-			$this->breadcrumbs->crumb('Home');
+			$this->breadcrumbs->build('home');
 
 			// Build rewrite front crumbs if date/time query.
 			if (is_date() || is_time()) {
-				$this->breadcrumbs->build('RewriteFront');
+				$this->breadcrumbs->build('rewrite-front');
 			}
 
-			// Add archive crumb.
-			$this->breadcrumbs->crumb('Archive');
-
-			// Build paged crumbs.
-			$this->breadcrumbs->build('Paged');
+			$this->breadcrumbs->crumb('archive');
+			$this->breadcrumbs->build('paged');
 		}
 	}
 }

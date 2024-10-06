@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Network build class.
+ * Home build class.
  *
- * This class builds out breadcrumbs to point to the main site in multisite.
+ * This class builds out breadcrumbs to point to either the network home path
+ * or the single site home.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -13,7 +14,7 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-class Network extends Base
+class Home extends Base
 {
 	public function make(): void
 	{
@@ -23,6 +24,9 @@ class Network extends Base
 			&& ! is_main_site()
 		) {
 			$this->breadcrumbs->crumb('network');
+			$this->breadcrumbs->crumb('network-site');
+		} else {
+			$this->breadcrumbs->crumb('home');
 		}
 	}
 }

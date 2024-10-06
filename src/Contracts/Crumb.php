@@ -17,29 +17,21 @@ interface Crumb
 {
 	/**
 	 * Returns a type for the crumb.
-	 *
-	 * @since 1.0.0
 	 */
 	public function type(): string;
 
 	/**
 	 * Returns a text label for the crumb.
-	 *
-	 * @since 1.0.0
 	 */
 	public function label(): string;
 
 	/**
 	 * Returns a URL for the crumb.
-	 *
-	 * @since 1.0.0
 	 */
 	public function url(): string;
 
 	/**
 	 * Returns whether the crumb should be visually hidden on display.
-	 *
-	 * @since 1.0.0
 	 */
 	public function visuallyHidden(): bool;
 }

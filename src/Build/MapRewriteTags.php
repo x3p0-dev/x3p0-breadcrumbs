@@ -16,27 +16,17 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
+use WP_Post;
 use WP_User;
+use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class MapRewriteTags extends Base
 {
-	/**
-	 * Post object.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    \WP_Post
-	 */
-	protected $post;
-
-	/**
-	 * Permalink structure or path with possible `%tag%` names in it.
-	 *
-	 * @since  1.0.0
-	 * @access protected
-	 * @var    string
-	 */
-	protected $path = '';
+	public function __construct(
+		protected Breadcrumbs $breadcrumbs,
+		protected WP_Post $post,
+		protected string $path = ''
+	) {}
 
 	/**
 	 * Builds the breadcrumbs.
@@ -46,15 +36,16 @@ class MapRewriteTags extends Base
 	public function make(): void
 	{
 		// Bail early if rewrite tag mapping is disabled.
-		if ('post' === $this->post->post_type && ! $this->breadcrumbs->option('post_rewrite_tags')) {
+		if (
+			'post' === $this->post->post_type
+			&& ! $this->breadcrumbs->option('post_rewrite_tags')
+		) {
 			return;
 		}
 
-		// Trim '/' from both sides of `$this->path`.
-		$path = trim($this->path, '/');
-
-		// Split the $path into an array of strings.
-		$matches = explode('/', $path);
+		// Trim '/' from both sides of `$this->path` and split into an
+		// array of strings.
+		$matches = explode('/', trim($this->path, '/'));
 
 		// Bail if no matches are found.
 		if (! $matches) {
@@ -63,31 +54,35 @@ class MapRewriteTags extends Base
 
 		// Loop through each of the matches, adding each to the $trail array.
 		foreach ($matches as $tag) {
-			// If using the %year% tag, add a link to the yearly archive.
-			if ('%year%' == $tag) {
-				$this->breadcrumbs->crumb('Year', [ 'post' => $this->post ]);
-
-			// If using the %monthnum% tag, add a link to the monthly archive.
-			} elseif ('%monthnum%' == $tag) {
-				$this->breadcrumbs->crumb('Month', [ 'post' => $this->post ]);
-
-			// If using the %day% tag, add a link to the daily archive.
-			} elseif ('%day%' == $tag) {
-				$this->breadcrumbs->crumb('Day', [ 'post' => $this->post ]);
-
-			// If using the %author% tag, add a link to the post author archive.
-			} elseif ('%author%' == $tag) {
-				$this->breadcrumbs->crumb('Author', [
+			$found_tag = match ($tag) {
+				'%year%' => $this->breadcrumbs->crumb('year', [
+					'post' => $this->post
+				]),
+				'%monthnum%' => $this->breadcrumbs->crumb('month', [
+					'post' => $this->post
+				]),
+				'%day%' => $this->breadcrumbs->crumb('day', [
+					'post' => $this->post
+				]),
+				'%author' => $this->breadcrumbs->crumb('author', [
 					'user' => new WP_User($this->post->post_author)
-				]);
+				]),
+				default => false
+			};
 
-			// If using the %category% tag, add a link to the first
-			// category archive to match permalinks.
-			} elseif (taxonomy_exists(trim($tag, '%')) && $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type)) {
-				// Build post terms crumbs.
-				$this->breadcrumbs->build('PostTerms', [
+			if ($found_tag) {
+				continue;
+			}
+
+			$tag = trim($tag, '%');
+
+			if (
+				taxonomy_exists($tag)
+				&& $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type)
+			) {
+				$this->breadcrumbs->build('post-terms', [
 					'post'     => $this->post,
-					'taxonomy' => trim($tag, '%')
+					'taxonomy' => get_taxonomy($tag)
 				]);
 			}
 		}

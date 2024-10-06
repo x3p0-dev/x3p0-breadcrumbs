@@ -49,6 +49,11 @@ class Html implements Markup
 			'item_content_class' => 'breadcrumbs__crumb-content',
 			'item_label_class'   => 'breadcrumbs__crumb-label'
 		]);
+
+		$this->options = apply_filters(
+			'x3p0/breadcrumbs/markup/config',
+			$this->options
+		);
 	}
 
 	public function option(string $name): mixed

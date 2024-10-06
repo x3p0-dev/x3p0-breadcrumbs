@@ -4,8 +4,8 @@ Contributors: greenshady
 Donate link: https://themehybrid.com/donate
 Tags: breadcrumbs, navigation, menu
 Requires at least: 6.3
-Tested up to: 6.3
-Requires PHP: 7.4
+Tested up to: 6.7
+Requires PHP: 8.0
 Stable tag: 1.0.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -24,8 +24,11 @@ For **block themes**, you can insert it into any template or template part via t
 
 For **classic themes**, you must manually add the PHP code to your theme to call the breadcrumb trail like so:
 
-	<?php if ( class_exists( '\X3P0\Breadcrumbs\Trail' ) ) {
-		\X3P0\Breadcrumbs\Trail::display();
+	<?php if (class_exists('\X3P0\Breadcrumbs\Breadcrumbs')) {
+		$environment = new \X3P0\Breadcrumbs\Environment\Environment();
+		$breadcrumbs = new \X3P0\Breadcrumbs\Breadcrumbs($environment);
+		$markup      = new \X3P0\Breadcrumbs\Markup\Microdata($breadcrumbs);
+		echo $markup->render();
 	} ?>
 
 ### How It Works

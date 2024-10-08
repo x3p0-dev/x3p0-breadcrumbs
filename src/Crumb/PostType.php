@@ -21,7 +21,7 @@ class PostType extends Base
 	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
-		protected WP_Post_Type $post_type
+		protected WP_Post_Type $type
 	) {}
 
 	/**
@@ -29,16 +29,14 @@ class PostType extends Base
 	 */
 	public function label(): string
 	{
-		if (is_post_type_archive($this->post_type->name)) {
+		if (is_post_type_archive($this->type->name)) {
 			return post_type_archive_title('', false);
 		}
 
-		$labels = $this->post_type->labels;
-
 		return apply_filters(
 			'post_type_archive_title', // Core WP filter hook.
-			! empty($labels->archive_title) ? $labels->archive_title : $labels->name,
-			$this->post_type->name
+			$this->type->labels->name,
+			$this->type->name
 		);
 	}
 
@@ -47,6 +45,6 @@ class PostType extends Base
 	 */
 	public function url(): string
 	{
-		return get_post_type_archive_link($this->post_type->name);
+		return get_post_type_archive_link($this->type->name);
 	}
 }

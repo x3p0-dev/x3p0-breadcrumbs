@@ -18,9 +18,12 @@ use X3P0\Breadcrumbs\Crumb\PostType;
 
 class PostTypeArchive extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
-		protected ?WP_Post_Type $post_type = null,
+		protected ?WP_Post_Type $type = null,
 		protected ?WP_User $user = null
 	) {}
 
@@ -29,7 +32,7 @@ class PostTypeArchive extends Base
 	 */
 	public function make(): void
 	{
-		$type = $this->post_type ?: get_post_type_object(get_query_var('post_type'));
+		$type = $this->type ?: get_post_type_object(get_query_var('post_type'));
 
 		$done_post_type = false;
 

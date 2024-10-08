@@ -33,17 +33,17 @@ class PostTerms extends Base
 	 */
 	public function make(): void
 	{
-		// Get the post categories.
+		// Get the post terms for the given taxonomy.
 		$terms = get_the_terms($this->post->ID, $this->taxonomy->name);
 
-		// Check that categories were returned.
+		// Check that terms were returned.
 		if ($terms && ! is_wp_error($terms)) {
-			// Sort the terms by ID and get the first category.
+			// Sort the terms by ID and get the first term.
 			$terms = wp_list_sort($terms, 'term_id');
+			$term  = get_term($terms[0], $this->taxonomy->name);
 
-			$term = get_term($terms[0], $this->taxonomy->name);
-
-			// If the category has a parent, add the hierarchy to the trail.
+			// If the term has a parent, add its ancestor crumbs to
+			// the breadcrumb trail.
 			if (0 < $term->parent) {
 				$this->breadcrumbs->build('term-ancestors', [
 					'term' => $term

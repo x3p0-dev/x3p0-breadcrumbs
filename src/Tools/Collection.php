@@ -3,11 +3,6 @@
 /**
  * Collection class.
  *
- * This file houses the `Collection` class, which is a class used for storing
- * collections of data. Generally speaking, it was built for storing an
- * array of key/value pairs. Values can be any type of value. Keys should
- * be named rather than numeric if you need easy access.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024, Justin Tadlock
  * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
@@ -19,6 +14,11 @@ namespace X3P0\Breadcrumbs\Tools;
 use ArrayObject;
 use JsonSerializable;
 
+/**
+ * The `Collection` class is used for storing collections of data. Generally
+ * speaking, it was built for storing an array of key/value pairs. Values can be
+ * any type of value. Keys should be named rather than numeric for easy access.
+ */
 class Collection extends ArrayObject implements JsonSerializable
 {
 	/**

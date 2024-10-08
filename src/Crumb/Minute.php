@@ -3,8 +3,6 @@
 /**
  * Minute crumb class.
  *
- * Creates the minute archive crumb.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -18,11 +16,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class Minute extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected ?WP_Post $post = null
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		return sprintf(

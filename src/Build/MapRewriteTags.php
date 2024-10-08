@@ -22,6 +22,9 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class MapRewriteTags extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Post $post,
@@ -29,9 +32,7 @@ class MapRewriteTags extends Base
 	) {}
 
 	/**
-	 * Builds the breadcrumbs.
-	 *
-	 * @since 1.0.0
+	 * {@inheritdoc}
 	 */
 	public function make(): void
 	{

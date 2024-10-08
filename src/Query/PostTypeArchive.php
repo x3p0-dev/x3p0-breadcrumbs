@@ -3,9 +3,6 @@
 /**
  * Post type archive query class.
  *
- * Called to build breadcrumbs on post type archive pages. Note that the `Home`
- * query class should be used for the posts page.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -27,6 +24,9 @@ class PostTypeArchive extends Base
 		protected ?WP_User $user = null
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		$type = $this->post_type ?: get_post_type_object(get_query_var('post_type'));

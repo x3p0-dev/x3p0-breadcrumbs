@@ -3,8 +3,6 @@
 /**
  * Taxonomy query class.
  *
- * Called to build breadcrumbs on taxonomy (term) archive pages.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -18,11 +16,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class Tax extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected ?WP_Term $term = null
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		$term = $this->term ?: get_queried_object();

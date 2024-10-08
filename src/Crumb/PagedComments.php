@@ -3,8 +3,6 @@
 /**
  * Paged comments crumb class.
  *
- * Creates the paged comments crumb.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -15,6 +13,9 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 class PagedComments extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		return sprintf(

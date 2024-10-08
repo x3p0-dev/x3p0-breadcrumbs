@@ -19,11 +19,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class PostAncestors extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Post $post
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		$post    = $this->post;

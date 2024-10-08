@@ -20,6 +20,8 @@ namespace X3P0\Breadcrumbs\Build;
 class RewriteFront extends Base
 {
 	/**
+	 * {@inheritdoc}
+	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
 	public function make(): void

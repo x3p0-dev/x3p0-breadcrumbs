@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Block class registers and renders the block type on the front end.
+ * Breadcrumbs block class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023, Justin Tadlock
@@ -15,10 +15,14 @@ use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 
+/**
+ * The block class registers and renders the block type on the front end.
+ */
 class Block implements Bootable
 {
 	/**
-	 * Sets up object state.
+	 * Sets up object state. Note that the `$path` property should point to
+	 * the plugin's root folder.
 	 */
 	public function __construct(protected string $path)
 	{}
@@ -64,7 +68,10 @@ class Block implements Bootable
 		$justify_class = '';
 
 		// If there is a selected home prefix, define the class.
-		if (! empty($attributes['homePrefix']) && ! empty($attributes['homePrefixType'])) {
+		if (
+			! empty($attributes['homePrefix'])
+			&& ! empty($attributes['homePrefixType'])
+		) {
 			$home_class = sprintf(
 				'has-home-%s-%s',
 				$attributes['homePrefixType'],
@@ -78,7 +85,10 @@ class Block implements Bootable
 		}
 
 		// If there's a selected separator, define the class for it.
-		if (! empty($attributes['separator']) && ! empty($attributes['separatorType'])) {
+		if (
+			! empty($attributes['separator'])
+			&& ! empty($attributes['separatorType'])
+		) {
 			$sep_class = sprintf(
 				'has-sep-%s-%s',
 				$attributes['separatorType'],

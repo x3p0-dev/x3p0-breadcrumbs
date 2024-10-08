@@ -18,11 +18,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class MinuteHour extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected ?WP_Post $post = null
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		return sprintf(

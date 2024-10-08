@@ -20,11 +20,17 @@ use X3P0\Breadcrumbs\Crumb\PostType;
 
 class PostHierarchy extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Post $post
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		// Get the post type.

@@ -29,6 +29,11 @@ class Html implements Markup
 		'b'       => true
 	];
 
+	/**
+	 * Creates a new markup object. The constructor requires a `Breadcrumbs`
+	 * implementation and an optional array of arguments for configuring the
+	 * generated markup.
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected array $options
@@ -56,11 +61,17 @@ class Html implements Markup
 		);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function option(string $name): mixed
 	{
 		return isset($this->options[$name]) ? $this->options[$name] : null;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function render(): string
 	{
 		$html = $container = $list = $title = '';

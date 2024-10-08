@@ -11,12 +11,15 @@
 
 namespace X3P0\Breadcrumbs;
 
+/**
+ * A simple PSR-4-compliant autoloader for loading the plugin's classes.
+ *
+ * @link https://www.php-fig.org/psr/psr-4/
+ */
 class Autoload
 {
 	/**
 	 * Register the autoloader.
-	 *
-	 * @since 1.0.0
 	 */
 	public static function register(): bool
 	{
@@ -25,8 +28,6 @@ class Autoload
 
 	/**
 	 * Autoloads class if it's in the theme's namespace.
-	 *
-	 * @since 1.0.0
 	 */
 	public static function autoload(string $class): void
 	{

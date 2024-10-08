@@ -3,8 +3,6 @@
 /**
  * Term crumb class.
  *
- * Creates the term crumb.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -18,23 +16,36 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class Term extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Term $term
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		$tax     = $this->term->taxonomy;
 		$term_id = $this->term->term_id;
 
-		if (is_tax($tax, $term_id) || is_category($term_id) || is_tag($term_id)) {
+		if (
+			is_tax($tax, $term_id)
+			|| is_category($term_id)
+			|| is_tag($term_id)
+		) {
 			return single_term_title('', false);
 		}
 
 		return $this->term->name;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function url(): string
 	{
 		return get_term_link($this->term, $this->term->taxonomy);

@@ -3,9 +3,6 @@
 /**
  * Paged Query Block crumb class.
  *
- * Creates the paged crumb when a Query Loop block doesn't inherit from the
- * current query but is paged.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -18,6 +15,9 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class PagedQueryBlock extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		return sprintf(

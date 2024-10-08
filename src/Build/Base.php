@@ -3,11 +3,6 @@
 /**
  * Build class.
  *
- * This is the base class, which should be sub-classed, for creating a specific
- * breadcrumb build tools. Build classes are essentially tools/methods for
- * handling specific scenarios. Quite often, they are the workhorses of the
- * project and create many of the crumbs.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -19,14 +14,19 @@ namespace X3P0\Breadcrumbs\Build;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Build;
 
+/**
+ * Implements the `Build` interface and creates a custom build object.
+ */
 abstract class Base implements Build
 {
+	/**
+	 * Creates a new query object.
+	 */
 	public function __construct(protected Breadcrumbs $breadcrumbs)
 	{}
 
 	/**
-	 * This should be overwritten in a sub-class. It's where the work happens
-	 * to build out breadcrumbs.
+	 * {@inheritdoc}
 	 */
 	abstract public function make(): void;
 }

@@ -19,6 +19,9 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class PostTerms extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Post $post,
@@ -26,7 +29,7 @@ class PostTerms extends Base
 	) {}
 
 	/**
-	 * Builds the breadcrumbs.
+	 * {@inheritdoc}
 	 */
 	public function make(): void
 	{

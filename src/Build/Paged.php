@@ -19,6 +19,9 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class Paged extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		// If viewing a paged archive-type page.

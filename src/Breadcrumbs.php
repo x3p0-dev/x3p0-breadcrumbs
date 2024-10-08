@@ -13,6 +13,10 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Contracts;
 
+/**
+ * Implements the `Breadcrumbs` contract using using query classes to generate
+ * an array of breadcrumbs that can then be used to output a breadcrumb trail.
+ */
 class Breadcrumbs implements Contracts\Breadcrumbs
 {
 	/**
@@ -21,11 +25,13 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	protected array $crumbs = [];
 
 	/**
-	 * Creates a new breadcrumbs object.
+	 * Creates a new breadcrumbs object. The constructor requires an
+	 * `Environment` implementation and an optional array of arguments for
+	 * configuring the generated breadcrumbs.
 	 */
 	public function __construct(
 		protected Contracts\Environment $environment,
-		protected array $options
+		protected array $options = []
 	) {
 		$this->options = wp_parse_args($this->options, [
 			'labels'             => [],
@@ -51,13 +57,16 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 		);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function environment(): Contracts\Environment
 	{
 		return $this->environment;
 	}
 
 	/**
-	 * @return Contracts\Crumb[]
+	 * {@inheritdoc}
 	 */
 	public function all(): array
 	{
@@ -92,37 +101,33 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	}
 
 	/**
-	 * Creates a new `Query` object and runs its `make()` method.
+	 * {@inheritdoc}
 	 */
-	public function query(string $type, array $data = []): void
+	public function query(string $name, array $data = []): void
 	{
-		if ($query = $this->environment->getQuery($type)) {
-			(new $query($this, ...$data))->make();
-		}
+		$this->environment()->makeQuery($this, $name, $data);
 	}
 
 	/**
-	 * Creates a new `Builder` object and runs its `make()` method.
+	 * {@inheritdoc}
 	 */
-	public function build(string $type, array $data = []): void
+	public function build(string $name, array $data = []): void
 	{
-		if ($builder = $this->environment->getBuilder($type)) {
-			(new $builder($this, ...$data))->make();
-		}
+		$this->environment()->makeBuilder($this, $name, $data);
 	}
 
 	/**
-	 * Creates a new `Crumb` object and adds it to the array of crumbs.
+	 * {@inheritdoc}
 	 */
-	public function crumb(string $type, array $data = []): void
+	public function crumb(string $name, array $data = []): void
 	{
-		if ($crumb = $this->environment->getCrumb($type)) {
+		if ($crumb = $this->environment->getCrumb($name)) {
 			$this->crumbs[] = new $crumb($this, ...$data);
 		}
 	}
 
 	/**
-	 * Returns a specific option or `null` if the option doesn't exist.
+	 * {@inheritdoc}
 	 */
 	public function option(string $name): mixed
 	{
@@ -130,7 +135,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	}
 
 	/**
-	 * Returns a specific label or an empty string if it doesn't exist.
+	 * {@inheritdoc}
 	 */
 	public function label(string $name): string
 	{
@@ -139,7 +144,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	}
 
 	/**
-	 * Returns a specific post taxonomy or an empty string if one isn't set.
+	 * {@inheritdoc}
 	 */
 	public function postTaxonomy(string $post_type): string
 	{

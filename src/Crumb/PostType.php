@@ -3,8 +3,6 @@
 /**
  * Post type crumb class.
  *
- * Creates the post type archive crumb.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -18,11 +16,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class PostType extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Post_Type $post_type
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function label(): string
 	{
 		if (is_post_type_archive($this->post_type->name)) {
@@ -38,6 +42,9 @@ class PostType extends Base
 		);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function url(): string
 	{
 		return get_post_type_archive_link($this->post_type->name);

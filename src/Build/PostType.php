@@ -19,12 +19,17 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 class PostType extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected ?WP_Post_Type $post_type = null
 	) {}
 
 	/**
+	 * {@inheritdoc}
+	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
 	public function make(): void

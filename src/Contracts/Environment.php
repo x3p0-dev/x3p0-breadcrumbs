@@ -18,6 +18,28 @@ namespace X3P0\Breadcrumbs\Contracts;
 interface Environment
 {
 	/**
+	 * Resolves a query that implements the `Query` interface if it exists.
+	 * The `$data` parameter is meant to be an array of arguments to pass
+	 * into `Query` class constructors.
+	 */
+	public function makeQuery(
+		Breadcrumbs $breadcrumbs,
+		string $name,
+		array $data = []
+	): void;
+
+	/**
+	 * Resolves a query that implements the `Build` interface if it exists.
+	 * The `$data` parameter is meant to be an array of arguments to pass
+	 * into `Builder` class constructors.
+	 */
+	public function makeBuilder(
+		Breadcrumbs $breadcrumbs,
+		string $name,
+		array $data = []
+	): void;
+
+	/**
 	 * Adds a query to the environment. The `$query` parameter is expected
 	 * to be a class that implements the `Query` interface.
 	 *

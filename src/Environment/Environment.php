@@ -15,12 +15,35 @@ use X3P0\Breadcrumbs\Contracts;
 use X3P0\Breadcrumbs\Tools\Collection;
 use X3P0\Breadcrumbs\{Build, Crumb, Query};
 
+/**
+ * The default implementation of the `Environment` interface. It is the backbone
+ * of generating breadcrumbs and is responsible for setting up the default query,
+ * builder, and crumb classes.
+ */
 class Environment implements Contracts\Environment
 {
+	/**
+	 * Houses a `Collection` class where the keys are the query name and the
+	 * values are the class names for implementing the `Query` interface.
+	 */
 	protected Collection $queries;
+
+	/**
+	 * Houses a `Collection` class where the keys are the builder name and the
+	 * values are the class names for implementing the `Build` interface.
+	 */
 	protected Collection $builders;
+
+	/**
+	 * Houses a `Collection` class where the keys are the crumb name and the
+	 * values are the class names for implementing the `Crumb` interface.
+	 */
 	protected Collection $crumbs;
 
+	/**
+	 * Builds a new environment by creating empty collections for queries,
+	 * builders, and crumbs. It then registers the defaults.
+	 */
 	public function __construct()
 	{
 		$this->queries  = new Collection();
@@ -32,6 +55,35 @@ class Environment implements Contracts\Environment
 		$this->registerDefaultCrumbs();
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function makeQuery(
+		Contracts\Breadcrumbs $breadcrumbs,
+		string $name,
+		array $data = []
+	): void {
+		if ($query = $this->getQuery($name)) {
+			(new $query($breadcrumbs, ...$data))->make();
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function makeBuilder(
+		Contracts\Breadcrumbs $breadcrumbs,
+		string $name,
+		array $data = []
+	): void {
+		if ($builder = $this->getBuilder($name)) {
+			(new $builder($breadcrumbs, ...$data))->make();
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function addQuery(string $name, string $query): void
 	{
 		if (is_subclass_of(Contracts\Query::class, $query)) {
@@ -39,6 +91,9 @@ class Environment implements Contracts\Environment
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function addBuilder(string $name, string $builder): void
 	{
 		if (is_subclass_of(Contracts\Build::class, $builder)) {
@@ -46,6 +101,9 @@ class Environment implements Contracts\Environment
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function addCrumb(string $name, string $crumb): void
 	{
 		if (is_subclass_of(Contracts\Crumb::class, $crumb)) {
@@ -53,36 +111,57 @@ class Environment implements Contracts\Environment
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getQuery(string $name): ?string
 	{
 		return $this->queries->has($name) ? $this->queries->get($name) : null;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getBuilder(string $name): ?string
 	{
 		return $this->builders->has($name) ? $this->builders->get($name) : null;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getCrumb(string $name): ?string
 	{
 		return $this->crumbs->has($name) ? $this->crumbs->get($name) : null;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function hasQuery(string $name): bool
 	{
 		return $this->queries->has($name);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function hasBuilder(string $name): bool
 	{
 		return $this->builders->has($name);
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function hasCrumb(string $name): bool
 	{
 		return $this->crumbs->has($name);
 	}
 
+	/**
+	 * Registers the default query classes with the environment.
+	 */
 	private function registerDefaultQueries(): void
 	{
 		$defaults = [
@@ -112,6 +191,9 @@ class Environment implements Contracts\Environment
 		do_action('x3p0/breadcrumbs/queries', $this->queries);
 	}
 
+	/**
+	 * Registers the default builder classes with the environment.
+	 */
 	private function registerDefaultBuilders(): void
 	{
 		$defaults = [
@@ -137,6 +219,9 @@ class Environment implements Contracts\Environment
 		do_action('x3p0/breadcrumbs/builders', $this->builders);
 	}
 
+	/**
+	 * Registers the default crumb classes with the environment.
+	 */
 	private function registerDefaultCrumbs(): void
 	{
 		$defaults = [

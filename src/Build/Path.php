@@ -19,11 +19,17 @@ use X3P0\Breadcrumbs\Util\Helpers;
 
 class Path extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected string $path = ''
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		if (! $path = trim($this->path, '/')) {

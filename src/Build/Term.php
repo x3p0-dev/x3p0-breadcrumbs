@@ -19,11 +19,17 @@ use X3P0\Breadcrumbs\Crumb\PostType;
 
 class Term extends Base
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct(
 		protected Breadcrumbs $breadcrumbs,
 		protected WP_Term $term
 	) {}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function make(): void
 	{
 		$taxonomy       = get_taxonomy($this->term->taxonomy);

@@ -15,6 +15,9 @@ use X3P0\Breadcrumbs\Contracts\Crumb;
 
 class Rdfa extends Html
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	public function render(): string
 	{
 		$html = $container = $list = $title = '';
@@ -78,7 +81,7 @@ class Rdfa extends Html
 	}
 
 	/**
-	 * Renders the markup for an individual crumb item.
+	 * {@inheritdoc}
 	 */
 	private function renderCrumb(Crumb $crumb, int $count, int $position): string
 	{

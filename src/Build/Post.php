@@ -54,5 +54,8 @@ class Post extends Base
 				)
 			]);
 		}
+
+		// Build the post crumb.
+		$this->breadcrumbs->crumb('post', [ 'post' => $this->post ]);
 	}
 }

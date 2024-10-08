@@ -72,5 +72,8 @@ class Term extends Base
 		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
 			$this->breadcrumbs->build('term-ancestors', [ 'term' => $this->term ]);
 		}
+
+		// Build the term crumb.
+		$this->breadcrumbs->crumb('term', [ 'term' => $this->term ]);
 	}
 }

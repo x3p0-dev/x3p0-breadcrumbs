@@ -33,7 +33,6 @@ class Singular extends Base
 
 		$this->breadcrumbs->build('home');
 		$this->breadcrumbs->build('post', [ 'post' => $post ]);
-		$this->breadcrumbs->crumb('post', [ 'post' => $post ]);
 		$this->breadcrumbs->build('paged');
 	}
 }

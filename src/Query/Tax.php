@@ -33,7 +33,6 @@ class Tax extends Base
 
 		$this->breadcrumbs->build('home');
 		$this->breadcrumbs->build('term', [ 'term' => $term ]);
-		$this->breadcrumbs->crumb('term', [ 'term' => $term ]);
 		$this->breadcrumbs->build('paged');
 	}
 }

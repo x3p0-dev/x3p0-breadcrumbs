@@ -1,12 +1,7 @@
 <?php
 
 /**
- * Map rewrite tags Builder class.
- *
- * This class accepts a permalink structure and attempts to map any rewrite tags
- * like `%tag%` to a breadcrumb. This is used with any post type.  It maps the
- * core WP `%year%`, `%monthnum%`, `%day%`, and `%author` tags. It will also map
- * any taxonomy tags.
+ * Post rewrite tags Builder class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -20,7 +15,13 @@ use WP_Post;
 use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class MapRewriteTags extends Builder
+/**
+ * This class accepts a permalink structure and attempts to map any rewrite tags
+ * like `%tag%` to a breadcrumb. This is used with any post type.  It maps the
+ * core WP `%year%`, `%monthnum%`, `%day%`, and `%author` tags. It will also map
+ * any taxonomy tags.
+ */
+class PostRewriteTags extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -36,41 +37,36 @@ class MapRewriteTags extends Builder
 	 */
 	public function make(): void
 	{
-		// Bail early if rewrite tag mapping is disabled.
+		// Bail early if rewrite tag mapping is disabled or no segments
+		// are found in the path.
 		if (
-			'post' === $this->post->post_type
-			&& ! $this->breadcrumbs->option('post_rewrite_tags')
+			! $this->breadcrumbs->mapRewriteTags($this->post->post_type)
+			|| ! $segments = explode('/', trim($this->path, '/'))
 		) {
 			return;
 		}
 
-		// Split the path into segments and bail early if none found.
-		if (! $segments = explode('/', trim($this->path, '/'))) {
-			return;
-		}
-
 		foreach ($segments as $tag) {
-			$this->mapTag(trim($tag, '%'));
+			$this->mapTag($tag);
 		}
 	}
 
 	/**
-	 * Maps a rewrite tag (with the `%` characters trimmed) to a crumb or
-	 * builder implementation.
+	 * Maps a rewrite tag to a crumb or builder implementation.
 	 */
 	private function mapTag(string $tag): void
 	{
 		match ($tag) {
-			'year' => $this->breadcrumbs->crumb('year', [
+			'%year%' => $this->breadcrumbs->crumb('year', [
 				'post' => $this->post
 			]),
-			'monthnum' => $this->breadcrumbs->crumb('month', [
+			'%monthnum%' => $this->breadcrumbs->crumb('month', [
 				'post' => $this->post
 			]),
-			'day' => $this->breadcrumbs->crumb('day', [
+			'%day%' => $this->breadcrumbs->crumb('day', [
 				'post' => $this->post
 			]),
-			'author' => $this->breadcrumbs->crumb('author', [
+			'%author%' => $this->breadcrumbs->crumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),
 			$this->isTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
@@ -82,12 +78,17 @@ class MapRewriteTags extends Builder
 	}
 
 	/**
-	 * Helper function to determine whether a rewrite tag (with the `%`
-	 * characters trimmed) is a taxonomy and not already being used as part
-	 * of the breadcrumb trail.
+	 * Helper function to determine whether a rewrite tag is a taxonomy and
+	 * not already being used as part of the breadcrumb trail.
 	 */
 	private function isTaxonomy(string $tag): bool
 	{
+		if (! str_starts_with($tag, '%') || ! str_ends_with($tag, '%')) {
+			return false;
+		}
+
+		$tag = trim($tag, '%');
+
 		return taxonomy_exists($tag)
 			&& $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type);
 	}

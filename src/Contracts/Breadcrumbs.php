@@ -45,6 +45,11 @@ interface Breadcrumbs
 	public function label(string $name): string;
 
 	/**
+	 * Determines whether to map the rewrite tags for a specific post type.
+	 */
+	public function mapRewriteTags(string $post_type): bool;
+
+	/**
 	 * Returns a specific post taxonomy or an empty string if one isn't set.
 	 */
 	public function postTaxonomy(string $post_type): string;

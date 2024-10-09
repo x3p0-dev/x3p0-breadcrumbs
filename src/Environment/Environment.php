@@ -171,19 +171,19 @@ class Environment implements Contracts\Environment
 	private function registerDefaultBuilders(): void
 	{
 		$defaults = [
-			'home'             => Builder\Home::class,
-			'map-rewrite-tags' => Builder\MapRewriteTags::class,
-			'network'          => Builder\Network::class,
-			'paged'            => Builder\Paged::class,
-			'path'             => Builder\Path::class,
-			'post'             => Builder\Post::class,
-			'post-ancestors'   => Builder\PostAncestors::class,
-			'post-hierarchy'   => Builder\PostHierarchy::class,
-			'post-terms'       => Builder\PostTerms::class,
-			'post-type'        => Builder\PostType::class,
-			'rewrite-front'    => Builder\RewriteFront::class,
-			'term'             => Builder\Term::class,
-			'term-ancestors'   => Builder\TermAncestors::class
+			'home'              => Builder\Home::class,
+			'network'           => Builder\Network::class,
+			'paged'             => Builder\Paged::class,
+			'path'              => Builder\Path::class,
+			'post'              => Builder\Post::class,
+			'post-ancestors'    => Builder\PostAncestors::class,
+			'post-hierarchy'    => Builder\PostHierarchy::class,
+			'post-rewrite-tags' => Builder\PostRewriteTags::class,
+			'post-terms'        => Builder\PostTerms::class,
+			'post-type'         => Builder\PostType::class,
+			'rewrite-front'     => Builder\RewriteFront::class,
+			'term'              => Builder\Term::class,
+			'term-ancestors'    => Builder\TermAncestors::class
 		];
 
 		foreach ($defaults as $name => $class) {

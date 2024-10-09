@@ -34,16 +34,21 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 		protected array $options = []
 	) {
 		$this->options = wp_parse_args($this->options, [
-			'labels'             => [],
-			'post_taxonomy'      => [],
-			'network'            => false,
-			'post_rewrite_tags'  => true,
-			'show_home_label'    => true
+			'labels'           => [],
+			'map_rewrite_tags' => [],
+			'post_taxonomy'    => [],
+			'network'          => false,
+			'show_home_label'  => true
 		]);
 
 		$this->options['labels'] = wp_parse_args(
 			$this->options['labels'],
 			$this->defaultLabels()
+		);
+
+		$this->options['map_rewrite_tags'] = wp_parse_args(
+			$this->options['map_rewrite_tags'],
+			$this->defaultRewriteTags()
 		);
 
 		$this->options['post_taxonomy'] = wp_parse_args(
@@ -150,6 +155,15 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	/**
 	 * {@inheritdoc}
 	 */
+	public function mapRewriteTags(string $post_type): bool
+	{
+		$mappings = $this->option('map_rewrite_tags');
+		return $mappings[$post_type] ?? true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function postTaxonomy(string $post_type): string
 	{
 		$taxes = $this->option('post_taxonomy');
@@ -187,6 +201,17 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 			'archive_year'        => '%s',
 		];
 		// phpcs:enable
+	}
+
+	/**
+	 * Returns an array of the default post rewrite tag settings. Array keys
+	 * should be the post type and array values a boolean that sets whether
+	 * the rewrite tags should be mapped for the permalink structure as
+	 * breadcrumbs.
+	 */
+	protected function defaultRewriteTags(): array
+	{
+		return [ 'post' => true ];
 	}
 
 	/**

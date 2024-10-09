@@ -51,9 +51,9 @@ class Block implements Bootable
 	public function render(array $attributes): string
 	{
 		$breadcrumb_options = [
-			'labels'	    => [ 'title' => '' ],
-			'post_taxonomy'     => [ 'post' => 'category' ],
-			'post_rewrite_tags' => false,
+			'labels'	   => [ 'title' => '' ],
+			'post_taxonomy'    => [ 'post' => 'category' ],
+			'map_rewrite_tags' => [ 'post' => false ],
 		];
 
 		$markup_options = [

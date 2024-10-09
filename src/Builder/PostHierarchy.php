@@ -43,7 +43,7 @@ class PostHierarchy extends Builder
 			$this->breadcrumbs->build('rewrite-front');
 
 			// Map the rewrite tags.
-			$this->breadcrumbs->build('map-rewrite-tags', [
+			$this->breadcrumbs->build('post-rewrite-tags', [
 				'post' => $this->post,
 				'path' => get_option('permalink_structure')
 			]);
@@ -84,7 +84,7 @@ class PostHierarchy extends Builder
 
 		// Map the rewrite tags if there's a `%` in the slug.
 		if ($rewrite && false !== strpos($rewrite['slug'], '%')) {
-			$this->breadcrumbs->build('map-rewrite-tags', [
+			$this->breadcrumbs->build('post-rewrite-tags', [
 				'post' => $this->post,
 				'path' => $rewrite['slug']
 			]);

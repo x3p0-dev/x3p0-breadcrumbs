@@ -55,37 +55,38 @@ class MapRewriteTags extends Build
 
 		// Loop through each of the matches, adding each to the $trail array.
 		foreach ($matches as $tag) {
-			$found_tag = match ($tag) {
-				'%year%' => $this->breadcrumbs->crumb('year', [
+			$tag = trim($tag, '%');
+
+			match ($tag) {
+				'year' => $this->breadcrumbs->crumb('year', [
 					'post' => $this->post
 				]),
-				'%monthnum%' => $this->breadcrumbs->crumb('month', [
+				'monthnum' => $this->breadcrumbs->crumb('month', [
 					'post' => $this->post
 				]),
-				'%day%' => $this->breadcrumbs->crumb('day', [
+				'day' => $this->breadcrumbs->crumb('day', [
 					'post' => $this->post
 				]),
-				'%author' => $this->breadcrumbs->crumb('author', [
+				'author' => $this->breadcrumbs->crumb('author', [
 					'user' => new WP_User($this->post->post_author)
+				]),
+				$this->isTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
+					'post'     => $this->post,
+					'taxonomy' => get_taxonomy($tag)
 				]),
 				default => false
 			};
-
-			if ($found_tag) {
-				continue;
-			}
-
-			$tag = trim($tag, '%');
-
-			if (
-				taxonomy_exists($tag)
-				&& $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type)
-			) {
-				$this->breadcrumbs->build('post-terms', [
-					'post'     => $this->post,
-					'taxonomy' => get_taxonomy($tag)
-				]);
-			}
 		}
+	}
+
+	/**
+	 * Helper function to determine whether a rewrite tag (with the `%`
+	 * characters trimmed) is a taxonomy and not already being used as part
+	 * of the breadcrumb trail.
+	 */
+	private function isTaxonomy(string $tag): bool
+	{
+		return taxonomy_exists($tag)
+			&& $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type);
 	}
 }

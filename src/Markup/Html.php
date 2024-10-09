@@ -83,10 +83,6 @@ class Html implements Markup
 		return $crumbs;
 	}
 
-	protected function linkLastItem(): bool {
-		return ! $this->option('show_last_item');
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */

@@ -3,23 +3,22 @@
 /**
  * Helpers class.
  *
- * A static class with helper functions for performing some actions needed in
- * the library.
- *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Util;
+namespace X3P0\Breadcrumbs\Tools;
 
+/**
+ * A static class with helper functions for performing some actions needed in
+ * the library.
+ */
 class Helpers
 {
 	/**
-	 * Helper function for determining whether we're viewing a paginated page.
-	 *
-	 * @since 1.0.0
+	 * Determines whether we're viewing a paginated page.
 	 */
 	public static function isPagedView(): bool
 	{
@@ -30,10 +29,8 @@ class Helpers
 	}
 
 	/**
-	 * Helper function for determining whether we're viewing a page that has
-	 * a paginated Query Loop block.
-	 *
-	 * @since 1.0.0
+	 * Determines whether we're viewing a page that has a paginated Query
+	 * Loop block.
 	 */
 	public static function isPagedQueryBlock(): bool
 	{
@@ -44,8 +41,6 @@ class Helpers
 	 * Gets the current page number when there's a paginated Query Loop
 	 * block. WordPress doesn't have a conditional function for checking
 	 * this, and it is not available via `get_query_var()`.
-	 *
-	 * @since 1.0.0
 	 */
 	public static function getQueryBlockPage(): int
 	{
@@ -75,8 +70,6 @@ class Helpers
 	 * Gets post types by slug. This is needed because the `get_post_types()`
 	 * function doesn't exactly match the `has_archive` argument when it's
 	 * set as a string instead of a boolean.
-	 *
-	 * @since 1.0.0
 	 */
 	public static function getPostTypesBySlug(string $slug): array
 	{

@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Util\Helpers;
+use X3P0\Breadcrumbs\Tools\Helpers;
 
 class FrontPage extends Base
 {

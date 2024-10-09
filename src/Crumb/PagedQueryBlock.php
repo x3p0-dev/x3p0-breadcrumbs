@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Util\Helpers;
+use X3P0\Breadcrumbs\Tools\Helpers;
 
 class PagedQueryBlock extends Base
 {

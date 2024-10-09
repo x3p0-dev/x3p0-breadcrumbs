@@ -15,7 +15,7 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-use X3P0\Breadcrumbs\Util\Helpers;
+use X3P0\Breadcrumbs\Tools\Helpers;
 
 class Paged extends Base
 {

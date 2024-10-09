@@ -63,22 +63,6 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	}
 
 	/**
-	 * {@inheritdoc}
-	 */
-	public function environment(): Contracts\Environment
-	{
-		return $this->environment;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getCrumbs(): array
-	{
-		return [] === $this->crumbs ? $this->make()->crumbs : $this->crumbs;
-	}
-
-	/**
 	 * Runs through a series of conditionals based on the current WordPress
 	 * query. Once we figure out which page we're viewing, we create a new
 	 * `Query` object and let it build the breadcrumbs.
@@ -103,6 +87,22 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 
 		// Return the object for chaining methods.
 		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function environment(): Contracts\Environment
+	{
+		return $this->environment;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getCrumbs(): array
+	{
+		return [] === $this->crumbs ? $this->make()->crumbs : $this->crumbs;
 	}
 
 	/**

@@ -24,9 +24,4 @@ abstract class Base implements Build
 	 */
 	public function __construct(protected Breadcrumbs $breadcrumbs)
 	{}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function make(): void;
 }

@@ -44,14 +44,6 @@ abstract class Base implements Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
-	{
-		return '';
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function url(): string
 	{
 		return '';

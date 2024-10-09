@@ -24,9 +24,4 @@ abstract class Base implements Query
 	 */
 	public function __construct(protected Breadcrumbs $breadcrumbs)
 	{}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function make(): void;
 }

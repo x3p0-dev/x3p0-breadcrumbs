@@ -190,17 +190,14 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	}
 
 	/**
-	 * Returns an array of default post taxonomies.
+	 * Returns an array of default post taxonomies. By default, we're only
+	 * concerned with the Core `post` post type. If its permalink is set to
+	 * `%postname%`, use the `category` taxonomy.
 	 */
 	protected function defaultPostTaxonomies(): array
 	{
-		$defaults = [];
+		$structure = trim(get_option('permalink_structure'), '/');
 
-		// If post permalink is set to `%postname%`, use the `category` taxonomy.
-		if ('%postname%' === trim(get_option('permalink_structure'), '/')) {
-			$defaults['post'] = 'category';
-		}
-
-		return $defaults;
+		return '%postname%' === $structure ? [ 'post' => 'category' ] : [];
 	}
 }

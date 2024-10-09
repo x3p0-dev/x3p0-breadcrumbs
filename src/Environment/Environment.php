@@ -58,32 +58,6 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function makeQuery(
-		Contracts\Breadcrumbs $breadcrumbs,
-		string $name,
-		array $data = []
-	): void {
-		if ($query = $this->getQuery($name)) {
-			(new $query($breadcrumbs, ...$data))->make();
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function makeBuilder(
-		Contracts\Breadcrumbs $breadcrumbs,
-		string $name,
-		array $data = []
-	): void {
-		if ($builder = $this->getBuilder($name)) {
-			(new $builder($breadcrumbs, ...$data))->make();
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function addQuery(string $name, string $query): void
 	{
 		if (is_subclass_of(Contracts\Query::class, $query)) {

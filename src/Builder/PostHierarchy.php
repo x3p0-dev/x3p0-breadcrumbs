@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Post hierarchy build class.
+ * Post hierarchy Builder class.
  *
- * Builds breadcrumbs primarily based on the post type rewrite settings of the
+ * Builders breadcrumbs primarily based on the post type rewrite settings of the
  * given post.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
@@ -12,13 +12,13 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-class PostHierarchy extends Build
+class PostHierarchy extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -56,7 +56,7 @@ class PostHierarchy extends Build
 
 		// If the post type has rewrite rules.
 		if ($rewrite) {
-			// Build the rewrite front crumbs.
+			// Builder the rewrite front crumbs.
 			if ($rewrite['with_front']) {
 				$this->breadcrumbs->build('rewrite-front');
 			}

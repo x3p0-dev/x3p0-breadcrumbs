@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Term build class.
+ * Term Builder class.
  *
- * Builds breadcrumbs based on the given term object.
+ * Builders breadcrumbs based on the given term object.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -11,13 +11,13 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-class Term extends Build
+class Term extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -38,16 +38,16 @@ class Term extends Build
 		// Will either be `false` or an array.
 		$rewrite = $taxonomy->rewrite;
 
-		// Build rewrite front crumbs if taxonomy uses it.
+		// Builder rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
 			$this->breadcrumbs->build('rewrite-front');
 		}
 
-		// Build crumbs based on the rewrite slug.
+		// Builder crumbs based on the rewrite slug.
 		if ($rewrite && $rewrite['slug']) {
 			$path = trim($rewrite['slug'], '/');
 
-			// Build path crumbs.
+			// Builder path crumbs.
 			$this->breadcrumbs->build('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
@@ -73,7 +73,7 @@ class Term extends Build
 			$this->breadcrumbs->build('term-ancestors', [ 'term' => $this->term ]);
 		}
 
-		// Build the term crumb.
+		// Builder the term crumb.
 		$this->breadcrumbs->crumb('term', [ 'term' => $this->term ]);
 	}
 }

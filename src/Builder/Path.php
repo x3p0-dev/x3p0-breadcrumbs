@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Path build class.
+ * Path Builder class.
  *
- * Builds breadcrumbs based on a given path by attempting to find a post object
+ * Builders breadcrumbs based on a given path by attempting to find a post object
  * within that path.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
@@ -12,12 +12,12 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class Path extends Build
+class Path extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -57,7 +57,7 @@ class Path extends Build
 				// Get the parent post by the given path.
 				$post = get_page_by_path($slug);
 
-				// If a parent post is found, build the crumbs
+				// If a parent post is found, Builder the crumbs
 				// and break out of the loop.
 				if (! empty($post) && 0 < $post->ID) {
 					$this->breadcrumbs->build('post-ancestors', [
@@ -70,7 +70,7 @@ class Path extends Build
 
 					break;
 
-				// If the slug matches a post type, let's build
+				// If the slug matches a post type, let's Builder
 				// that and break out of the loop.
 				} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
 					$this->breadcrumbs->build('post-type', [

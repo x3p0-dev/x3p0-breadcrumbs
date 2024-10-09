@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Post ancestors build class.
+ * Post ancestors Builder class.
  *
- * Builds breadcrumbs based on whether a post has a parent post. It loops
+ * Builders breadcrumbs based on whether a post has a parent post. It loops
  * through each post until a parent post is no longer found.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
@@ -12,12 +12,12 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostAncestors extends Build
+class PostAncestors extends Builder
 {
 	/**
 	 * {@inheritdoc}

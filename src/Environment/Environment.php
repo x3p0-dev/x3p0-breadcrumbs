@@ -13,7 +13,7 @@ namespace X3P0\Breadcrumbs\Environment;
 
 use X3P0\Breadcrumbs\Contracts;
 use X3P0\Breadcrumbs\Tools\Collection;
-use X3P0\Breadcrumbs\{Build, Crumb, Query};
+use X3P0\Breadcrumbs\{Builder, Crumb, Query};
 
 /**
  * The default implementation of the `Environment` interface. It is the backbone
@@ -70,7 +70,7 @@ class Environment implements Contracts\Environment
 	 */
 	public function addBuilder(string $name, string $builder): void
 	{
-		if (is_subclass_of(Contracts\Build::class, $builder)) {
+		if (is_subclass_of(Contracts\Builder::class, $builder)) {
 			$this->builders->add($name, $builder);
 		}
 	}
@@ -171,19 +171,19 @@ class Environment implements Contracts\Environment
 	private function registerDefaultBuilders(): void
 	{
 		$defaults = [
-			'home'             => Build\Home::class,
-			'map-rewrite-tags' => Build\MapRewriteTags::class,
-			'network'          => Build\Network::class,
-			'paged'            => Build\Paged::class,
-			'path'             => Build\Path::class,
-			'post'             => Build\Post::class,
-			'post-ancestors'   => Build\PostAncestors::class,
-			'post-hierarchy'   => Build\PostHierarchy::class,
-			'post-terms'       => Build\PostTerms::class,
-			'post-type'        => Build\PostType::class,
-			'rewrite-front'    => Build\RewriteFront::class,
-			'term'             => Build\Term::class,
-			'term-ancestors'   => Build\TermAncestors::class
+			'home'             => Builder\Home::class,
+			'map-rewrite-tags' => Builder\MapRewriteTags::class,
+			'network'          => Builder\Network::class,
+			'paged'            => Builder\Paged::class,
+			'path'             => Builder\Path::class,
+			'post'             => Builder\Post::class,
+			'post-ancestors'   => Builder\PostAncestors::class,
+			'post-hierarchy'   => Builder\PostHierarchy::class,
+			'post-terms'       => Builder\PostTerms::class,
+			'post-type'        => Builder\PostType::class,
+			'rewrite-front'    => Builder\RewriteFront::class,
+			'term'             => Builder\Term::class,
+			'term-ancestors'   => Builder\TermAncestors::class
 		];
 
 		foreach ($defaults as $name => $class) {

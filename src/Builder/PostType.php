@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Post type build class.
+ * Post type Builder class.
  *
- * Builds breadcrumbs for the give post type.
+ * Builders breadcrumbs for the give post type.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -11,13 +11,13 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostType extends Build
+class PostType extends Builder
 {
 	/**
 	 * {@inheritdoc}

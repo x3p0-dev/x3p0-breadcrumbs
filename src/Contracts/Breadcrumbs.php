@@ -55,7 +55,7 @@ interface Breadcrumbs
 	public function query(string $name, array $data = []): void;
 
 	/**
-	 * Creates a new `Build` object and runs it.
+	 * Creates a new `Builder` object and runs it.
 	 */
 	public function build(string $name, array $data = []): void;
 

@@ -13,7 +13,7 @@ namespace X3P0\Breadcrumbs\Contracts;
 
 /**
  * `Crumb` classes represent the final result of an individual breadcrumb item
- * that has been generated either by `Query` or `Build` implementations. It
+ * that has been generated either by `Query` or `Builder` implementations. It
  * should house all the information for outputting the breadcrumb item on the
  * front end.
  */

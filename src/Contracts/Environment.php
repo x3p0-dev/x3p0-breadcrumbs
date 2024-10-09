@@ -29,7 +29,7 @@ interface Environment
 	 * Adds a builder to the environment. The `$builder` parameter is expected
 	 * to be a class that implements the `Builder` interface.
 	 *
-	 * @param class-string<Build> $builder
+	 * @param class-string<Builder> $builder
 	 */
 	public function addBuilder(string $name, string $builder): void;
 
@@ -53,7 +53,7 @@ interface Environment
 	 * Returns a builder class name that implements the `Builder` interface
 	 * or `null` if the builder is not registered.
 	 *
-	 * @return null|class-string<Build>
+	 * @return null|class-string<Builder>
 	 */
 	public function getBuilder(string $name): ?string;
 

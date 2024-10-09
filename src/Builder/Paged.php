@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Paged build class.
+ * Paged Builder class.
  *
- * Builds out breadcrumbs based on whether we're currently viewing a "paged"
+ * Builders out breadcrumbs based on whether we're currently viewing a "paged"
  * page. This handles archive-type pagination, single-post pagination via
  * `<!--nextpage-->`, and comments pagination.
  *
@@ -13,11 +13,11 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class Paged extends Build
+class Paged extends Builder
 {
 	/**
 	 * {@inheritdoc}

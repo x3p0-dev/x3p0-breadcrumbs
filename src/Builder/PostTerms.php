@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Post terms build class.
+ * Post terms Builder class.
  *
- * Builds breadcrumbs based on the given taxonomy for the post.
+ * Builders breadcrumbs based on the given taxonomy for the post.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -11,13 +11,13 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post;
 use WP_Taxonomy;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostTerms extends Build
+class PostTerms extends Builder
 {
 	/**
 	 * {@inheritdoc}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Home build class.
+ * Network Builder class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -9,9 +9,9 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
-class Home extends Build
+class Network extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -24,9 +24,6 @@ class Home extends Build
 			&& ! is_main_site()
 		) {
 			$this->breadcrumbs->crumb('network');
-			$this->breadcrumbs->crumb('network-site');
-		} else {
-			$this->breadcrumbs->crumb('home');
 		}
 	}
 }

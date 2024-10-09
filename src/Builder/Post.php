@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Post build class.
+ * Post Builder class.
  *
- * This is a wrapper to determine a more specific post-related build class to
+ * This is a wrapper to determine a more specific post-related Builder class to
  * call based on the given post.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
@@ -12,12 +12,12 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Post extends Build
+class Post extends Builder
 {
 	/**
 	 * {@inheritdoc}
@@ -55,7 +55,7 @@ class Post extends Build
 			]);
 		}
 
-		// Build the post crumb.
+		// Builder the post crumb.
 		$this->breadcrumbs->crumb('post', [ 'post' => $this->post ]);
 	}
 }

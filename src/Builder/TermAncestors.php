@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Term ancestors build class.
+ * Term ancestors Builder class.
  *
- * Builds breadcrumbs based on whether a term has a parent post. It loops
+ * Builders breadcrumbs based on whether a term has a parent post. It loops
  * through each term until a parent term is no longer found.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
@@ -12,12 +12,12 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class TermAncestors extends Build
+class TermAncestors extends Builder
 {
 	/**
 	 * {@inheritdoc}

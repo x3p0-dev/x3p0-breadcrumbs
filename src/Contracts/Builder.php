@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Build interface.
+ * Builder interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -12,11 +12,11 @@
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * `Build` classes are meant are essentially helper classes for generating
+ * `Builder` classes are meant are essentially helper classes for generating
  * breadcrumbs, sitting as a layer between `Query` and `Crumb` classes. They are
  * primarily used for adding crumbs to the overall breadcrumbs collection.
  */
-interface Build
+interface Builder
 {
 	/**
 	 * Runs the logic for generating breadcrumbs.

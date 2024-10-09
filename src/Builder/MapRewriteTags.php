@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Map rewrite tags build class.
+ * Map rewrite tags Builder class.
  *
  * This class accepts a permalink structure and attempts to map any rewrite tags
  * like `%tag%` to a breadcrumb. This is used with any post type.  It maps the
@@ -14,13 +14,13 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post;
 use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class MapRewriteTags extends Build
+class MapRewriteTags extends Builder
 {
 	/**
 	 * {@inheritdoc}

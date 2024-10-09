@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rewrite front build class.
+ * Rewrite front Builder class.
  *
  * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
  * front is determined based on the base post permalink structure. For example,
@@ -15,9 +15,9 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
-namespace X3P0\Breadcrumbs\Build;
+namespace X3P0\Breadcrumbs\Builder;
 
-class RewriteFront extends Build
+class RewriteFront extends Builder
 {
 	/**
 	 * {@inheritdoc}

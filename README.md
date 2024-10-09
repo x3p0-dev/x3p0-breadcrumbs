@@ -74,7 +74,7 @@ The plugin comes with three classes, which are implementations of the `X3P0\Brea
 - `X3P0\Breadcrumbs\Markup\Microdata`: Renders an HTML list of breadcrumbs using Schema.org microdata.
 - `X3P0\Breadcrumbs\Markup\Rdfa`: Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
 
-Here's an example of swapping out the `Html` implementation shown earlier with the `RDFa` implementation:
+Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
 
 ```php
 use X3P0\Breadcrumbs\Breadcrumbs;
@@ -97,7 +97,8 @@ The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations o
 - **`breadcrumbs`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Breadcrumbs` interface.
 - **`options`:** A configurable array of options for customizing how the markup is generated:
 	- **`show_on_front`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
-	- **`show_trail_end`:** Whether to display the final breadcrumb item (usually the current page). Defaults to `true`.
+	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the current page). Defaults to `true`.
+	- **`show_last_item`:** Whether to display the last breadcrumb item (usually the current page). Defaults to `true`.
 	- **`before`:** Custom HTML to add before the HTML output. Defaults to an empty string.
 	- **`after`:** Custom HTML to add after the HTML output. Defaults to an empty string.
 	- **`container_tag`:** The HTML tag used for the wrapping container. Defaults to `nav`. If this is set to an empty string, the container will not be output.

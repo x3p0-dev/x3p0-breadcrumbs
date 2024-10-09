@@ -59,7 +59,7 @@ class Block implements Bootable
 		$markup_options = [
 			'container_tag'  => '',
 			'show_on_front'  => $attributes['showOnHomepage'] ?? false,
-			'show_trail_end' => $attributes['showTrailEnd']   ?? true
+			'show_last_item' => $attributes['showTrailEnd']   ?? true
 		];
 
 		// Set up some default class names.

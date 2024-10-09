@@ -40,7 +40,8 @@ class Html implements Markup
 	) {
 		$this->options = wp_parse_args($this->options, [
 			'show_on_front'      => false,
-			'show_trail_end'     => true,
+			'show_first_item'    => true,
+			'show_last_item'     => true,
 			'before'             => '',
 			'after'              => '',
 			'container_tag'      => 'nav',
@@ -62,6 +63,31 @@ class Html implements Markup
 	}
 
 	/**
+	 * Helper method for grabbing the breadcrumbs array and removing any
+	 * items that should be removed.
+	 */
+	protected function crumbs(): array
+	{
+		$crumbs = $this->breadcrumbs->all();
+
+		// Remove the first crumb item if it's not supposed to be shown.
+		if (! $this->option('show_first_item')) {
+			array_shift($crumbs);
+		}
+
+		// Remove the last crumb item if it's not supposed to be shown.
+		if (! $this->option('show_last_item')) {
+			array_pop($crumbs);
+		}
+
+		return $crumbs;
+	}
+
+	protected function linkLastItem(): bool {
+		return ! $this->option('show_last_item');
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function option(string $name): mixed
@@ -76,26 +102,19 @@ class Html implements Markup
 	{
 		$html = $container = $list = $title = '';
 
-		// Get an array of all the available breadcrumbs from the
-		// builder. Return early if none exist.
-		if (! $crumbs = $this->breadcrumbs->all()) {
+		// Get an array of all the available breadcrumbs. Return early
+		// if none exist.
+		if (! $crumbs = $this->crumbs()) {
 			return $html;
 		}
 
-		$count     = count($crumbs);
-		$position  = 1;
-		$show_last = $this->option('show_trail_end');
+		// Set baseline count and position variables.
+		$count    = count($crumbs);
+		$position = 1;
 
-		// Loop through each of the crumbs and build out a list.
+		// Loop through each of the crumbs and build out the list items.
 		foreach ($crumbs as $crumb) {
-			// Break out of the loop if this is the last item
-			// and we're not supposed to show the trail end.
-			if ($position === $count && ! $show_last) {
-				break;
-			}
-
 			$list .= $this->renderCrumb($crumb, $count, $position);
-
 			++$position;
 		}
 
@@ -154,9 +173,13 @@ class Html implements Markup
 		// Get the crumb URL.
 		$url = $crumb->url();
 
-		// Wrap the label with a link if the crumb has
-		// one and this isn't the last item.
-		if ($url && $position !== $count) {
+		// Wrap the label with a link if the crumb has one and this is
+		// not the normal last item. However, link the last item if the
+		// original last item was popped off the array.
+		if (
+			($url && $position !== $count)
+			|| ($url && $position === $count && ! $this->option('show_last_item'))
+		 ) {
 			$item = sprintf(
 				'<a href="%s" class="%s">%s</a>',
 				esc_url($url),

@@ -22,26 +22,19 @@ class Microdata extends Html
 	{
 		$html = $container = $list = $title = '';
 
-		// Get an array of all the available breadcrumbs from the
-		// builder. Return early if none exist.
-		if (! $crumbs = $this->breadcrumbs->all()) {
+		// Get an array of all the available breadcrumbs. Return early
+		// if none exist.
+		if (! $crumbs = $this->crumbs()) {
 			return $html;
 		}
 
-		$count     = count($crumbs);
-		$position  = 1;
-		$show_last = $this->option('show_trail_end');
+		// Set baseline count and position variables.
+		$count    = count($crumbs);
+		$position = 1;
 
-		// Loop through each of the crumbs and build out a list.
+		// Loop through each of the crumbs and build out the list items.
 		foreach ($crumbs as $crumb) {
-			// Break out of the loop if this is the last item
-			// and we're not supposed to show the trail end.
-			if ($position === $count && ! $show_last) {
-				break;
-			}
-
 			$list .= $this->renderCrumb($crumb, $count, $position);
-
 			++$position;
 		}
 
@@ -100,9 +93,13 @@ class Microdata extends Html
 		// Get the crumb URL.
 		$url = $crumb->url();
 
-		// Wrap the label with a link if the crumb has
-		// one and this isn't the last item.
-		if ($url && $position !== $count) {
+		// Wrap the label with a link if the crumb has one and this is
+		// not the normal last item. However, link the last item if the
+		// original last item was popped off the array.
+		if (
+			($url && $position !== $count)
+			|| ($url && $position === $count && ! $this->option('show_last_item'))
+		 ) {
 			$item = sprintf(
 				'<a href="%s" class="%s" itemprop="item">%s</a>',
 				esc_url($url),

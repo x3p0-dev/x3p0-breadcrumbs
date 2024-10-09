@@ -20,7 +20,7 @@ use WP_Post;
 use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class MapRewriteTags extends Base
+class MapRewriteTags extends Build
 {
 	/**
 	 * {@inheritdoc}

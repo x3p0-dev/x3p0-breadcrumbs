@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-class Home extends Base
+class Home extends Build
 {
 	/**
 	 * {@inheritdoc}

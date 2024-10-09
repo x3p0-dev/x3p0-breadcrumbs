@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Error extends Base
+class Error extends Query
 {
 	/**
 	 * {@inheritdoc}

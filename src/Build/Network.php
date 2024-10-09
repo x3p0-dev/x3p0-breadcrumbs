@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-class Network extends Base
+class Network extends Build
 {
 	/**
 	 * {@inheritdoc}

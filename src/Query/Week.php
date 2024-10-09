@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Week extends Base
+class Week extends Query
 {
 	/**
 	 * {@inheritdoc}

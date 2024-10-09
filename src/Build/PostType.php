@@ -17,7 +17,7 @@ use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostType extends Base
+class PostType extends Build
 {
 	/**
 	 * {@inheritdoc}

@@ -14,7 +14,7 @@ namespace X3P0\Breadcrumbs\Query;
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Singular extends Base
+class Singular extends Query
 {
 	/**
 	 * {@inheritdoc}

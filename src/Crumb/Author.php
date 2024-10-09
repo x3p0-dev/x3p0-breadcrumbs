@@ -14,7 +14,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Author extends Base
+class Author extends Crumb
 {
 	/**
 	 * {@inheritdoc}

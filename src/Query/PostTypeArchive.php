@@ -16,7 +16,7 @@ use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-class PostTypeArchive extends Base
+class PostTypeArchive extends Query
 {
 	/**
 	 * {@inheritdoc}

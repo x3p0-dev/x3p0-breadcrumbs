@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-class PagedSingular extends Base
+class PagedSingular extends Crumb
 {
 	/**
 	 * {@inheritdoc}

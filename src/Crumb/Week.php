@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-class Week extends Base
+class Week extends Crumb
 {
 	/**
 	 * {@inheritdoc}

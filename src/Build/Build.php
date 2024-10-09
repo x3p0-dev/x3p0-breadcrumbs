@@ -11,17 +11,16 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
-use X3P0\Breadcrumbs\Contracts\Build;
+use X3P0\Breadcrumbs\Contracts;
 
 /**
  * Implements the `Build` interface and creates a custom build object.
  */
-abstract class Base implements Build
+abstract class Build implements Contracts\Build
 {
 	/**
 	 * Creates a new query object.
 	 */
-	public function __construct(protected Breadcrumbs $breadcrumbs)
+	public function __construct(protected Contracts\Breadcrumbs $breadcrumbs)
 	{}
 }

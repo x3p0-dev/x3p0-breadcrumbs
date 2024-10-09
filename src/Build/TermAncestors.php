@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs\Build;
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class TermAncestors extends Base
+class TermAncestors extends Build
 {
 	/**
 	 * {@inheritdoc}

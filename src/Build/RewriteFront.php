@@ -17,7 +17,7 @@
 
 namespace X3P0\Breadcrumbs\Build;
 
-class RewriteFront extends Base
+class RewriteFront extends Build
 {
 	/**
 	 * {@inheritdoc}

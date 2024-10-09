@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs\Build;
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostAncestors extends Base
+class PostAncestors extends Build
 {
 	/**
 	 * {@inheritdoc}

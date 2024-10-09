@@ -11,17 +11,16 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
-use X3P0\Breadcrumbs\Contracts\Query;
+use X3P0\Breadcrumbs\Contracts;
 
 /**
  * Implements the `Query` interface and creates a custom query object.
  */
-abstract class Base implements Query
+abstract class Query implements Contracts\Query
 {
 	/**
 	 * Creates a new query object.
 	 */
-	public function __construct(protected Breadcrumbs $breadcrumbs)
+	public function __construct(protected Contracts\Breadcrumbs $breadcrumbs)
 	{}
 }

@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-class Error extends Base
+class Error extends Crumb
 {
 	/**
 	 * {@inheritdoc}

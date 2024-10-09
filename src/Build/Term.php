@@ -17,7 +17,7 @@ use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-class Term extends Base
+class Term extends Build
 {
 	/**
 	 * {@inheritdoc}

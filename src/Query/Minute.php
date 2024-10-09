@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Minute extends Base
+class Minute extends Query
 {
 	/**
 	 * {@inheritdoc}

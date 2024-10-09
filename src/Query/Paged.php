@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Paged extends Base
+class Paged extends Query
 {
 	/**
 	 * {@inheritdoc}

@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs\Build;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class Path extends Base
+class Path extends Build
 {
 	/**
 	 * {@inheritdoc}

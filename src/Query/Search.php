@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Search extends Base
+class Search extends Query
 {
 	/**
 	 * {@inheritdoc}

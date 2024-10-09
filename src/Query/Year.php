@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Year extends Base
+class Year extends Query
 {
 	/**
 	 * {@inheritdoc}

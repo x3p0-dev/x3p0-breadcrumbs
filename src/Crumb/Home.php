@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-class Home extends Base
+class Home extends Crumb
 {
 	/**
 	 * {@inheritdoc}

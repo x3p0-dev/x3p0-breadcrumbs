@@ -11,7 +11,7 @@
 
 namespace X3P0\Breadcrumbs\Query;
 
-class Day extends Base
+class Day extends Query
 {
 	/**
 	 * {@inheritdoc}

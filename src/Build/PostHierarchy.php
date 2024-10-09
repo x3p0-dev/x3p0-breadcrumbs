@@ -18,7 +18,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
-class PostHierarchy extends Base
+class PostHierarchy extends Build
 {
 	/**
 	 * {@inheritdoc}

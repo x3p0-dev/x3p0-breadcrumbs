@@ -14,7 +14,7 @@ namespace X3P0\Breadcrumbs\Query;
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Tax extends Base
+class Tax extends Query
 {
 	/**
 	 * {@inheritdoc}

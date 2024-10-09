@@ -14,7 +14,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 use WP_Post_Type;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostType extends Base
+class PostType extends Crumb
 {
 	/**
 	 * {@inheritdoc}

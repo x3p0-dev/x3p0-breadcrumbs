@@ -17,7 +17,7 @@ use WP_Post;
 use WP_Taxonomy;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class PostTerms extends Base
+class PostTerms extends Build
 {
 	/**
 	 * {@inheritdoc}

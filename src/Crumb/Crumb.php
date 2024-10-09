@@ -11,19 +11,18 @@
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
-use X3P0\Breadcrumbs\Contracts\Crumb;
+use X3P0\Breadcrumbs\Contracts;
 
 /**
  * Implements the `Crumb` interface and creates a custom crumb object.
  */
-abstract class Base implements Crumb
+abstract class Crumb implements Contracts\Crumb
 {
 	/**
 	 * Creates a new crumb object.
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs
+		protected Contracts\Breadcrumbs $breadcrumbs
 	) {}
 
 	/**

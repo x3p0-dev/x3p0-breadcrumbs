@@ -14,7 +14,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Month extends Base
+class Month extends Crumb
 {
 	/**
 	 * {@inheritdoc}

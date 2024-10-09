@@ -13,7 +13,7 @@ namespace X3P0\Breadcrumbs\Query;
 
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class FrontPage extends Base
+class FrontPage extends Query
 {
 	/**
 	 * {@inheritdoc}

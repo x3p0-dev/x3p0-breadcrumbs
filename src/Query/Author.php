@@ -15,7 +15,7 @@ use WP_Rewrite;
 use WP_User;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
-class Author extends Base
+class Author extends Query
 {
 	/**
 	 * {@inheritdoc}

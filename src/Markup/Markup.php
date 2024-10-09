@@ -68,7 +68,7 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function crumbs(): array
 	{
-		$crumbs = $this->breadcrumbs->all();
+		$crumbs = $this->breadcrumbs->getCrumbs();
 
 		// Remove the first crumb item if it's not supposed to be shown.
 		if (! $this->option('show_first_item')) {

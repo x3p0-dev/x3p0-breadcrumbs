@@ -73,7 +73,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function all(): array
+	public function getCrumbs(): array
 	{
 		return [] === $this->crumbs ? $this->make()->crumbs : $this->crumbs;
 	}

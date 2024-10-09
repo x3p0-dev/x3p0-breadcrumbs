@@ -32,7 +32,7 @@ interface Breadcrumbs
 	 *
 	 * @return Crumb[]
 	 */
-	public function all(): array;
+	public function getCrumbs(): array;
 
 	/**
 	 * Returns a specific option or `null` if the option doesn't exist.

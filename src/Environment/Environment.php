@@ -53,6 +53,8 @@ class Environment implements Contracts\Environment
 		$this->registerDefaultQueries();
 		$this->registerDefaultBuilders();
 		$this->registerDefaultCrumbs();
+
+		do_action('x3p0/breadcrumbs/environment', $this);
 	}
 
 	/**
@@ -161,8 +163,6 @@ class Environment implements Contracts\Environment
 		foreach ($defaults as $name => $class) {
 			$this->queries->add($name, $class);
 		}
-
-		do_action('x3p0/breadcrumbs/queries', $this->queries);
 	}
 
 	/**
@@ -189,8 +189,6 @@ class Environment implements Contracts\Environment
 		foreach ($defaults as $name => $class) {
 			$this->builders->add($name, $class);
 		}
-
-		do_action('x3p0/breadcrumbs/builders', $this->builders);
 	}
 
 	/**
@@ -223,7 +221,5 @@ class Environment implements Contracts\Environment
 		foreach ($defaults as $name => $class) {
 			$this->crumbs->add($name, $class);
 		}
-
-		do_action('x3p0/breadcrumbs/crumbs', $this->crumbs);
 	}
 }

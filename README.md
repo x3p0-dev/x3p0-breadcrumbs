@@ -97,7 +97,7 @@ The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations o
 - **`breadcrumbs`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Breadcrumbs` interface.
 - **`options`:** A configurable array of options for customizing how the markup is generated:
 	- **`show_on_front`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
-	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the current page). Defaults to `true`.
+	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the home page). Defaults to `true`.
 	- **`show_last_item`:** Whether to display the last breadcrumb item (usually the current page). Defaults to `true`.
 	- **`before`:** Custom HTML to add before the HTML output. Defaults to an empty string.
 	- **`after`:** Custom HTML to add after the HTML output. Defaults to an empty string.

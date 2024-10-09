@@ -44,39 +44,41 @@ class MapRewriteTags extends Builder
 			return;
 		}
 
-		// Trim '/' from both sides of `$this->path` and split into an
-		// array of strings.
-		$matches = explode('/', trim($this->path, '/'));
-
-		// Bail if no matches are found.
-		if (! $matches) {
+		// Split the path into segments and bail early if none found.
+		if (! $segments = explode('/', trim($this->path, '/'))) {
 			return;
 		}
 
-		// Loop through each of the matches, adding each to the $trail array.
-		foreach ($matches as $tag) {
-			$tag = trim($tag, '%');
-
-			match ($tag) {
-				'year' => $this->breadcrumbs->crumb('year', [
-					'post' => $this->post
-				]),
-				'monthnum' => $this->breadcrumbs->crumb('month', [
-					'post' => $this->post
-				]),
-				'day' => $this->breadcrumbs->crumb('day', [
-					'post' => $this->post
-				]),
-				'author' => $this->breadcrumbs->crumb('author', [
-					'user' => new WP_User($this->post->post_author)
-				]),
-				$this->isTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
-					'post'     => $this->post,
-					'taxonomy' => get_taxonomy($tag)
-				]),
-				default => false
-			};
+		foreach ($segments as $tag) {
+			$this->mapTag(trim($tag, '%'));
 		}
+	}
+
+	/**
+	 * Maps a rewrite tag (with the `%` characters trimmed) to a crumb or
+	 * builder implementation.
+	 */
+	private function mapTag(string $tag): void
+	{
+		match ($tag) {
+			'year' => $this->breadcrumbs->crumb('year', [
+				'post' => $this->post
+			]),
+			'monthnum' => $this->breadcrumbs->crumb('month', [
+				'post' => $this->post
+			]),
+			'day' => $this->breadcrumbs->crumb('day', [
+				'post' => $this->post
+			]),
+			'author' => $this->breadcrumbs->crumb('author', [
+				'user' => new WP_User($this->post->post_author)
+			]),
+			$this->isTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
+				'post'     => $this->post,
+				'taxonomy' => get_taxonomy($tag)
+			]),
+			default => false
+		};
 	}
 
 	/**

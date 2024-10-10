@@ -13,7 +13,6 @@ namespace X3P0\Breadcrumbs\Environment;
 
 use X3P0\Breadcrumbs\Contracts;
 use X3P0\Breadcrumbs\{Builder, Crumb, Query};
-use X3P0\Breadcrumbs\Contracts\Queries;
 
 /**
  * The default implementation of the `Environment` interface. It is the backbone

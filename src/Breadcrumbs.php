@@ -33,32 +33,15 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 		protected Contracts\Environment $environment,
 		protected array $options = []
 	) {
-		$this->options = wp_parse_args($this->options, [
-			'labels'           => [],
-			'map_rewrite_tags' => [],
-			'post_taxonomy'    => [],
-			'network'          => false,
-			'show_home_label'  => true
-		]);
-
-		$this->options['labels'] = wp_parse_args(
-			$this->options['labels'],
-			$this->defaultLabels()
-		);
-
-		$this->options['map_rewrite_tags'] = wp_parse_args(
-			$this->options['map_rewrite_tags'],
-			$this->defaultRewriteTags()
-		);
-
-		$this->options['post_taxonomy'] = wp_parse_args(
-			$this->options['post_taxonomy'],
-			$this->defaultPostTaxonomies()
-		);
-
 		$this->options = apply_filters(
 			'x3p0/breadcrumbs/config',
-			$this->options
+			array_replace_recursive([
+				'labels'           => $this->defaultLabels(),
+				'map_rewrite_tags' => $this->defaultRewriteTags(),
+				'post_taxonomy'    => $this->defaultPostTaxonomies(),
+				'network'          => false,
+				'show_home_label'  => true
+			], $this->options)
 		);
 	}
 

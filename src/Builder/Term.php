@@ -51,7 +51,7 @@ class Term extends Builder
 			$this->breadcrumbs->build('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
-			foreach ($this->breadcrumbs->all() as $crumb) {
+			foreach ($this->breadcrumbs->getCrumbs() as $crumb) {
 				if ($crumb instanceof PostType) {
 					$done_post_type = true;
 					break;

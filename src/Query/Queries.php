@@ -65,17 +65,13 @@ class Queries implements Contracts\Queries
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name): ?string
+	public function get(string $name, array $params = []): ?Contracts\Query
 	{
-		return $this->has($name) ? $this->queries[$name] : null;
-	}
+		if ($this->has($name)) {
+			$query = $this->queries[$name];
+			return new $query(...$params);
+		}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function resolve(string $name, array $params = []): ?Contracts\Query
-	{
-		$query = $this->get($name);
-		return $query ? new $query(...$params) : null;
+		return null;
 	}
 }

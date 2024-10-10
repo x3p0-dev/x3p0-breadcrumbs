@@ -34,14 +34,7 @@ interface Crumbs
 	public function has(string $name): bool;
 
 	/**
-	 * Returns a crumb class name or `null`.
-	 *
-	 * @return null|class-string<Crumb>
+	 * Resolves and returns a crumb object or `null`.
 	 */
-	public function get(string $name): ?string;
-
-	/**
-	 * Resolves a crumb implementation.
-	 */
-	public function resolve(string $name, array $params = []): ?Crumb;
+	public function get(string $name, array $params = []): ?Crumb;
 }

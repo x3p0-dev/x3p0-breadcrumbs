@@ -34,14 +34,7 @@ interface Builders
 	public function has(string $name): bool;
 
 	/**
-	 * Returns a builder class name or `null`.
-	 *
-	 * @return null|class-string<Builder>
+	 * Resolves and returns a builder object or `null`.
 	 */
-	public function get(string $name): ?string;
-
-	/**
-	 * Resolves a builder implementation.
-	 */
-	public function resolve(string $name, array $params = []): ?Builder;
+	public function get(string $name, array $params = []): ?Builder;
 }

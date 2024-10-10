@@ -34,14 +34,7 @@ interface Queries
 	public function has(string $name): bool;
 
 	/**
-	 * Returns a query or `null`.
-	 *
-	 * @return null|class-string<Query>
+	 * Resolves and returns a query object or `null`.
 	 */
-	public function get(string $name): ?string;
-
-	/**
-	 * Resolves a query implementation.
-	 */
-	public function resolve(string $name, array $params = []): ?Query;
+	public function get(string $name, array $params = []): ?Query;
 }

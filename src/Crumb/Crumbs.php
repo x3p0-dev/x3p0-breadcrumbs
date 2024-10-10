@@ -22,7 +22,7 @@ class Crumbs implements Contracts\Crumbs
 	protected array $crumbs = [];
 
 	/**
-	 * Allows registering a default set of crumbes.
+	 * Allows registering a default set of crumbs.
 	 */
 	public function __construct(array $crumbs = [])
 	{
@@ -65,17 +65,13 @@ class Crumbs implements Contracts\Crumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name): ?string
+	public function get(string $name, array $params = []): ?Contracts\Crumb
 	{
-		return $this->has($name) ? $this->crumbs[$name] : null;
-	}
+		if ($this->has($name)) {
+			$crumb = $this->crumbs[$name];
+			return new $crumb(...$params);
+		}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function resolve(string $name, array $params = []): ?Contracts\Crumb
-	{
-		$crumb = $this->get($name);
-		return $crumb ? new $crumb(...$params) : null;
+		return null;
 	}
 }

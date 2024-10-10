@@ -65,17 +65,13 @@ class Builders implements Contracts\Builders
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name): ?string
+	public function get(string $name, array $params = []): ?Contracts\Builder
 	{
-		return $this->has($name) ? $this->builders[$name] : null;
-	}
+		if ($this->has($name)) {
+			$builder = $this->builders[$name];
+			return new $builder(...$params);
+		}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function resolve(string $name, array $params = []): ?Contracts\Builder
-	{
-		$builder = $this->get($name);
-		return $builder ? new $builder(...$params) : null;
+		return null;
 	}
 }

@@ -70,12 +70,12 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	public function make(): Contracts\Breadcrumbs
 	{
 		$conditionals = [
-			'is_404'               => 'error-404',
-			'is_search'            => 'search',
-			'is_front_page'        => 'front-page',
-			'is_home'              => 'home',
-			'is_singular'          => 'singular',
-			'is_archive'           => 'archive',
+			'is_404'        => 'error-404',
+			'is_search'     => 'search',
+			'is_front_page' => 'front-page',
+			'is_home'       => 'home',
+			'is_singular'   => 'singular',
+			'is_archive'    => 'archive'
 		];
 
 		foreach ($conditionals as $tag => $type) {
@@ -108,30 +108,39 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function query(string $name, array $data = []): void
+	public function query(string $name, array $params = []): void
 	{
-		if ($query = $this->environment()->getQuery($name)) {
-			(new $query($this, ...$data))->make();
-		}
+		$query = $this->environment()->queries()->resolve(
+			$name,
+			$params + [ 'breadcrumbs' => $this ]
+		);
+
+		$query && $query->make();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function build(string $name, array $data = []): void
+	public function build(string $name, array $params = []): void
 	{
-		if ($builder = $this->environment()->getBuilder($name)) {
-			(new $builder($this, ...$data))->make();
-		}
+		$builder = $this->environment()->builders()->resolve(
+			$name,
+			$params + [ 'breadcrumbs' => $this ]
+		);
+
+		$builder && $builder->make();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function crumb(string $name, array $data = []): void
+	public function crumb(string $name, array $params = []): void
 	{
-		if ($crumb = $this->environment()->getCrumb($name)) {
-			$this->crumbs[] = new $crumb($this, ...$data);
+		if ($this->environment()->crumbs()->has($name)) {
+			$this->crumbs[] = $this->environment()->crumbs()->resolve(
+				$name,
+				$params + [ 'breadcrumbs' => $this ]
+			);
 		}
 	}
 

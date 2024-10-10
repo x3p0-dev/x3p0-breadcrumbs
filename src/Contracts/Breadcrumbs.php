@@ -57,15 +57,15 @@ interface Breadcrumbs
 	/**
 	 * Creates a new `Query` object and runs it.
 	 */
-	public function query(string $name, array $data = []): void;
+	public function query(string $name, array $params = []): void;
 
 	/**
 	 * Creates a new `Builder` object and runs it.
 	 */
-	public function build(string $name, array $data = []): void;
+	public function build(string $name, array $params = []): void;
 
 	/**
 	 * Creates a new `Crumb` object and adds it to the crumbs collection.
 	 */
-	public function crumb(string $name, array $data = []): void;
+	public function crumb(string $name, array $params = []): void;
 }

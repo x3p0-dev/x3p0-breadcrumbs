@@ -18,65 +18,17 @@ namespace X3P0\Breadcrumbs\Contracts;
 interface Environment
 {
 	/**
-	 * Adds a query to the environment. The `$query` parameter is expected
-	 * to be a class that implements the `Query` interface.
-	 *
-	 * @param class-string<Query> $query
+	 * Returns a query collection.
 	 */
-	public function addQuery(string $name, string $query): void;
+	public function queries(): Queries;
 
 	/**
-	 * Adds a builder to the environment. The `$builder` parameter is expected
-	 * to be a class that implements the `Builder` interface.
-	 *
-	 * @param class-string<Builder> $builder
+	 * Returns a builder collection.
 	 */
-	public function addBuilder(string $name, string $builder): void;
+	public function builders(): Builders;
 
 	/**
-	 * Adds a crumb to the environment. The `$crumb` parameter is expected
-	 * to be a class that implements the `Crumb` interface.
-	 *
-	 * @param class-string<Crumb> $crumb
+	 * Returns a crumb collection.
 	 */
-	public function addCrumb(string $name, string $crumb): void;
-
-	/**
-	 * Returns a query class name that implements the `Query` interface or
-	 * `null` if the query is not registered.
-	 *
-	 * @return null|class-string<Query>
-	 */
-	public function getQuery(string $name): ?string;
-
-	/**
-	 * Returns a builder class name that implements the `Builder` interface
-	 * or `null` if the builder is not registered.
-	 *
-	 * @return null|class-string<Builder>
-	 */
-	public function getBuilder(string $name): ?string;
-
-	/**
-	 * Returns a crumb class name that implements the `Crumb` interface or
-	 * `null` if the crumb is not registered.
-	 *
-	 * @return null|class-string<Crumb>
-	 */
-	public function getCrumb(string $name): ?string;
-
-	/**
-	 * Conditional check to determine if a query is registered.
-	 */
-	public function hasQuery(string $name): bool;
-
-	/**
-	 * Conditional check to determine if a builder is registered.
-	 */
-	public function hasBuilder(string $name): bool;
-
-	/**
-	 * Conditional check to determine if a crumb is registered.
-	 */
-	public function hasCrumb(string $name): bool;
+	public function crumbs(): Crumbs;
 }

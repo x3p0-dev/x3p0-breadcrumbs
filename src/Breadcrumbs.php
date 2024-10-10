@@ -92,14 +92,6 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function environment(): Contracts\Environment
-	{
-		return $this->environment;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
 	public function getCrumbs(): array
 	{
 		return [] === $this->crumbs ? $this->make()->crumbs : $this->crumbs;
@@ -110,7 +102,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function query(string $name, array $params = []): void
 	{
-		$query = $this->environment()->queries()->resolve(
+		$query = $this->environment->queries()->resolve(
 			$name,
 			$params + [ 'breadcrumbs' => $this ]
 		);
@@ -123,7 +115,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function build(string $name, array $params = []): void
 	{
-		$builder = $this->environment()->builders()->resolve(
+		$builder = $this->environment->builders()->resolve(
 			$name,
 			$params + [ 'breadcrumbs' => $this ]
 		);
@@ -136,8 +128,8 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function crumb(string $name, array $params = []): void
 	{
-		if ($this->environment()->crumbs()->has($name)) {
-			$this->crumbs[] = $this->environment()->crumbs()->resolve(
+		if ($this->environment->crumbs()->has($name)) {
+			$this->crumbs[] = $this->environment->crumbs()->resolve(
 				$name,
 				$params + [ 'breadcrumbs' => $this ]
 			);

@@ -23,11 +23,6 @@ interface Breadcrumbs
 	public function make(): self;
 
 	/**
-	 * Returns the implementation of the breadcrumbs environment in use.
-	 */
-	public function environment(): Environment;
-
-	/**
 	 * Returns the breadcrumbs as an array of `Crumb` objects.
 	 *
 	 * @return Crumb[]

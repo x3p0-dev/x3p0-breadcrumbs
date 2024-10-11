@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Post ancestors Builder class.
- *
- * Builders breadcrumbs based on whether a post has a parent post. It loops
- * through each post until a parent post is no longer found.
+ * Post ancestors builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +14,10 @@ namespace X3P0\Breadcrumbs\Builder;
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
+/**
+ * Builds breadcrumbs based on whether a post has a parent post. It loops
+ * through each post until a parent post is no longer found.
+ */
 class PostAncestors extends Builder
 {
 	/**

@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Post hierarchy Builder class.
- *
- * Builders breadcrumbs primarily based on the post type rewrite settings of the
- * given post.
+ * Post hierarchy builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -18,6 +15,10 @@ use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
+/**
+ * Builders breadcrumbs primarily based on the post type rewrite settings of the
+ * given post.
+ */
 class PostHierarchy extends Builder
 {
 	/**

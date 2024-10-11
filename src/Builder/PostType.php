@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Post type Builder class.
- *
- * Builders breadcrumbs for the give post type.
+ * Post type builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +15,9 @@ use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
+/**
+ * Builds breadcrumbs for the given post type.
+ */
 class PostType extends Builder
 {
 	/**

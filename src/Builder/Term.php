@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Term Builder class.
- *
- * Builders breadcrumbs based on the given term object.
+ * Term builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +15,9 @@ use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
+/**
+ * Builds breadcrumbs based on the given term object.
+ */
 class Term extends Builder
 {
 	/**

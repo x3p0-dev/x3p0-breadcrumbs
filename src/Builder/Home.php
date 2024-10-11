@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Home Builder class.
+ * Home builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -11,6 +11,10 @@
 
 namespace X3P0\Breadcrumbs\Builder;
 
+/**
+ * Builds the blog homepage crumb(s). For multisite, this may include showing
+ * both the network and homepage of the sub-site crumb.
+ */
 class Home extends Builder
 {
 	/**

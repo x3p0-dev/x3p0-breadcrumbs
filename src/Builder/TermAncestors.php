@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Term ancestors Builder class.
- *
- * Builders breadcrumbs based on whether a term has a parent post. It loops
- * through each term until a parent term is no longer found.
+ * Term ancestors builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +14,10 @@ namespace X3P0\Breadcrumbs\Builder;
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
+/**
+ * Builds breadcrumbs based on whether a term has a parent post. It loops
+ * through each term until a parent term is no longer found.
+ */
 class TermAncestors extends Builder
 {
 	/**

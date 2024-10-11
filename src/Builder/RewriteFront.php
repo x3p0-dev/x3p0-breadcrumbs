@@ -1,13 +1,7 @@
 <?php
 
 /**
- * Rewrite front Builder class.
- *
- * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
- * front is determined based on the base post permalink structure. For example,
- * `/archives/%postname%` will give you a rewrite front of `archives`. Even
- * though this is set for the post permalink structure, archives, other post
- * types, and taxonomies may still use it.
+ * Rewrite front builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +11,13 @@
 
 namespace X3P0\Breadcrumbs\Builder;
 
+/**
+ * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
+ * front is determined based on the base post permalink structure. For example,
+ * `/archives/%postname%` will give you a rewrite front of `archives`. Even
+ * though this is set for the post permalink structure, archives, other post
+ * types, and taxonomies may still use it.
+ */
 class RewriteFront extends Builder
 {
 	/**

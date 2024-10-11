@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Post Builder class.
- *
- * This is a wrapper to determine a more specific post-related Builder class to
- * call based on the given post.
+ * Post builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +14,10 @@ namespace X3P0\Breadcrumbs\Builder;
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
+/**
+ * This is a wrapper to determine a more specific post-related Builder class to
+ * call based on the given post.
+ */
 class Post extends Builder
 {
 	/**

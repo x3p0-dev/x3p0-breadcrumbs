@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Builder class.
+ * Abstract builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock

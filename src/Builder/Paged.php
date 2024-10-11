@@ -1,11 +1,7 @@
 <?php
 
 /**
- * Paged Builder class.
- *
- * Builders out breadcrumbs based on whether we're currently viewing a "paged"
- * page. This handles archive-type pagination, single-post pagination via
- * `<!--nextpage-->`, and comments pagination.
+ * Paged builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +13,11 @@ namespace X3P0\Breadcrumbs\Builder;
 
 use X3P0\Breadcrumbs\Tools\Helpers;
 
+/**
+ * Builders out breadcrumbs based on whether we're currently viewing a "paged"
+ * page. This handles archive-type pagination, single-post pagination via
+ * `<!--nextpage-->`, and comments pagination.
+ */
 class Paged extends Builder
 {
 	/**

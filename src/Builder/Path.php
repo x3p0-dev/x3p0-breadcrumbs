@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Path Builder class.
- *
- * Builders breadcrumbs based on a given path by attempting to find a post object
- * within that path.
+ * Path builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock
@@ -17,6 +14,10 @@ namespace X3P0\Breadcrumbs\Builder;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
+/**
+ * Builds breadcrumbs based on a given path by attempting to find a post
+ * object within that path.
+ */
 class Path extends Builder
 {
 	/**

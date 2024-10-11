@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post rewrite tags Builder class.
+ * Post rewrite tags builder.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2023 Justin Tadlock

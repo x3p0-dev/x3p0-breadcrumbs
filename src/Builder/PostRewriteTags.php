@@ -69,27 +69,30 @@ class PostRewriteTags extends Builder
 			'%author%' => $this->breadcrumbs->crumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),
-			$this->isTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
+			$this->useTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
 				'post'     => $this->post,
-				'taxonomy' => get_taxonomy($tag)
+				'taxonomy' => get_taxonomy(trim($tag, '%'))
 			]),
 			default => false
 		};
 	}
 
 	/**
-	 * Helper function to determine whether a rewrite tag is a taxonomy and
-	 * not already being used as part of the breadcrumb trail.
+	 * Helper function to determine whether a rewrite tag is a taxonomy. If
+	 * the tag matches a taxonomy name, it returns the original tag. Else,
+	 * it returns `null`. The taxonomy will also only match if it was *not*
+	 * explicitly added as part of the post crumbs.
 	 */
-	private function isTaxonomy(string $tag): bool
+	private function useTaxonomy(string $tag): ?string
 	{
 		if (! str_starts_with($tag, '%') || ! str_ends_with($tag, '%')) {
-			return false;
+			return null;
 		}
 
-		$tag = trim($tag, '%');
+		$tax = trim($tag, '%');
 
-		return taxonomy_exists($tag)
-			&& $tag !== $this->breadcrumbs->postTaxonomy($this->post->post_type);
+		return taxonomy_exists($tax) && $tax !== $this->breadcrumbs->postTaxonomy($this->post->post_type)
+			? $tag
+			: null;
 	}
 }

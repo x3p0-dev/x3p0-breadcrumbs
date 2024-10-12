@@ -122,7 +122,6 @@ class Environment implements Contracts\Environment
 	{
 		$defaults = [
 			'home'              => Builder\Home::class,
-			'network'           => Builder\Network::class,
 			'paged'             => Builder\Paged::class,
 			'path'              => Builder\Path::class,
 			'post'              => Builder\Post::class,

@@ -144,7 +144,6 @@ The `Breadcrumbs` class accepts two parameters:
 - **`environment`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Environment` interface.
 - **`options`:** A configurable array of options for customizing how the breadcrumbs are generated:
 	- **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
-	- **`post_rewrite_tags:`** Whether to generate breadcrumbs based on the WordPress `post` post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). Defaults to `true`.
 	- **`show_home_label`:** Whether to display the Homepage label. Defaults to `true`. Disabling this will hide the label but not the crumb itself. It's generally meant to be used when replacing the label with an icon via CSS.
 	- **`labels`:** An array of internationalized crumb labels that can be customized:
 		- `title`: `Browse:`
@@ -162,7 +161,8 @@ The `Breadcrumbs` class accepts two parameters:
 		- `archive_day`: `%s`
 		- `archive_month`: `%s`
 		- `archive_year`: `%s`
-	- **`post_taxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be a valid post type name (e.g., `post`, `book`), and the array value must be a valid taxonomy name (e.g., `category`, `genre`). By default, this is an empty array.
+	- **`map_rewrite_tags:`** An array of post types and whether to generate breadcrumbs based on the post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, if this is not set for a post type, it will be `false`. The array keys must be valid post type names (e.g., `post`, `book`), and the array values must be a boolean value. The `post` post type is `true` by default.
+	- **`post_taxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:
 

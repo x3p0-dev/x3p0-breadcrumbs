@@ -54,6 +54,14 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 */
 	public function make(): Contracts\Breadcrumbs
 	{
+		// A hook for short-circuiting the breadcrumbs output and
+		// running custom logic. Filters on this hook must return either
+		// an instance of the `Contracts\Breadcrumbs` interface after
+		// running its own `make()` method or `null`.
+		if ($breadcrumbs = apply_filters('x3p0/breadcrumbs/pre/make', null, $this)) {
+			return $breadcrumbs;
+		}
+
 		$conditionals = [
 			'is_404'        => 'error-404',
 			'is_search'     => 'search',

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Term builder.
+ * Term assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
 /**
- * Builds breadcrumbs based on the given term object.
+ * Assembles breadcrumbs based on the given term object.
  */
-class Term extends Builder
+class Term extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -41,17 +41,17 @@ class Term extends Builder
 		// Will either be `false` or an array.
 		$rewrite = $taxonomy->rewrite;
 
-		// Builder rewrite front crumbs if taxonomy uses it.
+		// Assembler rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
-			$this->breadcrumbs->build('rewrite-front');
+			$this->breadcrumbs->assemble('rewrite-front');
 		}
 
-		// Builder crumbs based on the rewrite slug.
+		// Assembler crumbs based on the rewrite slug.
 		if ($rewrite && $rewrite['slug']) {
 			$path = trim($rewrite['slug'], '/');
 
-			// Builder path crumbs.
-			$this->breadcrumbs->build('path', [ 'path' => $path ]);
+			// Assembler path crumbs.
+			$this->breadcrumbs->assemble('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
 			foreach ($this->breadcrumbs->getCrumbs() as $crumb) {
@@ -64,7 +64,7 @@ class Term extends Builder
 
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
-			$this->breadcrumbs->build('post-type', [
+			$this->breadcrumbs->assemble('post-type', [
 				'post_type' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
@@ -73,10 +73,10 @@ class Term extends Builder
 
 		// If the taxonomy is hierarchical, list the parent terms.
 		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
-			$this->breadcrumbs->build('term-ancestors', [ 'term' => $this->term ]);
+			$this->breadcrumbs->assemble('term-ancestors', [ 'term' => $this->term ]);
 		}
 
-		// Builder the term crumb.
+		// Assembler the term crumb.
 		$this->breadcrumbs->crumb('term', [ 'term' => $this->term ]);
 	}
 }

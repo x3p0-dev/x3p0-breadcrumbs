@@ -106,14 +106,14 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function build(string $name, array $params = []): void
+	public function assemble(string $name, array $params = []): void
 	{
-		$builder = $this->environment->builders()->get(
+		$assembler = $this->environment->assemblers()->get(
 			$name,
 			$params + [ 'breadcrumbs' => $this ]
 		);
 
-		$builder && $builder->make();
+		$assembler && $assembler->make();
 	}
 
 	/**

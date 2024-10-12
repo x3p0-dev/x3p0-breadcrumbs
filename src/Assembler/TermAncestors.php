@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Term ancestors builder.
+ * Term ancestors assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 /**
- * Builds breadcrumbs based on whether a term has a parent post. It loops
+ * Assembles breadcrumbs based on whether a term has a parent post. It loops
  * through each term until a parent term is no longer found.
  */
-class TermAncestors extends Builder
+class TermAncestors extends Assembler
 {
 	/**
 	 * {@inheritdoc}

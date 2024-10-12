@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Rewrite front builder.
+ * Rewrite front assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 /**
  * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
@@ -20,7 +20,7 @@ namespace X3P0\Breadcrumbs\Builder;
  * though this is set for the post permalink structure, archives, other post
  * types, and taxonomies may still use it.
  */
-class RewriteFront extends Builder
+class RewriteFront extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -30,7 +30,7 @@ class RewriteFront extends Builder
 	public function make(): void
 	{
 		if ($GLOBALS['wp_rewrite']->front) {
-			$this->breadcrumbs->build('path', [
+			$this->breadcrumbs->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->front
 			]);
 		}

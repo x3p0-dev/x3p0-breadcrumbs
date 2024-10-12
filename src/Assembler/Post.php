@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post builder.
+ * Post assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 /**
- * This is a wrapper to determine a more specific post-related Builder class to
+ * This is a wrapper to determine a more specific post-related Assembler class to
  * call based on the given post.
  */
-class Post extends Builder
+class Post extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -37,20 +37,20 @@ class Post extends Builder
 	{
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
-			$this->breadcrumbs->build('post-ancestors', [
+			$this->breadcrumbs->assemble('post-ancestors', [
 				'post' => $this->post
 			]);
 
 		// If the post doesn't have a parent, get its hierarchy based off the post type.
 		} else {
-			$this->breadcrumbs->build('post-hierarchy', [
+			$this->breadcrumbs->assemble('post-hierarchy', [
 				'post' => $this->post
 			]);
 		}
 
 		// Display terms for specific post type taxonomy if requested.
 		if ($this->breadcrumbs->postTaxonomy($this->post->post_type)) {
-			$this->breadcrumbs->build('post-terms', [
+			$this->breadcrumbs->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(
 					$this->breadcrumbs->postTaxonomy($this->post->post_type)
@@ -58,7 +58,7 @@ class Post extends Builder
 			]);
 		}
 
-		// Builder the post crumb.
+		// Assembler the post crumb.
 		$this->breadcrumbs->crumb('post', [ 'post' => $this->post ]);
 	}
 }

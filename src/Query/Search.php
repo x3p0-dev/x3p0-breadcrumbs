@@ -20,9 +20,9 @@ class Search extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('rewrite-front');
 		$this->breadcrumbs->crumb('search');
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('paged');
 	}
 }

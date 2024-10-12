@@ -33,8 +33,8 @@ class Singular extends Query
 	{
 		$post = $this->post ?: get_queried_object();
 
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('post', [ 'post' => $post ]);
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('post', [ 'post' => $post ]);
+		$this->breadcrumbs->assemble('paged');
 	}
 }

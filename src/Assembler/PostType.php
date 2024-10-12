@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post type builder.
+ * Post type assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 /**
- * Builds breadcrumbs for the given post type.
+ * Assembles breadcrumbs for the given post type.
  */
-class PostType extends Builder
+class PostType extends Assembler
 {
 	/**
 	 * {@inheritdoc}

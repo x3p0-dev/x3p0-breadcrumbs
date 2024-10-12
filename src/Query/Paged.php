@@ -20,8 +20,8 @@ class Paged extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('rewrite-front');
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('rewrite-front');
+		$this->breadcrumbs->assemble('paged');
 	}
 }

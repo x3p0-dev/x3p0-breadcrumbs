@@ -38,17 +38,17 @@ class PostTypeArchive extends Query
 
 		$done_post_type = false;
 
-		$this->breadcrumbs->build('home');
+		$this->breadcrumbs->assemble('home');
 
 		if (false !== $type->rewrite) {
 			// Build rewrite front crumbs if post type uses it.
 			if ($type->rewrite['with_front']) {
-				$this->breadcrumbs->build('rewrite-front');
+				$this->breadcrumbs->assemble('rewrite-front');
 			}
 
 			// If there's a rewrite slug, check for parents.
 			if (! empty($type->rewrite['slug'])) {
-				$this->breadcrumbs->build('path', [ 'path' => $type->rewrite['slug'] ]);
+				$this->breadcrumbs->assemble('path', [ 'path' => $type->rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
 				foreach ($this->breadcrumbs->getCrumbs() as $crumb) {
@@ -80,6 +80,6 @@ class PostTypeArchive extends Query
 			$this->breadcrumbs->crumb('author', [ 'user' => $user ]);
 		}
 
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('paged');
 	}
 }

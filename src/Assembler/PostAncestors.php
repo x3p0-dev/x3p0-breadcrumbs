@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post ancestors builder.
+ * Post ancestors assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 /**
- * Builds breadcrumbs based on whether a post has a parent post. It loops
+ * Assembles breadcrumbs based on whether a post has a parent post. It loops
  * through each post until a parent post is no longer found.
  */
-class PostAncestors extends Builder
+class PostAncestors extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -64,11 +64,11 @@ class PostAncestors extends Builder
 		}
 
 		// Get the post hierarchy based off the final parent post.
-		$this->breadcrumbs->build('post-hierarchy', [ 'post' => $post ]);
+		$this->breadcrumbs->assemble('post-hierarchy', [ 'post' => $post ]);
 
 		// Display terms for specific post type taxonomy if requested.
 		if ($this->breadcrumbs->postTaxonomy($post->post_type)) {
-			$this->breadcrumbs->build('post-terms', [
+			$this->breadcrumbs->assemble('post-terms', [
 				'post'     => $post,
 				'taxonomy' => get_taxonomy(
 					$this->breadcrumbs->postTaxonomy($post->post_type)

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Builders interface.
+ * Assemblers interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Builders is meant for storing a registry of `Builder` classes.
+ * Assemblers are meant for storing a registry of `Assembler` classes.
  */
-interface Builders
+interface Assemblers
 {
 	/**
-	 * Adds a builder.
+	 * Adds an assembler.
 	 *
-	 * @param class-string<Builder> $builder
+	 * @param class-string<Assembler> $assembler
 	 */
-	public function add(string $name, string $builder): void;
+	public function add(string $name, string $assembler): void;
 
 	/**
-	 * Removes a builder.
+	 * Removes an assembler.
 	 */
 	public function remove(string $name): void;
 
 	/**
-	 * Checks if a builder is registered.
+	 * Checks if an assembler is registered.
 	 */
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns a builder object or `null`.
+	 * Resolves and returns an assembler object or `null`.
 	 */
-	public function get(string $name, array $params = []): ?Builder;
+	public function get(string $name, array $params = []): ?Assembler;
 }

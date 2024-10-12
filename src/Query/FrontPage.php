@@ -26,8 +26,8 @@ class FrontPage extends Query
 			$this->breadcrumbs->option('show_on_front')
 			|| Helpers::isPagedView()
 		) {
-			$this->breadcrumbs->build('home');
-			$this->breadcrumbs->build('paged');
+			$this->breadcrumbs->assemble('home');
+			$this->breadcrumbs->assemble('paged');
 		}
 	}
 }

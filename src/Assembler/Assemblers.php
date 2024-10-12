@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Builders collection class.
+ * Assemblers collection class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,26 +11,26 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use TypeError;
 use X3P0\Breadcrumbs\Contracts;
 
-class Builders implements Contracts\Builders
+class Assemblers implements Contracts\Assemblers
 {
 	/**
-	 * Stores the array of builder classes.
+	 * Stores the array of assembler classes.
 	 *
-	 * @var class-string<Contracts\Builder>
+	 * @var class-string<Contracts\Assembler>
 	 */
-	protected array $builders = [];
+	protected array $assemblers = [];
 
 	/**
-	 * Allows registering a default set of builders.
+	 * Allows registering a default set of assemblers.
 	 */
-	public function __construct(array $builders = [])
+	public function __construct(array $assemblers = [])
 	{
-		foreach ($builders as $name => $class) {
+		foreach ($assemblers as $name => $class) {
 			$this->add($name, $class);
 		}
 	}
@@ -40,15 +40,15 @@ class Builders implements Contracts\Builders
 	 */
 	public function add(string $name, string $query): void
 	{
-		if (! is_subclass_of($query, Contracts\Builder::class)) {
+		if (! is_subclass_of($query, Contracts\Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-ideas'),
-				Contracts\Builder::class
+				Contracts\Assembler::class
 			)));
 		}
 
-		$this->builders[$name] = $query;
+		$this->assemblers[$name] = $query;
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Builders implements Contracts\Builders
 	 */
 	public function remove(string $name): void
 	{
-		unset($this->builders[$name]);
+		unset($this->assemblers[$name]);
 	}
 
 	/**
@@ -64,17 +64,17 @@ class Builders implements Contracts\Builders
 	 */
 	public function has(string $name): bool
 	{
-		return isset($this->builders[$name]);
+		return isset($this->assemblers[$name]);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Contracts\Builder
+	public function get(string $name, array $params = []): ?Contracts\Assembler
 	{
 		if ($this->has($name)) {
-			$builder = $this->builders[$name];
-			return new $builder(...$params);
+			$assembler = $this->assemblers[$name];
+			return new $assembler(...$params);
 		}
 
 		return null;

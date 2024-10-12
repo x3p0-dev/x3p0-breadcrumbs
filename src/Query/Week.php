@@ -20,10 +20,10 @@ class Week extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('rewrite-front');
 		$this->breadcrumbs->crumb('year');
 		$this->breadcrumbs->crumb('week');
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('paged');
 	}
 }

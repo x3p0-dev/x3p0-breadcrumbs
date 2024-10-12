@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Contracts;
 /**
  * `Query` classes are meant to be paired with the global WordPress queried URL,
  * such as the front page, single posts, archives, etc. Their purpose is to
- * call either `Builder` or `Crumb` classes to generate breadcrumbs.
+ * call either `Assembler` or `Crumb` classes to generate breadcrumbs.
  */
 interface Query
 {

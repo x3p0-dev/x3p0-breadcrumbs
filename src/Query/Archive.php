@@ -43,15 +43,15 @@ class Archive extends Query
 		} elseif (is_year()) {
 			$this->breadcrumbs->query('year');
 		} else {
-			$this->breadcrumbs->build('home');
+			$this->breadcrumbs->assemble('home');
 
 			// Build rewrite front crumbs if date/time query.
 			if (is_date() || is_time()) {
-				$this->breadcrumbs->build('rewrite-front');
+				$this->breadcrumbs->assemble('rewrite-front');
 			}
 
 			$this->breadcrumbs->crumb('archive');
-			$this->breadcrumbs->build('paged');
+			$this->breadcrumbs->assemble('paged');
 		}
 	}
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Environment;
 
 use X3P0\Breadcrumbs\Contracts;
-use X3P0\Breadcrumbs\{Builder, Crumb, Query};
+use X3P0\Breadcrumbs\{Assembler, Crumb, Query};
 
 /**
  * The default implementation of the `Environment` interface. It is the backbone
@@ -33,11 +33,11 @@ class Environment implements Contracts\Environment
 
 	/**
 	 * Houses a collection where the keys are the builder name and the values
-	 * are the class names for implementing the `Builder` interface.
+	 * are the class names for implementing the `Assembler` interface.
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\Builders $builders;
+	protected Contracts\Assemblers $assemblers;
 
 	/**
 	 * Houses a collection where the keys are the crumb name and the values
@@ -49,19 +49,19 @@ class Environment implements Contracts\Environment
 
 	/**
 	 * Builds a new environment by creating empty collections for queries,
-	 * builders, and crumbs. It then registers the defaults.
+	 * assemblers, and crumbs. It then registers the defaults.
 	 */
 	public function __construct(
 		array $queries = [],
-		array $builders = [],
+		array $assemblers = [],
 		array $crumbs = []
 	) {
-		$this->queries  = new Query\Queries($queries);
-		$this->builders = new Builder\Builders($builders);
-		$this->crumbs   = new Crumb\Crumbs($crumbs);
+		$this->queries    = new Query\Queries($queries);
+		$this->assemblers = new Assembler\Assemblers($assemblers);
+		$this->crumbs     = new Crumb\Crumbs($crumbs);
 
 		$this->registerDefaultQueries();
-		$this->registerDefaultBuilders();
+		$this->registerDefaultAssemblers();
 		$this->registerDefaultCrumbs();
 
 		do_action('x3p0/breadcrumbs/environment', $this);
@@ -78,9 +78,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function builders(): Contracts\Builders
+	public function assemblers(): Contracts\Assemblers
 	{
-		return $this->builders;
+		return $this->assemblers;
 	}
 
 	/**
@@ -126,26 +126,26 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default builder classes with the environment.
 	 */
-	private function registerDefaultBuilders(): void
+	private function registerDefaultAssemblers(): void
 	{
 		$defaults = [
-			'home'              => Builder\Home::class,
-			'paged'             => Builder\Paged::class,
-			'path'              => Builder\Path::class,
-			'post'              => Builder\Post::class,
-			'post-ancestors'    => Builder\PostAncestors::class,
-			'post-hierarchy'    => Builder\PostHierarchy::class,
-			'post-rewrite-tags' => Builder\PostRewriteTags::class,
-			'post-terms'        => Builder\PostTerms::class,
-			'post-type'         => Builder\PostType::class,
-			'rewrite-front'     => Builder\RewriteFront::class,
-			'term'              => Builder\Term::class,
-			'term-ancestors'    => Builder\TermAncestors::class
+			'home'              => Assembler\Home::class,
+			'paged'             => Assembler\Paged::class,
+			'path'              => Assembler\Path::class,
+			'post'              => Assembler\Post::class,
+			'post-ancestors'    => Assembler\PostAncestors::class,
+			'post-hierarchy'    => Assembler\PostHierarchy::class,
+			'post-rewrite-tags' => Assembler\PostRewriteTags::class,
+			'post-terms'        => Assembler\PostTerms::class,
+			'post-type'         => Assembler\PostType::class,
+			'rewrite-front'     => Assembler\RewriteFront::class,
+			'term'              => Assembler\Term::class,
+			'term-ancestors'    => Assembler\TermAncestors::class
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->builders()->has($name)) {
-				$this->builders()->add($name, $class);
+			if (! $this->assemblers()->has($name)) {
+				$this->assemblers()->add($name, $class);
 			}
 		}
 	}

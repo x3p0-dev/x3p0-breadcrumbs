@@ -33,8 +33,8 @@ class Tax extends Query
 	{
 		$term = $this->term ?: get_queried_object();
 
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('term', [ 'term' => $term ]);
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('term', [ 'term' => $term ]);
+		$this->breadcrumbs->assemble('paged');
 	}
 }

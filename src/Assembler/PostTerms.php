@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post terms builder.
+ * Post terms assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
 use WP_Taxonomy;
 use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
 
 /**
- * Builds breadcrumbs based on the given taxonomy for the post.
+ * Assembles breadcrumbs based on the given taxonomy for the post.
  */
-class PostTerms extends Builder
+class PostTerms extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -48,7 +48,7 @@ class PostTerms extends Builder
 			// If the term has a parent, add its ancestor crumbs to
 			// the breadcrumb trail.
 			if (0 < $term->parent) {
-				$this->breadcrumbs->build('term-ancestors', [
+				$this->breadcrumbs->assemble('term-ancestors', [
 					'term' => $term
 				]);
 			}

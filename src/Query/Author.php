@@ -36,17 +36,17 @@ class Author extends Query
 	{
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		$this->breadcrumbs->build('home');
-		$this->breadcrumbs->build('rewrite-front');
+		$this->breadcrumbs->assemble('home');
+		$this->breadcrumbs->assemble('rewrite-front');
 
 		// If $author_base exists, check for parent pages.
 		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
-			$this->breadcrumbs->build('path', [
+			$this->breadcrumbs->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->author_base
 			]);
 		}
 
 		$this->breadcrumbs->crumb('author', [ 'user' => $user ]);
-		$this->breadcrumbs->build('paged');
+		$this->breadcrumbs->assemble('paged');
 	}
 }

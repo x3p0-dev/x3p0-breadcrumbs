@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract builder.
+ * Abstract assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use X3P0\Breadcrumbs\Contracts;
 
 /**
- * Implements the `Builder` interface and creates a custom Builder object.
+ * Implements the `Assembler` interface and creates a custom Assembler object.
  */
-abstract class Builder implements Contracts\Builder
+abstract class Assembler implements Contracts\Assembler
 {
 	/**
 	 * Creates a new query object.

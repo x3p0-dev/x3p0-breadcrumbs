@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Home builder.
+ * Home assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 /**
- * Builds the blog homepage crumb(s). For multisite, this may include showing
+ * Assembles the blog homepage crumb(s). For multisite, this may include showing
  * both the network and homepage of the sub-site crumb.
  */
-class Home extends Builder
+class Home extends Assembler
 {
 	/**
 	 * {@inheritdoc}

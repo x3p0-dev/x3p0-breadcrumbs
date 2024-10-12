@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * The environment contract is a container for storing queries, builders, and
+ * The environment contract is a container for storing queries, assemblers, and
  * crumbs, which are the building blocks for creating a breadcrumb trail.
  */
 interface Environment
@@ -27,7 +27,7 @@ interface Environment
 	/**
 	 * Returns a builder collection.
 	 */
-	public function builders(): Builders;
+	public function assemblers(): Assemblers;
 
 	/**
 	 * Returns a crumb collection.

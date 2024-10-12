@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Paged builder.
+ * Paged assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Builders out breadcrumbs based on whether we're currently viewing a "paged"
+ * Assemblers out breadcrumbs based on whether we're currently viewing a "paged"
  * page. This handles archive-type pagination, single-post pagination via
  * `<!--nextpage-->`, and comments pagination.
  */
-class Paged extends Builder
+class Paged extends Assembler
 {
 	/**
 	 * {@inheritdoc}

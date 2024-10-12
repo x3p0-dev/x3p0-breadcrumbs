@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post rewrite tags builder.
+ * Post rewrite tags assembler.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Builder;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
 use WP_User;
@@ -23,7 +23,7 @@ use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
  * core WP `%year%`, `%monthnum%`, `%day%`, and `%author` tags. It will also map
  * any taxonomy tags.
  */
-class PostRewriteTags extends Builder
+class PostRewriteTags extends Assembler
 {
 	/**
 	 * {@inheritdoc}
@@ -54,7 +54,7 @@ class PostRewriteTags extends Builder
 	}
 
 	/**
-	 * Maps a rewrite tag to a crumb or builder implementation.
+	 * Maps a rewrite tag to a crumb or assembler implementation.
 	 */
 	private function mapTag(string $tag): void
 	{
@@ -71,7 +71,7 @@ class PostRewriteTags extends Builder
 			'%author%' => $this->breadcrumbs->crumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),
-			$this->useTaxonomy($tag) => $this->breadcrumbs->build('post-terms', [
+			$this->useTaxonomy($tag) => $this->breadcrumbs->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(trim($tag, '%'))
 			]),

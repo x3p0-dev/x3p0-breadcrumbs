@@ -57,9 +57,9 @@ interface Breadcrumbs
 	public function query(string $name, array $params = []): void;
 
 	/**
-	 * Creates a new `Builder` object and runs it.
+	 * Creates a new `Assembler` object and runs it.
 	 */
-	public function build(string $name, array $params = []): void;
+	public function assemble(string $name, array $params = []): void;
 
 	/**
 	 * Creates a new `Crumb` object and adds it to the crumbs collection.

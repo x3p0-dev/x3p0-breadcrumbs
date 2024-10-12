@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breadcrumbs interface.
+ * Builder interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024 Justin Tadlock
@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Breadcrumbs classes are responsible for creating an array of `Crumb` objects.
+ * Builder classes are responsible for creating an array of `Crumb` objects.
  * These can then be used by other classes to output the trail as HTML.
  */
-interface Breadcrumbs
+interface Builder
 {
 	/**
 	 * Builds a new breadcrumbs object and returns it.

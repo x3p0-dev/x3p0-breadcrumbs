@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * Assembles breadcrumbs based on whether a term has a parent post. It loops
@@ -26,7 +26,7 @@ class TermAncestors extends Assembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected WP_Term $term
 	) {}
 
@@ -54,7 +54,7 @@ class TermAncestors extends Assembler
 		// proper order for the trail.
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->breadcrumbs->crumb('term', [ 'term' => $parent ]);
+				$this->builder->crumb('term', [ 'term' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

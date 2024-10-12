@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 class Tax extends Query
 {
@@ -22,7 +22,7 @@ class Tax extends Query
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected ?WP_Term $term = null
 	) {}
 
@@ -33,8 +33,8 @@ class Tax extends Query
 	{
 		$term = $this->term ?: get_queried_object();
 
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->assemble('term', [ 'term' => $term ]);
-		$this->breadcrumbs->assemble('paged');
+		$this->builder->assemble('home');
+		$this->builder->assemble('term', [ 'term' => $term ]);
+		$this->builder->assemble('paged');
 	}
 }

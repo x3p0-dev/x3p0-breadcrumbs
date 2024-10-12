@@ -21,7 +21,7 @@ class PagedSingular extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('paged'),
+			$this->builder->label('paged'),
 			number_format_i18n(absint(get_query_var('page')))
 		);
 	}

@@ -23,11 +23,11 @@ class FrontPage extends Query
 	public function make(): void
 	{
 		if (
-			$this->breadcrumbs->option('show_on_front')
+			$this->builder->option('show_on_front')
 			|| Helpers::isPagedView()
 		) {
-			$this->breadcrumbs->assemble('home');
-			$this->breadcrumbs->assemble('paged');
+			$this->builder->assemble('home');
+			$this->builder->assemble('paged');
 		}
 	}
 }

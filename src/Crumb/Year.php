@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 class Year extends Crumb
 {
@@ -22,7 +22,7 @@ class Year extends Crumb
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected ?WP_Post $post = null
 	) {}
 
@@ -32,7 +32,7 @@ class Year extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('archive_year'),
+			$this->builder->label('archive_year'),
 			get_the_time(esc_html_x(
 				'Y',
 				'yearly archives date format',

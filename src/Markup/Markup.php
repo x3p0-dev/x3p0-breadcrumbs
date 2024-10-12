@@ -44,30 +44,28 @@ abstract class Markup implements Contracts\Markup
 	 * generated markup.
 	 */
 	public function __construct(
-		protected Contracts\Breadcrumbs $breadcrumbs,
+		protected Contracts\Builder $builder,
 		protected array $options = []
 	) {
-		$this->options = wp_parse_args($this->options, [
-			'show_on_front'      => false,
-			'show_first_item'    => true,
-			'show_last_item'     => true,
-			'before'             => '',
-			'after'              => '',
-			'container_tag'      => 'nav',
-			'title_tag'          => 'h2',
-			'list_tag'           => 'ol',
-			'item_tag'           => 'li',
-			'container_class'    => 'breadcrumbs',
-			'title_class'        => 'breadcrumbs__title',
-			'list_class'         => 'breadcrumbs__trail',
-			'item_class'         => 'breadcrumbs__crumb',
-			'item_content_class' => 'breadcrumbs__crumb-content',
-			'item_label_class'   => 'breadcrumbs__crumb-label'
-		]);
-
 		$this->options = apply_filters(
 			'x3p0/breadcrumbs/markup/config',
-			$this->options
+			wp_parse_args($this->options, [
+				'show_on_front'      => false,
+				'show_first_item'    => true,
+				'show_last_item'     => true,
+				'before'             => '',
+				'after'              => '',
+				'container_tag'      => 'nav',
+				'title_tag'          => 'h2',
+				'list_tag'           => 'ol',
+				'item_tag'           => 'li',
+				'container_class'    => 'breadcrumbs',
+				'title_class'        => 'breadcrumbs__title',
+				'list_class'         => 'breadcrumbs__trail',
+				'item_class'         => 'breadcrumbs__crumb',
+				'item_content_class' => 'breadcrumbs__crumb-content',
+				'item_label_class'   => 'breadcrumbs__crumb-label'
+			])
 		);
 	}
 
@@ -77,7 +75,7 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function crumbs(): array
 	{
-		$crumbs = $this->breadcrumbs->getCrumbs();
+		$crumbs = $this->builder->getCrumbs();
 
 		// Remove the first crumb item if it's not supposed to be shown.
 		if (! $this->option('show_first_item')) {

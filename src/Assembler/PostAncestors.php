@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * Assembles breadcrumbs based on whether a post has a parent post. It loops
@@ -26,7 +26,7 @@ class PostAncestors extends Assembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected WP_Post $post
 	) {}
 
@@ -64,21 +64,21 @@ class PostAncestors extends Assembler
 		}
 
 		// Get the post hierarchy based off the final parent post.
-		$this->breadcrumbs->assemble('post-hierarchy', [ 'post' => $post ]);
+		$this->builder->assemble('post-hierarchy', [ 'post' => $post ]);
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->breadcrumbs->postTaxonomy($post->post_type)) {
-			$this->breadcrumbs->assemble('post-terms', [
+		if ($this->builder->postTaxonomy($post->post_type)) {
+			$this->builder->assemble('post-terms', [
 				'post'     => $post,
 				'taxonomy' => get_taxonomy(
-					$this->breadcrumbs->postTaxonomy($post->post_type)
+					$this->builder->postTaxonomy($post->post_type)
 				)
 			]);
 		}
 
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->breadcrumbs->crumb('post', [ 'post' => $parent ]);
+				$this->builder->crumb('post', [ 'post' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

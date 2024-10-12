@@ -29,19 +29,19 @@ class Paged extends Assembler
 	{
 		// If viewing a paged archive-type page.
 		if (is_paged()) {
-			$this->breadcrumbs->crumb('paged');
+			$this->builder->crumb('paged');
 
 		// If viewing a paged singular post.
 		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->breadcrumbs->crumb('paged-singular');
+			$this->builder->crumb('paged-singular');
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
-			$this->breadcrumbs->crumb('paged-comments');
+			$this->builder->crumb('paged-comments');
 
 		// If viewing a paged Query Loop block view.
 		} elseif (Helpers::isPagedQueryBlock()) {
-			$this->breadcrumbs->crumb('paged-query-block');
+			$this->builder->crumb('paged-query-block');
 		}
 	}
 }

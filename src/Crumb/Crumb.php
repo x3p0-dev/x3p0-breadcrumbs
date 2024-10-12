@@ -24,7 +24,7 @@ abstract class Crumb implements Contracts\Crumb
 	 * Creates a new crumb object.
 	 */
 	public function __construct(
-		protected Contracts\Breadcrumbs $breadcrumbs
+		protected Contracts\Builder $builder
 	) {}
 
 	/**

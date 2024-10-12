@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 class Minute extends Crumb
 {
@@ -22,7 +22,7 @@ class Minute extends Crumb
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected ?WP_Post $post = null
 	) {}
 
@@ -32,7 +32,7 @@ class Minute extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('archive_minute'),
+			$this->builder->label('archive_minute'),
 			get_the_time(
 				esc_html_x('i', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post

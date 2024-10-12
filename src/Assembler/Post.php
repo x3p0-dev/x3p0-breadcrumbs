@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to
@@ -26,7 +26,7 @@ class Post extends Assembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected WP_Post $post
 	) {}
 
@@ -37,28 +37,28 @@ class Post extends Assembler
 	{
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
-			$this->breadcrumbs->assemble('post-ancestors', [
+			$this->builder->assemble('post-ancestors', [
 				'post' => $this->post
 			]);
 
 		// If the post doesn't have a parent, get its hierarchy based off the post type.
 		} else {
-			$this->breadcrumbs->assemble('post-hierarchy', [
+			$this->builder->assemble('post-hierarchy', [
 				'post' => $this->post
 			]);
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->breadcrumbs->postTaxonomy($this->post->post_type)) {
-			$this->breadcrumbs->assemble('post-terms', [
+		if ($this->builder->postTaxonomy($this->post->post_type)) {
+			$this->builder->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(
-					$this->breadcrumbs->postTaxonomy($this->post->post_type)
+					$this->builder->postTaxonomy($this->post->post_type)
 				)
 			]);
 		}
 
 		// Assembler the post crumb.
-		$this->breadcrumbs->crumb('post', [ 'post' => $this->post ]);
+		$this->builder->crumb('post', [ 'post' => $this->post ]);
 	}
 }

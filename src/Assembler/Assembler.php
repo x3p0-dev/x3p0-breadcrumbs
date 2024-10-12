@@ -23,6 +23,6 @@ abstract class Assembler implements Contracts\Assembler
 	/**
 	 * Creates a new query object.
 	 */
-	public function __construct(protected Contracts\Breadcrumbs $breadcrumbs)
+	public function __construct(protected Contracts\Builder $builder)
 	{}
 }

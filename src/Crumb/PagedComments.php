@@ -21,7 +21,7 @@ class PagedComments extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('paged_comments'),
+			$this->builder->label('paged_comments'),
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}

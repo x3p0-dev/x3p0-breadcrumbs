@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 class Singular extends Query
 {
@@ -22,7 +22,7 @@ class Singular extends Query
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected ?WP_Post $post = null
 	) {}
 
@@ -33,8 +33,8 @@ class Singular extends Query
 	{
 		$post = $this->post ?: get_queried_object();
 
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->assemble('post', [ 'post' => $post ]);
-		$this->breadcrumbs->assemble('paged');
+		$this->builder->assemble('home');
+		$this->builder->assemble('post', [ 'post' => $post ]);
+		$this->builder->assemble('paged');
 	}
 }

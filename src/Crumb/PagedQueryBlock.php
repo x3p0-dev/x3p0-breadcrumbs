@@ -23,7 +23,7 @@ class PagedQueryBlock extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('paged'),
+			$this->builder->label('paged'),
 			number_format_i18n(absint(Helpers::getQueryBlockPage()))
 		);
 	}

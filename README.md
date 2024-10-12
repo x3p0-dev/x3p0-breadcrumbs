@@ -38,20 +38,20 @@ The plugin isn't just a simple block. The plugin's foundation is actually a robu
 
 This foundation includes three primary interfaces:
 
-- [`X3P0\Breadcrumbs\Contracts\Environment`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Environment.php): Defines the query, builder, and crumb classes that are used for generating breadcrumbs.
-- [`X3P0\Breadcrumbs\Contracts\Breadcrumbs`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Breadcrumbs.php): Generates the breadcrumb items ("crumbs").
+- [`X3P0\Breadcrumbs\Contracts\Environment`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Environment.php): Defines the query, assembler, and crumb classes that are used for generating breadcrumbs.
+- [`X3P0\Breadcrumbs\Contracts\Builder`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Builder.php): Generates the breadcrumb items ("crumbs").
 - [`X3P0\Breadcrumbs\Contracts\Markup`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Markup.php): Renders the markup for a breadcrumb trail.
 
-By default, the plugin includes one implementation for both the `Environment` and `Breadcrumbs` interfaces. It includes three implementations of the `Markup` interface for outputting plain HTML, microdata-formatted, and RDFa-formatted lists.
+By default, the plugin includes one implementation for both the `Environment` and `Builder` interfaces. It includes three implementations of the `Markup` interface for outputting plain HTML, microdata-formatted, and RDFa-formatted lists.
 
 ```php
-use X3P0\Breadcrumbs\Breadcrumbs;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
 $environment = new Environment();
-$breadcrumbs = new Breadcrumbs($environment);
-$markup      = new Html($breadcrumbs);
+$builder     = new Builder($environment);
+$markup      = new Html($builder);
 
 echo $markup->render();
 ```
@@ -59,11 +59,11 @@ echo $markup->render();
 Or, if you wanted, you could shorten that to:
 
 ```php
-use X3P0\Breadcrumbs\Breadcrumbs;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
-(new Html(new Breadcrumbs(new Environment())))->render();
+(new Html(new Builder(new Environment())))->render();
 ```
 
 ### Markup Implementations
@@ -77,13 +77,13 @@ The plugin comes with three classes, which are implementations of the `X3P0\Brea
 Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
 
 ```php
-use X3P0\Breadcrumbs\Breadcrumbs;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Rdfa;
 
 $environment = new Environment();
-$breadcrumbs = new Breadcrumbs($environment);
-$markup      = new Rdfa($breadcrumbs);
+$builder     = new Builder($environment);
+$markup      = new Rdfa($builder);
 
 echo $markup->render();
 ```
@@ -94,7 +94,7 @@ You are, of course, free to build your own implementation too. Any class that im
 
 The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations of the `Markup` interface, accept two parameters:
 
-- **`breadcrumbs`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Breadcrumbs` interface.
+- **`builder`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Builder` interface.
 - **`options`:** A configurable array of options for customizing how the markup is generated:
 	- **`show_on_front`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
 	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the home page). Defaults to `true`.
@@ -102,7 +102,7 @@ The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations o
 	- **`before`:** Custom HTML to add before the HTML output. Defaults to an empty string.
 	- **`after`:** Custom HTML to add after the HTML output. Defaults to an empty string.
 	- **`container_tag`:** The HTML tag used for the wrapping container. Defaults to `nav`. If this is set to an empty string, the container will not be output.
-	- **`title_tag`:** The HTML tag used for the Breadcrumbs heading element. Defaults to `h2`. If this is set to an empty string, no heading will be output.
+	- **`title_tag`:** The HTML tag used for the breadcrumbs heading element. Defaults to `h2`. If this is set to an empty string, no heading will be output.
 	- **`list_tag`:** The HTML tag used for the breadcrumbs list. Defaults to `ol`.
 	- **`item_tag`:** The HTML tag used to wrap each breadcrumb. Defaults to `li`.
 	- **`container_class`:** The class used for the container element. Defaults to `breadcrumbs`.
@@ -115,7 +115,7 @@ The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations o
 Here is an example of using Schema.org microdata (via the `Microdata` class) and configuring the container and title output:
 
 ```php
-use X3P0\Breadcrumbs\Breadcrumbs;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Microdata;
 
@@ -125,8 +125,8 @@ $markup_options = [
 ];
 
 $environment = new Environment();
-$breadcrumbs = new Breadcrumbs($environment);
-$markup      = new Microdata($breadcrumbs, $markup_options);
+$builder     = new Builder($environment);
+$markup      = new Microdata($builder, $markup_options);
 
 echo $markup->render();
 ```
@@ -137,9 +137,9 @@ These options are also configurable via the `x3p0/breadcrumbs/markup/config` fil
 add_filter('x3p0/breadcrumbs/markup/config', fn(array $options) => $options);
 ```
 
-### Breadcrumb Options
+### Builder Options
 
-The `Breadcrumbs` class accepts two parameters:
+The `Builder` class accepts two parameters:
 
 - **`environment`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Environment` interface.
 - **`options`:** A configurable array of options for customizing how the breadcrumbs are generated:
@@ -167,11 +167,11 @@ The `Breadcrumbs` class accepts two parameters:
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:
 
 ```php
-use X3P0\Breadcrumbs\Breadcrumbs;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
-$breadcrumb_options = [
+$builder_options = [
 	'post_rewrite_tags' => false
 	'post_taxonomy' => [
 		'post' => 'category'
@@ -179,8 +179,8 @@ $breadcrumb_options = [
 ];
 
 $environment = new Environment();
-$breadcrumbs = new Breadcrumbs($environment, $breadcrumb_options);
-$markup      = new Html($breadcrumbs);
+$builder     = new Builder($environment, $builder_options);
+$markup      = new Html($builder);
 
 echo $markup->render();
 ```

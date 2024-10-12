@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breadcrumbs class.
+ * Builder class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024, Justin Tadlock
@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs;
+namespace X3P0\Breadcrumbs\Builder;
 
 use X3P0\Breadcrumbs\Contracts;
 
 /**
- * Implements the `Breadcrumbs` contract using using query classes to generate
+ * Implements the `Builder` contract using using query classes to generate
  * an array of breadcrumbs that can then be used to output a breadcrumb trail.
  */
-class Breadcrumbs implements Contracts\Breadcrumbs
+class Builder implements Contracts\Builder
 {
 	/**
 	 * @var Contracts\Crumb[]
@@ -36,7 +36,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 		protected array $options = []
 	) {
 		$this->options = apply_filters(
-			'x3p0/breadcrumbs/config',
+			'x3p0/breadcrumbs/builder/config',
 			array_replace_recursive([
 				'labels'           => $this->defaultLabels(),
 				'map_rewrite_tags' => $this->defaultRewriteTags(),
@@ -52,14 +52,14 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	 * query. Once we figure out which page we're viewing, we create a new
 	 * `Query` object and let it build the breadcrumbs.
 	 */
-	public function make(): Contracts\Breadcrumbs
+	public function make(): Contracts\Builder
 	{
 		// A hook for short-circuiting the breadcrumbs output and
 		// running custom logic. Filters on this hook must return either
-		// an instance of the `Contracts\Breadcrumbs` interface after
+		// an instance of the `Contracts\Builder` interface after
 		// running its own `make()` method or `null`.
-		if ($breadcrumbs = apply_filters('x3p0/breadcrumbs/pre/make', null, $this)) {
-			return $breadcrumbs;
+		if ($builder = apply_filters('x3p0/breadcrumbs/builder/pre/build', null, $this)) {
+			return $builder;
 		}
 
 		$conditionals = [
@@ -97,7 +97,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	{
 		$query = $this->environment->queries()->get(
 			$name,
-			$params + [ 'breadcrumbs' => $this ]
+			$params + [ 'builder' => $this ]
 		);
 
 		$query && $query->make();
@@ -110,7 +110,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 	{
 		$assembler = $this->environment->assemblers()->get(
 			$name,
-			$params + [ 'breadcrumbs' => $this ]
+			$params + [ 'builder' => $this ]
 		);
 
 		$assembler && $assembler->make();
@@ -124,7 +124,7 @@ class Breadcrumbs implements Contracts\Breadcrumbs
 		if ($this->environment->crumbs()->has($name)) {
 			$this->crumbs[] = $this->environment->crumbs()->get(
 				$name,
-				$params + [ 'breadcrumbs' => $this ]
+				$params + [ 'builder' => $this ]
 			);
 		}
 	}

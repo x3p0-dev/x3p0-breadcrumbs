@@ -20,7 +20,7 @@ class Error extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->crumb('error-404');
+		$this->builder->assemble('home');
+		$this->builder->crumb('error-404');
 	}
 }

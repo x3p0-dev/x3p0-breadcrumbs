@@ -20,6 +20,6 @@ class Error extends Crumb
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label('error_404');
+		return $this->builder->label('error_404');
 	}
 }

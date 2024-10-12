@@ -30,7 +30,7 @@ class RewriteFront extends Assembler
 	public function make(): void
 	{
 		if ($GLOBALS['wp_rewrite']->front) {
-			$this->breadcrumbs->assemble('path', [
+			$this->builder->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->front
 			]);
 		}

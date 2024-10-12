@@ -51,12 +51,12 @@ class Rdfa extends Html
 		);
 
 		// Build the title HTML only if there's a label for it.
-		if ($this->breadcrumbs->label('title')) {
+		if ($this->builder->label('title')) {
 			$title = sprintf(
 				'<%1$s class="%2$s">%3$s</%1$s>',
 				tag_escape($this->option('title_tag')),
 				esc_attr($this->option('title_class')),
-				$this->breadcrumbs->label('title')
+				$this->builder->label('title')
 			);
 		}
 
@@ -65,7 +65,7 @@ class Rdfa extends Html
 				'<%1$s class="%2$s" role="navigation" aria-label="%3$s">%4$s</%1$s>',
 				tag_escape($this->option('container_tag')),
 				esc_attr($this->option('container_class')),
-				esc_attr($this->breadcrumbs->label('aria_label')),
+				esc_attr($this->builder->label('aria_label')),
 				'%1$s%2$s'
 			);
 		}

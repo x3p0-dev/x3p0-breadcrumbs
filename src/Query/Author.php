@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query;
 
 use WP_Rewrite;
 use WP_User;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 class Author extends Query
 {
@@ -23,7 +23,7 @@ class Author extends Query
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected ?WP_User $user = null
 	) {}
 
@@ -36,17 +36,17 @@ class Author extends Query
 	{
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->assemble('rewrite-front');
+		$this->builder->assemble('home');
+		$this->builder->assemble('rewrite-front');
 
 		// If $author_base exists, check for parent pages.
 		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
-			$this->breadcrumbs->assemble('path', [
+			$this->builder->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->author_base
 			]);
 		}
 
-		$this->breadcrumbs->crumb('author', [ 'user' => $user ]);
-		$this->breadcrumbs->assemble('paged');
+		$this->builder->crumb('author', [ 'user' => $user ]);
+		$this->builder->assemble('paged');
 	}
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -26,7 +26,7 @@ class Path extends Assembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected string $path = ''
 	) {}
 
@@ -41,8 +41,8 @@ class Path extends Assembler
 
 		// If the path is a post, run the parent crumbs and bail early.
 		if ($post = get_page_by_path($path)) {
-			$this->breadcrumbs->assemble('post-ancestors', [ 'post' => $post ]);
-			$this->breadcrumbs->crumb('post', [ 'post' => $post ]);
+			$this->builder->assemble('post-ancestors', [ 'post' => $post ]);
+			$this->builder->crumb('post', [ 'post' => $post ]);
 			return;
 		}
 
@@ -63,11 +63,11 @@ class Path extends Assembler
 				// If a parent post is found, Assembler the crumbs
 				// and break out of the loop.
 				if (! empty($post) && 0 < $post->ID) {
-					$this->breadcrumbs->assemble('post-ancestors', [
+					$this->builder->assemble('post-ancestors', [
 						'post' => $post
 					]);
 
-					$this->breadcrumbs->crumb('post', [
+					$this->builder->crumb('post', [
 						'post' => $post
 					]);
 
@@ -76,7 +76,7 @@ class Path extends Assembler
 				// If the slug matches a post type, let's Assembler
 				// that and break out of the loop.
 				} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
-					$this->breadcrumbs->assemble('post-type', [
+					$this->builder->assemble('post-type', [
 						'post_type' => $types[0]
 					]);
 

@@ -21,7 +21,7 @@ class Week extends Crumb
 	public function label(): string
 	{
 		return sprintf(
-			$this->breadcrumbs->label('archive_week'),
+			$this->builder->label('archive_week'),
 			get_the_time(esc_html_x(
 				'W',
 				'weekly archives date format',

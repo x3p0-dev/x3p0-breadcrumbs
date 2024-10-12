@@ -20,10 +20,10 @@ class Month extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->assemble('rewrite-front');
-		$this->breadcrumbs->crumb('year');
-		$this->breadcrumbs->crumb('month');
-		$this->breadcrumbs->assemble('paged');
+		$this->builder->assemble('home');
+		$this->builder->assemble('rewrite-front');
+		$this->builder->crumb('year');
+		$this->builder->crumb('month');
+		$this->builder->assemble('paged');
 	}
 }

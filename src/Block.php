@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 
@@ -52,7 +53,7 @@ class Block implements Bootable
 	 */
 	public function render(array $attributes): string
 	{
-		$breadcrumb_options = [
+		$builder_options = [
 			'labels'	   => [ 'title' => '' ],
 			'post_taxonomy'    => [ 'post' => 'category' ],
 			'map_rewrite_tags' => [ 'post' => false ],
@@ -83,7 +84,7 @@ class Block implements Bootable
 			// Set whether the home label should be shown. This is
 			// wrapped within the prefix check because the home label
 			// should always be shown if there's no prefix/icon.
-			$breadcrumb_options['show_home_label'] = $attributes['showHomeLabel'] ?? true;
+			$builder_options['show_home_label'] = $attributes['showHomeLabel'] ?? true;
 		}
 
 		// If there's a selected separator, define the class for it.
@@ -108,13 +109,13 @@ class Block implements Bootable
 
 		// Build the breadcrumb trail.
 		$environment = new Environment();
-		$breadcrumbs = new Breadcrumbs($environment, $breadcrumb_options);
+		$builder     = new Builder($environment, $builder_options);
 
 		// Get the breadcrumb trail markup.
 		$markup = match ($attributes['markup'] ?? 'microdata') {
-			'microdata' => new Microdata($breadcrumbs, $markup_options),
-			'rdfa'      => new Rdfa($breadcrumbs, $markup_options),
-			default     => new Html($breadcrumbs, $markup_options)
+			'microdata' => new Microdata($builder, $markup_options),
+			'rdfa'      => new Rdfa($builder, $markup_options),
+			default     => new Html($builder, $markup_options)
 		};
 
 		// If there is no trail based on the arguments, bail.

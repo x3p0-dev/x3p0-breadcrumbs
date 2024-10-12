@@ -20,9 +20,9 @@ class Hour extends Query
 	 */
 	public function make(): void
 	{
-		$this->breadcrumbs->assemble('home');
-		$this->breadcrumbs->assemble('rewrite-front');
-		$this->breadcrumbs->crumb('hour');
-		$this->breadcrumbs->assemble('paged');
+		$this->builder->assemble('home');
+		$this->builder->assemble('rewrite-front');
+		$this->builder->crumb('hour');
+		$this->builder->assemble('paged');
 	}
 }

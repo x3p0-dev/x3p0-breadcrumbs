@@ -21,7 +21,7 @@ class Home extends Query
 	public function make(): void
 	{
 		is_front_page()
-			? $this->breadcrumbs->query('front-page')
-			: $this->breadcrumbs->query('singular');
+			? $this->builder->query('front-page')
+			: $this->builder->query('singular');
 	}
 }

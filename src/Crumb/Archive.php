@@ -20,6 +20,6 @@ class Archive extends Crumb
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label('archives');
+		return $this->builder->label('archives');
 	}
 }

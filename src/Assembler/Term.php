@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Contracts\Breadcrumbs;
+use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\PostType;
 
 /**
@@ -26,7 +26,7 @@ class Term extends Assembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Breadcrumbs $breadcrumbs,
+		protected Builder $builder,
 		protected WP_Term $term
 	) {}
 
@@ -43,7 +43,7 @@ class Term extends Assembler
 
 		// Assembler rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
-			$this->breadcrumbs->assemble('rewrite-front');
+			$this->builder->assemble('rewrite-front');
 		}
 
 		// Assembler crumbs based on the rewrite slug.
@@ -51,10 +51,10 @@ class Term extends Assembler
 			$path = trim($rewrite['slug'], '/');
 
 			// Assembler path crumbs.
-			$this->breadcrumbs->assemble('path', [ 'path' => $path ]);
+			$this->builder->assemble('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
-			foreach ($this->breadcrumbs->getCrumbs() as $crumb) {
+			foreach ($this->builder->getCrumbs() as $crumb) {
 				if ($crumb instanceof PostType) {
 					$done_post_type = true;
 					break;
@@ -64,7 +64,7 @@ class Term extends Assembler
 
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
-			$this->breadcrumbs->assemble('post-type', [
+			$this->builder->assemble('post-type', [
 				'post_type' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
@@ -73,10 +73,10 @@ class Term extends Assembler
 
 		// If the taxonomy is hierarchical, list the parent terms.
 		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
-			$this->breadcrumbs->assemble('term-ancestors', [ 'term' => $this->term ]);
+			$this->builder->assemble('term-ancestors', [ 'term' => $this->term ]);
 		}
 
 		// Assembler the term crumb.
-		$this->breadcrumbs->crumb('term', [ 'term' => $this->term ]);
+		$this->builder->crumb('term', [ 'term' => $this->term ]);
 	}
 }

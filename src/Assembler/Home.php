@@ -26,13 +26,13 @@ class Home extends Assembler
 	{
 		if (
 			is_multisite()
-			&& $this->breadcrumbs->option('network')
+			&& $this->builder->option('network')
 			&& ! is_main_site()
 		) {
-			$this->breadcrumbs->crumb('network');
-			$this->breadcrumbs->crumb('network-site');
+			$this->builder->crumb('network');
+			$this->builder->crumb('network-site');
 		} else {
-			$this->breadcrumbs->crumb('home');
+			$this->builder->crumb('home');
 		}
 	}
 }

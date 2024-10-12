@@ -20,7 +20,7 @@ class Search extends Crumb
 	 */
 	public function label(): string
 	{
-		return sprintf($this->breadcrumbs->label('search'), get_search_query());
+		return sprintf($this->builder->label('search'), get_search_query());
 	}
 
 	/**

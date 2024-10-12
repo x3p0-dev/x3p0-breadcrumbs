@@ -20,7 +20,7 @@ class Network extends Crumb
 	 */
 	public function label(): string
 	{
-		return $this->breadcrumbs->label('home');
+		return $this->builder->label('home');
 	}
 
 	/**
@@ -36,6 +36,6 @@ class Network extends Crumb
 	 */
 	public function visuallyHidden(): bool
 	{
-		return ! $this->breadcrumbs->option('show_home_label');
+		return ! $this->builder->option('show_home_label');
 	}
 }

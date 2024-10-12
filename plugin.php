@@ -12,7 +12,12 @@
  * Text Domain:       x3p0-breadcrumbs
  */
 
+declare(strict_types=1);
+
 namespace X3P0\Breadcrumbs;
+
+# Prevent direct access.
+defined('ABSPATH') || exit;
 
 # Register autoloader for classes.
 require_once 'src/Autoload.php';

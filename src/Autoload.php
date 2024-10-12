@@ -9,6 +9,8 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
+declare(strict_types=1);
+
 namespace X3P0\Breadcrumbs;
 
 /**

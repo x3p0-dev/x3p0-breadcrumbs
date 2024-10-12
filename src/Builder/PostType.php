@@ -9,6 +9,8 @@
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
+declare(strict_types=1);
+
 namespace X3P0\Breadcrumbs\Builder;
 
 use WP_Post_Type;

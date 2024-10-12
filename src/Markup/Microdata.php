@@ -103,7 +103,7 @@ class Microdata extends Html
 		if (
 			($url && $position !== $count)
 			|| ($url && $position === $count && ! $this->option('show_last_item'))
-		 ) {
+		) {
 			$item = sprintf(
 				'<a href="%s" class="%s" itemprop="item">%s</a>',
 				esc_url($url),

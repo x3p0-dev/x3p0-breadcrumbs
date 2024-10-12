@@ -41,10 +41,11 @@ class Builders implements Contracts\Builders
 	public function add(string $name, string $query): void
 	{
 		if (! is_subclass_of($query, Contracts\Builder::class)) {
-			throw new TypeError(sprintf(
+			throw new TypeError(esc_html(sprintf(
+				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-ideas'),
 				Contracts\Builder::class
-			));
+			)));
 		}
 
 		$this->builders[$name] = $query;

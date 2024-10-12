@@ -45,7 +45,7 @@ abstract class Markup implements Contracts\Markup
 	 */
 	public function __construct(
 		protected Contracts\Breadcrumbs $breadcrumbs,
-		protected array $options
+		protected array $options = []
 	) {
 		$this->options = wp_parse_args($this->options, [
 			'show_on_front'      => false,

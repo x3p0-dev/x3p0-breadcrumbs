@@ -18,6 +18,8 @@ class Builders implements Contracts\Builders
 {
 	/**
 	 * Stores the array of builder classes.
+	 *
+	 * @var class-string<Contracts\Builder>
 	 */
 	protected array $builders = [];
 

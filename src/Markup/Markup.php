@@ -13,9 +13,16 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
 
+/**
+ * Implements a markup object as an abstract class, providing base properties
+ * and methods for sub-classes to use to create custom markup implementations.
+ */
 abstract class Markup implements Contracts\Markup
 {
 	/**
+	 * Creates an array of allowed HTML within crumb labels, which should be
+	 * used with a function like `wp_kses()`.
+	 *
 	 * @var  array
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */

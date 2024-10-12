@@ -14,8 +14,8 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
 /**
- * Mini container used to reference the various plugin components. Bootstraps the
- * plugin on first call by executing each component's `boot()` method. The
+ * Mini container used to reference the various plugin components. Bootstraps
+ * the plugin on first call by executing each component's `boot()` method. The
  * `plugin()` function acts as the single instance of the plugin, and devs can
  * access any class/component by passing in its reference via the `$component`
  * parameter (useful for accessing hooks within classes).
@@ -34,9 +34,7 @@ function plugin(string $component = ''): mixed
 
 		// Boot each of the components.
 		foreach ($bindings as $binding) {
-			if ($binding instanceof Bootable) {
-				$binding->boot();
-			}
+			$binding instanceof Bootable && $binding->boot();
 		}
 	}
 

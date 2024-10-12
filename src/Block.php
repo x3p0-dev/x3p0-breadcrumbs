@@ -115,10 +115,8 @@ class Block implements Bootable
 			default     => new Html($breadcrumbs, $markup_options)
 		};
 
-		$trail = $markup->render();
-
 		// If there is no trail based on the arguments, bail.
-		if (! $trail) {
+		if (! $trail = $markup->render()) {
 			return '';
 		}
 

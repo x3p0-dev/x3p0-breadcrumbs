@@ -13,6 +13,9 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts\Crumb;
 
+/**
+ * Creates an ordered list of the breadcrumbs with Schema.org microdata.
+ */
 class Microdata extends Html
 {
 	/**
@@ -22,8 +25,7 @@ class Microdata extends Html
 	{
 		$html = $container = $list = $title = '';
 
-		// Get an array of all the available breadcrumbs. Return early
-		// if none exist.
+		// Get an array of breadcrumbs or return.
 		if (! $crumbs = $this->crumbs()) {
 			return $html;
 		}

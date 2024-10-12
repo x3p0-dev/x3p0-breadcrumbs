@@ -24,18 +24,24 @@ class Environment implements Contracts\Environment
 	/**
 	 * Houses a collection where the keys are the query name and the values
 	 * are the class names for implementing the `Query` interface.
+	 *
+	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
 	protected Contracts\Queries $queries;
 
 	/**
 	 * Houses a collection where the keys are the builder name and the values
 	 * are the class names for implementing the `Builder` interface.
+	 *
+	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
 	protected Contracts\Builders $builders;
 
 	/**
 	 * Houses a collection where the keys are the crumb name and the values
 	 * are the class names for implementing the `Crumb` interface.
+	 *
+	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
 	protected Contracts\Crumbs $crumbs;
 

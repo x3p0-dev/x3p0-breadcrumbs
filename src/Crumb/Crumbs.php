@@ -18,6 +18,8 @@ class Crumbs implements Contracts\Crumbs
 {
 	/**
 	 * Stores the array of crumb classes.
+	 *
+	 * @var class-string<Contracts\Crumb>
 	 */
 	protected array $crumbs = [];
 

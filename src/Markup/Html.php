@@ -13,6 +13,9 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts\Crumb;
 
+/**
+ * Creates a plain HTML representation of the breadcrumbs as an ordered list.
+ */
 class Html extends Markup
 {
 	/**
@@ -22,8 +25,7 @@ class Html extends Markup
 	{
 		$html = $container = $list = $title = '';
 
-		// Get an array of all the available breadcrumbs. Return early
-		// if none exist.
+		// Get an array of breadcrumbs or return.
 		if (! $crumbs = $this->crumbs()) {
 			return $html;
 		}

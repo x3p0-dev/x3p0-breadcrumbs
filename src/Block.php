@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use WP_Block_Supports;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
@@ -60,22 +61,47 @@ class Block implements Bootable
 		];
 
 		$markup_options = [
-			'container_tag'  => '',
 			'show_on_front'  => $attributes['showOnHomepage'] ?? false,
-			'show_last_item' => $attributes['showTrailEnd']   ?? true
+			'show_last_item' => $attributes['showTrailEnd']   ?? true,
+			'container_attr' => $this->getWrapperAttributes($attributes)
 		];
 
+		// Build the breadcrumb trail.
+		$environment = new Environment();
+		$builder     = new Builder($environment, $builder_options);
+
+		// Get the breadcrumb trail markup.
+		$markup = match ($attributes['markup'] ?? 'microdata') {
+			'microdata' => new Microdata($builder, $markup_options),
+			'rdfa'      => new Rdfa($builder, $markup_options),
+			default     => new Html($builder, $markup_options)
+		};
+
+		return $markup->render();
+	}
+
+	/**
+	 * A custom wrapper attributes function for the rendered block is needed
+	 * over the WordPress `get_block_wrapper_attributes()` function. This is
+	 * because the breadcrumb markup implementations require attributes be
+	 * passed as an array.
+	 *
+	 * @todo Lots of cleanup.
+	 */
+	private function getWrapperAttributes(array $attributes): array
+	{
 		// Set up some default class names.
-		$home_class    = '';
-		$sep_class     = 'has-sep-mask-chevron';
-		$justify_class = '';
+		$classes = [
+			'breadcrumbs' => 'breadcrumbs',
+			'sep'         => 'has-sep-mask-chevron'
+		];
 
 		// If there is a selected home prefix, define the class.
 		if (
 			! empty($attributes['homePrefix'])
 			&& ! empty($attributes['homePrefixType'])
 		) {
-			$home_class = sprintf(
+			$classes['home'] = sprintf(
 				'has-home-%s-%s',
 				$attributes['homePrefixType'],
 				$attributes['homePrefix']
@@ -92,7 +118,7 @@ class Block implements Bootable
 			! empty($attributes['separator'])
 			&& ! empty($attributes['separatorType'])
 		) {
-			$sep_class = sprintf(
+			$classes['sep'] = sprintf(
 				'has-sep-%s-%s',
 				$attributes['separatorType'],
 				$attributes['separator']
@@ -101,41 +127,20 @@ class Block implements Bootable
 
 		// If there's a selected content justification, add a class.
 		if (! empty($attributes['justifyContent'])) {
-			$justify_class = sprintf(
+			$classes['justify'] = sprintf(
 				'is-content-justification-%s',
 				$attributes['justifyContent']
 			);
 		}
 
-		// Build the breadcrumb trail.
-		$environment = new Environment();
-		$builder     = new Builder($environment, $builder_options);
+		$attr = WP_Block_Supports::get_instance()->apply_block_supports();
 
-		// Get the breadcrumb trail markup.
-		$markup = match ($attributes['markup'] ?? 'microdata') {
-			'microdata' => new Microdata($builder, $markup_options),
-			'rdfa'      => new Rdfa($builder, $markup_options),
-			default     => new Html($builder, $markup_options)
-		};
-
-		// If there is no trail based on the arguments, bail.
-		if (! $trail = $markup->render()) {
-			return '';
+		if (isset($attr['class'])) {
+			$classes[] = $attr['class'];
 		}
 
-		// Passes custom attributes to the block wrapper function and
-		// gets an escaped and formatted wrapper attribute string.
-		$wrapper_attributes = get_block_wrapper_attributes([
-			'role'       => 'navigation',
-			'aria-label' => __('Breadcrumbs', 'x3p0-breadcrumbs'),
-			'class'      => "breadcrumbs {$home_class} {$sep_class} {$justify_class}"
-		]);
+		$attr['class'] = implode(' ', $classes);
 
-		// And, finally! Returning the breadcrumb trail.
-		return sprintf(
-			'<nav %1$s>%2$s</nav>',
-			$wrapper_attributes,
-			$trail
-		);
+		return $attr;
 	}
 }

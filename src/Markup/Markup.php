@@ -49,23 +49,18 @@ abstract class Markup implements Contracts\Markup
 	) {
 		$this->options = apply_filters(
 			'x3p0/breadcrumbs/markup/config',
-			wp_parse_args($this->options, [
+			array_replace_recursive([
 				'show_on_front'      => false,
 				'show_first_item'    => true,
 				'show_last_item'     => true,
 				'before'             => '',
 				'after'              => '',
-				'container_tag'      => 'nav',
-				'title_tag'          => 'h2',
-				'list_tag'           => 'ol',
-				'item_tag'           => 'li',
-				'container_class'    => 'breadcrumbs',
-				'title_class'        => 'breadcrumbs__title',
-				'list_class'         => 'breadcrumbs__trail',
-				'item_class'         => 'breadcrumbs__crumb',
-				'item_content_class' => 'breadcrumbs__crumb-content',
-				'item_label_class'   => 'breadcrumbs__crumb-label'
-			])
+				'container_attr'     => [
+					'class'      => 'breadcrumbs',
+					'role'       => 'navigation',
+					'aria-label' => $this->builder->label('aria_label')
+				]
+			], $this->options)
 		);
 	}
 
@@ -96,5 +91,17 @@ abstract class Markup implements Contracts\Markup
 	public function option(string $name): mixed
 	{
 		return isset($this->options[$name]) ? $this->options[$name] : null;
+	}
+
+	/**
+	 * Returns a string-based version of the container attributes.
+	 */
+	protected function containerAttr(): string
+	{
+		$attrs    = array_keys($this->option('container_attr'));
+		$values   = array_values($this->option('container_attr'));
+		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
+
+		return implode(' ', array_map($callback, $attrs, $values));
 	}
 }

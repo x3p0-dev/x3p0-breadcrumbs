@@ -37,7 +37,7 @@
     },
     "markup": {
       "type": "string",
-      "default": "microdata"
+      "default": "rdfa"
     },
     "separator": {
       "type": "string",

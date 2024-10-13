@@ -38,11 +38,11 @@ const markupOptions = [
 	},
 	{
 		key: 'microdata',
-		name: __('Microdata', 'x3p0-breadcrumbs')
+		name: __('Microdata (Schema.org)', 'x3p0-breadcrumbs')
 	},
 	{
 		key: 'rdfa',
-		name: __('RDFa', 'x3p0-breadcrumbs')
+		name: __('RDFa (Schema.org)', 'x3p0-breadcrumbs')
 	}
 ];
 

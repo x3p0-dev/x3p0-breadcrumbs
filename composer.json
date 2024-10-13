@@ -15,7 +15,7 @@
 		"zip": "composer archive --file=x3p0-breadcrumbs"
 	},
 	"require": {
-                "php": ">=7.4"
+                "php": ">=8.0"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.0",

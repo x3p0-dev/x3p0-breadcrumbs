@@ -17,7 +17,7 @@ use WP_Block_Supports;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
-use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
+use X3P0\Breadcrumbs\Markup\{Html, SchemaMicrodata, Rdfa};
 
 /**
  * The block class registers and renders the block type on the front end.
@@ -72,7 +72,7 @@ class Block implements Bootable
 
 		// Get the breadcrumb trail markup.
 		$markup = match ($attributes['markup'] ?? 'microdata') {
-			'microdata' => new Microdata($builder, $markup_options),
+			'microdata' => new SchemaMicrodata($builder, $markup_options),
 			'rdfa'      => new Rdfa($builder, $markup_options),
 			default     => new Html($builder, $markup_options)
 		};

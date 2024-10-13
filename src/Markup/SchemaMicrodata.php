@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Contracts\Crumb;
 /**
  * Creates an ordered list of the breadcrumbs with Schema.org microdata.
  */
-class MicrodataSchema extends Html
+class SchemaMicrodata extends Html
 {
 	/**
 	 * {@inheritdoc}

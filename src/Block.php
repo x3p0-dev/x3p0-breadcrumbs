@@ -54,10 +54,17 @@ class Block implements Bootable
 	 */
 	public function render(array $attributes): string
 	{
+		// The option for showing the home label should only ever be
+		// triggered if there's an icon set for it.
+		if ($attributes['homePrefix'] && $attributes['homePrefixType']) {
+			$show_home = $attributes['showHomeLabel'];
+		}
+
 		$builder_options = [
 			'labels'	   => [ 'title' => '' ],
 			'post_taxonomy'    => [ 'post' => 'category' ],
 			'map_rewrite_tags' => [ 'post' => false ],
+			'show_home_label'  => $show_home ?? true
 		];
 
 		$markup_options = [
@@ -85,39 +92,23 @@ class Block implements Bootable
 	 * over the WordPress `get_block_wrapper_attributes()` function. This is
 	 * because the breadcrumb markup implementations require attributes be
 	 * passed as an array.
-	 *
-	 * @todo Lots of cleanup.
 	 */
 	private function getWrapperAttributes(array $attributes): array
 	{
 		// Set up some default class names.
-		$classes = [
-			'breadcrumbs' => 'breadcrumbs',
-			'sep'         => 'has-sep-mask-chevron'
-		];
+		$classes = ['breadcrumbs' => 'breadcrumbs'];
 
 		// If there is a selected home prefix, define the class.
-		if (
-			! empty($attributes['homePrefix'])
-			&& ! empty($attributes['homePrefixType'])
-		) {
+		if ($attributes['homePrefix'] && $attributes['homePrefixType']) {
 			$classes['home'] = sprintf(
 				'has-home-%s-%s',
 				$attributes['homePrefixType'],
 				$attributes['homePrefix']
 			);
-
-			// Set whether the home label should be shown. This is
-			// wrapped within the prefix check because the home label
-			// should always be shown if there's no prefix/icon.
-			$builder_options['show_home_label'] = $attributes['showHomeLabel'] ?? true;
 		}
 
 		// If there's a selected separator, define the class for it.
-		if (
-			! empty($attributes['separator'])
-			&& ! empty($attributes['separatorType'])
-		) {
+		if ($attributes['separator'] && $attributes['separatorType']) {
 			$classes['sep'] = sprintf(
 				'has-sep-%s-%s',
 				$attributes['separatorType'],
@@ -133,12 +124,16 @@ class Block implements Bootable
 			);
 		}
 
+		// Get the block attributes from block supports.
 		$attr = WP_Block_Supports::get_instance()->apply_block_supports();
 
+		// If there's a class from the block attributes, explode it and
+		// append the results to our array of classes.
 		if (isset($attr['class'])) {
-			$classes[] = $attr['class'];
+			$classes = $classes + explode(' ', $attr['class'] );
 		}
 
+		// Join all classes into a single string.
 		$attr['class'] = implode(' ', $classes);
 
 		return $attr;

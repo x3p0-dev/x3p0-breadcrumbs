@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Contracts;
 
 /**
  * Implements a markup object as an abstract class, providing base properties
- * and methods for sub-classes to use to create custom markup implementations.
+ * and methods for subclasses to use to create custom markup implementations.
  */
 abstract class Markup implements Contracts\Markup
 {

@@ -90,7 +90,7 @@ abstract class Markup implements Contracts\Markup
 	 */
 	public function option(string $name): mixed
 	{
-		return isset($this->options[$name]) ? $this->options[$name] : null;
+		return $this->options[$name] ?? null;
 	}
 
 	/**

@@ -16,8 +16,8 @@ namespace X3P0\Breadcrumbs\Builder;
 use X3P0\Breadcrumbs\Contracts;
 
 /**
- * Implements the `Builder` contract using using query classes to generate
- * an array of breadcrumbs that can then be used to output a breadcrumb trail.
+ * Implements the `Builder` contract using query classes to generate an array of
+ * breadcrumbs that can then be used to output a breadcrumb trail.
  */
 class Builder implements Contracts\Builder
 {

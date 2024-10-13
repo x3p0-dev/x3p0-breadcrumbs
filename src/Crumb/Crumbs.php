@@ -38,9 +38,9 @@ class Crumbs implements Contracts\Crumbs
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $query): void
+	public function add(string $name, string $crumb): void
 	{
-		if (! is_subclass_of($query, Contracts\Crumb::class)) {
+		if (! is_subclass_of($crumb, Contracts\Crumb::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-ideas'),
@@ -48,7 +48,7 @@ class Crumbs implements Contracts\Crumbs
 			)));
 		}
 
-		$this->crumbs[$name] = $query;
+		$this->crumbs[$name] = $crumb;
 	}
 
 	/**

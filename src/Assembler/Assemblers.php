@@ -38,9 +38,9 @@ class Assemblers implements Contracts\Assemblers
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $query): void
+	public function add(string $name, string $assembler): void
 	{
-		if (! is_subclass_of($query, Contracts\Assembler::class)) {
+		if (! is_subclass_of($assembler, Contracts\Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-ideas'),
@@ -48,7 +48,7 @@ class Assemblers implements Contracts\Assemblers
 			)));
 		}
 
-		$this->assemblers[$name] = $query;
+		$this->assemblers[$name] = $assembler;
 	}
 
 	/**

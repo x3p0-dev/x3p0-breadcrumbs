@@ -51,43 +51,32 @@ class Rdfa extends Html
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Renders the markup for an individual crumb item.
 	 */
 	private function renderCrumb(Crumb $crumb, int $count, int $position): string
 	{
-		// Add `.screen-reader-text` class for crumbs
-		// with hidden labels. Usually applied to the
-		// home crumb when it's replaced with an icon.
-		$hidden = $crumb->visuallyHidden() ? ' screen-reader-text' : '';
+		// Get the crumb URL and determine whether to link the crumb.
+		$url       = $crumb->url();
+		$is_last   = $position === $count;
+		$show_last = $this->option('show_last_item');
+		$has_link  = ($url && ! $is_last) || ($url && $is_last && ! $show_last);
 
-		// Filter out any unwanted HTML from the label.
+		// Add `.screen-reader-text` class for crumbs with hidden labels.
+		// Usually applied to the home crumb when it's replaced with an
+		// icon. Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="%s" property="name">%s</span>',
-			esc_attr("breadcrumbs__crumb-label{$hidden}"),
+			'<span class="breadcrumbs__crumb-label%s" property="name">%s</span>',
+			$crumb->visuallyHidden() ? ' screen-reader-text' : '',
 			wp_kses($crumb->label(), self::ALLOWED_HTML)
 		);
-
-		// Get the crumb URL.
-		$url = $crumb->url();
 
 		// Wrap the label with a link if the crumb has one and this is
 		// not the normal last item. However, link the last item if the
 		// original last item was popped off the array.
-		if (
-			($url && $position !== $count)
-			|| ($url && $position === $count && ! $this->option('show_last_item'))
-		) {
-			$item = sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>',
-				esc_url($url),
-				$label
-			);
-		} else {
-			$item = sprintf(
-				'<span class="breadcrumbs__crumb-content">%s</span>',
-				$label
-			);
-		}
+		$item = sprintf($has_link
+			? '<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>'
+			: '<span class="breadcrumbs__crumb-content">%2$s</span>',
+		esc_url($url), $label);
 
 		// Build the list item.
 		return sprintf(

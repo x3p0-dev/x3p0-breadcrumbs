@@ -78,7 +78,7 @@ class Block implements Bootable
 		$builder     = new Builder($environment, $builder_options);
 
 		// Get the breadcrumb trail markup.
-		$markup = match ($attributes['markup'] ?? 'microdata') {
+		$markup = match ($attributes['markup'] ?? 'rdfa') {
 			'microdata' => new Microdata($builder, $markup_options),
 			'rdfa'      => new Rdfa($builder, $markup_options),
 			default     => new Html($builder, $markup_options)

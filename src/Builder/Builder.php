@@ -22,6 +22,8 @@ use X3P0\Breadcrumbs\Contracts;
 class Builder implements Contracts\Builder
 {
 	/**
+	 * Houses the array of `Contracts\Crumb` objects that make up the trail.
+	 *
 	 * @var Contracts\Crumb[]
 	 */
 	protected array $crumbs = [];
@@ -87,7 +89,9 @@ class Builder implements Contracts\Builder
 	 */
 	public function getCrumbs(): array
 	{
-		return [] === $this->crumbs ? $this->make()->crumbs : $this->crumbs;
+		return [] === $this->crumbs
+			? $this->make()->crumbs
+			: $this->crumbs;
 	}
 
 	/**
@@ -171,8 +175,6 @@ class Builder implements Contracts\Builder
 	{
 		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 		return [
-			'title'               => __('Browse:',                               'x3p0-breadcrumbs'),
-			'aria_label'          => _x('Breadcrumbs', 'breadcrumbs aria label', 'x3p0-breadcrumbs'),
 			'home'                => __('Home',                                  'x3p0-breadcrumbs'),
 			'error_404'           => __('404 Not Found',                         'x3p0-breadcrumbs'),
 			'archives'            => __('Archives',                              'x3p0-breadcrumbs'),

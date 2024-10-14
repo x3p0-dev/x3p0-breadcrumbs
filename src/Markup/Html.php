@@ -35,7 +35,7 @@ class Html extends Markup
 		$position = 1;
 
 		// Build the breadcrumb trail HTML.
-		$html  = sprintf('<nav %s>', $this->containerAttr());
+		$html  = "<nav {$this->containerAttr()}>";
 		$html .= '<ol class="breadcrumbs__trail">';
 
 		foreach ($crumbs as $crumb) {

@@ -16,6 +16,14 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
 /**
+ * Bootstraps the plugin.
+ */
+function boot(): void
+{
+	plugin();
+}
+
+/**
  * Mini container used to reference the various plugin components. Bootstraps
  * the plugin on first call by executing each component's `boot()` method. The
  * `plugin()` function acts as the single instance of the plugin, and devs can

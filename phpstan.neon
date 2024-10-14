@@ -1,0 +1,7 @@
+parameters:
+    level: 5
+    paths:
+        - plugin.php
+        - src/
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon

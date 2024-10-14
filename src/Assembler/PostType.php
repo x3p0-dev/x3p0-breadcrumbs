@@ -28,7 +28,9 @@ class PostType extends Assembler
 	public function __construct(
 		protected Builder $builder,
 		protected ?WP_Post_Type $post_type = null
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

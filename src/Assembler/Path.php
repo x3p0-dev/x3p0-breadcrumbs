@@ -28,7 +28,9 @@ class Path extends Assembler
 	public function __construct(
 		protected Builder $builder,
 		protected string $path = ''
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -50,7 +52,7 @@ class Path extends Assembler
 		$matches = explode('/', $path);
 
 		// If matches are found for the path.
-		if ($matches) {
+		if ([] !== $matches) {
 			// Reverse the array of matches to search for posts in
 			// the proper order.
 			$matches = array_reverse($matches);

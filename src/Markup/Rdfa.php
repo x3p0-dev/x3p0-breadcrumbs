@@ -35,7 +35,7 @@ class Rdfa extends Html
 		$position = 1;
 
 		// Build the breadcrumb trail HTML.
-		$html  = sprintf('<nav %s>', $this->containerAttr());
+		$html  = "<nav {$this->containerAttr()}>";
 		$html .= '<ol class="breadcrumbs__trail" vocab="https://schema.org/" typeof="BreadcrumbList">';
 
 		foreach ($crumbs as $crumb) {

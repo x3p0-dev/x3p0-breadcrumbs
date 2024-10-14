@@ -30,7 +30,7 @@ abstract class Crumb implements Contracts\Crumb
 	/**
 	 * Returns the type for the crumb. By default, we just use the PHP class
 	 * name to build the type. If wanting something custom, this should be
-	 * handled in a sub-class.
+	 * handled in a subclass.
 	 */
 	public function type(): string
 	{

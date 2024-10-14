@@ -24,7 +24,9 @@ class Author extends Crumb
 	public function __construct(
 		protected Builder $builder,
 		protected WP_User $user
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

@@ -11,7 +11,8 @@
 			"composer update",
 			"composer dump-autoload"
 		],
-		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
+		"phpcs": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit 1G",
 		"zip": "composer archive --file=x3p0-breadcrumbs"
 	},
 	"require": {
@@ -20,7 +21,9 @@
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.0",
 		"phpcompatibility/phpcompatibility-wp": "*",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"phpstan/phpstan": "^1.12",
+		"szepeviktor/phpstan-wordpress": "^1.3"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,

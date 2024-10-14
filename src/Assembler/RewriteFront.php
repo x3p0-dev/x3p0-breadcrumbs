@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use WP_Rewrite;
+
 /**
  * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
  * front is determined based on the base post permalink structure. For example,

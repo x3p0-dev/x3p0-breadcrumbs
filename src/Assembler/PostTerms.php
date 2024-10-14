@@ -29,7 +29,9 @@ class PostTerms extends Assembler
 		protected Builder $builder,
 		protected WP_Post $post,
 		protected WP_Taxonomy $taxonomy
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

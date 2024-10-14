@@ -24,7 +24,9 @@ class Year extends Crumb
 	public function __construct(
 		protected Builder $builder,
 		protected ?WP_Post $post = null
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

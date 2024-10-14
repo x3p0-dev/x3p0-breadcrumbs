@@ -27,7 +27,9 @@ class PostTypeArchive extends Query
 		protected Builder $builder,
 		protected ?WP_Post_Type $type = null,
 		protected ?WP_User $user = null
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

@@ -29,12 +29,12 @@ class Autoload
 	}
 
 	/**
-	 * Autoloads class if it's in the theme's namespace.
+	 * Autoload class if it's in the theme's namespace.
 	 */
 	public static function autoload(string $class): void
 	{
 		// Bail if the class is not in our namespace.
-		if (0 !== strpos($class, __NAMESPACE__)) {
+		if (! str_starts_with($class, __NAMESPACE__)) {
 			return;
 		}
 

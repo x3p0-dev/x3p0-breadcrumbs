@@ -20,8 +20,6 @@ class Assemblers implements Contracts\Assemblers
 {
 	/**
 	 * Stores the array of assembler classes.
-	 *
-	 * @var class-string<Contracts\Assembler>
 	 */
 	protected array $assemblers = [];
 

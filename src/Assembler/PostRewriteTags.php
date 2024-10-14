@@ -32,21 +32,21 @@ class PostRewriteTags extends Assembler
 		protected Builder $builder,
 		protected WP_Post $post,
 		protected string $path = ''
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function make(): void
 	{
-		// Bail early if rewrite tag mapping is disabled or no segments
-		// are found in the path.
-		if (
-			! $this->builder->mapRewriteTags($this->post->post_type)
-			|| ! $segments = explode('/', trim($this->path, '/'))
-		) {
+		// Bail early if rewrite tag mapping is disabled.
+		if (! $this->builder->mapRewriteTags($this->post->post_type)) {
 			return;
 		}
+
+		$segments = explode('/', trim($this->path, '/'));
 
 		foreach ($segments as $tag) {
 			$this->mapTag($tag);

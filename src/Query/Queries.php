@@ -20,8 +20,6 @@ class Queries implements Contracts\Queries
 {
 	/**
 	 * Stores the array of query classes.
-	 *
-	 * @var class-string<Contracts\Query>
 	 */
 	protected array $queries = [];
 

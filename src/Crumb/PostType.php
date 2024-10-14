@@ -24,7 +24,9 @@ class PostType extends Crumb
 	public function __construct(
 		protected Builder $builder,
 		protected WP_Post_Type $type
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

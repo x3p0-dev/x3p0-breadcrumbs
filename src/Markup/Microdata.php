@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts;
 use X3P0\Breadcrumbs\Contracts\Crumb;
 
 /**
@@ -36,7 +35,7 @@ class Microdata extends Html
 		$position = 1;
 
 		// Build the breadcrumb trail HTML.
-		$html  = sprintf('<nav %s>', $this->containerAttr());
+		$html  = "<nav {$this->containerAttr()}>";
 		$html .= '<ol class="breadcrumbs__trail" itemscope itemtype="https://schema.org/BreadcrumbList">';
 
 		foreach ($crumbs as $crumb) {

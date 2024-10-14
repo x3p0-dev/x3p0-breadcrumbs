@@ -29,7 +29,9 @@ class PostHierarchy extends Assembler
 	public function __construct(
 		protected Builder $builder,
 		protected WP_Post $post
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

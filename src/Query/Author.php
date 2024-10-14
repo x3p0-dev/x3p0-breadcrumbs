@@ -25,7 +25,9 @@ class Author extends Query
 	public function __construct(
 		protected Builder $builder,
 		protected ?WP_User $user = null
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

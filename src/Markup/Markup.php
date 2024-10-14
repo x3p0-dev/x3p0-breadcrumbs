@@ -58,7 +58,10 @@ abstract class Markup implements Contracts\Markup
 				'container_attr'     => [
 					'class'      => 'breadcrumbs',
 					'role'       => 'navigation',
-					'aria-label' => $this->builder->label('aria_label')
+					'aria-label' => __(
+						'Breadcrumbs',
+						'x3p0-breadcrumbs'
+					)
 				]
 			], $this->options)
 		);

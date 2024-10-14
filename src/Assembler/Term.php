@@ -28,7 +28,9 @@ class Term extends Assembler
 	public function __construct(
 		protected Builder $builder,
 		protected WP_Term $term
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

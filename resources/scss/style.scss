@@ -107,6 +107,23 @@
 		--breadcrumbs-home: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="%23000000"><g><rect fill="none" height="24" width="24"/></g><g><path d="M19,9.3V4h-3v2.6L12,3L2,12h3v8h5v-6h4v6h5v-8h3L19,9.3z M10,10c0-1.1,0.9-2,2-2s2,0.9,2,2H10z"/></g></svg>');
 	}
 
+	// Hides the home crumb label.
+	&.hide-home-label :where(
+		.breadcrumbs__crumb--home,
+		.breadcrumbs__crumb--network
+	) .breadcrumbs__crumb-label {
+		clip: rect(1px, 1px, 1px, 1px);
+		word-wrap: normal !important;
+		border: 0;
+		clip-path: inset(50%);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+
 	// ---------------------------------------------------------------------
 	// Separator icon.
 	// ---------------------------------------------------------------------

@@ -170,6 +170,7 @@ export default ({
 		className: classnames({
 			'breadcrumbs': true,
 			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : homePrefixType && homePrefix,
+			[ 'hide-home-label'                              ] : ! showHomeLabel,
 			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
 			[ `is-content-justification-${ justifyContent }` ] : justifyContent
 		})
@@ -180,14 +181,12 @@ export default ({
 		{
 			type: 'home',
 			label: __('Home', 'x3p0-breadcrumbs'),
-			link: true,
-			hide: ! showHomeLabel
+			link: true
 		},
 		{
 			type: 'post',
 			label: __('Parent Page', 'x3p0-breadcrumbs'),
-			link: true,
-			hide: false
+			link: true
 		}
 	];
 
@@ -195,8 +194,7 @@ export default ({
 		crumbs.push({
 			type: 'post',
 			label: __('Current Page', 'x3p0-breadcrumbs'),
-			link: false,
-			hide: false
+			link: false
 		});
 	}
 
@@ -214,9 +212,7 @@ export default ({
 					onClick={ preventDefault }
 					className="breadcrumbs__crumb-content"
 				>
-					<span className={
-						`breadcrumbs__crumb-label ${ crumb.hide ? 'screen-reader-text' : '' }`
-					}>
+					<span className="breadcrumbs__crumb-label">
 						{ crumb.label }
 					</span>
 				</CrumbContent>

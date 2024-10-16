@@ -35,9 +35,4 @@ interface Crumb
 	 * Returns a URL for the crumb.
 	 */
 	public function url(): string;
-
-	/**
-	 * Returns whether the crumb should be visually hidden on display.
-	 */
-	public function visuallyHidden(): bool;
 }

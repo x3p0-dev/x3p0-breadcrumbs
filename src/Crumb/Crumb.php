@@ -49,12 +49,4 @@ abstract class Crumb implements Contracts\Crumb
 	{
 		return '';
 	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function visuallyHidden(): bool
-	{
-		return false;
-	}
 }

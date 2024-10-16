@@ -61,12 +61,9 @@ class Microdata extends Html
 		$show_last = $this->option('show_last_item');
 		$has_link  = ($url && ! $is_last) || ($url && $is_last && ! $show_last);
 
-		// Add `.screen-reader-text` class for crumbs with hidden labels.
-		// Usually applied to the home crumb when it's replaced with an
-		// icon. Filter out any unwanted HTML from the label.
+		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label%s" itemprop="name">%s</span>',
-			$crumb->visuallyHidden() ? ' screen-reader-text' : '',
+			'<span class="breadcrumbs__crumb-label" itemprop="name">%s</span>',
 			wp_kses($crumb->label(), self::ALLOWED_HTML)
 		);
 

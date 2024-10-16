@@ -43,8 +43,7 @@ class Builder implements Contracts\Builder
 				'labels'           => $this->defaultLabels(),
 				'map_rewrite_tags' => $this->defaultRewriteTags(),
 				'post_taxonomy'    => $this->defaultPostTaxonomies(),
-				'network'          => false,
-				'show_home_label'  => true
+				'network'          => false
 			], $this->options)
 		);
 	}

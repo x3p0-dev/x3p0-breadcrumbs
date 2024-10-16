@@ -30,12 +30,4 @@ class Network extends Crumb
 	{
 		return network_home_url();
 	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function visuallyHidden(): bool
-	{
-		return ! $this->builder->option('show_home_label');
-	}
 }

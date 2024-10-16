@@ -54,17 +54,10 @@ class Block implements Bootable
 	 */
 	public function render(array $attributes): string
 	{
-		// The option for showing the home label should only ever be
-		// triggered if there's an icon set for it.
-		if ($attributes['homePrefix'] && $attributes['homePrefixType']) {
-			$show_home = $attributes['showHomeLabel'];
-		}
-
 		$builder_options = [
 			'labels'	   => [ 'title' => '' ],
 			'post_taxonomy'    => [ 'post' => 'category' ],
-			'map_rewrite_tags' => [ 'post' => false ],
-			'show_home_label'  => $show_home ?? true
+			'map_rewrite_tags' => [ 'post' => false ]
 		];
 
 		$markup_options = [
@@ -105,6 +98,12 @@ class Block implements Bootable
 				$attributes['homePrefixType'],
 				$attributes['homePrefix']
 			);
+
+			// The option for showing the home label should only ever be
+			// triggered if there's an icon set for it.
+			if (! $attributes['showHomeLabel']) {
+				$classes['home-label'] = 'hide-home-label';
+			}
 		}
 
 		// If there's a selected separator, define the class for it.

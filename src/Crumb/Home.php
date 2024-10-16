@@ -30,12 +30,4 @@ class Home extends Crumb
 	{
 		return user_trailingslashit(home_url());
 	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function visuallyHidden(): bool
-	{
-		return ! $this->builder->option('show_home_label');
-	}
 }

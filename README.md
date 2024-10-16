@@ -14,7 +14,7 @@ Today, this plugin exists as a WordPress block, all built upon a solid OOP found
 
 ### From the Editor
 
-You can add the the **Breadcrumbs** block via the block inserter in the editor anywhere. This can include post, pages, templates, parts, and patterns. Just insert it and configure the settings however you like. Preferably, you'd add it to something like your **Header** template part so that it gets reused across the site.
+You can add the **Breadcrumbs** block via the block inserter in the editor anywhere. This can include post, pages, templates, parts, and patterns. Just insert it and configure the settings however you like. Preferably, you'd add it to something like your **Header** template part so that it gets reused across the site.
 
 ### Block Themes
 
@@ -70,9 +70,9 @@ use X3P0\Breadcrumbs\Markup\Html;
 
 The plugin comes with three classes, which are implementations of the `X3P0\Breadcrumbs\Contracts\Markup` interface, for rending the final HTML of the breadcrumb trail.
 
-- `X3P0\Breadcrumbs\Markup\Html`: Renders a plain HTML list of breadcrumbs.
-- `X3P0\Breadcrumbs\Markup\Microdata`: Renders an HTML list of breadcrumbs using Schema.org microdata.
-- `X3P0\Breadcrumbs\Markup\Rdfa`: Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
+- **`X3P0\Breadcrumbs\Markup\Html`:** Renders a plain HTML list of breadcrumbs.
+- **`X3P0\Breadcrumbs\Markup\Microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
+- **`X3P0\Breadcrumbs\Markup\Rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
 
 Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
 
@@ -145,20 +145,20 @@ The `Builder` class accepts two parameters:
 - **`options`:** A configurable array of options for customizing how the breadcrumbs are generated:
 	- **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
 	- **`labels`:** An array of internationalized crumb labels that can be customized:
-		- `title`: `Browse:`
-		- `home`: `Home`
-		- `error_404`: `404 Not Found`
-		- `archives`: `Archives`
-		- `search`: `Search results for: %s`
-		- `paged`: `Page %s`
-		- `paged_comments`: `Comment Page %s`
-		- `archive_minute`: `Minute %s`
-		- `archive_week`: `Week %s`
-		- `archive_minute_hour`: `%s`
-		- `archive_hour`: `%s`
-		- `archive_day`: `%s`
-		- `archive_month`: `%s`
-		- `archive_year`: `%s`
+		- **`title`:** `Browse:`
+		- **`home`:** `Home`
+		- **`error_404`:** `404 Not Found`
+		- **`archives`:** `Archives`
+		- **`search`:** `Search results for: %s`
+		- **`paged`:** `Page %s`
+		- **`paged_comments`:** `Comment Page %s`
+		- **`archive_minute`:** `Minute %s`
+		- **`archive_week`:** `Week %s`
+		- **`archive_minute_hour`:** `%s`
+		- **`archive_hour`:** `%s`
+		- **`archive_day`:** `%s`
+		- **`archive_month`:** `%s`
+		- **`archive_year`:** `%s`
 	- **`map_rewrite_tags:`** An array of post types and whether to generate breadcrumbs based on the post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, if this is not set for a post type, it will be `false`. The array keys must be valid post type names (e.g., `post`, `book`), and the array values must be a boolean value. The `post` post type is `true` by default.
 	- **`post_taxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 

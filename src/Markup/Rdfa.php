@@ -70,10 +70,13 @@ class Rdfa extends Html
 		// Wrap the label with a link if the crumb has one and this is
 		// not the normal last item. However, link the last item if the
 		// original last item was popped off the array.
-		$item = sprintf($has_link
-			? '<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>'
-			: '<span class="breadcrumbs__crumb-content">%2$s</span>',
-		esc_url($url), $label);
+		$item = sprintf(
+			$has_link
+				? '<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>'
+				: '<span class="breadcrumbs__crumb-content">%2$s</span>',
+			esc_url($url),
+			$label
+		);
 
 		// Build the list item.
 		return sprintf(

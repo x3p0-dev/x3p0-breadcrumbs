@@ -133,7 +133,7 @@ class Breadcrumbs implements Bootable
 		// If there's a class from the block attributes, explode it and
 		// append the results to our array of classes.
 		if (isset($attr['class'])) {
-			$classes = $classes + explode(' ', $attr['class'] );
+			$classes = $classes + explode(' ', $attr['class']);
 		}
 
 		// Join all classes into a single string.

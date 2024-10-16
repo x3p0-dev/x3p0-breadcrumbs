@@ -88,9 +88,7 @@ class Builder implements Contracts\Builder
 	 */
 	public function getCrumbs(): array
 	{
-		return [] === $this->crumbs
-			? $this->make()->crumbs
-			: $this->crumbs;
+		return $this->crumbs;
 	}
 
 	/**

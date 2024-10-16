@@ -70,10 +70,13 @@ class Microdata extends Html
 		// Wrap the label with a link if the crumb has one and this is
 		// not the normal last item. However, link the last item if the
 		// original last item was popped off the array.
-		$item = sprintf($has_link
-			? '<a href="%s" class="breadcrumbs__crumb-content" itemprop="item">%s</a>'
-			: '<span class="breadcrumbs__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
-		esc_url($url), $label);
+		$item = sprintf(
+			$has_link
+				? '<a href="%s" class="breadcrumbs__crumb-content" itemprop="item">%s</a>'
+				: '<span class="breadcrumbs__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
+			esc_url($url),
+			$label
+		);
 
 		// Build the list item.
 		return sprintf(

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs;
+namespace X3P0\Breadcrumbs\Block;
 
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Contracts\Bootable;
@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 /**
  * The block class registers and renders the block type on the front end.
  */
-class Block implements Bootable
+class Breadcrumbs implements Bootable
 {
 	/**
 	 * Sets up object state. Note that the `$path` property should point to
@@ -41,6 +41,8 @@ class Block implements Bootable
 
 	/**
 	 * Registers the block with WordPress.
+	 *
+	 * @internal This is a WordPress hook callback and must be public.
 	 */
 	public function register(): void
 	{
@@ -51,6 +53,8 @@ class Block implements Bootable
 
 	/**
 	 * Renders the block on the front end.
+	 *
+	 * @internal This is a block render callback and must be public.
 	 */
 	public function render(array $attributes): string
 	{

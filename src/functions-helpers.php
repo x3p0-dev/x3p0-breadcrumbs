@@ -13,40 +13,28 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
-
 /**
  * Bootstraps the plugin.
  */
 function boot(): void
 {
-	plugin();
+	plugin()->boot();
 }
 
 /**
- * Mini container used to reference the various plugin components. Bootstraps
- * the plugin on first call by executing each component's `boot()` method. The
- * `plugin()` function acts as the single instance of the plugin, and devs can
- * access any class/component by passing in its reference via the `$component`
- * parameter (useful for accessing hooks within classes).
+ * Stores the single instance of the plugin in the static `$plugin` variable.
+ * Devs can access any class/component by passing in its reference via the
+ * `$abstract` parameter (useful for accessing hooks within classes).
+ *
+ * @since 1.0.0
  */
-function plugin(string $component = ''): mixed
+function plugin(string $abstract = ''): mixed
 {
-	static $bindings = [];
+	static $plugin;
 
-	// If there are no bound components, register and boot them.
-	if ([] === $bindings) {
-		// Bind instances of the plugin's component classes that need to
-		// be booted when the plugin launches.
-		$bindings = [
-			'block' => new Block(untrailingslashit(__DIR__ . '/..'))
-		];
-
-		// Boot each of the components.
-		foreach ($bindings as $binding) {
-			$binding instanceof Bootable && $binding->boot();
-		}
+	if (! $plugin instanceof Plugin) {
+		do_action('x3p0/breadcrumbs/init', $plugin = new Plugin());
 	}
 
-	return '' === $component ? $bindings : $bindings[ $component ];
+	return '' === $abstract ? $plugin : $plugin->get($abstract);
 }

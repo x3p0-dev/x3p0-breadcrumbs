@@ -34,7 +34,7 @@ class Author extends Query
 	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
@@ -48,7 +48,7 @@ class Author extends Query
 			]);
 		}
 
-		$this->builder->crumb('author', [ 'user' => $user ]);
+		$this->builder->addCrumb('author', [ 'user' => $user ]);
 		$this->builder->assemble('paged');
 	}
 }

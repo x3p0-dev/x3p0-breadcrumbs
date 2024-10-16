@@ -18,7 +18,7 @@ class NetworkSite extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return get_bloginfo('name');
 	}
@@ -26,7 +26,7 @@ class NetworkSite extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return user_trailingslashit(home_url());
 	}

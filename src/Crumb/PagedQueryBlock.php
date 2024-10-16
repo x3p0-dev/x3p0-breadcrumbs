@@ -20,10 +20,10 @@ class PagedQueryBlock extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('paged'),
+			$this->builder->getLabel('paged'),
 			number_format_i18n(absint(Helpers::getQueryBlockPage()))
 		);
 	}

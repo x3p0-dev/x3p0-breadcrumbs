@@ -18,7 +18,7 @@ class Home extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		is_front_page()
 			? $this->builder->query('front-page')

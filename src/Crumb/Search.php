@@ -18,15 +18,15 @@ class Search extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
-		return sprintf($this->builder->label('search'), get_search_query());
+		return sprintf($this->builder->getLabel('search'), get_search_query());
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_search_link();
 	}

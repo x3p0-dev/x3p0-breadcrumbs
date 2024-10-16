@@ -31,10 +31,10 @@ class Month extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_month'),
+			$this->builder->getLabel('archive_month'),
 			get_the_time(
 				esc_html_x('F', 'monthly archives date format', 'x3p0-breadcrumbs'),
 				$this->post
@@ -45,7 +45,7 @@ class Month extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_month_link(
 			get_the_time('Y', $this->post),

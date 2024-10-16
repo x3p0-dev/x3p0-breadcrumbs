@@ -31,10 +31,10 @@ class Year extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_year'),
+			$this->builder->getLabel('archive_year'),
 			get_the_time(esc_html_x(
 				'Y',
 				'yearly archives date format',
@@ -46,7 +46,7 @@ class Year extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_year_link(get_the_time('Y', $this->post));
 	}

@@ -34,7 +34,7 @@ class PostTypeArchive extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$type = $this->type ?: get_post_type_object(get_query_var('post_type'));
 
@@ -64,13 +64,13 @@ class PostTypeArchive extends Query
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->builder->crumb('post-type', [ 'post_type' => $type ]);
+			$this->builder->addCrumb('post-type', [ 'post_type' => $type ]);
 		}
 
 		// If viewing a post type search, add the search crumb. This
 		// handles URLs like `/?s={search}&post_type={type}`.
 		if (is_search()) {
-			$this->builder->crumb('search');
+			$this->builder->addCrumb('search');
 		}
 
 		// If viewing a post type archive by author, add author crumb.
@@ -79,7 +79,7 @@ class PostTypeArchive extends Query
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->builder->crumb('author', [ 'user' => $user ]);
+			$this->builder->addCrumb('author', [ 'user' => $user ]);
 		}
 
 		$this->builder->assemble('paged');

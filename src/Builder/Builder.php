@@ -96,12 +96,12 @@ class Builder implements Contracts\Builder
 	 */
 	public function query(string $name, array $params = []): void
 	{
-		$query = $this->environment->queries()->get(
+		$query = $this->environment->getQueries()->get(
 			$name,
 			$params + [ 'builder' => $this ]
 		);
 
-		$query && $query->make();
+		$query && $query->query();
 	}
 
 	/**
@@ -109,21 +109,21 @@ class Builder implements Contracts\Builder
 	 */
 	public function assemble(string $name, array $params = []): void
 	{
-		$assembler = $this->environment->assemblers()->get(
+		$assembler = $this->environment->getAssemblers()->get(
 			$name,
 			$params + [ 'builder' => $this ]
 		);
 
-		$assembler && $assembler->make();
+		$assembler && $assembler->assemble();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function crumb(string $name, array $params = []): void
+	public function addCrumb(string $name, array $params = []): void
 	{
-		if ($this->environment->crumbs()->has($name)) {
-			$this->crumbs[] = $this->environment->crumbs()->get(
+		if ($this->environment->getCrumbs()->has($name)) {
+			$this->crumbs[] = $this->environment->getCrumbs()->get(
 				$name,
 				$params + [ 'builder' => $this ]
 			);
@@ -133,7 +133,7 @@ class Builder implements Contracts\Builder
 	/**
 	 * {@inheritdoc}
 	 */
-	public function option(string $name): mixed
+	public function getOption(string $name): mixed
 	{
 		return $this->options[$name] ?? null;
 	}
@@ -141,9 +141,9 @@ class Builder implements Contracts\Builder
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(string $name): string
+	public function getLabel(string $name): string
 	{
-		$labels = $this->option('labels');
+		$labels = $this->getOption('labels');
 		return $labels[$name] ?? '';
 	}
 
@@ -152,16 +152,16 @@ class Builder implements Contracts\Builder
 	 */
 	public function mapRewriteTags(string $post_type): bool
 	{
-		$mappings = $this->option('map_rewrite_tags');
+		$mappings = $this->getOption('map_rewrite_tags');
 		return $mappings[$post_type] ?? true;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function postTaxonomy(string $post_type): string
+	public function getPostTaxonomy(string $post_type): string
 	{
-		$taxes = $this->option('post_taxonomy');
+		$taxes = $this->getOption('post_taxonomy');
 		return $taxes[$post_type] ?? '';
 	}
 

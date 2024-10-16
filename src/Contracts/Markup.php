@@ -28,5 +28,5 @@ interface Markup
 	/**
 	 * Returns a specific option or `null` if the option doesn't exist.
 	 */
-	public function option(string $name): mixed;
+	public function getOption(string $name): mixed;
 }

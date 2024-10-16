@@ -31,10 +31,10 @@ class Day extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_day'),
+			$this->builder->getLabel('archive_day'),
 			get_the_time(
 				esc_html_x('j', 'daily archives date format', 'x3p0-breadcrumbs'),
 				$this->post
@@ -45,7 +45,7 @@ class Day extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_day_link(
 			get_the_time('Y', $this->post),

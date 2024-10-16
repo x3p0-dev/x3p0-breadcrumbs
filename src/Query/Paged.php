@@ -18,7 +18,7 @@ class Paged extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');

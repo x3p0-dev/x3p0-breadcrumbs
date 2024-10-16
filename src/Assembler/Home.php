@@ -22,17 +22,17 @@ class Home extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		if (
 			is_multisite()
-			&& $this->builder->option('network')
+			&& $this->builder->getOption('network')
 			&& ! is_main_site()
 		) {
-			$this->builder->crumb('network');
-			$this->builder->crumb('network-site');
+			$this->builder->addCrumb('network');
+			$this->builder->addCrumb('network-site');
 		} else {
-			$this->builder->crumb('home');
+			$this->builder->addCrumb('home');
 		}
 	}
 }

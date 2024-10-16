@@ -71,17 +71,17 @@ abstract class Markup implements Contracts\Markup
 	 * Helper method for grabbing the breadcrumbs array and removing any
 	 * items that should be removed.
 	 */
-	protected function crumbs(): array
+	protected function getCrumbs(): array
 	{
 		$crumbs = $this->builder->build()->getCrumbs();
 
 		// Remove the first crumb item if it's not supposed to be shown.
-		if (! $this->option('show_first_item')) {
+		if (! $this->getOption('show_first_item')) {
 			array_shift($crumbs);
 		}
 
 		// Remove the last crumb item if it's not supposed to be shown.
-		if (! $this->option('show_last_item')) {
+		if (! $this->getOption('show_last_item')) {
 			array_pop($crumbs);
 		}
 
@@ -91,7 +91,7 @@ abstract class Markup implements Contracts\Markup
 	/**
 	 * {@inheritdoc}
 	 */
-	public function option(string $name): mixed
+	public function getOption(string $name): mixed
 	{
 		return $this->options[$name] ?? null;
 	}
@@ -101,8 +101,8 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function containerAttr(): string
 	{
-		$attrs    = array_keys($this->option('container_attr'));
-		$values   = array_values($this->option('container_attr'));
+		$attrs    = array_keys($this->getOption('container_attr'));
+		$values   = array_values($this->getOption('container_attr'));
 		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
 
 		return implode(' ', array_map($callback, $attrs, $values));

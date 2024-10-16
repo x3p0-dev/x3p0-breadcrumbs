@@ -32,7 +32,7 @@ abstract class Crumb implements Contracts\Crumb
 	 * name to build the type. If wanting something custom, this should be
 	 * handled in a subclass.
 	 */
-	public function type(): string
+	public function getType(): string
 	{
 		$class = explode('\\', get_class($this));
 		$class = array_pop($class);
@@ -45,7 +45,7 @@ abstract class Crumb implements Contracts\Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return '';
 	}

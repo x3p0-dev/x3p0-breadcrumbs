@@ -18,12 +18,12 @@ class Month extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('year');
-		$this->builder->crumb('month');
+		$this->builder->addCrumb('year');
+		$this->builder->addCrumb('month');
 		$this->builder->assemble('paged');
 	}
 }

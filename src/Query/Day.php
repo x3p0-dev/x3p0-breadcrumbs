@@ -18,13 +18,13 @@ class Day extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('year');
-		$this->builder->crumb('month');
-		$this->builder->crumb('day');
+		$this->builder->addCrumb('year');
+		$this->builder->addCrumb('month');
+		$this->builder->addCrumb('day');
 		$this->builder->assemble('paged');
 	}
 }

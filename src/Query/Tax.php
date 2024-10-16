@@ -29,7 +29,7 @@ class Tax extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$term = $this->term ?: get_queried_object();
 

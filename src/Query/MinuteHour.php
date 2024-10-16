@@ -18,11 +18,11 @@ class MinuteHour extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('minute-hour');
+		$this->builder->addCrumb('minute-hour');
 		$this->builder->assemble('paged');
 	}
 }

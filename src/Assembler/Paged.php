@@ -25,23 +25,23 @@ class Paged extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		// If viewing a paged archive-type page.
 		if (is_paged()) {
-			$this->builder->crumb('paged');
+			$this->builder->addCrumb('paged');
 
 		// If viewing a paged singular post.
 		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->builder->crumb('paged-singular');
+			$this->builder->addCrumb('paged-singular');
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
-			$this->builder->crumb('paged-comments');
+			$this->builder->addCrumb('paged-comments');
 
 		// If viewing a paged Query Loop block view.
 		} elseif (Helpers::isPagedQueryBlock()) {
-			$this->builder->crumb('paged-query-block');
+			$this->builder->addCrumb('paged-query-block');
 		}
 	}
 }

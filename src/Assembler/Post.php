@@ -35,7 +35,7 @@ class Post extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
@@ -51,16 +51,16 @@ class Post extends Assembler
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->builder->postTaxonomy($this->post->post_type)) {
+		if ($this->builder->getPostTaxonomy($this->post->post_type)) {
 			$this->builder->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(
-					$this->builder->postTaxonomy($this->post->post_type)
+					$this->builder->getPostTaxonomy($this->post->post_type)
 				)
 			]);
 		}
 
 		// Assembler the post crumb.
-		$this->builder->crumb('post', [ 'post' => $this->post ]);
+		$this->builder->addCrumb('post', [ 'post' => $this->post ]);
 	}
 }

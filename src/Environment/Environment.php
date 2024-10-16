@@ -70,7 +70,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function queries(): Contracts\Queries
+	public function getQueries(): Contracts\Queries
 	{
 		return $this->queries;
 	}
@@ -78,7 +78,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function assemblers(): Contracts\Assemblers
+	public function getAssemblers(): Contracts\Assemblers
 	{
 		return $this->assemblers;
 	}
@@ -86,7 +86,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function crumbs(): Contracts\Crumbs
+	public function getCrumbs(): Contracts\Crumbs
 	{
 		return $this->crumbs;
 	}
@@ -117,8 +117,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->queries()->has($name)) {
-				$this->queries()->add($name, $class);
+			if (! $this->queries->has($name)) {
+				$this->queries->add($name, $class);
 			}
 		}
 	}
@@ -144,8 +144,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->assemblers()->has($name)) {
-				$this->assemblers()->add($name, $class);
+			if (! $this->assemblers->has($name)) {
+				$this->assemblers->add($name, $class);
 			}
 		}
 	}
@@ -178,8 +178,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->crumbs()->has($name)) {
-				$this->crumbs()->add($name, $class);
+			if (! $this->crumbs->has($name)) {
+				$this->crumbs->add($name, $class);
 			}
 		}
 	}

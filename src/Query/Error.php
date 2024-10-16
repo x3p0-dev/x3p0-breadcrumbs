@@ -18,9 +18,9 @@ class Error extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
-		$this->builder->crumb('error-404');
+		$this->builder->addCrumb('error-404');
 	}
 }

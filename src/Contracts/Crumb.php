@@ -24,15 +24,15 @@ interface Crumb
 	/**
 	 * Returns a type for the crumb.
 	 */
-	public function type(): string;
+	public function getType(): string;
 
 	/**
 	 * Returns an internationalized text label for the crumb.
 	 */
-	public function label(): string;
+	public function getLabel(): string;
 
 	/**
 	 * Returns a URL for the crumb.
 	 */
-	public function url(): string;
+	public function getUrl(): string;
 }

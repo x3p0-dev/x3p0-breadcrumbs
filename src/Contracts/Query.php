@@ -23,5 +23,5 @@ interface Query
 	/**
 	 * Runs the logic for generating breadcrumbs.
 	 */
-	public function make(): void;
+	public function query(): void;
 }

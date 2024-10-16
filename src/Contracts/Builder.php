@@ -34,12 +34,12 @@ interface Builder
 	/**
 	 * Returns a specific option or `null` if the option doesn't exist.
 	 */
-	public function option(string $name): mixed;
+	public function getOption(string $name): mixed;
 
 	/**
 	 * Returns a specific label or an empty string if it doesn't exist.
 	 */
-	public function label(string $name): string;
+	public function getLabel(string $name): string;
 
 	/**
 	 * Determines whether to map the rewrite tags for a specific post type.
@@ -49,7 +49,7 @@ interface Builder
 	/**
 	 * Returns a specific post taxonomy or an empty string if one isn't set.
 	 */
-	public function postTaxonomy(string $post_type): string;
+	public function getPostTaxonomy(string $post_type): string;
 
 	/**
 	 * Creates a new `Query` object and runs it.
@@ -64,5 +64,5 @@ interface Builder
 	/**
 	 * Creates a new `Crumb` object and adds it to the crumbs collection.
 	 */
-	public function crumb(string $name, array $params = []): void;
+	public function addCrumb(string $name, array $params = []): void;
 }

@@ -37,7 +37,7 @@ class PostType extends Assembler
 	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		if (! $type = $this->post_type) {
 			return;
@@ -56,7 +56,7 @@ class PostType extends Assembler
 				// front path, we should've already handled that
 				// scenario at this point.
 				if (trim($GLOBALS['wp_rewrite']->front, '/') !== $post->post_name) {
-					$this->builder->crumb('post', [
+					$this->builder->addCrumb('post', [
 						'post' => $post
 					]);
 				}
@@ -66,6 +66,6 @@ class PostType extends Assembler
 		}
 
 		// Add post type crumb.
-		$this->builder->crumb('post-type', [ 'post_type' => $type ]);
+		$this->builder->addCrumb('post-type', [ 'post_type' => $type ]);
 	}
 }

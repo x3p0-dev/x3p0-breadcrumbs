@@ -18,11 +18,11 @@ class Minute extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('minute');
+		$this->builder->addCrumb('minute');
 		$this->builder->assemble('paged');
 	}
 }

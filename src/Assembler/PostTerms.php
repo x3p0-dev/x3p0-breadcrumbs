@@ -36,7 +36,7 @@ class PostTerms extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		// Get the post terms for the given taxonomy.
 		$terms = get_the_terms($this->post->ID, $this->taxonomy->name);
@@ -56,7 +56,7 @@ class PostTerms extends Assembler
 			}
 
 			// Add term crumb.
-			$this->builder->crumb('term', [ 'term' => $term ]);
+			$this->builder->addCrumb('term', [ 'term' => $term ]);
 		}
 	}
 }

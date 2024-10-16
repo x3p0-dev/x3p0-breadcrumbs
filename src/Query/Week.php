@@ -18,12 +18,12 @@ class Week extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('year');
-		$this->builder->crumb('week');
+		$this->builder->addCrumb('year');
+		$this->builder->addCrumb('week');
 		$this->builder->assemble('paged');
 	}
 }

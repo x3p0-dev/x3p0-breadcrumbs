@@ -35,7 +35,7 @@ class Path extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		if (! $path = trim($this->path, '/')) {
 			return;
@@ -44,7 +44,7 @@ class Path extends Assembler
 		// If the path is a post, run the parent crumbs and bail early.
 		if ($post = get_page_by_path($path)) {
 			$this->builder->assemble('post-ancestors', [ 'post' => $post ]);
-			$this->builder->crumb('post', [ 'post' => $post ]);
+			$this->builder->addCrumb('post', [ 'post' => $post ]);
 			return;
 		}
 
@@ -69,13 +69,13 @@ class Path extends Assembler
 						'post' => $post
 					]);
 
-					$this->builder->crumb('post', [
+					$this->builder->addCrumb('post', [
 						'post' => $post
 					]);
 
 					break;
 
-				// If the slug matches a post type, let's Assembler
+				// If the slug matches a post type, let's assemble
 				// that and break out of the loop.
 				} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
 					$this->builder->assemble('post-type', [

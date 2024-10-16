@@ -18,8 +18,8 @@ class Archive extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
-		return $this->builder->label('archives');
+		return $this->builder->getLabel('archives');
 	}
 }

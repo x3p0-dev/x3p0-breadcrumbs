@@ -31,7 +31,7 @@ class Term extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		$tax     = $this->term->taxonomy;
 		$term_id = $this->term->term_id;
@@ -50,7 +50,7 @@ class Term extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_term_link($this->term, $this->term->taxonomy);
 	}

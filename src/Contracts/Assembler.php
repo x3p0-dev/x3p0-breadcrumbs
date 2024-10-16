@@ -23,5 +23,5 @@ interface Assembler
 	/**
 	 * Runs the logic for generating breadcrumbs.
 	 */
-	public function make(): void;
+	public function assemble(): void;
 }

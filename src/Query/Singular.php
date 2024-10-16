@@ -29,7 +29,7 @@ class Singular extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$post = $this->post ?: get_queried_object();
 

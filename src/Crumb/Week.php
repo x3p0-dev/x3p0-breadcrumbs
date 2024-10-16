@@ -18,10 +18,10 @@ class Week extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_week'),
+			$this->builder->getLabel('archive_week'),
 			get_the_time(esc_html_x(
 				'W',
 				'weekly archives date format',
@@ -33,7 +33,7 @@ class Week extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return add_query_arg([
 			'm' => get_the_time('Y'),

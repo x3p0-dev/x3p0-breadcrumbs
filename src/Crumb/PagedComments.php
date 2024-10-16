@@ -18,10 +18,10 @@ class PagedComments extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('paged_comments'),
+			$this->builder->getLabel('paged_comments'),
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}

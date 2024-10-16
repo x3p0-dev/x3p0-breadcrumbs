@@ -35,7 +35,7 @@ class PostAncestors extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		$post    = $this->post;
 		$post_id = $post->post_parent;
@@ -69,18 +69,18 @@ class PostAncestors extends Assembler
 		$this->builder->assemble('post-hierarchy', [ 'post' => $post ]);
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->builder->postTaxonomy($post->post_type)) {
+		if ($this->builder->getPostTaxonomy($post->post_type)) {
 			$this->builder->assemble('post-terms', [
 				'post'     => $post,
 				'taxonomy' => get_taxonomy(
-					$this->builder->postTaxonomy($post->post_type)
+					$this->builder->getPostTaxonomy($post->post_type)
 				)
 			]);
 		}
 
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->builder->crumb('post', [ 'post' => $parent ]);
+				$this->builder->addCrumb('post', [ 'post' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

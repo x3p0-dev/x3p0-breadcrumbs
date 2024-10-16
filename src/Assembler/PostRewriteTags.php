@@ -39,7 +39,7 @@ class PostRewriteTags extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		// Bail early if rewrite tag mapping is disabled.
 		if (! $this->builder->mapRewriteTags($this->post->post_type)) {
@@ -59,16 +59,16 @@ class PostRewriteTags extends Assembler
 	private function mapTag(string $tag): void
 	{
 		match ($tag) {
-			'%year%' => $this->builder->crumb('year', [
+			'%year%' => $this->builder->addCrumb('year', [
 				'post' => $this->post
 			]),
-			'%monthnum%' => $this->builder->crumb('month', [
+			'%monthnum%' => $this->builder->addCrumb('month', [
 				'post' => $this->post
 			]),
-			'%day%' => $this->builder->crumb('day', [
+			'%day%' => $this->builder->addCrumb('day', [
 				'post' => $this->post
 			]),
-			'%author%' => $this->builder->crumb('author', [
+			'%author%' => $this->builder->addCrumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),
 			$this->useTaxonomy($tag) => $this->builder->assemble('post-terms', [
@@ -93,7 +93,7 @@ class PostRewriteTags extends Assembler
 
 		$tax = trim($tag, '%');
 
-		return taxonomy_exists($tax) && $tax !== $this->builder->postTaxonomy($this->post->post_type)
+		return taxonomy_exists($tax) && $tax !== $this->builder->getPostTaxonomy($this->post->post_type)
 			? $tag
 			: null;
 	}

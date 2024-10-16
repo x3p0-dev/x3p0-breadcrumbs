@@ -35,7 +35,7 @@ class TermAncestors extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		$term_id  = $this->term->parent;
 		$taxonomy = $this->term->taxonomy;
@@ -56,7 +56,7 @@ class TermAncestors extends Assembler
 		// proper order for the trail.
 		if ($parents) {
 			array_map(function ($parent) {
-				$this->builder->crumb('term', [ 'term' => $parent ]);
+				$this->builder->addCrumb('term', [ 'term' => $parent ]);
 			}, array_reverse($parents));
 		}
 	}

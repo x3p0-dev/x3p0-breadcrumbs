@@ -18,15 +18,15 @@ class Home extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
-		return $this->builder->label('home');
+		return $this->builder->getLabel('home');
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return user_trailingslashit(home_url());
 	}

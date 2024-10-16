@@ -26,7 +26,7 @@ class Html extends Markup
 	public function render(): string
 	{
 		// Get an array of breadcrumbs or return.
-		if (! $crumbs = $this->crumbs()) {
+		if (! $crumbs = $this->getCrumbs()) {
 			return '';
 		}
 
@@ -47,7 +47,7 @@ class Html extends Markup
 		$html .= '</nav>';
 
 		// Add before/after wrappers and return.
-		return $this->option('before') . $html . $this->option('after');
+		return $this->getOption('before') . $html . $this->getOption('after');
 	}
 
 	/**
@@ -56,15 +56,15 @@ class Html extends Markup
 	private function renderCrumb(Crumb $crumb, int $count, int $position): string
 	{
 		// Get the crumb URL and determine whether to link the crumb.
-		$url       = $crumb->url();
+		$url       = $crumb->getUrl();
 		$is_last   = $position === $count;
-		$show_last = $this->option('show_last_item');
+		$show_last = $this->getOption('show_last_item');
 		$has_link  = ($url && ! $is_last) || ($url && $is_last && ! $show_last);
 
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="breadcrumbs__crumb-label">%s</span>',
-			wp_kses($crumb->label(), self::ALLOWED_HTML)
+			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Wrap the label with a link if the crumb has one and this is
@@ -81,7 +81,7 @@ class Html extends Markup
 		// Build the list item.
 		return sprintf(
 			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s">%s</li>',
-			esc_attr($crumb->type()),
+			esc_attr($crumb->getType()),
 			$item
 		);
 	}

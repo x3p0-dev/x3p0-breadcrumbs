@@ -31,7 +31,7 @@ class Author extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return get_the_author_meta('display_name', $this->user->ID);
 	}
@@ -39,7 +39,7 @@ class Author extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_author_posts_url($this->user->ID);
 	}

@@ -31,7 +31,7 @@ class PostType extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		if (is_post_type_archive($this->type->name)) {
 			return post_type_archive_title('', false);
@@ -47,7 +47,7 @@ class PostType extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_post_type_archive_link($this->type->name);
 	}

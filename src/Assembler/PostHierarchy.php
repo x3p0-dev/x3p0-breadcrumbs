@@ -36,7 +36,7 @@ class PostHierarchy extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		// Get the post type.
 		$type = get_post_type_object(get_post_type($this->post->ID));

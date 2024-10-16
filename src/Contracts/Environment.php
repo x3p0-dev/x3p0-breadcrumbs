@@ -22,15 +22,15 @@ interface Environment
 	/**
 	 * Returns a query collection.
 	 */
-	public function queries(): Queries;
+	public function getQueries(): Queries;
 
 	/**
 	 * Returns a builder collection.
 	 */
-	public function assemblers(): Assemblers;
+	public function getAssemblers(): Assemblers;
 
 	/**
 	 * Returns a crumb collection.
 	 */
-	public function crumbs(): Crumbs;
+	public function getCrumbs(): Crumbs;
 }

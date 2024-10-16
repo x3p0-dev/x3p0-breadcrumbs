@@ -18,8 +18,8 @@ class Error extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
-		return $this->builder->label('error_404');
+		return $this->builder->getLabel('error_404');
 	}
 }

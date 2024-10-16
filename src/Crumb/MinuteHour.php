@@ -33,10 +33,10 @@ class MinuteHour extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_minute_hour'),
+			$this->builder->getLabel('archive_minute_hour'),
 			get_the_time(
 				esc_html_x('g:i a', 'minute and hour archives time format', 'x3p0-breadcrumbs'),
 				$this->post

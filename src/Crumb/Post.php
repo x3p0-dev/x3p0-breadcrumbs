@@ -31,7 +31,7 @@ class Post extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		$post_id = $this->post->ID;
 
@@ -45,7 +45,7 @@ class Post extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function url(): string
+	public function getUrl(): string
 	{
 		return get_permalink($this->post->ID);
 	}

@@ -35,7 +35,7 @@ class Term extends Assembler
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function assemble(): void
 	{
 		$taxonomy       = get_taxonomy($this->term->taxonomy);
 		$done_post_type = false;
@@ -79,6 +79,6 @@ class Term extends Assembler
 		}
 
 		// Assembler the term crumb.
-		$this->builder->crumb('term', [ 'term' => $this->term ]);
+		$this->builder->addCrumb('term', [ 'term' => $this->term ]);
 	}
 }

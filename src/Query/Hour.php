@@ -18,11 +18,11 @@ class Hour extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('hour');
+		$this->builder->addCrumb('hour');
 		$this->builder->assemble('paged');
 	}
 }

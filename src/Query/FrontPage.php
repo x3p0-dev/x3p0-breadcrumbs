@@ -20,10 +20,10 @@ class FrontPage extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		if (
-			$this->builder->option('show_on_front')
+			$this->builder->getOption('show_on_front')
 			|| Helpers::isPagedView()
 		) {
 			$this->builder->assemble('home');

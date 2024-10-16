@@ -18,11 +18,11 @@ class Year extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		$this->builder->assemble('home');
 		$this->builder->assemble('rewrite-front');
-		$this->builder->crumb('year');
+		$this->builder->addCrumb('year');
 		$this->builder->assemble('paged');
 	}
 }

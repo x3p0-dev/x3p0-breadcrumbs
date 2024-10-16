@@ -31,10 +31,10 @@ class Minute extends Crumb
 	/**
 	 * {@inheritdoc}
 	 */
-	public function label(): string
+	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->label('archive_minute'),
+			$this->builder->getLabel('archive_minute'),
 			get_the_time(
 				esc_html_x('i', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post

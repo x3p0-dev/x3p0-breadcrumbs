@@ -18,7 +18,7 @@ class Archive extends Query
 	/**
 	 * {@inheritdoc}
 	 */
-	public function make(): void
+	public function query(): void
 	{
 		// Run through the conditionals to determine which type of
 		// archive breadcrumbs to build.
@@ -50,7 +50,7 @@ class Archive extends Query
 				$this->builder->assemble('rewrite-front');
 			}
 
-			$this->builder->crumb('archive');
+			$this->builder->addCrumb('archive');
 			$this->builder->assemble('paged');
 		}
 	}

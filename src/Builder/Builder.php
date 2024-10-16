@@ -53,7 +53,7 @@ class Builder implements Contracts\Builder
 	 * query. Once we figure out which page we're viewing, we create a new
 	 * `Query` object and let it build the breadcrumbs.
 	 */
-	public function make(): Contracts\Builder
+	public function build(): Contracts\Builder
 	{
 		// A hook for short-circuiting the breadcrumbs output and
 		// running custom logic. Filters on this hook must return either

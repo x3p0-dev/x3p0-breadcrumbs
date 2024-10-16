@@ -22,7 +22,7 @@ interface Builder
 	/**
 	 * Builds a new breadcrumbs object and returns it.
 	 */
-	public function make(): self;
+	public function build(): self;
 
 	/**
 	 * Returns the breadcrumbs as an array of `Crumb` objects.

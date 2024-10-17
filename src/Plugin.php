@@ -1,9 +1,7 @@
 <?php
 
 /**
- * The Plugin class is a simple container used to store and reference the various
- * Plugin components. It doesn't support automatic dependency injection (manual
- * only) because it would be overkill for this project.
+ * Plugin container implementation.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024, Justin Tadlock
@@ -16,9 +14,14 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Block\Breadcrumbs;
-use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Contracts\{Bootable, Container};
 
-class Plugin implements Bootable
+/**
+ * The plugin class is a simple container used to store and reference the
+ * various Plugin components. It doesn't support automatic dependency injection
+ * (manual only) because it would be overkill for this project.
+ */
+class Plugin implements Container
 {
 	/**
 	 * Stored definitions of single instances.
@@ -34,7 +37,7 @@ class Plugin implements Bootable
 	}
 
 	/**
-	 * Boots the component by calling bootable bindings.
+	 * {@inheritdoc}
 	 */
 	#[\Override]
 	public function boot(): void
@@ -42,6 +45,30 @@ class Plugin implements Bootable
 		foreach ($this->instances as $binding) {
 			$binding instanceof Bootable && $binding->boot();
 		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function instance(string $abstract, mixed $instance): void
+	{
+		$this->instances[$abstract] = $instance;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get(string $abstract): mixed
+	{
+		return $this->has($abstract) ? $this->instances[$abstract] : null;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function has(string $abstract): bool
+	{
+		return isset($this->instances[$abstract]);
 	}
 
 	/**
@@ -53,29 +80,5 @@ class Plugin implements Bootable
 			'block.breadcrumbs',
 			new Breadcrumbs(untrailingslashit(__DIR__ . '/..'))
 		);
-	}
-
-	/**
-	 * Registers a single instance of a binding.
-	 */
-	public function instance(string $abstract, mixed $instance): void
-	{
-		$this->instances[$abstract] = $instance;
-	}
-
-	/**
-	 * Returns a binding or `null`.
-	 */
-	public function get(string $abstract): mixed
-	{
-		return $this->has($abstract) ? $this->instances[$abstract] : null;
-	}
-
-	/**
-	 * Checks if a binding exists.
-	 */
-	public function has(string $abstract): bool
-	{
-		return isset($this->instances[$abstract]);
 	}
 }

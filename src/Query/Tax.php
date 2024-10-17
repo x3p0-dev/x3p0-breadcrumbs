@@ -24,7 +24,9 @@ class Tax extends Query
 	public function __construct(
 		protected Builder $builder,
 		protected ?WP_Term $term = null
-	) {}
+	) {
+		parent::__construct($this->builder);
+	}
 
 	/**
 	 * {@inheritdoc}

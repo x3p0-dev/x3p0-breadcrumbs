@@ -23,7 +23,8 @@
 		"phpcompatibility/phpcompatibility-wp": "*",
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
 		"phpstan/phpstan": "^1.12",
-		"szepeviktor/phpstan-wordpress": "^1.3"
+		"szepeviktor/phpstan-wordpress": "^1.3",
+		"symfony/var-dumper": "^7.1"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,

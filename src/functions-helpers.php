@@ -14,19 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 /**
- * Bootstraps the plugin.
- */
-function boot(): void
-{
-	plugin()->boot();
-}
-
-/**
  * Stores the single instance of the plugin in the static `$plugin` variable.
  * Devs can access any class/component by passing in its reference via the
  * `$abstract` parameter (useful for accessing hooks within classes).
  *
- * @since 1.0.0
+ * @return mixed|Plugin
  */
 function plugin(string $abstract = ''): mixed
 {

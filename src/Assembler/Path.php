@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
@@ -48,42 +49,36 @@ class Path extends Assembler
 			return;
 		}
 
-		// Split the $path into an array of strings.
-		$matches = explode('/', $path);
+		// Split the $path into segments.
+		$segments = explode('/', $path);
 
-		// If matches are found for the path.
-		if ([] !== $matches) {
-			// Reverse the array of matches to search for posts in
-			// the proper order.
-			$matches = array_reverse($matches);
+		// Reverse the array of matches to search for posts in the
+		// proper order and Loop through each of the path matches.
+		foreach (array_reverse($segments) as $slug) {
+			// Get the parent post by the given path.
+			$post = get_page_by_path($slug);
 
-			// Loop through each of the path matches.
-			foreach ($matches as $slug) {
-				// Get the parent post by the given path.
-				$post = get_page_by_path($slug);
+			// If a parent post is found, assemble the crumbs via
+			// post ancestor.
+			if ($post instanceof WP_Post) {
+				$this->builder->assemble('post-ancestors', [
+					'post' => $post
+				]);
 
-				// If a parent post is found, Assembler the crumbs
-				// and break out of the loop.
-				if (! empty($post) && 0 < $post->ID) {
-					$this->builder->assemble('post-ancestors', [
-						'post' => $post
-					]);
+				$this->builder->addCrumb('post', [
+					'post' => $post
+				]);
 
-					$this->builder->addCrumb('post', [
-						'post' => $post
-					]);
+				break;
 
-					break;
+			// If the slug matches a post type, let's assemble that
+			// by post type and break out of the loop.
+			} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
+				$this->builder->assemble('post-type', [
+					'post_type' => $types[0]
+				]);
 
-				// If the slug matches a post type, let's assemble
-				// that and break out of the loop.
-				} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
-					$this->builder->assemble('post-type', [
-						'post_type' => $types[0]
-					]);
-
-					break;
-				}
+				break;
 			}
 		}
 	}

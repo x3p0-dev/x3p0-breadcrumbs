@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Tools;
 
+use WP_Post_Type;
+
 /**
  * A static class with helper functions for performing some actions needed in
  * the library.
@@ -72,19 +74,25 @@ class Helpers
 	 * Gets post types by slug. This is needed because the `get_post_types()`
 	 * function doesn't exactly match the `has_archive` argument when it's
 	 * set as a string instead of a boolean.
+	 *
+	 * @return WP_Post_Type[]
 	 */
 	public static function getPostTypesBySlug(string $slug): array
 	{
-		$return = [];
+		$types = [];
 
-		$post_types = get_post_types([], 'objects');
-
-		foreach ($post_types as $type) {
-			if ($slug === $type->has_archive || (true === $type->has_archive && $slug === $type->rewrite['slug'])) {
-				$return[] = $type;
+		foreach (get_post_types([], 'objects') as $type) {
+			if (
+				$slug === $type->has_archive
+				|| (
+					true === $type->has_archive
+					&& $slug === $type->rewrite['slug']
+				)
+			) {
+				$types[] = $type;
 			}
 		}
 
-		return $return;
+		return $types;
 	}
 }

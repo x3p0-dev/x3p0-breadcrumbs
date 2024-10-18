@@ -36,6 +36,7 @@ class Register implements Bootable
 	 * Registers the block with WordPress.
 	 *
 	 * @internal WordPress hook callback. Do not call directly.
+	 * @todo     Remove `function_exists()` with minimum WP 6.7 support.
 	 */
 	public function register(): void
 	{

@@ -1,16 +1,16 @@
 === X3P0: Breadcrumbs ===
 
 Contributors: greenshady
-Donate link: https://themehybrid.com/donate
+Donate link: http://a.co/02ggsr2
 Tags: breadcrumbs, navigation, menu
-Requires at least: 6.3
+Requires at least: 6.6
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 1.0.1
+Stable tag: 2.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Breadcrumbs block for WordPress that supports Schema.org HTML5-valid microdata.
+Breadcrumbs block for WordPress that supports plain HTML, RDFa, and Schema microdata.
 
 == Description ==
 

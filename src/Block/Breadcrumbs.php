@@ -36,7 +36,6 @@ class Breadcrumbs implements Block
 	public function render(): string
 	{
 		$builder_options = [
-			'labels'	   => [ 'title' => '' ],
 			'post_taxonomy'    => [ 'post' => 'category' ],
 			'map_rewrite_tags' => [ 'post' => false ]
 		];

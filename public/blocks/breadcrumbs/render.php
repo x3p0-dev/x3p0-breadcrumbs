@@ -19,4 +19,4 @@ use X3P0\Breadcrumbs\Block\Breadcrumbs;
 /**
  * @global array $attributes
  */
-echo (new Breadcrumbs($attributes))->render();
+echo (new Breadcrumbs($attributes))->render(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

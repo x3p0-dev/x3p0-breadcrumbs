@@ -22,14 +22,11 @@ The plugin works with both block and classic themes, so you can use it on any Wo
 
 For **block themes**, you can insert it into any template or template part via the WordPress Site Editor. Ideally, this would be something like the Header part, which is generally shown on every page of the site.
 
-For **classic themes**, you must manually add the PHP code to your theme to call the breadcrumb trail like so:
+For **classic themes**, you must manually add the PHP code to your theme to call the Breadcrumbs block like so:
 
-	<?php if (class_exists('\X3P0\Breadcrumbs\Breadcrumbs')) {
-		$environment = new \X3P0\Breadcrumbs\Environment\Environment();
-		$breadcrumbs = new \X3P0\Breadcrumbs\Breadcrumbs($environment);
-		$markup      = new \X3P0\Breadcrumbs\Markup\Microdata($breadcrumbs);
-		echo $markup->render();
-	} ?>
+ 	<?php echo do_blocks('<!-- wp:x3p0/breadcrumbs /-->'); ?>
+
+Alternatively, you can build out the breadcrumbs using the available PHP classes. See the plugin's [README](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/README.md) on GitHub for more details.
 
 ### How It Works
 

@@ -14,49 +14,26 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Block;
 
 use WP_Block_Supports;
-use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Contracts\Block;
 use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 
 /**
- * The block class registers and renders the block type on the front end.
+ * Renders the Breadcrumbs block on the front end.
  */
-class Breadcrumbs implements Bootable
+class Breadcrumbs implements Block
 {
 	/**
-	 * Sets up object state. Note that the `$path` property should point to
-	 * the plugin's root folder.
+	 * Sets the block attributes.
 	 */
-	public function __construct(protected string $path)
+	public function __construct(protected array $attributes)
 	{}
 
 	/**
-	 * Boots the class, running its actions/filters.
+	 * {@inheritdoc}
 	 */
-	public function boot(): void
-	{
-		add_action('init', [ $this, 'register' ]);
-	}
-
-	/**
-	 * Registers the block with WordPress.
-	 *
-	 * @internal This is a WordPress hook callback and must be public.
-	 */
-	public function register(): void
-	{
-		register_block_type($this->path . '/public', [
-			'render_callback' => [ $this, 'render' ]
-		]);
-	}
-
-	/**
-	 * Renders the block on the front end.
-	 *
-	 * @internal This is a block render callback and must be public.
-	 */
-	public function render(array $attributes): string
+	public function render(): string
 	{
 		$builder_options = [
 			'labels'	   => [ 'title' => '' ],
@@ -65,9 +42,9 @@ class Breadcrumbs implements Bootable
 		];
 
 		$markup_options = [
-			'show_on_front'  => $attributes['showOnHomepage'] ?? false,
-			'show_last_item' => $attributes['showTrailEnd']   ?? true,
-			'container_attr' => $this->getWrapperAttributes($attributes)
+			'show_on_front'  => $this->attributes['showOnHomepage'] ?? false,
+			'show_last_item' => $this->attributes['showTrailEnd']   ?? true,
+			'container_attr' => $this->getWrapperAttributes()
 		];
 
 		// Build the breadcrumb trail.
@@ -75,7 +52,7 @@ class Breadcrumbs implements Bootable
 		$builder     = new Builder($environment, $builder_options);
 
 		// Get the breadcrumb trail markup.
-		$markup = match ($attributes['markup'] ?? 'rdfa') {
+		$markup = match ($this->attributes['markup'] ?? 'rdfa') {
 			'microdata' => new Microdata($builder, $markup_options),
 			'rdfa'      => new Rdfa($builder, $markup_options),
 			default     => new Html($builder, $markup_options)
@@ -90,40 +67,40 @@ class Breadcrumbs implements Bootable
 	 * because the breadcrumb markup implementations require attributes be
 	 * passed as an array.
 	 */
-	private function getWrapperAttributes(array $attributes): array
+	private function getWrapperAttributes(): array
 	{
 		// Set up some default class names.
 		$classes = ['breadcrumbs' => 'breadcrumbs'];
 
 		// If there is a selected home prefix, define the class.
-		if ($attributes['homePrefix'] && $attributes['homePrefixType']) {
+		if ($this->attributes['homePrefix'] && $this->attributes['homePrefixType']) {
 			$classes['home'] = sprintf(
 				'has-home-%s-%s',
-				$attributes['homePrefixType'],
-				$attributes['homePrefix']
+				$this->attributes['homePrefixType'],
+				$this->attributes['homePrefix']
 			);
 
 			// The option for showing the home label should only ever be
 			// triggered if there's an icon set for it.
-			if (! $attributes['showHomeLabel']) {
+			if (! $this->attributes['showHomeLabel']) {
 				$classes['home-label'] = 'hide-home-label';
 			}
 		}
 
 		// If there's a selected separator, define the class for it.
-		if ($attributes['separator'] && $attributes['separatorType']) {
+		if ($this->attributes['separator'] && $this->attributes['separatorType']) {
 			$classes['sep'] = sprintf(
 				'has-sep-%s-%s',
-				$attributes['separatorType'],
-				$attributes['separator']
+				$this->attributes['separatorType'],
+				$this->attributes['separator']
 			);
 		}
 
 		// If there's a selected content justification, add a class.
-		if (! empty($attributes['justifyContent'])) {
+		if (! empty($this->attributes['justifyContent'])) {
 			$classes['justify'] = sprintf(
 				'is-content-justification-%s',
-				$attributes['justifyContent']
+				$this->attributes['justifyContent']
 			);
 		}
 

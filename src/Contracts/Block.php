@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Markup interface.
+ * Block interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2024, Justin Tadlock
@@ -14,13 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Markup classes are responsible for rendering the final HTML for a breadcrumb
- * trail using an implementation of the `Breadcrumbs` interface.
+ * The block class renders the block type on the front end.
  */
-interface Markup extends Renderable
+interface Block extends Renderable
 {
-	/**
-	 * Returns a specific option or `null` if the option doesn't exist.
-	 */
-	public function getOption(string $name): mixed;
 }

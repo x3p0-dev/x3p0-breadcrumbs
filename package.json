@@ -4,8 +4,11 @@
 	"author": "Justin Tadlock",
 	"homepage": "https://github.com/x3p0-dev/x3p0-breadcrumbs",
 	"scripts": {
-		"start": "wp-scripts start --webpack-src-dir=resources --output-path=public",
-		"build": "wp-scripts build --webpack-src-dir=resources --output-path=public"
+		"start": "npm run start:blocks && npm run manifest",
+		"build": "npm run build:blocks && npm run manifest",
+		"start:blocks": "wp-scripts start --webpack-src-dir=resources/blocks --output-path=public/blocks",
+		"build:blocks": "wp-scripts build --webpack-src-dir=resources/blocks --output-path=public/blocks",
+		"manifest": "wp-scripts build-blocks-manifest --input=resources --output=public/blocks/manifest.php"
 	},
 	"repository": {
 		"type": "git",
@@ -15,7 +18,7 @@
 		"url": "https://github.com/x3p0-dev/x3p0-breadcrumbs/issues"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^26.5.0"
+		"@wordpress/scripts": "^30.3.0"
 	},
 	"dependencies": {
 		"@wordpress/icons": "^9.27.0",

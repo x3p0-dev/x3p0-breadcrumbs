@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Block\Breadcrumbs;
+use X3P0\Breadcrumbs\Block\Register;
 use X3P0\Breadcrumbs\Contracts\{Bootable, Container};
 
 /**
@@ -77,8 +77,8 @@ class Plugin implements Container
 	private function registerDefaultBindings(): void
 	{
 		$this->instance(
-			'block.breadcrumbs',
-			new Breadcrumbs(untrailingslashit(__DIR__ . '/..'))
+			'block.register',
+			new Register(__DIR__ . '/../public/blocks')
 		);
 	}
 }

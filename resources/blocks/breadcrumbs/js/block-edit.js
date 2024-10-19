@@ -55,6 +55,7 @@ export default ({
 		markup,
 		showHomeLabel,
 		showOnHomepage,
+		showTrailStart,
 		showTrailEnd,
 		separator,
 		separatorType
@@ -86,6 +87,7 @@ export default ({
 			<HomePrefixControl
 				homePrefix={ homePrefix }
 				showHomeLabel={ showHomeLabel }
+				showTrailStart={ showTrailStart }
 				setAttributes={ setAttributes }
 			/>
 			<SeparatorControl
@@ -121,13 +123,31 @@ export default ({
 		/>
 	);
 
+	const showTrailStartControl = (
+		<ToggleControl
+			label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
+			help={
+				showTrailStart
+					? __('First breadcrumb item is shown.',  'x3p0-breadcrumbs')
+					: __('First breadcrumb item is hidden.', 'x3p0-breadcrumbs')
+			}
+			checked={ showTrailStart }
+			onChange={ () => setAttributes({
+				homePrefix:     '',
+				homePrefixType: '',
+				showHomeLabel:  true,
+				showTrailStart: ! showTrailStart
+			}) }
+		/>
+	);
+
 	const showTrailEndControl = (
 		<ToggleControl
 			label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
 			help={
 				showTrailEnd
-				? __('Current page item is shown.', 'x3p0-breadcrumbs')
-				: __('Current page item is hidden.', 'x3p0-breadcrumbs')
+				? __('Last breadcrumb item is shown.',  'x3p0-breadcrumbs')
+				: __('Last breadcrumb item is hidden.', 'x3p0-breadcrumbs')
 			}
 			checked={ showTrailEnd }
 			onChange={ () => setAttributes({
@@ -155,6 +175,7 @@ export default ({
 				__('Breadcrumb settings', 'x3p0-breadcrumbs')
 			}>
 				{ showOnHomepageControl }
+				{ showTrailStartControl }
 				{ showTrailEndControl }
 				{ markupControl }
 			</PanelBody>
@@ -169,8 +190,8 @@ export default ({
 	const blockProps = useBlockProps({
 		className: classnames({
 			'breadcrumbs': true,
-			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : homePrefixType && homePrefix,
-			[ 'hide-home-label'                              ] : ! showHomeLabel,
+			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : showTrailStart && homePrefixType && homePrefix,
+			[ 'hide-home-label'                              ] : showTrailStart && ! showHomeLabel,
 			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
 			[ `is-content-justification-${ justifyContent }` ] : justifyContent
 		})
@@ -187,15 +208,22 @@ export default ({
 			type: 'post',
 			label: __('Parent Page', 'x3p0-breadcrumbs'),
 			link: true
-		}
-	];
-
-	if (showTrailEnd) {
-		crumbs.push({
+		},
+		{
 			type: 'post',
 			label: __('Current Page', 'x3p0-breadcrumbs'),
 			link: false
-		});
+		}
+	];
+
+	// Remove first item if trail start isn't shown.
+	if (! showTrailStart) {
+		crumbs.shift();
+	}
+
+	// Remove last item if trail end isn't shown.
+	if (! showTrailEnd) {
+		crumbs.pop();
 	}
 
 	// Creates a breadcrumb trail list item.

@@ -41,9 +41,10 @@ class Breadcrumbs implements Block
 		];
 
 		$markup_options = [
-			'show_on_front'  => $this->attributes['showOnHomepage'] ?? false,
-			'show_last_item' => $this->attributes['showTrailEnd']   ?? true,
-			'container_attr' => $this->getWrapperAttributes()
+			'show_on_front'   => $this->attributes['showOnHomepage'] ?? false,
+			'show_first_item' => $this->attributes['showTrailStart'] ?? false,
+			'show_last_item'  => $this->attributes['showTrailEnd']   ?? true,
+			'container_attr'  => $this->getWrapperAttributes()
 		];
 
 		// Build the breadcrumb trail.
@@ -72,7 +73,11 @@ class Breadcrumbs implements Block
 		$classes = ['breadcrumbs' => 'breadcrumbs'];
 
 		// If there is a selected home prefix, define the class.
-		if ($this->attributes['homePrefix'] && $this->attributes['homePrefixType']) {
+		if (
+			$this->attributes['showTrailStart']
+			&& $this->attributes['homePrefix']
+			&& $this->attributes['homePrefixType']
+		) {
 			$classes['home'] = sprintf(
 				'has-home-%s-%s',
 				$this->attributes['homePrefixType'],

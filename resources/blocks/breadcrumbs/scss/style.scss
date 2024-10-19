@@ -33,8 +33,9 @@
 		text-indent: 0;
 	}
 
-	&__trail,
-	&__crumb {
+	// Doubling up on the selectors for higher specificity against themes.
+	& &__trail,
+	& &__crumb {
 		list-style: none;
 		margin: 0;
 		padding: 0;

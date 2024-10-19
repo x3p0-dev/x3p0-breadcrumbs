@@ -26,6 +26,10 @@ return array(
 				'type' => 'boolean',
 				'default' => false
 			),
+			'showTrailStart' => array(
+				'type' => 'boolean',
+				'default' => true
+			),
 			'showTrailEnd' => array(
 				'type' => 'boolean',
 				'default' => true

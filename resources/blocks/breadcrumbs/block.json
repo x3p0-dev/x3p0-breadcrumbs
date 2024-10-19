@@ -19,6 +19,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"showTrailStart": {
+			"type": "boolean",
+			"default": true
+		},
 		"showTrailEnd": {
 			"type": "boolean",
 			"default": true

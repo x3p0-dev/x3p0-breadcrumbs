@@ -27,7 +27,7 @@ import {
 /**
  * @description Creates a home icon control.
  */
-export default ({ homePrefix, showHomeLabel, setAttributes }) => {
+export default ({ homePrefix, showHomeLabel, showTrailStart, setAttributes }) => {
 
 	useEffect(() => {
 		if (! showHomeLabel && ! homePrefix) {
@@ -88,7 +88,7 @@ export default ({ homePrefix, showHomeLabel, setAttributes }) => {
 	);
 
 	// Returns the dropdown menu item.
-	return (
+	return ! showTrailStart ? '' : (
 		<Dropdown
 			className="x3p0-breadcrumbs-sep-dropdown"
 			contentClassName="x3p0-breadcrumbs-sep-popover"

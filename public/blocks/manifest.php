@@ -2,6 +2,7 @@
 // This file is generated. Do not modify it manually.
 return array(
 	'breadcrumbs' => array(
+		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
 		'version' => '20241018',
 		'name' => 'x3p0/breadcrumbs',

@@ -16,10 +16,6 @@
 /// `.breadcrumbs__crumb-label` is the inner `<span>` element.
 ///
 .breadcrumbs {
-	&__title {
-		font: inherit;
-	}
-
 	&,
 	&__trail,
 	&__crumb,

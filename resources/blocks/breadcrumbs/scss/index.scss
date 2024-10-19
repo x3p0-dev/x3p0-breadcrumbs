@@ -28,14 +28,18 @@
 	}
 
 	&__button-text {
+		display: flex;
 		width: 24px;
+		height: 24px;
 		text-align: center;
+		align-items: center;
+		justify-content: center;
+		font-family: monospace;
 	}
 }
 
 // Flip icons for RTL.
 :where([dir=rtl], .rtl) :where(
-	.x3p0-breadcrumbs-sep-picker__button svg,
 	.x3p0-breadcrumbs-sep-picker__button-text
 ) {
 	transform: scaleX(-1);

@@ -42,7 +42,7 @@ export default ({ separator, setAttributes }) => {
 				separatorType: sep.type
 			})}
 		>
-			{ 'image' === sep.type ? sep.icon : (
+			{ (
 				<span className="x3p0-breadcrumbs-sep-picker__button-text">
 					{ sep.icon }
 				</span>

@@ -21,6 +21,11 @@
 		"@wordpress/scripts": "^30.3.0"
 	},
 	"dependencies": {
+		"@wordpress/block-editor": "^14.5.0",
+		"@wordpress/components": "^28.10.0",
+		"@wordpress/element": "^6.10.0",
+		"@wordpress/hooks": "^4.10.0",
+		"@wordpress/i18n": "^5.10.0",
 		"@wordpress/icons": "^9.27.0",
 		"classnames": "^2.3.2"
 	}

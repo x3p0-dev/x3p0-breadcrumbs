@@ -1,14 +1,8 @@
 # X3P0: Breadcrumbs
 
-A breadcrumbs block for WordPress.
+The X3P0: Breadcrumbs plugin is a breadcrumbs plugin reimagined for a modern, block-based WordPress.
 
-![Screenshot of the Wordpress site editor with the Breadcrumbs block highlighted.](assets/screenshot-1.jpg)
-
-## Breadcrumbs Reimagined for a Modern, Block-Based WordPress
-
-In 2009, I [launched the first version of this script](https://justintadlock.com/archives/2009/04/05/breadcrumb-trail-wordpress-plugin) as a WordPress plugin. And I've continually refined it ever since.
-
-Today, this plugin exists as a WordPress block, all built upon a solid OOP foundation that's more powerful than ever. The block is the easy-to-use version that regular, everyday WordPress users can simply plug into their site and go about their business. But the stuff under the hood gives developers an insane amount of control to customize breadcrumbs to suit their needs.
+In 2009, I [launched the first version of this script](https://justintadlock.com/archives/2009/04/05/breadcrumb-trail-wordpress-plugin) as a WordPress plugin. And I've continually refined it ever since. Today, this plugin exists as a WordPress block, all built upon a solid OOP foundation that's more powerful than ever. The block is the easy-to-use version that regular, everyday WordPress users can simply plug into their site and go about their business. But the stuff under the hood gives developers an insane amount of control to customize breadcrumbs to suit their needs.
 
 ## Usage
 
@@ -24,11 +18,21 @@ If you're a block theme author, you can include support for the Breadcrumbs bloc
 <!-- wp:x3p0/breadcrumbs /-->
 ```
 
-That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block. Here is an example that changes the `separator` attribute to show an arrow:
+That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block (see [`block.json`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/resources/blocks/breadcrumbs/block.json) for all attributes). Here is an example that changes the `separator` attribute to show an arrow:
 
 ```html
 <!-- wp:x3p0/breadcrumbs {"separator":"arrow"} /-->
 ```
+
+### Classic Themes
+
+If you're using or building a classic theme, you can wrap the Breadcrumbs block markup inside the WordPress `do_blocks()` function to parse the markup with PHP. Place the following code in your `header.php` template on in another template where you want to output the breadcrumbs:
+
+```php
+<?php echo do_blocks('<!-- wp:x3p0/breadcrumbs /-->'); ?>
+```
+
+Alternatively, feel free to fully customize output using PHP following the instructions under the Developers section.
 
 ## Developers
 
@@ -66,78 +70,37 @@ use X3P0\Breadcrumbs\Markup\Html;
 (new Html(new Builder(new Environment())))->render();
 ```
 
-### Markup Implementations
+### Environment Configuration
 
-The plugin comes with three classes, which are implementations of the `X3P0\Breadcrumbs\Contracts\Markup` interface, for rending the final HTML of the breadcrumb trail.
+Normally, you wouldn't need to configure the environment (the plugin covers most use cases). But if you need to add custom query, assembler, or crumb implementations, you can pass these as arrays as long as the values of those values are implementations of their given contracts:
 
-- **`X3P0\Breadcrumbs\Markup\Html`:** Renders a plain HTML list of breadcrumbs.
-- **`X3P0\Breadcrumbs\Markup\Microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
-- **`X3P0\Breadcrumbs\Markup\Rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
+- [`X3P0\Breadcrumbs\Contracts\Query`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Query.php): Defines a query class for executing based on the current WordPress query.
+- [`X3P0\Breadcrumbs\Contracts\Assembler`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Assembler.php): Helper classes used for determining which breadcrumbs to show based on the query.
+- [`X3P0\Breadcrumbs\Contracts\Crumb`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/src/Contracts/Crumb.php): A class for handling the output of an individual breadcrumb item.
 
-Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
+An example of passing custom queries, builders, and crumbs:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
-use X3P0\Breadcrumbs\Markup\Rdfa;
 
-$environment = new Environment();
-$builder     = new Builder($environment);
-$markup      = new Rdfa($builder);
-
-echo $markup->render();
+$environment = new Environment(
+	[ 'example-query'   => ExampleQuery::class ],
+	[ 'example-builder' => ExampleBuilder::class ],
+	[ 'example-crumb'   => ExampleCrumb::class ]
+)
 ```
 
-You are, of course, free to build your own implementation too. Any class that implements the `X3P0\Breadcrumbs\Contracts\Markup` interface will work.
-
-### Markup Options
-
-The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations of the `Markup` interface, accept two parameters:
-
-- **`builder`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Builder` interface.
-- **`options`:** A configurable array of options for customizing how the markup is generated:
-	- **`show_on_front`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
-	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the home page). Defaults to `true`.
-	- **`show_last_item`:** Whether to display the last breadcrumb item (usually the current page). Defaults to `true`.
-	- **`before`:** Custom HTML to add before the HTML output. Defaults to an empty string.
-	- **`after`:** Custom HTML to add after the HTML output. Defaults to an empty string.
-	- **`container_tag`:** The HTML tag used for the wrapping container. Defaults to `nav`. If this is set to an empty string, the container will not be output.
-	- **`title_tag`:** The HTML tag used for the breadcrumbs heading element. Defaults to `h2`. If this is set to an empty string, no heading will be output.
-	- **`list_tag`:** The HTML tag used for the breadcrumbs list. Defaults to `ol`.
-	- **`item_tag`:** The HTML tag used to wrap each breadcrumb. Defaults to `li`.
-	- **`container_class`:** The class used for the container element. Defaults to `breadcrumbs`.
-	- **`title_class`:** The class used for the title/heading element. Defaults to `breadcrumbs__title`.
-	- **`list_class`:** The class used for the list element. Defaults to `breadcrumbs__trail`.
-	- **`item_class`:** The class used for each breadcrumb item. Defaults to `breadcrumbs__crumb`.
-	- **`item_content_class`:** The class used for the `<a>` or `<span>` element wrapping the breadcrumb inner content. Defaults to `breadcrumbs__crumb-content`.
-	- **`item_label_class`:** The class used for the inner `<span>` element that wraps the breadcrumb label. Defaults to `breadcrumbs__crumb-label`.
-
-Here is an example of using Schema.org microdata (via the `Microdata` class) and configuring the container and title output:
+If you're a third-party plugin developer, you can also hook into the existing environment and customize it via the `x3p0/breadcrumbs/environment` hook:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
-use X3P0\Breadcrumbs\Environment\Environment;
-use X3P0\Breadcrumbs\Markup\Microdata;
+use X3P0\Breadcrumbs\Contracts\Environment;
 
-$markup_options = [
-	'container_tag' => 'div',
-	'title_tag'     => ''    // Will remove title.
-];
-
-$environment = new Environment();
-$builder     = new Builder($environment);
-$markup      = new Microdata($builder, $markup_options);
-
-echo $markup->render();
+do_action('x3p0/breadcrumbs/environment', function(Environment $environment) {
+	$environment->getCrumbs()->add('example-crumb', ExampleCrumb::class);
+});
 ```
 
-These options are also configurable via the `x3p0/breadcrumbs/markup/config` filter hook:
-
-```php
-add_filter('x3p0/breadcrumbs/markup/config', fn(array $options) => $options);
-```
-
-### Builder Options
+### Builder Configuration
 
 The `Builder` class accepts two parameters:
 
@@ -145,7 +108,6 @@ The `Builder` class accepts two parameters:
 - **`options`:** A configurable array of options for customizing how the breadcrumbs are generated:
 	- **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
 	- **`labels`:** An array of internationalized crumb labels that can be customized:
-		- **`title`:** `Browse:`
 		- **`home`:** `Home`
 		- **`error_404`:** `404 Not Found`
 		- **`archives`:** `Archives`
@@ -170,7 +132,9 @@ use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
 $builder_options = [
-	'post_rewrite_tags' => false
+	'map_rewrite_tags' => [
+		'post' => false,
+	],
 	'post_taxonomy' => [
 		'post' => 'category'
 	]
@@ -183,11 +147,89 @@ $markup      = new Html($builder);
 echo $markup->render();
 ```
 
-These options are also configurable via the `x3p0/breadcrumbs/config` filter hook:
+These options are also configurable via the `x3p0/breadcrumbs/builder/config` filter hook:
 
 ```php
-add_filter('x3p0/breadcrumbs/config', fn(array $options) => $options);
+add_filter('x3p0/breadcrumbs/builder/config', fn(array $options) => $options);
 ```
+
+### Builder Filter
+
+If you're a third-party plugin developer, you can short-circuit the builder to run custom queries before the plugin does its own thing. In this case, your plugin should either return the builder implementation or the original value (default is `null`):
+
+```php
+use X3P0\Breadcrumbs\Contracts\Builder;
+
+add_filter('x3p0/breadcrumbs/builder/pre/build', function($pre, Builder $builder) {
+	if (is_your_custom_conditional()) {
+		$builder->query('custom-query-name');
+		return $builder;
+	}
+
+	return $pre;
+}, 10, 2);
+```
+
+### Markup Configuration
+
+The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations of the `Markup` interface, accept two parameters:
+
+- **`builder`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Builder` interface.
+- **`options`:** A configurable array of options for customizing how the markup is generated:
+	- **`show_on_front`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
+	- **`show_first_item`:** Whether to display the first breadcrumb item (usually the home page). Defaults to `true`.
+	- **`show_last_item`:** Whether to display the last breadcrumb item (usually the current page). Defaults to `true`.
+	- **`before`:** Custom HTML to add before the HTML output. Defaults to an empty string.
+	- **`after`:** Custom HTML to add after the HTML output. Defaults to an empty string.
+        - **`container_attr`:** An array of HTML attributes and values to apply to the container.
+
+Here is an example of using Schema.org microdata (via the `Microdata` class) and configuring the options to remove the first item:
+
+```php
+use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Environment\Environment;
+use X3P0\Breadcrumbs\Markup\Microdata;
+
+$markup_options = [
+	'show_first_item' => false
+];
+
+$environment = new Environment();
+$builder     = new Builder($environment);
+$markup      = new Microdata($builder, $markup_options);
+
+echo $markup->render();
+```
+
+These options are also configurable via the `x3p0/breadcrumbs/markup/config` filter hook:
+
+```php
+add_filter('x3p0/breadcrumbs/markup/config', fn(array $options) => $options);
+```
+
+### Markup Implementations
+
+The plugin comes with three classes, which are implementations of the `X3P0\Breadcrumbs\Contracts\Markup` interface, for rending the final HTML of the breadcrumb trail.
+
+- **`X3P0\Breadcrumbs\Markup\Html`:** Renders a plain HTML list of breadcrumbs.
+- **`X3P0\Breadcrumbs\Markup\Microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
+- **`X3P0\Breadcrumbs\Markup\Rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
+
+Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
+
+```php
+use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Environment\Environment;
+use X3P0\Breadcrumbs\Markup\Rdfa;
+
+$environment = new Environment();
+$builder     = new Builder($environment);
+$markup      = new Rdfa($builder);
+
+echo $markup->render();
+```
+
+You are, of course, free to build your own implementation too. Any class that implements the `X3P0\Breadcrumbs\Contracts\Markup` interface will work.
 
 ## License
 

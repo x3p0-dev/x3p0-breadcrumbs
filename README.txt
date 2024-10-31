@@ -48,4 +48,4 @@ Feel free to open a ticket on the plugin's [GitHub repository](https://github.co
 
 == Changelog ==
 
-Please see the `changelog.md` file included with the plugin file.  Or, you can view the [online change log](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/CHANGELOG.md).
+Please see the `CHANGELOG.md` file included with the plugin file.  Or, you can view the [online changelog](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/CHANGELOG.md).

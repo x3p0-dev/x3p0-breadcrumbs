@@ -66,6 +66,6 @@ class PostType extends Assembler
 		}
 
 		// Add post type crumb.
-		$this->builder->addCrumb('post-type', [ 'post_type' => $type ]);
+		$this->builder->addCrumb('post-type', [ 'type' => $type ]);
 	}
 }

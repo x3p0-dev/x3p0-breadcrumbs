@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2024-10-31
+
+### Changed
+
+- The `Assembler\PostType` and `Crumb\PostType` classes both now have a `$type` property that can be set when initializing the classes. Previously, these were mismatched, and one was named `$post_type`.
+
+### Fixed
+
+- A call to the `Crumb\PostType` class used the wrong parameter name of `$post_type` instead of `$type`.
+
 ## [2.0.0] - 2024-10-21
 
 ### New

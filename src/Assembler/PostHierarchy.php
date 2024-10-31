@@ -84,7 +84,7 @@ class PostHierarchy extends Assembler
 
 		// Fall back to the post type crumb if not getting from path.
 		if (! $done_post_type && $type->has_archive) {
-			$this->builder->assemble('post-type', [ 'post_type' => $type ]);
+			$this->builder->assemble('post-type', [ 'type' => $type ]);
 		}
 
 		// Map the rewrite tags if there's a `%` in the slug.

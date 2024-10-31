@@ -6,7 +6,7 @@ Tags: breadcrumbs, navigation, menu
 Requires at least: 6.6
 Tested up to: 6.7
 Requires PHP: 8.0
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,4 +48,4 @@ Feel free to open a ticket on the plugin's [GitHub repository](https://github.co
 
 == Changelog ==
 
-Please see the `changelog.md` file included with the plugin file.  Or, you can view the [online change log](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/CHANGELOG.md).
+Please see the `CHANGELOG.md` file included with the plugin file.  Or, you can view the [online changelog](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/CHANGELOG.md).

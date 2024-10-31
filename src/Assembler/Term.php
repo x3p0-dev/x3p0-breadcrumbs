@@ -67,7 +67,7 @@ class Term extends Assembler
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
 			$this->builder->assemble('post-type', [
-				'post_type' => get_post_type_object(
+				'type' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
 			]);

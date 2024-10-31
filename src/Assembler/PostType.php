@@ -27,7 +27,7 @@ class PostType extends Assembler
 	 */
 	public function __construct(
 		protected Builder $builder,
-		protected ?WP_Post_Type $post_type = null
+		protected ?WP_Post_Type $type = null
 	) {
 		parent::__construct($this->builder);
 	}
@@ -39,12 +39,12 @@ class PostType extends Assembler
 	 */
 	public function assemble(): void
 	{
-		if (! $type = $this->post_type) {
+		if (! $this->type) {
 			return;
 		}
 
 		// If this the post type is `post`, add the posts page and bail.
-		if ('post' === $type->name) {
+		if ('post' === $this->type->name) {
 			$show_on_front = get_option('show_on_front');
 			$post_id       = get_option('page_for_posts');
 
@@ -66,6 +66,6 @@ class PostType extends Assembler
 		}
 
 		// Add post type crumb.
-		$this->builder->addCrumb('post-type', [ 'type' => $type ]);
+		$this->builder->addCrumb('post-type', [ 'type' => $this->type ]);
 	}
 }

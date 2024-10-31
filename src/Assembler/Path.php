@@ -75,7 +75,7 @@ class Path extends Assembler
 			// by post type and break out of the loop.
 			} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
 				$this->builder->assemble('post-type', [
-					'post_type' => $types[0]
+					'type' => $types[0]
 				]);
 
 				break;

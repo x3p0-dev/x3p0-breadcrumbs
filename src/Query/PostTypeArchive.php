@@ -64,7 +64,7 @@ class PostTypeArchive extends Query
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->builder->addCrumb('post-type', [ 'post_type' => $type ]);
+			$this->builder->addCrumb('post-type', [ 'type' => $type ]);
 		}
 
 		// If viewing a post type search, add the search crumb. This

@@ -40,6 +40,20 @@ class Register implements Bootable
 	 */
 	public function register(): void
 	{
+		// WordPress 6.8.
+		if (
+			function_exists('wp_register_block_types_from_metadata_collection')
+			&& file_exists("{$this->path}/manifest.php")
+		) {
+			wp_register_block_types_from_metadata_collection(
+				$this->path,
+				"{$this->path}/manifest.php"
+			);
+
+			return;
+		}
+
+		// WordPress 6.7.
 		if (
 			function_exists('wp_register_block_metadata_collection')
 			&& file_exists("{$this->path}/manifest.php")

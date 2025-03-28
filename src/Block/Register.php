@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use DirectoryIterator;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
 class Register implements Bootable

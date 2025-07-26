@@ -38,8 +38,13 @@ class PostHierarchy extends Assembler
 	 */
 	public function assemble(): void
 	{
-		// Get the post type.
-		$type = get_post_type_object(get_post_type($this->post->ID));
+		// Get the post type. If there isn't one, bail early. This can
+		// happen when a post has a parent with a post type that is no
+		// longer registered. For example, an attachment that was
+		// uploaded to a post with a type, such as `product`.
+		if (! $type = get_post_type_object(get_post_type($this->post->ID))) {
+			return;
+		};
 
 		// If this is the 'post' post type, get the rewrite front items,
 		// map the rewrite tags, and bail early.

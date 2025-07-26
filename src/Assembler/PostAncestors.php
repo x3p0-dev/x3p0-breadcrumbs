@@ -51,9 +51,19 @@ class PostAncestors extends Assembler
 			}
 
 			// Get the parent post.
-			$post = get_post($post_id);
+			$parent = get_post($post_id);
 
-			// Add the formatted post item to the array of parents.
+			// Don't add the post unless the post type still exists.
+			// This can happen when a post has a parent with a post
+			// type that is no longer registered. For example, an
+			// attachment that was uploaded to a post with a type,
+			// such as `product`.
+			if (! post_type_exists($parent->post_type)) {
+				break;
+			}
+
+			// Add the post item to the array of parents.
+			$post      = $parent;
 			$parents[] = $post;
 
 			// If there's no longer a post parent, break out of the loop.

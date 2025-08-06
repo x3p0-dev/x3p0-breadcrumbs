@@ -101,10 +101,16 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function containerAttr(): string
 	{
-		$attrs    = array_keys($this->getOption('container_attr'));
-		$values   = array_values($this->getOption('container_attr'));
-		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
+		$attrs = '';
 
-		return implode(' ', array_map($callback, $attrs, $values));
+		foreach ($this->getOption('container_attr') as $attr => $value) {
+			$attrs .= sprintf(' %s="%s"', esc_attr($attr), esc_attr($value));
+		}
+
+		// Return the formatted attributes with interactivity API
+		// support for client-side navigation by defining a region. We
+		// are also adding a reference to a fictional store here to make
+		// this work.
+		return $attrs . ' data-wp-interactive="x3p0/breadcrumbs" data-wp-router-region';
 	}
 }

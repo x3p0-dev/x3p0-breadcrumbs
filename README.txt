@@ -4,9 +4,9 @@ Contributors: greenshady
 Donate link: http://a.co/02ggsr2
 Tags: breadcrumbs, navigation, menu
 Requires at least: 6.6
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

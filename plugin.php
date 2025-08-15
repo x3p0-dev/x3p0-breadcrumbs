@@ -4,7 +4,7 @@
  * Plugin Name:       X3P0: Breadcrumbs
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-breadcrumbs
  * Description:       A breadcrumbs block for WordPress.
- * Version:           2.0.1
+ * Version:           2.1.0
  * Requires at least: 6.6
  * Requires PHP:      8.0
  * Author:            Justin Tadlock

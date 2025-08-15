@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-08-15
+
+### Added
+
+- New support for the WordPress `wp_register_block_types_from_metadata_collection()` function, which simplifies block registration in WP 6.8+. Currently, 6.6 and 6.7 registration methods are supported but will likely be removed in the next version.
+
+### Changed
+
+- Removed an unnecessary import of the `DirectoryIterator` class.
+
+### Fixed
+
+- Corrected a fatal error in rare circumstances where posts have ancestors of a post type that is no longer registered (e.g., an attachment uploaded to a product). The code now checks that a post type exists before attempting to grab a post object.
+- The block now supports interactive regions, which correctly adds the page 2, 3, and so on crumbs when a user has enhanced pagination (client-side navigation) enabled for the Query Loop block. Note that this only works if the Breadcrumbs block already appear on the initial page.
+
 ## [2.0.1] - 2024-10-31
 
 ### Changed

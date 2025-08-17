@@ -80,11 +80,12 @@ class Rdfa extends Html
 
 		// Build the list item.
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" property="itemListElement" typeof="ListItem">
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" property="itemListElement" typeof="ListItem"%s>
 				%s
 				<meta property="position" content="%s"/>
 			</li>',
 			esc_attr($crumb->getType()),
+			$is_last && $show_last ? ' aria-current="page"' : '',
 			$item,
 			$position
 		);

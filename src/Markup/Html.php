@@ -80,7 +80,8 @@ class Html extends Markup
 
 		// Build the list item.
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s">%s</li>',
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
+			$is_last && $show_last ? ' aria-current="page"' : '',
 			esc_attr($crumb->getType()),
 			$item
 		);

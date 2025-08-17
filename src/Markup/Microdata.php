@@ -80,11 +80,12 @@ class Microdata extends Html
 
 		// Build the list item.
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
 				%s
 				<meta itemprop="position" content="%s"/>
 			</li>',
 			esc_attr($crumb->getType()),
+			$is_last && $show_last ? ' aria-current="page"' : '',
 			$item,
 			$position
 		);

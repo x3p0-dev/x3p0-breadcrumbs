@@ -4,7 +4,7 @@ return array(
 	'breadcrumbs' => array(
 		'$schema' => 'https://schemas.wp.org/trunk/block.json',
 		'apiVersion' => 3,
-		'version' => '20241018',
+		'version' => '20250908',
 		'name' => 'x3p0/breadcrumbs',
 		'title' => 'Breadcrumbs',
 		'category' => 'widgets',
@@ -70,6 +70,11 @@ return array(
 					'color' => true
 				)
 			),
+			'__experimentalStyle' => array(
+				'spacing' => array(
+					'blockGap' => 'var(--wp--custom--x-3-p-0-breadcrumbs--gap, var(--wp--preset--spacing--20, 0.5rem))'
+				)
+			),
 			'color' => array(
 				'link' => true,
 				'gradients' => true,
@@ -79,7 +84,23 @@ return array(
 					'link' => true
 				)
 			),
+			'layout' => array(
+				'allowCustomContentAndWideSize' => false,
+				'allowEditing' => true,
+				'allowInheriting' => false,
+				'allowJustification' => false,
+				'allowOrientation' => false,
+				'allowSizingOnChildren' => false,
+				'allowSwitching' => false,
+				'allowVerticalAlignment' => false,
+				'default' => array(
+					'type' => 'flex',
+					'flexWrap' => 'wrap',
+					'orientation' => 'horizontal'
+				)
+			),
 			'spacing' => array(
+				'blockGap' => true,
 				'margin' => true,
 				'padding' => true,
 				'__experimentalDefaultControls' => array(

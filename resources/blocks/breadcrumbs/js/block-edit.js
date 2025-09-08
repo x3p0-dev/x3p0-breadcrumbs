@@ -18,7 +18,8 @@ import {
 	BlockControls,
 	InspectorControls,
 	JustifyContentControl,
-	useBlockProps
+	useBlockProps,
+	useInnerBlocksProps
 } from '@wordpress/block-editor';
 
 // Third-party dependencies.
@@ -197,6 +198,9 @@ export default ({
 		})
 	});
 
+	// Need inner block props for layout styles to work properly in the admin.
+	const innerBlockProps = useInnerBlocksProps(blockProps);
+
 	// Build an array of faux breadcrumb items to show.
 	let crumbs = [
 		{
@@ -260,7 +264,7 @@ export default ({
 		<>
 			{ toolbarControls }
 			{ settingsControls }
-			<nav { ...blockProps }>
+			<nav { ...innerBlockProps }>
 				{ trail }
 			</nav>
 		</>

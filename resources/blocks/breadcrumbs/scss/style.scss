@@ -20,12 +20,19 @@
 	&__crumb,
 	&__crumb-content {
 		// Set the gap via `settings.custom.x3p0Breadcrumbs.gap`.
-		gap: var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem);
 		box-sizing: border-box;
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
 		text-indent: 0;
+		justify-content: left;
+	}
+
+	&__trail,
+	&__crumb,
+	&__crumb-content {
+		display: inherit;
+		flex-wrap: inherit;
+		align-items: inherit;
+		justify-content: inherit;
+		gap: inherit;
 	}
 
 	// Doubling up on the selectors for higher specificity against themes.

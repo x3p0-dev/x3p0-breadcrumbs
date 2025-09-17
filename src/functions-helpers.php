@@ -14,19 +14,17 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 /**
- * Stores the single instance of the plugin in the static `$plugin` variable.
- * Devs can access any class/component by passing in its reference via the
- * `$abstract` parameter (useful for accessing hooks within classes).
- *
- * @return mixed|Plugin
+ * Stores the single instance of the app in the static `$app` variable. Devs
+ * can access any concrete implementation by passing in a reference to its
+ * abstract identifier via `plugin()->get($abstract)`.
  */
-function plugin(string $abstract = ''): mixed
+function plugin(): App
 {
-	static $plugin;
+	static $app;
 
-	if (! $plugin instanceof Plugin) {
-		do_action('x3p0/breadcrumbs/init', $plugin = new Plugin());
+	if (! $app instanceof App) {
+		do_action('x3p0/breadcrumbs/init', $app = new App());
 	}
 
-	return '' === $abstract ? $plugin : $plugin->get($abstract);
+	return $app;
 }

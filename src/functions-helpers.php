@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 /**
- * Stores the single instance of the app in the static `$app` variable. Devs
- * can access any concrete implementation by passing in a reference to its
+ * Stores the single instance of the plugin in the static `$plugin` variable.
+ * Devs can access any concrete implementation by passing in a reference to its
  * abstract identifier via `plugin()->get($abstract)`.
  */
 function plugin(): App
 {
-	static $app;
+	static $plugin;
 
-	if (! $app instanceof App) {
-		do_action('x3p0/breadcrumbs/init', $app = new App());
+	if (! $plugin instanceof App) {
+		do_action('x3p0/breadcrumbs/init', $plugin = new App());
 	}
 
-	return $app;
+	return $plugin;
 }

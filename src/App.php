@@ -17,9 +17,8 @@ use X3P0\Breadcrumbs\Block\Register;
 use X3P0\Breadcrumbs\Contracts\{Bootable, Container};
 
 /**
- * The App class is a simple container used to store and reference the
- * various plugin components. It doesn't support automatic dependency injection
- * (manual only) because it would be overkill for this project.
+ * The App class is a simple container used to store and reference the various
+ * plugin components. It's also used to register the default bindings.
  */
 class App implements Bootable, Container
 {

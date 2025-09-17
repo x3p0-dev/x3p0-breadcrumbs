@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts\{Bootable, Container};
  * various Plugin components. It doesn't support automatic dependency injection
  * (manual only) because it would be overkill for this project.
  */
-class Plugin implements Container
+class Plugin implements Bootable, Container
 {
 	/**
 	 * Stored definitions of single instances.

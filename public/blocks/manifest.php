@@ -72,7 +72,7 @@ return array(
 			),
 			'__experimentalStyle' => array(
 				'spacing' => array(
-					'blockGap' => 'var(--wp--custom--x-3-p-0-breadcrumbs--gap, var(--wp--preset--spacing--20, 0.5rem))'
+					'blockGap' => 'var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem)'
 				)
 			),
 			'color' => array(

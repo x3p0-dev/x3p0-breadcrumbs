@@ -27,4 +27,4 @@ Autoload::register();
 require_once 'src/functions-helpers.php';
 
 # Bootstrap the plugin.
-add_action('plugins_loaded', [Plugin::class, 'boot'], PHP_INT_MIN);
+add_action('plugins_loaded', fn() => plugin()->boot(), PHP_INT_MIN);

@@ -1,4 +1,4 @@
-=== X3P0: Breadcrumbs ===
+=== Breadcrumbs Block ===
 
 Contributors: greenshady
 Donate link: http://a.co/02ggsr2
@@ -24,7 +24,7 @@ For **block themes**, you can insert it into any template or template part via t
 
 For **classic themes**, you must manually add the PHP code to your theme to call the Breadcrumbs block like so:
 
- 	<?php echo do_blocks('<!-- wp:x3p0/breadcrumbs /-->'); ?>
+ 	<?= do_blocks('<!-- wp:x3p0/breadcrumbs /-->') ?>
 
 Alternatively, you can build out the breadcrumbs using the available PHP classes. See the plugin's [README](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/README.md) on GitHub for more details.
 

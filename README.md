@@ -1,5 +1,7 @@
 # X3P0: Breadcrumbs
 
+![Mostly decorative banner that displays a screenshot of the Breadcrumbs block in action.](/.wporg/banner-1544x500.png)
+
 The X3P0: Breadcrumbs plugin is a breadcrumbs plugin reimagined for a modern, block-based WordPress.
 
 In 2009, I [launched the first version of this script](https://justintadlock.com/archives/2009/04/05/breadcrumb-trail-wordpress-plugin) as a WordPress plugin. And I've continually refined it ever since. Today, this plugin exists as a WordPress block, all built upon a solid OOP foundation that's more powerful than ever. The block is the easy-to-use version that regular, everyday WordPress users can simply plug into their site and go about their business. But the stuff under the hood gives developers an insane amount of control to customize breadcrumbs to suit their needs.
@@ -29,7 +31,7 @@ That will output the block with the defaults. Of course, you can configure it by
 If you're using or building a classic theme, you can wrap the Breadcrumbs block markup inside the WordPress `do_blocks()` function to parse the markup with PHP. Place the following code in your `header.php` template on in another template where you want to output the breadcrumbs:
 
 ```php
-<?php echo do_blocks('<!-- wp:x3p0/breadcrumbs /-->'); ?>
+<?= do_blocks('<!-- wp:x3p0/breadcrumbs /-->') ?>
 ```
 
 Alternatively, feel free to fully customize output using PHP following the instructions under the Developers section.
@@ -67,7 +69,7 @@ use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
-(new Html(new Builder(new Environment())))->render();
+echo (new Html(new Builder(new Environment())))->render();
 ```
 
 ### Environment Configuration
@@ -106,7 +108,6 @@ The `Builder` class accepts two parameters:
 
 - **`environment`:** An implementation of the `X3P0\Breadcrumbs\Contracts\Environment` interface.
 - **`options`:** A configurable array of options for customizing how the breadcrumbs are generated:
-	- **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
 	- **`labels`:** An array of internationalized crumb labels that can be customized:
 		- **`home`:** `Home`
 		- **`error_404`:** `404 Not Found`
@@ -122,6 +123,7 @@ The `Builder` class accepts two parameters:
 		- **`archive_month`:** `%s`
 		- **`archive_year`:** `%s`
 	- **`map_rewrite_tags:`** An array of post types and whether to generate breadcrumbs based on the post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, if this is not set for a post type, it will be `false`. The array keys must be valid post type names (e.g., `post`, `book`), and the array values must be a boolean value. The `post` post type is `true` by default.
+	- **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
 	- **`post_taxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:

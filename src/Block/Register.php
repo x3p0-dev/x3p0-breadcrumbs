@@ -35,36 +35,12 @@ class Register implements Bootable
 	 * Registers the block with WordPress.
 	 *
 	 * @internal WordPress hook callback. Do not call directly.
-	 * @todo     Remove `function_exists()` with minimum WP 6.7 and 6.8 support.
 	 */
 	public function register(): void
 	{
-		// Bail if the manifest doesn't exist.
-		if (! file_exists("{$this->path}/manifest.php")) {
-			return;
-		}
-
-		// WordPress 6.8.
-		if (function_exists('wp_register_block_types_from_metadata_collection')) {
-			wp_register_block_types_from_metadata_collection(
-				$this->path,
-				"{$this->path}/manifest.php"
-			);
-			return;
-		}
-
-		// WordPress 6.7.
-		if (function_exists('wp_register_block_metadata_collection')) {
-			wp_register_block_metadata_collection(
-				$this->path,
-				"{$this->path}/manifest.php"
-			);
-		}
-
-		$manifest = include "{$this->path}/manifest.php";
-
-		foreach (array_keys($manifest) as $type) {
-			register_block_type("{$this->path}/{$type}");
-		}
+		wp_register_block_types_from_metadata_collection(
+			$this->path,
+			"{$this->path}/manifest.php"
+		);
 	}
 }

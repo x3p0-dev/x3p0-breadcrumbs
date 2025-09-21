@@ -42,5 +42,10 @@ class Register implements Bootable
 			$this->path,
 			"{$this->path}/manifest.php"
 		);
+
+		wp_set_script_translations(
+			generate_block_asset_handle('x3p0/breadcrumbs', 'editorScript'),
+			'x3p0-breadcrumbs'
+		);
 	}
 }

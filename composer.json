@@ -1,6 +1,6 @@
 {
 	"name": "x3p0-dev/x3p0-breadcrumbs",
-	"type": "wordpress-theme",
+	"type": "wordpress-plugin",
 	"license": "GPL-3.0-or-later",
 	"scripts": {
 		"build": [

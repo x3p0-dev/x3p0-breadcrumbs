@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Builder;
 
+use TypeError;
 use X3P0\Breadcrumbs\Contracts;
 
 /**
@@ -58,8 +59,19 @@ class Builder implements Contracts\Builder
 		// A hook for short-circuiting the breadcrumbs output and
 		// running custom logic. Filters on this hook must return either
 		// an instance of the `Contracts\Builder` interface after
-		// running its own `make()` method or `null`.
+		// running its own `build()` method or `null`.
 		if ($builder = apply_filters('x3p0/breadcrumbs/builder/pre/build', null, $this)) {
+
+			// Ensures that we only get `Builder` implementations.
+			if (! is_subclass_of($builder, Contracts\Builder::class)) {
+				throw new TypeError(esc_html(sprintf(
+					// Translators: %1$s is a PHP class name, %2$s is the hook name.
+					__('Only %1$s classes can be returned when filtering %2$s', 'x3p0-ideas'),
+					Contracts\Builder::class,
+					'x3p0/breadcrumbs/builder/pre/build'
+				)));
+			}
+
 			return $builder;
 		}
 

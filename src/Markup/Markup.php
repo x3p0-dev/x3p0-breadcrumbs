@@ -111,6 +111,6 @@ abstract class Markup implements Contracts\Markup
 		// support for client-side navigation by defining a region. We
 		// are also adding a reference to a fictional store here to make
 		// this work.
-		return $attrs . ' data-wp-interactive="x3p0/breadcrumbs" data-wp-router-region';
+		return $attrs . ' data-wp-interactive="x3p0/breadcrumbs" data-wp-router-region="breadcrumbs"';
 	}
 }

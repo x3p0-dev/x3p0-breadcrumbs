@@ -184,26 +184,26 @@ class Builder implements Contracts\Builder
 	{
 		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 		return [
-			'home'                => __('Home',                                  'x3p0-breadcrumbs'),
-			'error_404'           => __('404 Not Found',                         'x3p0-breadcrumbs'),
-			'archives'            => __('Archives',                              'x3p0-breadcrumbs'),
+			'home'                => __('Home', 'x3p0-breadcrumbs'),
+			'error_404'           => __('404 Not Found', 'x3p0-breadcrumbs'),
+			'archives'            => __('Archives', 'x3p0-breadcrumbs'),
 			// Translators: %s is the search query.
-			'search'              => __('Search results for: %s',                'x3p0-breadcrumbs'),
+			'search'              => __('Search results for: %s', 'x3p0-breadcrumbs'),
 			// Translators: %s is the page number.
-			'paged'               => __('Page %s',                               'x3p0-breadcrumbs'),
+			'paged'               => __('Page %s', 'x3p0-breadcrumbs'),
 			// Translators: %s is the page number.
-			'paged_comments'      => __('Comment Page %s',                       'x3p0-breadcrumbs'),
+			'paged_comments'      => __('Comment Page %s', 'x3p0-breadcrumbs'),
 			// Translators: Minute archive title. %s is the minute time format.
-			'archive_minute'      => __('Minute %s',                             'x3p0-breadcrumbs'),
+			'archive_minute'      => __('Minute %s', 'x3p0-breadcrumbs'),
 			// Translators: Weekly archive title. %s is the week date format.
-			'archive_week'        => __('Week %s',                               'x3p0-breadcrumbs'),
+			'archive_week'        => __('Week %s', 'x3p0-breadcrumbs'),
 
 			// "%s" is replaced with the translated date/time format.
 			'archive_minute_hour' => '%s',
 			'archive_hour'        => '%s',
 			'archive_day'         => '%s',
 			'archive_month'       => '%s',
-			'archive_year'        => '%s',
+			'archive_year'        => '%s'
 		];
 		// phpcs:enable
 	}

@@ -9,6 +9,8 @@
  * Requires PHP:      8.0
  * Author:            Justin Tadlock
  * Author URI:        https://justintadlock.com
+ * License:           GPL-3.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       x3p0-breadcrumbs
  */
 

@@ -2,7 +2,7 @@
  * Utility functions.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2023, Justin Tadlock
+ * @copyright Copyright (c) 2009-2025, Justin Tadlock
  * @license   GPL-3.0-or-later
  */
 

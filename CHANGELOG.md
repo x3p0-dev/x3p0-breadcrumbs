@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2025-10-26
+
+### Added
+
+- `spacing.blockGap` support was added, which now lets theme authors and users control the spacing between breadcrumb items via the standard block gap/spacing design tools.
+  - Theme authors should switch to styling this via `styles.blocks.x3p0/breadcrumbs.spacing.blockGap`.
+  - The old `settings.x3p0/breadcrumbs.blockGap` configuration will still work.
+  - The fallback `blockGap` style for the block is `0.5rem`.
+- Horizontal flex `layout` support was added, primarily as a requirement for `blockGap` to work. This is not configurable, but it does use the WordPress layout implementation instead of custom CSS.
+
+### Fixed
+
+- Corrected handling of the option for showing breadcrumbs on the front page. Previously, they did not appear if enabled.
+- Editor scripts translations should now work. Previously, a call to `wp_set_script_translations()` was missing.
+- The `Container` interface previously incorrectly extended the `Bootable` interface.
+- Accessibility: The `aria-current` attribute is now applied to the last breadcrumb item.
+
+### Changed
+
+- The plugin now only supports WordPress 6.8. Any back-compat code for older versions has been removed.
+- Interactivity router region support moved to the `container_attr` array for `Markup` classes. These attributes are no longer forcefully injected and can be overwritten.
+- The `breadcrumbs` value is now applied to the `data-wp-router-region` attribute.
+- When filtering `x3p0/breadcrumbs/builder/pre/build` a type error will be thrown if a non-null value other than `X3P0\Breadcrumbs\Contracts\Builder` implementation is returned.
+
+### Removed
+
+- The `Plugin` class was removed and renamed to `App`. This should not affect old installations since third-party devs should have been using the `plugin()` helper function.
+- The `Trail` class has been removed, which was deprecated in version 2.0.0.
+
+
 ## [2.1.0] - 2025-08-15
 
 ### Added

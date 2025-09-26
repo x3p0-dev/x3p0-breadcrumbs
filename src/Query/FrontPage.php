@@ -22,12 +22,7 @@ class FrontPage extends Query
 	 */
 	public function query(): void
 	{
-		if (
-			$this->builder->getOption('show_on_front')
-			|| Helpers::isPagedView()
-		) {
-			$this->builder->assemble('home');
-			$this->builder->assemble('paged');
-		}
+		$this->builder->assemble('home');
+		$this->builder->assemble('paged');
 	}
 }

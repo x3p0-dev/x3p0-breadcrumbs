@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
  * Implements a markup object as an abstract class, providing base properties
@@ -75,6 +76,15 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function getCrumbs(): array
 	{
+		// Bail early if is front page and crumbs shouldn't be shown.
+		if (
+			is_front_page()
+			&& ! $this->getOption('show_on_front')
+			&& ! Helpers::isPagedView()
+		) {
+			return [];
+		}
+
 		$crumbs = $this->builder->build()->getCrumbs();
 
 		// Remove the first crumb item if it's not supposed to be shown.

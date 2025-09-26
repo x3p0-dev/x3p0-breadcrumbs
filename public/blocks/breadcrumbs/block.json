@@ -68,6 +68,7 @@
       }
     },
     "__experimentalStyle": {
+      "css": "&.is-layout-flex { gap: var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem); }",
       "spacing": {
         "blockGap": "var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem)"
       }

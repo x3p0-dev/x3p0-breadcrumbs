@@ -71,6 +71,7 @@ return array(
 				)
 			),
 			'__experimentalStyle' => array(
+				'css' => '&.is-layout-flex { gap: var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem); }',
 				'spacing' => array(
 					'blockGap' => 'var(--wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem)'
 				)

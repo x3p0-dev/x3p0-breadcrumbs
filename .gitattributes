@@ -54,4 +54,5 @@ package.json export-ignore
 phpstan.neon export-ignore
 webpack.config.js export-ignore
 *.map export-ignore
+*.zip export-ignore
 .DS_Store export-ignore

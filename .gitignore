@@ -5,4 +5,5 @@
 /phpcs.xml
 /.phpcs.xml
 *.map
+*.zip
 .DS_Store

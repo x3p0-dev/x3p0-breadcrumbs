@@ -7,12 +7,14 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
+import {SVG, G, Rect, Polygon} from "@wordpress/primitives";
+
 export default (
-	<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
-		<g><rect fill="none" height="24" width="24"/></g>
-		<g>
-			<polygon points="15.5,5 11,5 16,12 11,19 15.5,19 20.5,12"/>
-			<polygon points="8.5,5 0,5 0,12 0,19 8.5,19 13.5,12"/>
-		</g>
-	</svg>
+	<SVG xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+		<G><Rect fill="none" height="24" width="24"/></G>
+		<G>
+			<Polygon points="15.5,5 11,5 16,12 11,19 15.5,19 20.5,12"/>
+			<Polygon points="8.5,5 0,5 0,12 0,19 8.5,19 13.5,12"/>
+		</G>
+	</SVG>
 );

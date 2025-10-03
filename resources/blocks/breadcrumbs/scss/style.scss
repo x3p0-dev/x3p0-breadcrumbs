@@ -137,6 +137,10 @@
 		content: var(--breadcrumbs-sep, "\002F");
 		width: 1em;
 		text-align: center;
+		color: var(
+			--x3p0-breadcrumbs--color--separator,
+			var(--wp--custom--x-3-p-0-breadcrumbs--color--separator, currentColor)
+		);
 	}
 
 	&[class*=has-sep-mask-] &__crumb:where(:not(:first-child))::before {

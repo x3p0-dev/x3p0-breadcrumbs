@@ -69,18 +69,10 @@
 	// Home icon.
 	// ---------------------------------------------------------------------
 
-	&[class*=has-home-text-] &__crumb--home &__crumb-content {
+	&[class*=has-home-text-] &__crumb--home &__crumb-content::before {
+		// 🏠 default.
+		content: var( --breadcrumbs-home, "\1f3e0" );
 		display: inline-block;
-
-		&::before {
-			// 🏠 default.
-			content: var( --breadcrumbs-home, "\1f3e0" );
-			display: inline-block;
-		}
-	}
-
-	&[class*=has-home-text-] &__crumb--home &__crumb-label {
-		margin-inline-start: var( --wp--custom--x-3-p-0-breadcrumbs--gap, 0.5rem );
 	}
 
 	// Home icon.

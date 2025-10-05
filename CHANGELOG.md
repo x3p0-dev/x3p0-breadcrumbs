@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2025-10-05
+
+### Added
+
+- New separator color support for `theme.json` for the block. This can be set via `settings.custom.x3p0/breadcrumbs.color.separator`.
+
+### Fixed
+
+- When using the home icon option for the block, the spacing for it and the home label now inherit the `gap` (block spacing) setting, which was added in v.3.0.0.
+- The `Markup/Html` class correctly renders the HTML attributes on crumbs. Previously, the attributes were malformed.
+
 ## [3.0.0] - 2025-09-26
 
 ### Added

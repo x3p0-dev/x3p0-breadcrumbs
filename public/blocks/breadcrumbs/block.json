@@ -44,6 +44,12 @@
       "type": "string",
       "default": "rdfa"
     },
+    "postTaxonomy": {
+      "type": "object",
+      "default": {
+        "post": "category"
+      }
+    },
     "separator": {
       "type": "string",
       "default": "chevron"

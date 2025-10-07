@@ -23,6 +23,9 @@
 	"dependencies": {
 		"@wordpress/block-editor": "^14.5.0",
 		"@wordpress/components": "^28.10.0",
+		"@wordpress/compose": "^7.32.0",
+		"@wordpress/core-data": "^7.32.0",
+		"@wordpress/data": "^10.32.0",
 		"@wordpress/element": "^6.10.0",
 		"@wordpress/hooks": "^4.10.0",
 		"@wordpress/i18n": "^5.10.0",

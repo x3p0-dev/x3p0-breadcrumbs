@@ -10,6 +10,7 @@
 // Internal dependencies.
 import HomePrefixControl  from './control-home-prefix';
 import SeparatorControl from './control-separator';
+import PostTaxonomyPanel from './panel-post-taxonomy';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -50,7 +51,10 @@ const markupOptions = [
 
 // Exports the breadcrumbs block type edit function.
 export default ({
-	attributes: {
+	attributes,
+	setAttributes
+}) => {
+	const {
 		homePrefix,
 		homePrefixType,
 		justifyContent,
@@ -61,9 +65,8 @@ export default ({
 		showTrailEnd,
 		separator,
 		separatorType
-	},
-	setAttributes
-}) => {
+	} = attributes;
+
 	// =====================================================================
 	// Build the block toolbar controls.
 	// =====================================================================
@@ -168,6 +171,7 @@ export default ({
 			onChange={ ({ selectedItem }) => setAttributes({
 				markup: selectedItem.key
 			})}
+			__next40pxDefaultSize={true}
 		/>
 	);
 
@@ -181,6 +185,10 @@ export default ({
 				{ showTrailEndControl }
 				{ markupControl }
 			</PanelBody>
+			<PostTaxonomyPanel
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 		</InspectorControls>
 	);
 

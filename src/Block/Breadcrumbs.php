@@ -28,16 +28,22 @@ class Breadcrumbs implements Block
 	 * Sets the block attributes.
 	 */
 	public function __construct(protected array $attributes)
-	{}
+	{
+		$this->attributes = wp_parse_args($this->attributes, [
+			'postTaxonomy' => [ 'post' => 'category' ]
+		]);
+	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function render(): string
 	{
+		$post_taxonomy = $this->attributes['postTaxonomy'] ?? [];
+
 		$builder_options = [
-			'post_taxonomy'    => [ 'post' => 'category' ],
-			'map_rewrite_tags' => [ 'post' => false ]
+			'post_taxonomy'    => $post_taxonomy,
+			'map_rewrite_tags' => [ 'post' => ! isset($post_taxonomy['post']) ]
 		];
 
 		$markup_options = [

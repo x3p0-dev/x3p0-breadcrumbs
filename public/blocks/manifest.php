@@ -47,6 +47,12 @@ return array(
 				'type' => 'string',
 				'default' => 'rdfa'
 			),
+			'postTaxonomy' => array(
+				'type' => 'object',
+				'default' => array(
+					'post' => 'category'
+				)
+			),
 			'separator' => array(
 				'type' => 'string',
 				'default' => 'chevron'

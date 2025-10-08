@@ -1,7 +1,7 @@
 <?php
 
 /**
- * REST API support class.
+ * REST API registration.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,13 +11,15 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Support;
+namespace X3P0\Breadcrumbs\Rest;
 
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
-class Rest implements Bootable
+/**
+ * Registers fields with the REST API needed for the block in the editor.
+ */
+class Register implements Bootable
 {
-
 	/**
 	 * @inheritDoc
 	 */

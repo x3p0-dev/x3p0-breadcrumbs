@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Block\Register;
 use X3P0\Breadcrumbs\Contracts\{Bootable, Container};
 
 /**
@@ -77,9 +76,9 @@ class App implements Bootable, Container
 	{
 		$this->instance(
 			'block.register',
-			new Register(__DIR__ . '/../public/blocks')
+			new Block\Register(__DIR__ . '/../public/blocks')
 		);
 
-		$this->instance('support.rest', new Support\Rest());
+		$this->instance('support.rest', new Rest\Register());
 	}
 }

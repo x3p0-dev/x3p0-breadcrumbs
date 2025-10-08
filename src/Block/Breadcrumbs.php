@@ -42,7 +42,8 @@ class Breadcrumbs implements Block
 	{
 		$builder_options = [
 			'post_taxonomy'    => $this->attributes['postTaxonomy'] ?? [],
-			'map_rewrite_tags' => $this->attributes['mapRewriteTags'] ?? []
+			'map_rewrite_tags' => $this->attributes['mapRewriteTags'] ?? [],
+			'labels'           => $this->attributes['labels'] ?? []
 		];
 
 		$markup_options = [

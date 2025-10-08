@@ -33,32 +33,37 @@ class Register implements Bootable
 	 */
 	public function register(): void
 	{
-		register_rest_field(
-			'type',
-			'x3p0-breadcrumbs/rewrite',
-			[
-				'get_callback' => function (array $data) {
-					if ('post' === $data['slug']) {
-						return [
-							'slug' => get_option('permalink_structure')
-						];
-					}
-
-					// Get the post type object.
-					$type = get_post_type_object($data['slug']);
-
-					// Return the rewrite property if it exists
-					return $type->rewrite && is_array($type->rewrite)
-						? $type->rewrite
-						: null;
-				},
-				'schema' => [
-					'description' => __('Post type rewrite configuration.', 'x3p0-breadcrumbs'),
-					'type'        => [ 'object', 'null' ],
-					'context'     => [ 'view', 'edit', 'embed' ],
-					'readonly'    => true
-				]
+		register_rest_field('type', 'x3p0-breadcrumbs/rewrite', [
+			'get_callback' => [$this, 'getTypeRewriteField'],
+			'schema' => [
+				'description' => __('Post type rewrite configuration.', 'x3p0-breadcrumbs'),
+				'type'        => [ 'object', 'null' ],
+				'context'     => [ 'view', 'edit', 'embed' ],
+				'readonly'    => true
 			]
-		);
+		]);
+	}
+
+	/**
+	 * Returns rewrite data for `GET` responses. The `$data['slug']`
+	 * property is expected to be a post type slug.
+	 */
+	public function getTypeRewriteField(array $data): ?array
+	{
+		// The WordPress `post` post type's rewrite rules are defined in
+		// the database and not as part of the post type registration.
+		if ('post' === $data['slug']) {
+			return [
+				'slug' => get_option('permalink_structure')
+			];
+		}
+
+		// Get the post type object.
+		$type = get_post_type_object($data['slug']);
+
+		// Return the rewrite property if it is an array.
+		return $type->rewrite && is_array($type->rewrite)
+			? $type->rewrite
+			: null;
 	}
 }

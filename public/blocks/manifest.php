@@ -43,6 +43,12 @@ return array(
 				'type' => 'string',
 				'default' => ''
 			),
+			'labels' => array(
+				'type' => 'object',
+				'default' => array(
+					
+				)
+			),
 			'mapRewriteTags' => array(
 				'type' => 'object',
 				'default' => array(

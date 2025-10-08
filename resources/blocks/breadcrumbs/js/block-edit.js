@@ -10,6 +10,7 @@
 // Internal dependencies.
 import HomePrefixControl  from './control-home-prefix';
 import SeparatorControl from './control-separator';
+import LabelsPanel from './panel-labels';
 import PostTaxonomyPanel from './panel-post-taxonomy';
 import RewriteTagsPanel from './panel-rewrite-tags';
 
@@ -59,6 +60,7 @@ export default ({
 		homePrefix,
 		homePrefixType,
 		justifyContent,
+		labels,
 		markup,
 		showHomeLabel,
 		showOnHomepage,
@@ -186,6 +188,10 @@ export default ({
 				{ showTrailEndControl }
 				{ markupControl }
 			</PanelBody>
+			<LabelsPanel
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 			<RewriteTagsPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }
@@ -219,7 +225,7 @@ export default ({
 	let crumbs = [
 		{
 			type: 'home',
-			label: __('Home', 'x3p0-breadcrumbs'),
+			label: labels.home || __('Home', 'x3p0-breadcrumbs'),
 			link: true
 		},
 		{

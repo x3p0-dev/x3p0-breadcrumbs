@@ -40,6 +40,10 @@
       "type": "string",
       "default": ""
     },
+    "labels": {
+      "type": "object",
+      "default": {}
+    },
     "mapRewriteTags": {
       "type": "object",
       "default": {

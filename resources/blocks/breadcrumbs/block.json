@@ -42,9 +42,7 @@
 		},
 		"mapRewriteTags": {
 			"type": "object",
-			"default": {
-				"post": false
-			}
+			"default": {}
 		},
 		"markup": {
 			"type": "string",
@@ -52,9 +50,7 @@
 		},
 		"postTaxonomy": {
 			"type": "object",
-			"default": {
-				"post": "category"
-			}
+			"default": {}
 		},
 		"separator": {
 			"type": "string",

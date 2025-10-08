@@ -52,7 +52,7 @@ return array(
 			'mapRewriteTags' => array(
 				'type' => 'object',
 				'default' => array(
-					'post' => false
+					
 				)
 			),
 			'markup' => array(
@@ -62,7 +62,7 @@ return array(
 			'postTaxonomy' => array(
 				'type' => 'object',
 				'default' => array(
-					'post' => 'category'
+					
 				)
 			),
 			'separator' => array(

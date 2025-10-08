@@ -81,10 +81,6 @@ const RewriteTagsPanel = ({
 	});
 
 	const rewriteTagPanelItems = postTypes.map((postType) => {
-		if (0 === mapRewriteTags.length) {
-			return null;
-		}
-
 		const hasValue = !! mapRewriteTags[postType.slug];
 
 		return (
@@ -107,7 +103,7 @@ const RewriteTagsPanel = ({
 		);
 	}).filter(Boolean);
 
-	return 0 !== mapRewriteTags.length && (
+	return 0 !== postTypes.length && (
 		<ToolsPanel
 			label={__('Rewrite Tags', 'x3p0-breadcrumbs')}
 			resetAll={ resetPanel }

@@ -36,6 +36,12 @@
 			"type": "string",
 			"default": ""
 		},
+		"mapRewriteTags": {
+			"type": "object",
+			"default": {
+				"post": false
+			}
+		},
 		"markup": {
 			"type": "string",
 			"default": "rdfa"

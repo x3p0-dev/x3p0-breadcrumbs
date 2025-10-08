@@ -11,6 +11,7 @@
 import HomePrefixControl  from './control-home-prefix';
 import SeparatorControl from './control-separator';
 import PostTaxonomyPanel from './panel-post-taxonomy';
+import RewriteTagsPanel from './panel-rewrite-tags';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -185,6 +186,10 @@ export default ({
 				{ showTrailEndControl }
 				{ markupControl }
 			</PanelBody>
+			<RewriteTagsPanel
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 			<PostTaxonomyPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }

@@ -30,7 +30,8 @@ class Breadcrumbs implements Block
 	public function __construct(protected array $attributes)
 	{
 		$this->attributes = wp_parse_args($this->attributes, [
-			'postTaxonomy' => [ 'post' => 'category' ]
+			'postTaxonomy'   => [ 'post' => 'category' ],
+			'mapRewriteTags' => [ 'post' => false ]
 		]);
 	}
 
@@ -39,11 +40,9 @@ class Breadcrumbs implements Block
 	 */
 	public function render(): string
 	{
-		$post_taxonomy = $this->attributes['postTaxonomy'] ?? [];
-
 		$builder_options = [
-			'post_taxonomy'    => $post_taxonomy,
-			'map_rewrite_tags' => [ 'post' => ! isset($post_taxonomy['post']) ]
+			'post_taxonomy'    => $this->attributes['postTaxonomy'] ?? [],
+			'map_rewrite_tags' => $this->attributes['mapRewriteTags'] ?? []
 		];
 
 		$markup_options = [

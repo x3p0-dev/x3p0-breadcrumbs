@@ -43,6 +43,12 @@ return array(
 				'type' => 'string',
 				'default' => ''
 			),
+			'mapRewriteTags' => array(
+				'type' => 'object',
+				'default' => array(
+					'post' => false
+				)
+			),
 			'markup' => array(
 				'type' => 'string',
 				'default' => 'rdfa'

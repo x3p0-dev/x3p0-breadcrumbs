@@ -26,7 +26,7 @@ const LabelsPanel = ({
 }) => {
 	const panelId = useInstanceId(LabelsPanel);
 
-	const { labels } = attributes;
+	const { labels, showHomeLabel } = attributes;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {
@@ -36,7 +36,7 @@ const LabelsPanel = ({
 
 		// Remove empty values
 		if (! value) {
-			delete updatedLabels[value];
+			delete updatedLabels[type];
 		}
 
 		setAttributes({ labels: updatedLabels });
@@ -59,21 +59,23 @@ const LabelsPanel = ({
 			resetAll={ resetPanel }
 			panelId={ panelId }
 		>
-			<ToolsPanelItem
-				label={ __('Home', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! labels.home }
-				onDeselect={ resetPanelItem('home') }
-				panelId={ panelId }
-			>
-				<TextControl
-					__next40pxDefaultSize
-					__nextHasNoMarginBottom
+			{ showHomeLabel && (
+				<ToolsPanelItem
 					label={ __('Home', 'x3p0-breadcrumbs') }
-					placeholder={ __('Home', 'x3p0-breadcrumbs') }
-					value={ labels.home }
-					onChange={(value) => onLabelChange('home', value)}
-				/>
-			</ToolsPanelItem>
+					hasValue={ () => !! labels.home }
+					onDeselect={ resetPanelItem('home') }
+					panelId={ panelId }
+				>
+					<TextControl
+						__next40pxDefaultSize
+						__nextHasNoMarginBottom
+						label={ __('Home', 'x3p0-breadcrumbs') }
+						placeholder={ __('Home', 'x3p0-breadcrumbs') }
+						value={ labels.home }
+						onChange={(value) => onLabelChange('home', value)}
+					/>
+				</ToolsPanelItem>
+			) }
 			<ToolsPanelItem
 				label={ __('Archives', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! labels.archives }

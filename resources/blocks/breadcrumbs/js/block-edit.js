@@ -22,6 +22,7 @@ import {
 	BlockControls,
 	InspectorControls,
 	JustifyContentControl,
+	RichText,
 	useBlockProps,
 	useInnerBlocksProps
 } from '@wordpress/block-editor';
@@ -224,11 +225,6 @@ export default ({
 	// Build an array of faux breadcrumb items to show.
 	let crumbs = [
 		{
-			type: 'home',
-			label: labels.home || __('Home', 'x3p0-breadcrumbs'),
-			link: true
-		},
-		{
 			type: 'post',
 			label: __('Parent Page', 'x3p0-breadcrumbs'),
 			link: true
@@ -275,6 +271,39 @@ export default ({
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
 		<ol className="breadcrumbs__trail">
+			<li
+				key="wp-block-x3p0-breadcrumbs-home"
+				className="breadcrumbs__crumb breadcrumbs__crumb--home"
+			>
+				<a
+					href="#breadcrumbs-pseudo-link"
+					onClick={ preventDefault }
+					className="breadcrumbs__crumb-content"
+				>
+					<RichText
+						tagName="span"
+						className="breadcrumbs__crumb-label"
+						aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
+						placeholder={ __('Home', 'x3p0-breadcrumbs') }
+						value={ labels.home }
+						multiline={ false }
+						onChange={ (value) => {
+							const updatedLabels = {
+								...labels,
+								home: value
+							};
+
+							// Remove empty values
+							if (! value) {
+								delete updatedLabels.home;
+							}
+
+							setAttributes({ labels: updatedLabels });
+						}}
+						withoutInteractiveFormatting={ true }
+					/>
+				</a>
+			</li>
 			{ crumbs.map((item, index) => crumb(item, index)) }
 		</ol>
 	);

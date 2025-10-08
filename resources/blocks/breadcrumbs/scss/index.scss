@@ -44,3 +44,8 @@
 ) {
 	transform: scaleX(-1);
 }
+
+// Fully opaque placeholder for the home label.
+.breadcrumbs__crumb-label.rich-text [data-rich-text-placeholder]:after {
+	opacity: 1;
+}

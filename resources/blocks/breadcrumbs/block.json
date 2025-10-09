@@ -42,7 +42,9 @@
 		},
 		"mapRewriteTags": {
 			"type": "object",
-			"default": {}
+			"default": {
+				"post": true
+			}
 		},
 		"markup": {
 			"type": "string",

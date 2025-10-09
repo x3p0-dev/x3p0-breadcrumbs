@@ -57,11 +57,14 @@ const RewriteTagsPanel = ({
 	const onRewriteTagChange = (postType, checked) => {
 		const updatedRewriteTags = {
 			...mapRewriteTags,
-			[postType]: checked
+			[postType]: checked || false
 		};
 
-		// Remove empty values
-		if (! checked) {
+		// Remove empty values, but explicitly set `false` for the `post`
+		// post type. This is because it's enabled by default, so we
+		// need to explicitly tell the Breadcrumbs script on the PHP end
+		// not to map tags for the post type.
+		if (! checked && 'post' !== postType) {
 			delete updatedRewriteTags[postType];
 		}
 
@@ -69,15 +72,12 @@ const RewriteTagsPanel = ({
 	};
 
 	// Reset handler for ToolsPanelItem
-	const resetPanelItem = (postTypeSlug) => () => {
-		const updatedRewriteTags = { ...mapRewriteTags };
-		delete updatedRewriteTags[postTypeSlug];
-		setAttributes({ mapRewriteTags: updatedRewriteTags });
-	};
+	const resetPanelItem = (postTypeSlug) => () => onRewriteTagChange(postTypeSlug, false);
 
-	// Resets the post taxonomies to the default.
+	// Resets the post rewrite tags to no mapping. Explicitly set the `post`
+	// post type.
 	const resetPanel = () => setAttributes({
-		mapRewriteTags: {}
+		mapRewriteTags: { post: false }
 	});
 
 	const rewriteTagPanelItems = postTypes.map((postType) => {

@@ -52,7 +52,7 @@ return array(
 			'mapRewriteTags' => array(
 				'type' => 'object',
 				'default' => array(
-					
+					'post' => true
 				)
 			),
 			'markup' => array(

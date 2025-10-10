@@ -13,10 +13,10 @@ import SeparatorControl from './control-separator';
 import LabelsPanel from './panel-labels';
 import PostTaxonomyPanel from './panel-post-taxonomy';
 import RewriteTagsPanel from './panel-rewrite-tags';
+import SettingsPanel from './panel-settings';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
-import { CustomSelectControl, PanelBody, ToggleControl } from '@wordpress/components';
 
 import {
 	BlockControls,
@@ -36,22 +36,6 @@ const preventDefault = (event) => event.preventDefault();
 // Define allowed justification controls.
 const justifyOptions = [ 'left', 'center', 'right' ];
 
-// Define the markup options.
-const markupOptions = [
-	{
-		key: 'html',
-		name: __('Plain HTML', 'x3p0-breadcrumbs')
-	},
-	{
-		key: 'microdata',
-		name: __('Microdata (Schema.org)', 'x3p0-breadcrumbs')
-	},
-	{
-		key: 'rdfa',
-		name: __('RDFa (Schema.org)', 'x3p0-breadcrumbs')
-	}
-];
-
 // Exports the breadcrumbs block type edit function.
 export default ({
 	attributes,
@@ -62,9 +46,7 @@ export default ({
 		homePrefixType,
 		justifyContent,
 		labels,
-		markup,
 		showHomeLabel,
-		showOnHomepage,
 		showTrailStart,
 		showTrailEnd,
 		separator,
@@ -117,78 +99,12 @@ export default ({
 	// Build the block inspector sidebar controls.
 	// =====================================================================
 
-	const showOnHomepageControl = (
-		<ToggleControl
-			label={ __('Show on homepage', 'x3p0-breadcrumbs') }
-			help={
-				showOnHomepage
-				? __('Breadcrumbs display on the homepage.', 'x3p0-breadcrumbs')
-				: __('Breadcrumbs hidden on the homepage.', 'x3p0-breadcrumbs')
-			}
-			checked={ showOnHomepage }
-			onChange={ () => setAttributes({
-				showOnHomepage: ! showOnHomepage
-			}) }
-		/>
-	);
-
-	const showTrailStartControl = (
-		<ToggleControl
-			label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
-			help={
-				showTrailStart
-					? __('First breadcrumb item is shown.',  'x3p0-breadcrumbs')
-					: __('First breadcrumb item is hidden.', 'x3p0-breadcrumbs')
-			}
-			checked={ showTrailStart }
-			onChange={ () => setAttributes({
-				homePrefix:     '',
-				homePrefixType: '',
-				showHomeLabel:  true,
-				showTrailStart: ! showTrailStart
-			}) }
-		/>
-	);
-
-	const showTrailEndControl = (
-		<ToggleControl
-			label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
-			help={
-				showTrailEnd
-				? __('Last breadcrumb item is shown.',  'x3p0-breadcrumbs')
-				: __('Last breadcrumb item is hidden.', 'x3p0-breadcrumbs')
-			}
-			checked={ showTrailEnd }
-			onChange={ () => setAttributes({
-				showTrailEnd: ! showTrailEnd
-			}) }
-		/>
-	);
-
-	const markupControl = (
-		<CustomSelectControl
-			label={ __('Markup style', 'x3p0-breadcrumbs') }
-			options={ markupOptions }
-			value={ markupOptions.find(
-				(option) => option.key === markup
-			)}
-			onChange={ ({ selectedItem }) => setAttributes({
-				markup: selectedItem.key
-			})}
-			__next40pxDefaultSize={true}
-		/>
-	);
-
 	const settingsControls = (
 		<InspectorControls group="settings">
-			<PanelBody title={
-				__('Breadcrumb settings', 'x3p0-breadcrumbs')
-			}>
-				{ showOnHomepageControl }
-				{ showTrailStartControl }
-				{ showTrailEndControl }
-				{ markupControl }
-			</PanelBody>
+			<SettingsPanel
+				attributes={ attributes }
+				setAttributes={ setAttributes }
+			/>
 			<LabelsPanel
 				attributes={ attributes }
 				setAttributes={ setAttributes }

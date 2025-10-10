@@ -98,6 +98,7 @@ const RewriteTagsPanel = ({
 						postType.slug,
 						! mapRewriteTags[postType.slug]
 					)}
+					__nextHasNoMarginBottom={ true }
 				/>
 			</ToolsPanelItem>
 		);

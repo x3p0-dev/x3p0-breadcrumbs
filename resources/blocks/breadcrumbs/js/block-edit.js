@@ -159,6 +159,7 @@ export default ({
 
 				setAttributes({ labels: updatedLabels });
 			}}
+			allowedFormats={ [] }
 			withoutInteractiveFormatting={ true }
 		/>
 	);

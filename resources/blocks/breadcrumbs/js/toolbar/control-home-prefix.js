@@ -8,7 +8,7 @@
  */
 
 // Internal dependencies.
-import { getHomePrefixes } from './utils';
+import { getHomePrefixes } from '../utils';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -28,7 +28,9 @@ import {
 /**
  * @description Creates a home icon control.
  */
-export default ({ homePrefix, showHomeLabel, showTrailStart, setAttributes }) => {
+export default ({ attributes, setAttributes }) => {
+
+	const { homePrefix, showHomeLabel, showTrailStart } = attributes;
 
 	useEffect(() => {
 		if (! showHomeLabel && ! homePrefix) {

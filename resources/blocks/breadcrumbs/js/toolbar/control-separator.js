@@ -8,7 +8,7 @@
  */
 
 // Internal dependencies.
-import { getSeparators } from './utils';
+import { getSeparators } from '../utils';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -25,12 +25,14 @@ import {
 /**
  * @description Creates a separator separator control.
  */
-export default ({ separator, setAttributes }) => {
+export default ({ attributes, setAttributes }) => {
+
+	const { separator } = attributes;
 
 	// Get the separator options.
 	const separators = getSeparators();
 
-	// Builds a menu item for an separator.
+	// Builds a menu item for a separator.
 	const separatorButton = (sep, index) => (
 		<Button
 			key={ index }

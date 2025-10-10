@@ -8,126 +8,31 @@
  */
 
 // Internal dependencies.
-import HomePrefixControl  from './control-home-prefix';
-import SeparatorControl from './control-separator';
-import LabelsPanel from './panel-labels';
-import PostTaxonomyPanel from './panel-post-taxonomy';
-import RewriteTagsPanel from './panel-rewrite-tags';
-import SettingsPanel from './panel-settings';
+import Inspector from './inspector';
+import Toolbar from './toolbar';
+import Trail from './element-trail';
 
 // WordPress dependencies.
-import { __ } from '@wordpress/i18n';
-
-import {
-	BlockControls,
-	InspectorControls,
-	JustifyContentControl,
-	RichText,
-	useBlockProps,
-	useInnerBlocksProps
-} from '@wordpress/block-editor';
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 
 // Third-party dependencies.
-import classnames from 'classnames';
-
-// Prevent breadcrumb link events when users click them.
-const preventDefault = (event) => event.preventDefault();
-
-// Define allowed justification controls.
-const justifyOptions = [ 'left', 'center', 'right' ];
+import clsx from 'clsx';
 
 // Exports the breadcrumbs block type edit function.
-export default ({
-	attributes,
-	setAttributes,
-	isSelected
-}) => {
+export default (props) => {
 	const {
 		homePrefix,
 		homePrefixType,
 		justifyContent,
-		labels,
 		showHomeLabel,
 		showTrailStart,
-		showTrailEnd,
 		separator,
 		separatorType
-	} = attributes;
-
-	// =====================================================================
-	// Build the block toolbar controls.
-	// =====================================================================
-
-	const blockToolbarControls = (
-		<BlockControls group="block">
-			<JustifyContentControl
-				allowedControls={ justifyOptions }
-				value={ justifyContent }
-				onChange={ (value) => setAttributes({
-					justifyContent: value
-				}) }
-				popoverProps={ {
-					position: 'bottom right',
-					variant: 'toolbar'
-				} }
-			/>
-		</BlockControls>
-	);
-
-	const otherToolbarControls = (
-		<BlockControls group="other">
-			<HomePrefixControl
-				homePrefix={ homePrefix }
-				showHomeLabel={ showHomeLabel }
-				showTrailStart={ showTrailStart }
-				setAttributes={ setAttributes }
-			/>
-			<SeparatorControl
-				separator={ separator }
-				setAttributes={ setAttributes }
-			/>
-		</BlockControls>
-	);
-
-	const toolbarControls = (
-		<>
-			{ blockToolbarControls }
-			{ otherToolbarControls }
-		</>
-	);
-
-	// =====================================================================
-	// Build the block inspector sidebar controls.
-	// =====================================================================
-
-	const settingsControls = (
-		<InspectorControls group="settings">
-			<SettingsPanel
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-			<LabelsPanel
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-			<RewriteTagsPanel
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-			<PostTaxonomyPanel
-				attributes={ attributes }
-				setAttributes={ setAttributes }
-			/>
-		</InspectorControls>
-	);
-
-	// =====================================================================
-	// Build the block output for the content canvas.
-	// =====================================================================
+	} = props.attributes;
 
 	// Get the blockProps and add custom classes.
 	const blockProps = useBlockProps({
-		className: classnames({
+		className: clsx({
 			'breadcrumbs': true,
 			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : showTrailStart && homePrefixType && homePrefix,
 			[ 'hide-home-label'                              ] : showTrailStart && ! showHomeLabel,
@@ -139,84 +44,13 @@ export default ({
 	// Need inner block props for layout styles to work properly in the admin.
 	const innerBlockProps = useInnerBlocksProps(blockProps);
 
-	// We need a default home label value for non-editing contexts when
-	// there's no saved value. This is because `RichText` will not show the
-	// placeholder in those cases. For example, on the Site Editor or
-	// Templates screens.
-	const homeValue = labels?.home
-		? labels.home
-		: isSelected ? '' : __('Home', 'x3p0-breadcrumbs')
-
-	const homeLabel = (
-		<RichText
-			tagName="span"
-			className="breadcrumbs__crumb-label"
-			aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
-			placeholder={ __('Home', 'x3p0-breadcrumbs') }
-			value={ homeValue }
-			multiline={ false }
-			onChange={ (value) => {
-				const updatedLabels = {
-					...labels,
-					home: value
-				};
-
-				// Remove empty values
-				if (! value) {
-					delete updatedLabels.home;
-				}
-
-				setAttributes({ labels: updatedLabels });
-			}}
-			allowedFormats={ [] }
-			withoutInteractiveFormatting={ true }
-		/>
-	);
-
-	// Builds a preview breadcrumb trail for the editor.
-	const trail = (
-		<ol className="breadcrumbs__trail">
-			{ showTrailStart && (
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
-					<a
-						href="#breadcrumbs-pseudo-link"
-						onClick={ preventDefault }
-						className="breadcrumbs__crumb-content"
-					>
-						{ homeLabel }
-					</a>
-				</li>
-			)}
-			<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-				<a
-					href="#breadcrumbs-pseudo-link"
-					onClick={ preventDefault }
-					className="breadcrumbs__crumb-content"
-				>
-					<span className="breadcrumbs__crumb-label">
-						{ __('Parent Page', 'x3p0-breadcrumbs') }
-					</span>
-				</a>
-			</li>
-			{ showTrailEnd && (
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-					<span className="breadcrumbs__crumb-content">
-						<span className="breadcrumbs__crumb-label">
-							{ __('Current Page', 'x3p0-breadcrumbs') }
-						</span>
-					</span>
-				</li>
-			)}
-		</ol>
-	);
-
 	// Return the final block edit component.
 	return (
 		<>
-			{ toolbarControls }
-			{ settingsControls }
-			<nav { ...innerBlockProps }>
-				{ trail }
+			<Toolbar {...props}/>
+			<Inspector {...props}/>
+			<nav {...innerBlockProps}>
+				<Trail {...props}/>
 			</nav>
 		</>
 	);

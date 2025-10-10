@@ -39,7 +39,8 @@ const justifyOptions = [ 'left', 'center', 'right' ];
 // Exports the breadcrumbs block type edit function.
 export default ({
 	attributes,
-	setAttributes
+	setAttributes,
+	isSelected
 }) => {
 	const {
 		homePrefix,
@@ -138,13 +139,21 @@ export default ({
 	// Need inner block props for layout styles to work properly in the admin.
 	const innerBlockProps = useInnerBlocksProps(blockProps);
 
+	// We need a default home label value for non-editing contexts when
+	// there's no saved value. This is because `RichText` will not show the
+	// placeholder in those cases. For example, on the Site Editor or
+	// Templates screens.
+	const homeValue = labels?.home
+		? labels.home
+		: isSelected ? '' : __('Home', 'x3p0-breadcrumbs')
+
 	const homeLabel = (
 		<RichText
 			tagName="span"
 			className="breadcrumbs__crumb-label"
 			aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
 			placeholder={ __('Home', 'x3p0-breadcrumbs') }
-			value={ labels?.home }
+			value={ homeValue }
 			multiline={ false }
 			onChange={ (value) => {
 				const updatedLabels = {

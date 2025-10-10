@@ -54,11 +54,9 @@ export default ({ attributes, setAttributes }) => {
 				homePrefixType: sep.type
 			}) }
 		>
-			{ (
-				<span className="x3p0-breadcrumbs-sep-picker__button-text">
-					{ sep.icon }
-				</span>
-			) }
+			<span className="x3p0-breadcrumbs-sep-picker__button-text">
+				{ sep.icon }
+			</span>
 		</Button>
 	);
 
@@ -87,6 +85,7 @@ export default ({ attributes, setAttributes }) => {
 				showHomeLabel: ! showHomeLabel
 			}) }
 			disabled={ ! homePrefix }
+			__nextHasNoMarginBottom
 		/>
 	);
 

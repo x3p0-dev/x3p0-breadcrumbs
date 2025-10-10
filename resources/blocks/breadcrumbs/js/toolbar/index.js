@@ -8,54 +8,22 @@
  */
 
 // Internal dependencies.
-import HomePrefixControl  from './control-home-prefix';
-import SeparatorControl from './control-separator';
+import JustifyContent from './control-justify-content';
+import HomePrefix  from './control-home-prefix';
+import Separator from './control-separator';
 
-import {
-	BlockControls,
-	JustifyContentControl
-} from '@wordpress/block-editor';
-
-// Define allowed justification controls.
-const justifyOptions = [ 'left', 'center', 'right' ];
+// WordPress dependencies.
+import { BlockControls } from '@wordpress/block-editor';
 
 // Exports the breadcrumbs block type edit function.
-export default (props) => {
-
-	const {
-		attributes,
-		setAttributes,
-	} = props;
-
-	const { justifyContent } = attributes;
-
-	const blockToolbarControls = (
+export default (props) => (
+	<>
 		<BlockControls group="block">
-			<JustifyContentControl
-				allowedControls={ justifyOptions }
-				value={ justifyContent }
-				onChange={ (value) => setAttributes({
-					justifyContent: value
-				}) }
-				popoverProps={ {
-					position: 'bottom right',
-					variant: 'toolbar'
-				} }
-			/>
+			<JustifyContent {...props}/>
 		</BlockControls>
-	);
-
-	const otherToolbarControls = (
 		<BlockControls group="other">
-			<HomePrefixControl {...props}/>
-			<SeparatorControl {...props}/>
+			<HomePrefix {...props}/>
+			<Separator {...props}/>
 		</BlockControls>
-	);
-
-	return (
-		<>
-			{ blockToolbarControls }
-			{ otherToolbarControls }
-		</>
-	);
-};
+	</>
+);

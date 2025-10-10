@@ -9,7 +9,10 @@
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
-import { RichText } from '@wordpress/block-editor';
+import {RichText, useBlockProps, useInnerBlocksProps} from '@wordpress/block-editor';
+
+// Third-party dependencies.
+import clsx from 'clsx';
 
 // Prevent breadcrumb link events when users click them.
 const preventDefault = (event) => event.preventDefault();
@@ -18,9 +21,29 @@ const preventDefault = (event) => event.preventDefault();
 export default ({ attributes, setAttributes, isSelected }) => {
 	const {
 		labels,
-		showTrailStart,
+		homePrefix,
+		homePrefixType,
+		justifyContent,
+		showHomeLabel,
 		showTrailEnd,
+		showTrailStart,
+		separator,
+		separatorType
 	} = attributes;
+
+	// Get the blockProps and add custom classes.
+	const blockProps = useBlockProps({
+		className: clsx({
+			'breadcrumbs': true,
+			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : showTrailStart && homePrefixType && homePrefix,
+			[ 'hide-home-label'                              ] : showTrailStart && ! showHomeLabel,
+			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
+			[ `is-content-justification-${ justifyContent }` ] : justifyContent
+		})
+	});
+
+	// Need inner block props for layout styles to work properly in the admin.
+	const innerBlockProps = useInnerBlocksProps(blockProps);
 
 	// We need a default home label value for non-editing contexts when
 	// there's no saved value. This is because `RichText` will not show the
@@ -56,40 +79,41 @@ export default ({ attributes, setAttributes, isSelected }) => {
 		/>
 	);
 
-	// Builds a preview breadcrumb trail for the editor.
 	return (
-		<ol className="breadcrumbs__trail">
-			{ showTrailStart && (
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
+		<nav {...innerBlockProps}>
+			<ol className="breadcrumbs__trail">
+				{ showTrailStart && (
+					<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
+						<a
+							href="#breadcrumbs-pseudo-link"
+							onClick={ preventDefault }
+							className="breadcrumbs__crumb-content"
+						>
+							{ homeLabel }
+						</a>
+					</li>
+				)}
+				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
 					<a
 						href="#breadcrumbs-pseudo-link"
 						onClick={ preventDefault }
 						className="breadcrumbs__crumb-content"
 					>
-						{ homeLabel }
+						<span className="breadcrumbs__crumb-label">
+							{ __('Parent Page', 'x3p0-breadcrumbs') }
+						</span>
 					</a>
 				</li>
-			)}
-			<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-				<a
-					href="#breadcrumbs-pseudo-link"
-					onClick={ preventDefault }
-					className="breadcrumbs__crumb-content"
-				>
-					<span className="breadcrumbs__crumb-label">
-						{ __('Parent Page', 'x3p0-breadcrumbs') }
-					</span>
-				</a>
-			</li>
-			{ showTrailEnd && (
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-					<span className="breadcrumbs__crumb-content">
-						<span className="breadcrumbs__crumb-label">
-							{ __('Current Page', 'x3p0-breadcrumbs') }
+				{ showTrailEnd && (
+					<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+						<span className="breadcrumbs__crumb-content">
+							<span className="breadcrumbs__crumb-label">
+								{ __('Current Page', 'x3p0-breadcrumbs') }
+							</span>
 						</span>
-					</span>
-				</li>
-			)}
-		</ol>
+					</li>
+				)}
+			</ol>
+		</nav>
 	);
 };

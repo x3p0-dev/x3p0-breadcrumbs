@@ -12,10 +12,31 @@ import './scss/index.scss';
 import './scss/style.scss';
 
 // Import dependencies.
-import { registerBlockType } from '@wordpress/blocks';
-import metadata              from './block.json';
-import icon                  from './js/block-icon';
-import edit                  from './js/block-edit';
+import {registerBlockType}     from '@wordpress/blocks';
+import {G, Polygon, Rect, SVG} from '@wordpress/primitives';
+
+import metadata from './block.json';
+
+import Toolbar   from './js/toolbar';
+import Inspector from './js/inspector';
+import Markup    from './js/markup';
 
 // Register block type.
-registerBlockType(metadata, { icon, edit });
+registerBlockType(metadata, {
+	icon: (
+		<SVG xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+			<G><Rect fill="none" height="24" width="24"/></G>
+			<G>
+				<Polygon points="15.5,5 11,5 16,12 11,19 15.5,19 20.5,12"/>
+				<Polygon points="8.5,5 0,5 0,12 0,19 8.5,19 13.5,12"/>
+			</G>
+		</SVG>
+	),
+	edit: (props) => (
+		<>
+			<Toolbar {...props}/>
+			<Inspector {...props}/>
+			<Markup {...props}/>
+		</>
+	)
+});

@@ -105,7 +105,7 @@ return array(
 			),
 			'layout' => array(
 				'allowCustomContentAndWideSize' => false,
-				'allowEditing' => true,
+				'allowEditing' => false,
 				'allowInheriting' => false,
 				'allowJustification' => false,
 				'allowOrientation' => false,

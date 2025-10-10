@@ -138,89 +138,65 @@ export default ({
 	// Need inner block props for layout styles to work properly in the admin.
 	const innerBlockProps = useInnerBlocksProps(blockProps);
 
-	// Build an array of faux breadcrumb items to show.
-	let crumbs = [
-		{
-			type: 'post',
-			label: __('Parent Page', 'x3p0-breadcrumbs'),
-			link: true
-		},
-		{
-			type: 'post',
-			label: __('Current Page', 'x3p0-breadcrumbs'),
-			link: false
-		}
-	];
+	const homeLabel = (
+		<RichText
+			tagName="span"
+			className="breadcrumbs__crumb-label"
+			aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
+			placeholder={ __('Home', 'x3p0-breadcrumbs') }
+			value={ labels?.home }
+			multiline={ false }
+			onChange={ (value) => {
+				const updatedLabels = {
+					...labels,
+					home: value
+				};
 
-	// Remove first item if trail start isn't shown.
-	if (! showTrailStart) {
-		crumbs.shift();
-	}
+				// Remove empty values
+				if (! value) {
+					delete updatedLabels.home;
+				}
 
-	// Remove last item if trail end isn't shown.
-	if (! showTrailEnd) {
-		crumbs.pop();
-	}
-
-	// Creates a breadcrumb trail list item.
-	const crumb = (crumb, index) => {
-		const CrumbContent = crumb.link ? 'a' : 'span';
-
-		return (
-			<li
-				key={ index }
-				className={ `breadcrumbs__crumb breadcrumbs__crumb--${ crumb.type }` }
-			>
-				<CrumbContent
-					href={ crumb.link ? '#breadcrumbs-pseudo-link' : null }
-					onClick={ preventDefault }
-					className="breadcrumbs__crumb-content"
-				>
-					<span className="breadcrumbs__crumb-label">
-						{ crumb.label }
-					</span>
-				</CrumbContent>
-			</li>
-		)
-	};
+				setAttributes({ labels: updatedLabels });
+			}}
+			withoutInteractiveFormatting={ true }
+		/>
+	);
 
 	// Builds a preview breadcrumb trail for the editor.
 	const trail = (
 		<ol className="breadcrumbs__trail">
-			<li
-				key="wp-block-x3p0-breadcrumbs-home"
-				className="breadcrumbs__crumb breadcrumbs__crumb--home"
-			>
+			{ showTrailStart && (
+				<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
+					<a
+						href="#breadcrumbs-pseudo-link"
+						onClick={ preventDefault }
+						className="breadcrumbs__crumb-content"
+					>
+						{ homeLabel }
+					</a>
+				</li>
+			)}
+			<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
 				<a
 					href="#breadcrumbs-pseudo-link"
 					onClick={ preventDefault }
 					className="breadcrumbs__crumb-content"
 				>
-					<RichText
-						tagName="span"
-						className="breadcrumbs__crumb-label"
-						aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
-						placeholder={ __('Home', 'x3p0-breadcrumbs') }
-						value={ labels?.home }
-						multiline={ false }
-						onChange={ (value) => {
-							const updatedLabels = {
-								...labels,
-								home: value
-							};
-
-							// Remove empty values
-							if (! value) {
-								delete updatedLabels.home;
-							}
-
-							setAttributes({ labels: updatedLabels });
-						}}
-						withoutInteractiveFormatting={ true }
-					/>
+					<span className="breadcrumbs__crumb-label">
+						{ __('Parent Page', 'x3p0-breadcrumbs') }
+					</span>
 				</a>
 			</li>
-			{ crumbs.map((item, index) => crumb(item, index)) }
+			{ showTrailEnd && (
+				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+					<a className="breadcrumbs__crumb-content">
+						<span className="breadcrumbs__crumb-label">
+							{ __('Current Page', 'x3p0-breadcrumbs') }
+						</span>
+					</a>
+				</li>
+			)}
 		</ol>
 	);
 

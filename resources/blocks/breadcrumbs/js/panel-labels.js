@@ -26,7 +26,7 @@ const LabelsPanel = ({
 }) => {
 	const panelId = useInstanceId(LabelsPanel);
 
-	const { labels, showHomeLabel } = attributes;
+	const { labels, showHomeLabel, showTrailStart } = attributes;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {
@@ -59,7 +59,7 @@ const LabelsPanel = ({
 			resetAll={ resetPanel }
 			panelId={ panelId }
 		>
-			{ showHomeLabel && (
+			{ showHomeLabel && showTrailStart && (
 				<ToolsPanelItem
 					label={ __('Home', 'x3p0-breadcrumbs') }
 					hasValue={ () => !! labels?.home }

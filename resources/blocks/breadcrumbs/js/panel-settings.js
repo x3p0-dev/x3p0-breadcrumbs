@@ -97,8 +97,8 @@ const SettingsPanel = ({ attributes, setAttributes }) => {
 
 	const resetMarkup = () => setAttributes({ markup: 'rdfa' });
 	const resetShowOnHomepage = () => setAttributes({ showOnHomepage: false });
-	const resetShowTrailStart = () => setAttributes({ showTrailStart: true });
-	const resetShowTrailEnd = () => setAttributes({ showTrailEnd: true });
+	const resetShowTrailStart = () => setAttributes({ showTrailStart: false });
+	const resetShowTrailEnd = () => setAttributes({ showTrailEnd: false });
 
 	const resetPanel = () => {
 		resetMarkup();

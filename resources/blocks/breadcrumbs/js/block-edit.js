@@ -190,11 +190,11 @@ export default ({
 			</li>
 			{ showTrailEnd && (
 				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-					<a className="breadcrumbs__crumb-content">
+					<span className="breadcrumbs__crumb-content">
 						<span className="breadcrumbs__crumb-label">
 							{ __('Current Page', 'x3p0-breadcrumbs') }
 						</span>
-					</a>
+					</span>
 				</li>
 			)}
 		</ol>

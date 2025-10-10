@@ -285,7 +285,7 @@ export default ({
 						className="breadcrumbs__crumb-label"
 						aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
 						placeholder={ __('Home', 'x3p0-breadcrumbs') }
-						value={ labels.home }
+						value={ labels?.home }
 						multiline={ false }
 						onChange={ (value) => {
 							const updatedLabels = {

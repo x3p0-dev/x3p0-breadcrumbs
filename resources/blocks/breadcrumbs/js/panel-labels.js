@@ -62,7 +62,7 @@ const LabelsPanel = ({
 			{ showHomeLabel && (
 				<ToolsPanelItem
 					label={ __('Home', 'x3p0-breadcrumbs') }
-					hasValue={ () => !! labels.home }
+					hasValue={ () => !! labels?.home }
 					onDeselect={ resetPanelItem('home') }
 					panelId={ panelId }
 				>
@@ -71,14 +71,14 @@ const LabelsPanel = ({
 						__nextHasNoMarginBottom
 						label={ __('Home', 'x3p0-breadcrumbs') }
 						placeholder={ __('Home', 'x3p0-breadcrumbs') }
-						value={ labels.home }
+						value={ labels?.home }
 						onChange={(value) => onLabelChange('home', value)}
 					/>
 				</ToolsPanelItem>
 			) }
 			<ToolsPanelItem
 				label={ __('Archives', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! labels.archives }
+				hasValue={ () => !! labels?.archives }
 				onDeselect={ resetPanelItem('archives') }
 				panelId={ panelId }
 			>
@@ -87,13 +87,13 @@ const LabelsPanel = ({
 					__nextHasNoMarginBottom
 					label={ __('Archives', 'x3p0-breadcrumbs') }
 					placeholder={ __('Archives', 'x3p0-breadcrumbs') }
-					value={ labels.archives }
+					value={ labels?.archives }
 					onChange={(value) => onLabelChange('archives', value)}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __('Search Results', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! labels.search }
+				hasValue={ () => !! labels?.search }
 				onDeselect={ resetPanelItem('search') }
 				panelId={ panelId }
 			>
@@ -102,13 +102,13 @@ const LabelsPanel = ({
 					__nextHasNoMarginBottom
 					label={ __('Search Results', 'x3p0-breadcrumbs') }
 					placeholder={ __('Search results for: %s', 'x3p0-breadcrumbs') }
-					value={ labels.search }
+					value={ labels?.search }
 					onChange={(value) => onLabelChange('search', value)}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __('404 Not Found', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! labels.error_404 }
+				hasValue={ () => !! labels?.error_404 }
 				onDeselect={ resetPanelItem('error_404') }
 				panelId={ panelId }
 			>
@@ -117,7 +117,7 @@ const LabelsPanel = ({
 					__nextHasNoMarginBottom
 					label={ __('404 Not Found', 'x3p0-breadcrumbs') }
 					placeholder={ __('404 Not Found', 'x3p0-breadcrumbs') }
-					value={ labels.error_404 }
+					value={ labels?.error_404 }
 					onChange={(value) => onLabelChange('error_404', value)}
 				/>
 			</ToolsPanelItem>

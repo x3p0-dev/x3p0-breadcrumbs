@@ -14,11 +14,11 @@
 // In the future, we can switch to using `<DropdownContentWrapper>` if we want,
 // but it is currently experimental.
 // @link https://github.com/WordPress/gutenberg/blob/trunk/packages/components/src/dropdown/dropdown-content-wrapper.tsx
-.x3p0-breadcrumbs-sep-popover .components-popover__content {
+.x3p0-breadcrumbs-toolbar-dropdown__popover .components-popover__content {
 	padding: variables.$grid-unit-20;
 }
 
-.x3p0-breadcrumbs-sep-picker {
+.x3p0-breadcrumbs-symbol-picker {
 	&__description {
 		margin: 0 0 variables.$grid-unit-20;
 	}

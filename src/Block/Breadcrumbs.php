@@ -28,7 +28,9 @@ class Breadcrumbs implements Block
 	 * Sets the block attributes.
 	 */
 	public function __construct(protected array $attributes)
-	{}
+	{
+		$this->mapDeprecatedAttributes();
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -76,13 +78,11 @@ class Breadcrumbs implements Block
 		// If there is a selected home prefix, define the class.
 		if (
 			$this->attributes['showTrailStart']
-			&& $this->attributes['homePrefix']
-			&& $this->attributes['homePrefixType']
+			&& $this->attributes['homeIcon']
 		) {
 			$classes['home'] = sprintf(
-				'has-home-%s-%s',
-				$this->attributes['homePrefixType'],
-				$this->attributes['homePrefix']
+				'has-home-%s',
+				$this->attributes['homeIcon']
 			);
 
 			// The option for showing the home label should only ever be
@@ -93,11 +93,10 @@ class Breadcrumbs implements Block
 		}
 
 		// If there's a selected separator, define the class for it.
-		if ($this->attributes['separator'] && $this->attributes['separatorType']) {
+		if ($this->attributes['separatorIcon']) {
 			$classes['sep'] = sprintf(
-				'has-sep-%s-%s',
-				$this->attributes['separatorType'],
-				$this->attributes['separator']
+				'has-sep-%s',
+				$this->attributes['separatorIcon']
 			);
 		}
 
@@ -122,5 +121,27 @@ class Breadcrumbs implements Block
 		$attr['class'] = implode(' ', $classes);
 
 		return $attr;
+	}
+
+	/**
+	 * Maps deprecated attributes to new attributes.
+	 */
+	private function mapDeprecatedAttributes(): void
+	{
+		$separator      = $this->attributes['separator']      ?? null;
+		$separatorType  = $this->attributes['separatorType']  ?? null;
+		$homePrefix     = $this->attributes['homePrefix']     ?? null;
+		$homePrefixType = $this->attributes['homePrefixType'] ?? null;
+
+		if ($separator || $separatorType) {
+			$type = 'mask' === $separatorType ? 'svg' : ($separatorType ?: 'svg');
+			$icon = $separator ?: 'chevron';
+			$this->attributes['separatorIcon'] = "{$type}-{$icon}";
+		}
+
+		if ($homePrefix && $homePrefixType) {
+			$type = 'mask' === $homePrefixType ? 'svg' : $homePrefixType;
+			$this->attributes['homeIcon'] = "{$type}-{$homePrefix}";
+		}
 	}
 }

@@ -35,11 +35,7 @@ return array(
 				'type' => 'boolean',
 				'default' => true
 			),
-			'homePrefix' => array(
-				'type' => 'string',
-				'default' => ''
-			),
-			'homePrefixType' => array(
+			'homeIcon' => array(
 				'type' => 'string',
 				'default' => ''
 			),
@@ -65,13 +61,9 @@ return array(
 					
 				)
 			),
-			'separator' => array(
+			'separatorIcon' => array(
 				'type' => 'string',
-				'default' => 'chevron'
-			),
-			'separatorType' => array(
-				'type' => 'string',
-				'default' => 'mask'
+				'default' => 'svg-chevron'
 			)
 		),
 		'supports' => array(

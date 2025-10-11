@@ -21,23 +21,21 @@ const preventDefault = (event) => event.preventDefault();
 export default ({ attributes, setAttributes, isSelected }) => {
 	const {
 		labels,
-		homePrefix,
-		homePrefixType,
+		homeIcon,
 		justifyContent,
 		showHomeLabel,
 		showTrailEnd,
 		showTrailStart,
-		separator,
-		separatorType
+		separatorIcon
 	} = attributes;
 
 	// Get the blockProps and add custom classes.
 	const blockProps = useBlockProps({
 		className: clsx({
 			'breadcrumbs': true,
-			[ `has-home-${homePrefixType}-${ homePrefix }`   ] : showTrailStart && homePrefixType && homePrefix,
-			[ 'hide-home-label'                              ] : showTrailStart && ! showHomeLabel,
-			[ `has-sep-${separatorType}-${ separator }`      ] : separatorType && separator,
+			[ `has-home-${homeIcon}` ] : showTrailStart && homeIcon,
+			[ 'hide-home-label' ] : showTrailStart && ! showHomeLabel,
+			[ `has-sep-${separatorIcon}` ] : separatorIcon,
 			[ `is-content-justification-${ justifyContent }` ] : justifyContent
 		})
 	});

@@ -28,11 +28,7 @@
 			"type": "boolean",
 			"default": true
 		},
-		"homePrefix": {
-			"type": "string",
-			"default": ""
-		},
-		"homePrefixType": {
+		"homeIcon": {
 			"type": "string",
 			"default": ""
 		},
@@ -54,13 +50,9 @@
 			"type": "object",
 			"default": {}
 		},
-		"separator": {
+		"separatorIcon": {
 			"type": "string",
-			"default": "chevron"
-		},
-		"separatorType": {
-			"type": "string",
-			"default": "mask"
+			"default": "svg-chevron"
 		}
 	},
 	"supports": {

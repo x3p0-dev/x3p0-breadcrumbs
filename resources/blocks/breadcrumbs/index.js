@@ -17,9 +17,10 @@ import {G, Polygon, Rect, SVG} from '@wordpress/primitives';
 
 import metadata from './block.json';
 
-import Toolbar   from './js/toolbar';
-import Inspector from './js/inspector';
-import Markup    from './js/markup';
+import Toolbar    from './js/toolbar';
+import Inspector  from './js/inspector';
+import Markup     from './js/markup';
+import deprecated from './js/deprecated';
 
 // Register block type.
 registerBlockType(metadata, {
@@ -38,5 +39,6 @@ registerBlockType(metadata, {
 			<Inspector {...props}/>
 			<Markup {...props}/>
 		</>
-	)
+	),
+	deprecated
 });

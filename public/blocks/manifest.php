@@ -7,13 +7,18 @@ return array(
 		'version' => '20250908',
 		'name' => 'x3p0/breadcrumbs',
 		'title' => 'Breadcrumbs',
-		'category' => 'widgets',
 		'description' => 'Add a breadcrumb trail back to the site homepage. Breadcrumb items appear as placeholders in the editor and will populate with the correct data on the site front end.',
+		'category' => 'widgets',
 		'keywords' => array(
 			'breadcrumb',
 			'trail',
 			'navigation'
 		),
+		'textdomain' => 'x3p0-breadcrumbs',
+		'editorScript' => 'file:./index.js',
+		'editorStyle' => 'file:./index.css',
+		'style' => 'file:./style-index.css',
+		'render' => 'file:./render.php',
 		'attributes' => array(
 			'justifyContent' => array(
 				'type' => 'string',
@@ -142,11 +147,6 @@ return array(
 				)
 			)
 		),
-		'textdomain' => 'x3p0-breadcrumbs',
-		'editorScript' => 'file:./index.js',
-		'editorStyle' => 'file:./index.css',
-		'style' => 'file:./style-index.css',
-		'render' => 'file:./render.php',
 		'example' => array(
 			
 		)

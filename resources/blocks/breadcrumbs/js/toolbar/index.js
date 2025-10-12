@@ -13,17 +13,21 @@ import HomePrefix  from './control-home-prefix';
 import Separator from './control-separator';
 
 // WordPress dependencies.
-import { BlockControls } from '@wordpress/block-editor';
+import { BlockControls, useBlockEditingMode } from '@wordpress/block-editor';
 
 // Exports the breadcrumbs block type edit function.
-export default (props) => (
-	<>
-		<BlockControls group="block">
-			<JustifyContent {...props}/>
-		</BlockControls>
-		<BlockControls group="other">
-			<HomePrefix {...props}/>
-			<Separator {...props}/>
-		</BlockControls>
-	</>
-);
+export default (props) => {
+	const blockEditingMode = useBlockEditingMode();
+
+	return 'default' === blockEditingMode && (
+		<>
+			<BlockControls group="block">
+				<JustifyContent {...props}/>
+			</BlockControls>
+			<BlockControls group="other">
+				<HomePrefix {...props}/>
+				<Separator {...props}/>
+			</BlockControls>
+		</>
+	);
+};

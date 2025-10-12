@@ -48,7 +48,8 @@ return array(
 				'type' => 'object',
 				'default' => array(
 					
-				)
+				),
+				'role' => 'content'
 			),
 			'mapRewriteTags' => array(
 				'type' => 'object',

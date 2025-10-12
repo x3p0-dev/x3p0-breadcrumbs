@@ -61,6 +61,7 @@ export default ({
 			placeholder={ __('Home', 'x3p0-breadcrumbs') }
 			value={ homeValue }
 			multiline={ false }
+			disableLineBreaks={ true }
 			onChange={ (value) => {
 				const updatedLabels = { ...labels };
 

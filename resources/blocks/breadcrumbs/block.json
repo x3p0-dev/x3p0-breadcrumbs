@@ -108,6 +108,7 @@
 				"orientation": "horizontal"
 			}
 		},
+		"shadow": true,
 		"spacing": {
 			"blockGap": true,
 			"margin": true,

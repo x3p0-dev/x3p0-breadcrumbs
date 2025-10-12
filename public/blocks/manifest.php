@@ -127,6 +127,7 @@ return array(
 					'orientation' => 'horizontal'
 				)
 			),
+			'shadow' => true,
 			'spacing' => array(
 				'blockGap' => true,
 				'margin' => true,

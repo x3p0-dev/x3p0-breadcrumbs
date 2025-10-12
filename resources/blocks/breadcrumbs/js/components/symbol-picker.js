@@ -20,38 +20,32 @@ const SymbolPicker = ({
 	options,
 	label,
 	description
-}) => {
-	const symbolButton = (symbol, index) => (
-		<Button
-			key={ index }
-			isPressed={ value === symbol.value }
-			className="x3p0-breadcrumbs-symbol-picker__button"
-			label={ symbol.label }
-			showTooltip
-			onClick={ () => onChange(symbol.value) }
-		>
-			<span className="x3p0-breadcrumbs-symbol-picker__button-text">
-				{ symbol.icon }
-			</span>
-		</Button>
-	);
-
-	return (
-		<BaseControl
-			className="x3p0-breadcrumbs-symbol-picker"
-			label={ label }
-			__nextHasNoMarginBottom
-		>
-			<div className="x3p0-breadcrumbs-symbol-picker__description">
-				{ description }
-			</div>
-			<Grid className="x3p0-breadcrumbs-symbol-picker__grid" columns="6">
-				{ options.map((symbol, index) =>
-					symbolButton(symbol, index)
-				) }
-			</Grid>
-		</BaseControl>
-	);
-};
+}) => (
+	<BaseControl
+		className="x3p0-breadcrumbs-symbol-picker"
+		label={label}
+		__nextHasNoMarginBottom
+	>
+		<div className="x3p0-breadcrumbs-symbol-picker__description">
+			{description}
+		</div>
+		<Grid className="x3p0-breadcrumbs-symbol-picker__grid" columns="6">
+			{options.map((symbol, index) => (
+				<Button
+					key={index}
+					isPressed={value === symbol.value}
+					className="x3p0-breadcrumbs-symbol-picker__button"
+					label={symbol.label}
+					showTooltip
+					onClick={() => onChange(symbol.value)}
+				>
+					<span className="x3p0-breadcrumbs-symbol-picker__button-text">
+						{symbol.icon}
+					</span>
+				</Button>
+			))}
+		</Grid>
+	</BaseControl>
+);
 
 export default SymbolPicker;

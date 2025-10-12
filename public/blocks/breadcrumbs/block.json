@@ -78,6 +78,7 @@
   "supports": {
     "anchor": true,
     "align": true,
+    "ariaLabel": true,
     "html": false,
     "__experimentalBorder": {
       "radius": true,

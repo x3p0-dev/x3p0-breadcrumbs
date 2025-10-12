@@ -85,6 +85,7 @@ return array(
 		'supports' => array(
 			'anchor' => true,
 			'align' => true,
+			'ariaLabel' => true,
 			'html' => false,
 			'__experimentalBorder' => array(
 				'radius' => true,

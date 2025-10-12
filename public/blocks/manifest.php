@@ -17,6 +17,11 @@ return array(
 		'attributes' => array(
 			'justifyContent' => array(
 				'type' => 'string',
+				'enum' => array(
+					'left',
+					'center',
+					'right'
+				),
 				'default' => ''
 			),
 			'showHomeLabel' => array(
@@ -53,6 +58,11 @@ return array(
 			),
 			'markup' => array(
 				'type' => 'string',
+				'enum' => array(
+					'html',
+					'microdata',
+					'rdfa'
+				),
 				'default' => 'rdfa'
 			),
 			'postTaxonomy' => array(

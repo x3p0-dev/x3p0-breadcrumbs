@@ -10,6 +10,7 @@
 	"attributes" : {
 		"justifyContent": {
 			"type": "string",
+			"enum": [ "left", "center", "right" ],
 			"default": ""
 		},
 		"showHomeLabel": {
@@ -44,6 +45,7 @@
 		},
 		"markup": {
 			"type": "string",
+			"enum": [ "html", "microdata", "rdfa" ],
 			"default": "rdfa"
 		},
 		"postTaxonomy": {

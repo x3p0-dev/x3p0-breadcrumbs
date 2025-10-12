@@ -8,8 +8,7 @@
  */
 
 import { useInstanceId } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
-import { store as coreStore } from '@wordpress/core-data';
+import { useEntityRecords } from '@wordpress/core-data';
 import { RawHTML } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import {
@@ -23,16 +22,18 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	const { mapRewriteTags = {} } = attributes;
 
 	// Get viewable post types with rewrite tags.
-	const postTypes = useSelect((select) => {
-		const types = select(coreStore).getPostTypes({ per_page: -1 }) || [];
+	const { records: allPostTypes } = useEntityRecords('root', 'postType', {
+		per_page: -1
+	});
 
-		return types.filter(postType => {
-			if (!postType.viewable) return false;
+	const postTypes = allPostTypes?.filter(postType => {
+		if (!postType.viewable) {
+			return false;
+		}
 
-			const rewrite = postType['x3p0-breadcrumbs/rewrite'];
-			return rewrite?.slug?.includes('%');
-		});
-	}, []);
+		const rewrite = postType['x3p0-breadcrumbs/rewrite'];
+		return rewrite?.slug?.includes('%');
+	}) || [];
 
 	// Explicitly set `false` for the `post` post type. This is because it's
 	// enabled by default, so we need to explicitly tell the Breadcrumbs

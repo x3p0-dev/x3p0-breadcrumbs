@@ -8,8 +8,7 @@
  */
 
 import { useInstanceId } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
-import { store as coreStore } from '@wordpress/core-data';
+import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
 import {
 	SelectControl,
@@ -22,17 +21,16 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 	const { postTaxonomy = {} } = attributes;
 
 	// Get viewable post types and taxonomies.
-	const { postTypes, taxonomies } = useSelect((select) => {
-		const { getPostTypes, getTaxonomies } = select(coreStore);
+	const { records: allPostTypes } = useEntityRecords('root', 'postType', {
+		per_page: -1
+	});
 
-		const types = getPostTypes({ per_page: -1 }) || [];
-		const taxes = getTaxonomies({ per_page: -1 }) || [];
+	const { records: allTaxonomies } = useEntityRecords('root', 'taxonomy', {
+		per_page: -1
+	});
 
-		return {
-			postTypes: types.filter(type => type.viewable),
-			taxonomies: taxes.filter(tax => tax.visibility?.publicly_queryable)
-		};
-	}, []);
+	const postTypes = allPostTypes?.filter(type => type.viewable) || [];
+	const taxonomies = allTaxonomies?.filter(tax => tax.visibility?.publicly_queryable) || [];
 
 	// Get taxonomies for a specific post type.
 	const getTaxonomiesForPostType = (postTypeSlug) =>

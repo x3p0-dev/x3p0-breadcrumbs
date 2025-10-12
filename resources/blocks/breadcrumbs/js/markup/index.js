@@ -18,18 +18,19 @@ import clsx from 'clsx';
 const preventDefault = (event) => event.preventDefault();
 
 // Exports the breadcrumbs block type edit function.
-export default ({ attributes, setAttributes, isSelected }) => {
-	const {
-		labels,
+export default ({
+	attributes: {
+		labels = {},
 		homeIcon,
 		justifyContent,
 		showHomeLabel,
 		showTrailEnd,
 		showTrailStart,
 		separatorIcon
-	} = attributes;
-
-	// Get the blockProps and add custom classes.
+	},
+	setAttributes,
+	isSelected
+}) => {
 	const blockProps = useBlockProps({
 		className: clsx({
 			'breadcrumbs': true,
@@ -40,7 +41,8 @@ export default ({ attributes, setAttributes, isSelected }) => {
 		})
 	});
 
-	// Need inner block props for layout styles to work properly in the admin.
+	// We must use inner block props for layout styles to work properly in
+	// the admin, even though this block doesn't have nested blocks.
 	const innerBlockProps = useInnerBlocksProps(blockProps);
 
 	// We need a default home label value for non-editing contexts when
@@ -60,13 +62,11 @@ export default ({ attributes, setAttributes, isSelected }) => {
 			value={ homeValue }
 			multiline={ false }
 			onChange={ (value) => {
-				const updatedLabels = {
-					...labels,
-					home: value
-				};
+				const updatedLabels = { ...labels };
 
-				// Remove empty values
-				if (! value) {
+				if (value) {
+					updatedLabels.home = value;
+				} else {
 					delete updatedLabels.home;
 				}
 

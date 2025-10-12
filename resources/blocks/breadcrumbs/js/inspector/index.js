@@ -17,13 +17,11 @@ import SettingsPanel from './panel-settings';
 import { InspectorControls } from '@wordpress/block-editor';
 
 // Exports the breadcrumbs block type edit function.
-export default (props) => {
-	return (
-		<InspectorControls group="settings">
-			<SettingsPanel {...props}/>
-			<LabelsPanel {...props}/>
-			<RewriteTagsPanel {...props}/>
-			<PostTaxonomyPanel {...props}/>
-		</InspectorControls>
-	);
-};
+export default (props) => (
+	<InspectorControls group="settings">
+		<SettingsPanel {...props}/>
+		<LabelsPanel {...props}/>
+		<RewriteTagsPanel {...props}/>
+		<PostTaxonomyPanel {...props}/>
+	</InspectorControls>
+);

@@ -6,9 +6,9 @@ Only the current major version of the project receives security updates. Securit
 
 | Version | Support        |
 |---------|----------------|
-| 3.0.x   | 👍 Supported   |
-| 2.0.x   | 👎 Unsupported |
-| 1.0.x   | 👎 Unsupported |
+| 3.x     | 👍 Supported   |
+| 2.x     | 👎 Unsupported |
+| 1.x     | 👎 Unsupported |
 
 ## Reporting a Vulnerability
 

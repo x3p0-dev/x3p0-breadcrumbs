@@ -65,13 +65,10 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 	};
 
 	// Reset handler for ToolsPanelItem.
-	const resetPanelItem = (postType) => () => {
-		const { [postType]: _, ...updatedPostTaxonomy } = postTaxonomy;
-		setAttributes({ postTaxonomy: updatedPostTaxonomy });
-	};
+	const resetPanelItem = (postType) => () => onTaxonomyChange(postType, '');
 
 	// Resets the post taxonomies to the default.
-	const resetPanel = () => setAttributes({ postTaxonomy: {} });
+	const resetPanel = () => setAttributes({ postTaxonomy: undefined });
 
 	return (
 		<ToolsPanel

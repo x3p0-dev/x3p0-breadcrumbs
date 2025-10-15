@@ -32,12 +32,9 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 		setAttributes({ labels: updatedLabels });
 	};
 
-	const resetPanelItem = (type) => () => {
-		const { [type]: _, ...updatedLabels } = labels;
-		setAttributes({ labels: updatedLabels });
-	};
+	const resetPanelItem = (type) => () => onLabelChange(type, '');
 
-	const resetPanel = () => setAttributes({ labels: {} });
+	const resetPanel = () => setAttributes({ labels: undefined });
 
 	const labelSettings = [
 		...(

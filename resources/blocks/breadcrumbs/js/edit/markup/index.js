@@ -78,36 +78,41 @@ export default ({
 		/>
 	);
 
+	const CrumbLink = ({ children }) => (
+		<a className="breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
+			{children}
+		</a>
+	);
+
 	return (
 		<nav {...innerBlockProps}>
 			<ol className="breadcrumbs__trail">
-				{ showTrailStart && (
+				{showTrailStart && (
 					<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
-						<a
-							href="#breadcrumbs-pseudo-link"
-							onClick={ preventDefault }
-							className="breadcrumbs__crumb-content"
-						>
-							{ homeLabel }
-						</a>
+						<CrumbLink>
+							{homeLabel}
+						</CrumbLink>
 					</li>
 				)}
 				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-					<a
-						href="#breadcrumbs-pseudo-link"
-						onClick={ preventDefault }
-						className="breadcrumbs__crumb-content"
-					>
+					<CrumbLink>
 						<span className="breadcrumbs__crumb-label">
-							{ __('Parent Page', 'x3p0-breadcrumbs') }
+							{ __('Ancestor', 'x3p0-breadcrumbs') }
 						</span>
-					</a>
+					</CrumbLink>
+				</li>
+				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+					<CrumbLink>
+						<span className="breadcrumbs__crumb-label">
+							{ __('Parent', 'x3p0-breadcrumbs') }
+						</span>
+					</CrumbLink>
 				</li>
 				{ showTrailEnd && (
 					<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
 						<span className="breadcrumbs__crumb-content">
 							<span className="breadcrumbs__crumb-label">
-								{ __('Current Page', 'x3p0-breadcrumbs') }
+								{ __('Current', 'x3p0-breadcrumbs') }
 							</span>
 						</span>
 					</li>

@@ -30,7 +30,7 @@ class Register implements Bootable
 	{
 		// We need to register this block very late so that we have
 		// access to post types with the filter on the block type meta.
-		add_action('init', [$this, 'register'], PHP_INT_MAX);
+		add_action('init', [$this, 'register'], 999);
 		add_filter('block_type_metadata', [$this, 'setMetadata']);
 	}
 

@@ -43,7 +43,7 @@ class Builder implements Contracts\Builder
 			array_replace_recursive([
 				'labels'           => $this->defaultLabels(),
 				'map_rewrite_tags' => $this->defaultRewriteTags(),
-				'post_taxonomy'    => $this->defaultPostTaxonomies(),
+				'post_taxonomy'    => [],
 				'network'          => false
 			], $this->options)
 		);
@@ -216,18 +216,11 @@ class Builder implements Contracts\Builder
 	 */
 	protected function defaultRewriteTags(): array
 	{
-		return [ 'post' => true ];
-	}
+		$types = array_filter(
+			get_post_types(['publicly_queryable' => true], 'objects'),
+			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
+		);
 
-	/**
-	 * Returns an array of default post taxonomies. By default, we're only
-	 * concerned with the Core `post` post type. If its permalink is set to
-	 * `%postname%`, use the `category` taxonomy.
-	 */
-	protected function defaultPostTaxonomies(): array
-	{
-		$structure = trim(get_option('permalink_structure'), '/');
-
-		return '%postname%' === $structure ? [ 'post' => 'category' ] : [];
+		return ['post' => true] + array_fill_keys(array_keys($types), true);
 	}
 }

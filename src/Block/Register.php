@@ -28,13 +28,14 @@ class Register implements Bootable
 	 */
 	public function boot(): void
 	{
-		add_action('init', [$this, 'register']);
+		// We need to register this block very late so that we have
+		// access to post types with the filter on the block type meta.
+		add_action('init', [$this, 'register'], PHP_INT_MAX);
+		add_filter('block_type_metadata', [$this, 'setMetadata']);
 	}
 
 	/**
 	 * Registers the block with WordPress.
-	 *
-	 * @internal WordPress hook callback. Do not call directly.
 	 */
 	public function register(): void
 	{
@@ -42,5 +43,29 @@ class Register implements Bootable
 			$this->path,
 			"{$this->path}/manifest.php"
 		);
+	}
+
+	/**
+	 * Dynamically sets all publicly queryable post types with a `%tagname%`
+	 * (rewrite tag) in their slug to have mapping enabled by default. This
+	 * happens at the time of block registration.
+	 */
+	public function setMetadata(array $metadata): array
+	{
+		if ('x3p0/breadcrumbs' != $metadata['name']) {
+			return $metadata;
+		}
+
+		$types = array_filter(
+			get_post_types(['publicly_queryable' => true], 'objects'),
+			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
+		);
+
+		$metadata['attributes']['mapRewriteTags'] = [
+			'type'    => 'object',
+			'default' => ['post' => true] + array_fill_keys(array_keys($types), true)
+		];
+
+		return $metadata;
 	}
 }

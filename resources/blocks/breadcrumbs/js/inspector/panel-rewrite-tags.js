@@ -35,19 +35,18 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 		return rewrite?.slug?.includes('%');
 	}) || [];
 
-	// Explicitly set `false` for the `post` post type. This is because it's
-	// enabled by default, so we need to explicitly tell the Breadcrumbs
-	// script on the PHP end not to map tags for it.
+	// Bail early if no post types with rewrite tags.
+	if (0 === postTypes.length) {
+		return null;
+	}
+
+	// Explicitly set `true` or `false`. This is because post types with
+	// rewrite tags are enabled by default. So we need to explicitly tell
+	// the Breadcrumbs script on the PHP end how to handle this.
 	const onRewriteTagChange = (postType, checked) => {
 		const updatedRewriteTags = { ...mapRewriteTags };
 
-		if (checked) {
-			updatedRewriteTags[postType] = true;
-		} else if ('post' === postType) {
-			updatedRewriteTags[postType] = false;
-		} else {
-			delete updatedRewriteTags[postType];
-		}
+		updatedRewriteTags[postType] = !! checked;
 
 		setAttributes({ mapRewriteTags: updatedRewriteTags });
 	};
@@ -56,14 +55,14 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	const resetPanelItem = (postTypeSlug) => () =>
 		onRewriteTagChange(postTypeSlug, false);
 
-	// Resets the post rewrite tags to no mapping. Explicitly set the `post`
-	// post type since it's `true` by default.
-	const resetPanel = () => setAttributes({ mapRewriteTags: { post: false } });
+	// Resets the post rewrite tags to no mapping.
+	const resetPanel = () => {
+		let types = {};
 
-	// Bail early if no post types with rewrite tags.
-	if (postTypes.length === 0) {
-		return null;
-	}
+		postTypes.map((postType) => types[postType.slug] = false);
+
+		setAttributes({ mapRewriteTags: types });
+	};
 
 	return (
 		<ToolsPanel

@@ -41,8 +41,16 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 
 	const labelSettings = [
 		...(
-			showHomeLabel && showTrailStart
-			? [{ name: 'home', label: __('Home', 'x3p0-breadcrumbs') }]
+			showTrailStart
+			? [
+				{
+					name: 'home',
+					label: __('Home', 'x3p0-breadcrumbs'),
+					help: ! showHomeLabel
+						? __('Label is visually hidden but is readable to users with assistive technology.', 'x3p0-breadcrumbs')
+						: ''
+				}
+			]
 			: []
 		),
 		{
@@ -81,6 +89,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 						placeholder={item.placeholder || item.label}
 						value={labels[item.name] || ''}
 						onChange={(value) => onLabelChange(item.name, value)}
+						help={item.help || ''}
 					/>
 				</ToolsPanelItem>
 			))}

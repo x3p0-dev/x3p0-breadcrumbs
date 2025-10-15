@@ -43,9 +43,8 @@ class PostTerms extends Assembler
 
 		// Check that terms were returned.
 		if ($terms && ! is_wp_error($terms)) {
-			// Sort the terms by ID and get the first term.
-			$terms = wp_list_sort($terms, 'term_id');
-			$term  = get_term($terms[0], $this->taxonomy->name);
+			// Get the first term object.
+			$term = $terms[0];
 
 			// If the term has a parent, add its ancestor crumbs to
 			// the breadcrumb trail.

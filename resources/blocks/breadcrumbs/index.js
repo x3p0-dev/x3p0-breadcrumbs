@@ -15,15 +15,14 @@ import './scss/style.scss';
 import {registerBlockType}     from '@wordpress/blocks';
 import {G, Polygon, Rect, SVG} from '@wordpress/primitives';
 
-import metadata from './block.json';
-
-import Toolbar    from './js/toolbar';
-import Inspector  from './js/inspector';
-import Markup     from './js/markup';
+import metadata   from './block.json';
+import edit       from './js/edit'
 import deprecated from './js/deprecated';
 
 // Register block type.
 registerBlockType(metadata, {
+	edit,
+	deprecated,
 	icon: (
 		<SVG xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
 			<G><Rect fill="none" height="24" width="24"/></G>
@@ -32,13 +31,5 @@ registerBlockType(metadata, {
 				<Polygon points="8.5,5 0,5 0,12 0,19 8.5,19 13.5,12"/>
 			</G>
 		</SVG>
-	),
-	edit: (props) => (
-		<>
-			<Toolbar {...props}/>
-			<Inspector {...props}/>
-			<Markup {...props}/>
-		</>
-	),
-	deprecated
+	)
 });

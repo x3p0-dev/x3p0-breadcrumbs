@@ -27,11 +27,12 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	});
 
 	const postTypes = allPostTypes?.filter(postType => {
-		if (!postType.viewable) {
+		if (! postType.viewable) {
 			return false;
 		}
 
 		const rewrite = postType['x3p0-breadcrumbs/rewrite'];
+
 		return rewrite?.slug?.includes('%');
 	}) || [];
 
@@ -52,8 +53,7 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	};
 
 	// Reset handler for ToolsPanelItem.
-	const resetPanelItem = (postTypeSlug) => () =>
-		onRewriteTagChange(postTypeSlug, false);
+	const resetPanelItem = (postType) => () => onRewriteTagChange(postType, false);
 
 	// Resets the post rewrite tags to no mapping.
 	const resetPanel = () => {
@@ -82,7 +82,7 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 			{postTypes.map((postType) => (
 				<ToolsPanelItem
 					key={postType.slug}
-					hasValue={() => !!mapRewriteTags[postType.slug]}
+					hasValue={() => !! mapRewriteTags[postType.slug]}
 					label={postType.labels.singular_name}
 					onDeselect={resetPanelItem(postType.slug)}
 					panelId={panelId}

@@ -29,23 +29,29 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 		per_page: -1
 	});
 
-	const postTypes = allPostTypes?.filter(type => type.viewable) || [];
+	const postTypes  = allPostTypes?.filter(type => type.viewable) || [];
 	const taxonomies = allTaxonomies?.filter(tax => tax.visibility?.publicly_queryable) || [];
 
 	// Get taxonomies for a specific post type.
-	const getTaxonomiesForPostType = (postTypeSlug) =>
-		taxonomies.filter(tax => tax.types?.includes(postTypeSlug));
+	const getPostTaxonomies = (postType) => taxonomies.filter(
+		tax => tax.types?.includes(postType)
+	);
 
 	// Get taxonomy options for select control.
-	const getTaxonomyOptions = (postTypeSlug) => [
-		{ label: __('None', 'x3p0-breadcrumbs'), value: '' },
-		...getTaxonomiesForPostType(postTypeSlug).map(tax => ({
+	const getTaxonomyOptions = (postType) => [
+		{
+			label: __('None', 'x3p0-breadcrumbs'),
+			value: ''
+		},
+		...getPostTaxonomies(postType).map(tax => ({
 			label: tax.labels.singular_name,
 			value: tax.slug
 		}))
 	];
 
-	// Updates the post taxonomy object when an option changes.
+	// Updates the post taxonomy object when an option changes. We can
+	// delete post types without assigned taxonomies from the attribute
+	// since they are not enabled by default.
 	const onTaxonomyChange = (postType, taxonomy) => {
 		const updatedPostTaxonomy = { ...postTaxonomy };
 
@@ -59,8 +65,8 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 	};
 
 	// Reset handler for ToolsPanelItem.
-	const resetPanelItem = (postTypeSlug) => () => {
-		const { [postTypeSlug]: _, ...updatedPostTaxonomy } = postTaxonomy;
+	const resetPanelItem = (postType) => () => {
+		const { [postType]: _, ...updatedPostTaxonomy } = postTaxonomy;
 		setAttributes({ postTaxonomy: updatedPostTaxonomy });
 	};
 
@@ -77,7 +83,7 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 				{__('Select a taxonomy to appear in the breadcrumb trail for single post views.', 'x3p0-breadcrumbs')}
 			</div>
 			{postTypes.map((postType) => {
-				const postTypeTaxonomies = getTaxonomiesForPostType(postType.slug);
+				const postTypeTaxonomies = getPostTaxonomies(postType.slug);
 
 				// Only show dropdown if post type has taxonomies.
 				if (0 === postTypeTaxonomies.length) {

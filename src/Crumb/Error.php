@@ -22,4 +22,12 @@ class Error extends Crumb
 	{
 		return $this->builder->getLabel('error_404');
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getUrl(): string
+	{
+		return '';
+	}
 }

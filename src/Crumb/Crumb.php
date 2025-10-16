@@ -47,6 +47,6 @@ abstract class Crumb implements Contracts\Crumb
 	 */
 	public function getUrl(): string
 	{
-		return '';
+		return add_query_arg([]);
 	}
 }

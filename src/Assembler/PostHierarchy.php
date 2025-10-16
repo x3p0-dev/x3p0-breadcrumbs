@@ -93,7 +93,7 @@ class PostHierarchy extends Assembler
 		}
 
 		// Map the rewrite tags if there's a `%` in the slug.
-		if ($rewrite && false !== strpos($rewrite['slug'], '%')) {
+		if ($rewrite && str_contains($rewrite['slug'], '%')) {
 			$this->builder->assemble('post-rewrite-tags', [
 				'post' => $this->post,
 				'path' => $rewrite['slug']

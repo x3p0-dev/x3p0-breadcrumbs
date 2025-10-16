@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - _Unreleased_
+
+### Added
+
+- New **Rewrite Tags** block option, which lets you select which post types map to rewrite tags (e.g., `%category%`, `%author%`, etc.). Only post types with rewrite tags in their slugs appear as options.
+- New **Post Taxonomies** block option, which lets you choose which taxonomy's terms to display in the breadcrumb trail for single post views.
+- New **Labels** block option, which lets you customize a subset of labels that most commonly need to be changed:
+  - Home
+  - Archives
+  - Search Results
+  - 404
+- The Home label can now be edited directly from the content canvas.
+- `ariaLabel` block support. WordPress doesn't display a UI control for this, but it's possible to change the default `Breadcrumbs` label via the Code Editor view.
+- `shadow` block support. You can now add shadows—not sure how I missed adding this before.
+- Content-only editing support for the block. When enabled, the toolbar controls no longer appear. However, users can edit the Home label directly in the editor canvas.
+
+### Changed
+
+- Because the new Rewrite Tags and Post Taxonomies block options were added, the block no longer defaults to display a category for posts. This can be set manually by the user, within patterns, or within theme templates.
+- Under the hood, for the same reason as above, the PHP code no longer auto-sets the category taxonomy for posts when the permalink structure is set to `%postname%`. This was a relic from the code when users didn't have direct control over the settings.
+- All block panels now use the Tools Panel component, which brings them up to date with the Core blocks in WordPress 6.9.
+- The icon-based block attributes have been merged into single attributes. The block is still backwards compatible with the old attributes with no current plans for removing their support:
+  - `separator` and `separatorType` → `separatorIcon`
+  - `homePrefix` and `homePrefixType`→ `homeIcon`
+- The block preview in the content canvas now shows Home → Ancestor → Parent → Current. This change was implemented so that users can better see the effects of removing the first and/or last breadcrumbs in the editor.
+- The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. This has always been the case. It's just defined in `block.json` now.
+
+### Fixed
+
+- Post taxonomy terms on single post views are no longer sorted by the plugin. This allows third-party plugins to manage the sorting. This is particularly important for SEO plugins that allow you to set a "primary" term for a post.
+
+### Removed
+
+- Support for editing the Block layout. Previously, you could change how the block wrapped, but this was just UI clutter that served no practical purpose.
+- Call to `wp_set_script_translations()` for the block. WordPress already handles this through the normal block registration process.
+
 ## [3.1.0] - 2025-10-05
 
 ### Added

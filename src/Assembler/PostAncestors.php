@@ -37,14 +37,13 @@ class PostAncestors extends Assembler
 	 */
 	public function assemble(): void
 	{
-		$post    = $this->post;
-		$post_id = $post->post_parent;
-		$parents = [];
+		$post          = $this->post;
+		$post_id       = $post->post_parent;
+		$parents       = [];
+		$show_on_front = get_option('show_on_front');
+		$page_on_front = get_option('page_on_front');
 
 		while ($post_id) {
-			$show_on_front = get_option('show_on_front');
-			$page_on_front = get_option('page_on_front');
-
 			// If we hit a post that's set as the front page, bail.
 			if ('posts' !== $show_on_front && $post_id === $page_on_front) {
 				break;

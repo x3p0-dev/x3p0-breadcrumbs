@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Contracts\Crumb;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -54,6 +55,7 @@ abstract class Markup implements Contracts\Markup
 				'show_on_front'      => false,
 				'show_first_item'    => true,
 				'show_last_item'     => true,
+				'link_last_item'     => false,
 				'before'             => '',
 				'after'              => '',
 				'container_attr'     => [
@@ -118,5 +120,31 @@ abstract class Markup implements Contracts\Markup
 		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
 
 		return implode(' ', array_map($callback, $attrs, $values));
+	}
+
+	/**
+	 * Helper function for determining whether the breadcrumb has a URL and
+	 * returning it.
+	 *
+	 * @internal Used for internal `Markup` classes and may change or be removed.
+	 */
+	public function processCrumbUrl(Crumb $crumb, int $count, int $position): string
+	{
+		// Bail early if the crumb doesn't have a URL.
+		if (! $url = $crumb->getUrl()) {
+			return '';
+		}
+
+		// If this is not the last item, it should always be linked.
+		if ($position !== $count) {
+			return $url;
+		}
+
+		// At this point, this is the last breadcrumb. It should only be
+		// linked if the original last item has been explicitly removed
+		// (making this the parent) or if the last item link is enabled.
+		return ! $this->getOption('show_last_item') || $this->getOption('link_last_item')
+			? $url
+			: '';
 	}
 }

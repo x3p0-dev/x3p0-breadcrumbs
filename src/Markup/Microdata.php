@@ -56,10 +56,9 @@ class Microdata extends Html
 	private function renderCrumb(Crumb $crumb, int $count, int $position): string
 	{
 		// Get the crumb URL and determine whether to link the crumb.
-		$url       = $crumb->getUrl();
+		$url       = $this->processCrumbUrl($crumb, $count, $position);
 		$is_last   = $position === $count;
 		$show_last = $this->getOption('show_last_item');
-		$has_link  = ($url && ! $is_last) || ($url && $is_last && ! $show_last);
 
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
@@ -71,7 +70,7 @@ class Microdata extends Html
 		// not the normal last item. However, link the last item if the
 		// original last item was popped off the array.
 		$item = sprintf(
-			$has_link
+			$url
 				? '<a href="%s" class="breadcrumbs__crumb-content" itemprop="item">%s</a>'
 				: '<span class="breadcrumbs__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
 			esc_url($url),

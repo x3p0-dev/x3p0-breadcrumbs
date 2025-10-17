@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-use X3P0\Breadcrumbs\Builder\Collection;
-
 /**
  * Builder classes are responsible for creating an array of `Crumb` objects.
  * These can then be used by other classes to output the trail as HTML.

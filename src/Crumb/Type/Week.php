@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Week extends Crumb
 {
+	public const TYPE = 'week';
+
 	/**
 	 * {@inheritdoc}
 	 */

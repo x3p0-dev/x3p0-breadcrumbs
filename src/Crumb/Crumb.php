@@ -21,6 +21,14 @@ use X3P0\Breadcrumbs\Contracts;
 abstract class Crumb implements Contracts\Crumb
 {
 	/**
+	 * Defines the crumb type.
+	 *
+	 * @todo Move to interface with PHP 8.1+ requirement (can be overwritten).
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TYPE = 'default';
+
+	/**
 	 * Creates a new crumb object.
 	 */
 	public function __construct(
@@ -28,18 +36,11 @@ abstract class Crumb implements Contracts\Crumb
 	) {}
 
 	/**
-	 * Returns the type for the crumb. By default, we just use the PHP class
-	 * name to build the type. If wanting something custom, this should be
-	 * handled in a subclass.
+	 * Returns the crumb type.
 	 */
 	public function getType(): string
 	{
-		$class = explode('\\', get_class($this));
-		$class = array_pop($class);
-
-		$pascal = preg_split('/((?<=[a-z])(?=[A-Z])|(?=[A-Z][a-z]))/', $class, -1, PREG_SPLIT_NO_EMPTY);
-
-		return strtolower(join('-', $pascal));
+		return static::TYPE;
 	}
 
 	/**

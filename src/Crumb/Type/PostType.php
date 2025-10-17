@@ -19,6 +19,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class PostType extends Crumb
 {
+	public const TYPE = 'post-type';
+
 	/**
 	 * {@inheritdoc}
 	 */

@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Home extends Crumb
 {
+	public const TYPE = 'home';
+
 	/**
 	 * {@inheritdoc}
 	 */

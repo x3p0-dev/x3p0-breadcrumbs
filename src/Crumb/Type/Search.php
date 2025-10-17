@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Search extends Crumb
 {
+	public const TYPE = 'search';
+
 	/**
 	 * {@inheritdoc}
 	 */

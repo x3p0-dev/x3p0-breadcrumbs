@@ -18,6 +18,8 @@ use X3P0\Breadcrumbs\Tools\Helpers;
 
 class PagedQueryBlock extends Crumb
 {
+	public const TYPE = 'paged-query-block';
+
 	/**
 	 * {@inheritdoc}
 	 */

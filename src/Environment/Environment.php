@@ -159,7 +159,7 @@ class Environment implements Contracts\Environment
 			'archive'        => Crumb\Type\Archive::class,
 			'author'         => Crumb\Type\Author::class,
 			'day'            => Crumb\Type\Day::class,
-			'error-404'      => Crumb\Type\Error::class,
+			'error-404'      => Crumb\Type\Error404::class,
 			'home'           => Crumb\Type\Home::class,
 			'minute'         => Crumb\Type\Minute::class,
 			'minute-hour'    => Crumb\Type\MinuteHour::class,

@@ -21,6 +21,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class MinuteHour extends Crumb
 {
+	public const TYPE = 'minute-hour';
+
 	/**
 	 * {@inheritdoc}
 	 */

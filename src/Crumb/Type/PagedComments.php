@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class PagedComments extends Crumb
 {
+	public const TYPE = 'paged-comments';
+
 	/**
 	 * {@inheritdoc}
 	 */

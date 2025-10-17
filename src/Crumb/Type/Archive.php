@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Archive extends Crumb
 {
+	public const TYPE = 'archive';
+
 	/**
 	 * {@inheritdoc}
 	 */

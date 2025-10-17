@@ -15,8 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
-class Error extends Crumb
+class Error404 extends Crumb
 {
+	public const TYPE = 'error-404';
+
 	/**
 	 * {@inheritdoc}
 	 */

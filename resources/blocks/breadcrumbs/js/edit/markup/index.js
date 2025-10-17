@@ -23,6 +23,7 @@ export default ({
 		labels = {},
 		homeIcon,
 		justifyContent,
+		linkTrailEnd,
 		showHomeLabel,
 		showTrailEnd,
 		showTrailStart,
@@ -108,13 +109,21 @@ export default ({
 						</span>
 					</CrumbLink>
 				</li>
-				{ showTrailEnd && (
+				{showTrailEnd && (
 					<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
-						<span className="breadcrumbs__crumb-content">
-							<span className="breadcrumbs__crumb-label">
-								{ __('Current', 'x3p0-breadcrumbs') }
+						{linkTrailEnd ? (
+							<CrumbLink>
+								<span className="breadcrumbs__crumb-label">
+									{ __('Current', 'x3p0-breadcrumbs') }
+								</span>
+							</CrumbLink>
+						) : (
+							<span className="breadcrumbs__crumb-content">
+								<span className="breadcrumbs__crumb-label">
+									{ __('Current', 'x3p0-breadcrumbs') }
+								</span>
 							</span>
-						</span>
+						)}
 					</li>
 				)}
 			</ol>

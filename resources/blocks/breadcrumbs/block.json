@@ -43,6 +43,10 @@
 			"default": {},
 			"role": "content"
 		},
+		"linkTrailEnd": {
+			"type": "boolean",
+			"default": false
+		},
 		"mapRewriteTags": {
 			"type": "object",
 			"default": {

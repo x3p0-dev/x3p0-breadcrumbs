@@ -39,6 +39,7 @@ const SettingsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(SettingsPanel);
 
 	const {
+		linkTrailEnd,
 		markup,
 		showOnHomepage,
 		showTrailStart,
@@ -95,16 +96,29 @@ const SettingsPanel = ({ attributes, setAttributes }) => {
 		/>
 	);
 
+	const linkTrailEndControl = (
+		<ToggleControl
+			label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
+			checked={ linkTrailEnd }
+			onChange={ () => setAttributes({
+				linkTrailEnd: ! linkTrailEnd
+			}) }
+			__nextHasNoMarginBottom={ true }
+		/>
+	);
+
 	const resetMarkup = () => setAttributes({ markup: 'rdfa' });
 	const resetShowOnHomepage = () => setAttributes({ showOnHomepage: false });
 	const resetShowTrailStart = () => setAttributes({ showTrailStart: false });
 	const resetShowTrailEnd = () => setAttributes({ showTrailEnd: false });
+	const resetLinkTrailEnd = () => setAttributes({ linkTrailEnd: false });
 
 	const resetPanel = () => {
 		resetMarkup();
 		resetShowOnHomepage();
 		resetShowTrailStart();
 		resetShowTrailEnd();
+		resetLinkTrailEnd();
 	};
 
 	return (
@@ -147,6 +161,16 @@ const SettingsPanel = ({ attributes, setAttributes }) => {
 			>
 				{ showTrailEndControl }
 			</ToolsPanelItem>
+			{showTrailEnd && (
+				<ToolsPanelItem
+					label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
+					hasValue={ () => !! linkTrailEnd }
+					onDeselect={ resetLinkTrailEnd }
+					panelId={ panelId }
+				>
+					{ linkTrailEndControl }
+				</ToolsPanelItem>
+			)}
 		</ToolsPanel>
 	);
 };

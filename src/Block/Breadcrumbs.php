@@ -44,6 +44,7 @@ class Breadcrumbs implements Block
 		];
 
 		$markup_options = [
+			'link_last_item'  => $this->attributes['linkTrailEnd']   ?? false,
 			'show_on_front'   => $this->attributes['showOnHomepage'] ?? false,
 			'show_first_item' => $this->attributes['showTrailStart'] ?? false,
 			'show_last_item'  => $this->attributes['showTrailEnd']   ?? true,

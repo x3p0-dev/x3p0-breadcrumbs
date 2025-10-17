@@ -56,6 +56,10 @@ return array(
 				),
 				'role' => 'content'
 			),
+			'linkTrailEnd' => array(
+				'type' => 'boolean',
+				'default' => false
+			),
 			'mapRewriteTags' => array(
 				'type' => 'object',
 				'default' => array(

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
-use X3P0\Breadcrumbs\Contracts\Crumb;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -39,6 +38,11 @@ abstract class Markup implements Contracts\Markup
 		'i'       => true,
 		'b'       => true
 	];
+
+	/**
+	 * Stores the crumb objects from the builder.
+	 */
+	protected Contracts\CrumbCollection $crumbs;
 
 	/**
 	 * Creates a new markup object. The constructor requires a `Breadcrumbs`
@@ -70,36 +74,8 @@ abstract class Markup implements Contracts\Markup
 				]
 			], $this->options)
 		);
-	}
 
-	/**
-	 * Helper method for grabbing the breadcrumbs array and removing any
-	 * items that should be removed.
-	 */
-	protected function getCrumbs(): array
-	{
-		// Bail early if is front page and crumbs shouldn't be shown.
-		if (
-			is_front_page()
-			&& ! $this->getOption('show_on_front')
-			&& ! Helpers::isPagedView()
-		) {
-			return [];
-		}
-
-		$crumbs = $this->builder->build()->getCrumbs();
-
-		// Remove the first crumb item if it's not supposed to be shown.
-		if (! $this->getOption('show_first_item')) {
-			array_shift($crumbs);
-		}
-
-		// Remove the last crumb item if it's not supposed to be shown.
-		if (! $this->getOption('show_last_item')) {
-			array_pop($crumbs);
-		}
-
-		return $crumbs;
+		$this->crumbs = $this->builder->build()->getCrumbs();
 	}
 
 	/**
@@ -108,6 +84,40 @@ abstract class Markup implements Contracts\Markup
 	public function getOption(string $name): mixed
 	{
 		return $this->options[$name] ?? null;
+	}
+
+	/**
+	 * Determines whether the markup is renderable by checking whether there
+	 * are crumbs or conditions in which the HTML shouldn't show.
+	 */
+	protected function isRenderable(): bool
+	{
+		if (
+			is_front_page()
+			&& ! $this->getOption('show_on_front')
+			&& ! Helpers::isPagedView()
+		) {
+			return false;
+		}
+
+		if ($this->crumbs->isEmpty()) {
+			return false;
+		}
+
+		$visible_count = $this->crumbs->count()
+			- ($this->getOption('show_first_item') ? 0 : 1)
+			- ($this->getOption('show_last_item') ? 0 : 1);
+
+		return $visible_count > 0;
+	}
+
+	/**
+	 * Helper method for grabbing the breadcrumbs array and removing any
+	 * items that should be removed.
+	 */
+	protected function getCrumbs(): Contracts\CrumbCollection
+	{
+		return $this->crumbs;
 	}
 
 	/**
@@ -123,28 +133,35 @@ abstract class Markup implements Contracts\Markup
 	}
 
 	/**
-	 * Helper function for determining whether the breadcrumb has a URL and
-	 * returning it.
-	 *
-	 * @internal Used for internal `Markup` classes and may change or be removed.
+	 * Determines whether a given crumb is renderable primarily be ensuring
+	 * that it has a valid label. Otherwise, we determine whether the crumb
+	 * is the first or last item and whether they should be displayed based
+	 * on options passed into the class.
 	 */
-	public function processCrumbUrl(Crumb $crumb, int $count, int $position): string
+	protected function isCrumbRenderable(Contracts\Crumb $crumb): bool
 	{
-		// Bail early if the crumb doesn't have a URL.
-		if (! $url = $crumb->getUrl()) {
-			return '';
+		if (! $crumb->getLabel()) {
+			return false;
 		}
 
-		// If this is not the last item, it should always be linked.
-		if ($position !== $count) {
-			return $url;
+		return ! (
+			($this->crumbs->isFirst() && ! $this->getOption('show_first_item'))
+			|| ($this->crumbs->isLast() && ! $this->getOption('show_last_item'))
+		);
+	}
+
+	/**
+	 * Helper function for determining whether the breadcrumb has a URL and
+	 * whether it should be linked based on options passed into the class.
+	 */
+	protected function isCrumbLinkable(Contracts\Crumb $crumb): bool
+	{
+		if (! $crumb->getUrl()) {
+			return false;
 		}
 
-		// At this point, this is the last breadcrumb. It should only be
-		// linked if the original last item has been explicitly removed
-		// (making this the parent) or if the last item link is enabled.
-		return ! $this->getOption('show_last_item') || $this->getOption('link_last_item')
-			? $url
-			: '';
+		$is_last = $this->crumbs->count() === $this->crumbs->position();
+
+		return ! $is_last || $this->getOption('link_last_item');
 	}
 }

@@ -1,80 +1,45 @@
 <?php
 
 /**
- * Crumbs collection class.
+ * Crumb collection class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2009-2025 Justin Tadlock
- * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
+ * @copyright Copyright (c) 2009-2025, Justin Tadlock
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
+ * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
 declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use TypeError;
-use X3P0\Breadcrumbs\Contracts;
+use InvalidArgumentException;
+use X3P0\Breadcrumbs\Contracts\Crumb;
+use X3P0\Breadcrumbs\Contracts\CrumbCollection;
+use X3P0\Breadcrumbs\Support\Collection;
 
-class Crumbs implements Contracts\Crumbs
+/**
+ * Returns an iterable collection of crumb items.
+ */
+class Crumbs extends Collection implements CrumbCollection
 {
 	/**
-	 * Stores the array of crumb classes.
+	 * {@inheritDoc}
 	 */
-	protected array $crumbs = [];
-
-	/**
-	 * Allows registering a default set of crumbs.
-	 */
-	public function __construct(array $crumbs = [])
+	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		foreach ($crumbs as $name => $class) {
-			$this->add($name, $class);
-		}
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function add(string $name, string $crumb): void
-	{
-		if (! is_subclass_of($crumb, Contracts\Crumb::class)) {
-			throw new TypeError(esc_html(sprintf(
-				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-ideas'),
-				Contracts\Crumb::class
+		if (! $value instanceof Crumb) {
+			throw new InvalidArgumentException(esc_html(sprintf(
+			// Translators: %s is a PHP class name.
+				__('Item must implement %s', 'x3p0-ideas'),
+				Crumb::class
 			)));
 		}
 
-		$this->crumbs[$name] = $crumb;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function remove(string $name): void
-	{
-		unset($this->crumbs[$name]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function has(string $name): bool
-	{
-		return isset($this->crumbs[$name]);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function get(string $name, array $params = []): ?Contracts\Crumb
-	{
-		if ($this->has($name)) {
-			$crumb = $this->crumbs[$name];
-			return new $crumb(...$params);
+		if ($offset === null) {
+			$this->items[] = $value;
+		} else {
+			$this->items[$offset] = $value;
 		}
-
-		return null;
 	}
 }

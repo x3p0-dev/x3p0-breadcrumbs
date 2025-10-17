@@ -29,7 +29,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\Queries $queries;
+	protected Contracts\QueryRegistry $queries;
 
 	/**
 	 * Houses a collection where the keys are the builder name and the values
@@ -37,7 +37,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\Assemblers $assemblers;
+	protected Contracts\AssemblerRegistry $assemblers;
 
 	/**
 	 * Houses a collection where the keys are the crumb name and the values
@@ -45,7 +45,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\Crumbs $crumbs;
+	protected Contracts\CrumbRegistry $crumbs;
 
 	/**
 	 * Builds a new environment by creating empty collections for queries,
@@ -56,9 +56,9 @@ class Environment implements Contracts\Environment
 		array $assemblers = [],
 		array $crumbs = []
 	) {
-		$this->queries    = new Query\Queries($queries);
-		$this->assemblers = new Assembler\Assemblers($assemblers);
-		$this->crumbs     = new Crumb\Crumbs($crumbs);
+		$this->queries    = new Query\QueryTypes($queries);
+		$this->assemblers = new Assembler\AssemblerTypes($assemblers);
+		$this->crumbs     = new Crumb\CrumbTypes($crumbs);
 
 		$this->registerDefaultQueries();
 		$this->registerDefaultAssemblers();
@@ -70,7 +70,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getQueries(): Contracts\Queries
+	public function getQueries(): Contracts\QueryRegistry
 	{
 		return $this->queries;
 	}
@@ -78,7 +78,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getAssemblers(): Contracts\Assemblers
+	public function getAssemblers(): Contracts\AssemblerRegistry
 	{
 		return $this->assemblers;
 	}
@@ -86,7 +86,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getCrumbs(): Contracts\Crumbs
+	public function getCrumbs(): Contracts\CrumbRegistry
 	{
 		return $this->crumbs;
 	}
@@ -97,23 +97,23 @@ class Environment implements Contracts\Environment
 	private function registerDefaultQueries(): void
 	{
 		$defaults = [
-			'archive'           => Query\Archive::class,
-			'author'            => Query\Author::class,
-			'day'               => Query\Day::class,
-			'error-404'         => Query\Error::class,
-			'front-page'        => Query\FrontPage::class,
-			'home'              => Query\Home::class,
-			'hour'              => Query\Hour::class,
-			'minute'            => Query\Minute::class,
-			'minute-hour'       => Query\MinuteHour::class,
-			'month'             => Query\Month::class,
-			'paged'             => Query\Paged::class,
-			'post-type-archive' => Query\PostTypeArchive::class,
-			'search'            => Query\Search::class,
-			'singular'          => Query\Singular::class,
-			'taxonomy'          => Query\Tax::class,
-			'week'              => Query\Week::class,
-			'year'              => Query\Year::class
+			'archive'           => Query\Type\Archive::class,
+			'author'            => Query\Type\Author::class,
+			'day'               => Query\Type\Day::class,
+			'error-404'         => Query\Type\Error::class,
+			'front-page'        => Query\Type\FrontPage::class,
+			'home'              => Query\Type\Home::class,
+			'hour'              => Query\Type\Hour::class,
+			'minute'            => Query\Type\Minute::class,
+			'minute-hour'       => Query\Type\MinuteHour::class,
+			'month'             => Query\Type\Month::class,
+			'paged'             => Query\Type\Paged::class,
+			'post-type-archive' => Query\Type\PostTypeArchive::class,
+			'search'            => Query\Type\Search::class,
+			'singular'          => Query\Type\Singular::class,
+			'taxonomy'          => Query\Type\Tax::class,
+			'week'              => Query\Type\Week::class,
+			'year'              => Query\Type\Year::class
 		];
 
 		foreach ($defaults as $name => $class) {
@@ -129,18 +129,18 @@ class Environment implements Contracts\Environment
 	private function registerDefaultAssemblers(): void
 	{
 		$defaults = [
-			'home'              => Assembler\Home::class,
-			'paged'             => Assembler\Paged::class,
-			'path'              => Assembler\Path::class,
-			'post'              => Assembler\Post::class,
-			'post-ancestors'    => Assembler\PostAncestors::class,
-			'post-hierarchy'    => Assembler\PostHierarchy::class,
-			'post-rewrite-tags' => Assembler\PostRewriteTags::class,
-			'post-terms'        => Assembler\PostTerms::class,
-			'post-type'         => Assembler\PostType::class,
-			'rewrite-front'     => Assembler\RewriteFront::class,
-			'term'              => Assembler\Term::class,
-			'term-ancestors'    => Assembler\TermAncestors::class
+			'home'              => Assembler\Type\Home::class,
+			'paged'             => Assembler\Type\Paged::class,
+			'path'              => Assembler\Type\Path::class,
+			'post'              => Assembler\Type\Post::class,
+			'post-ancestors'    => Assembler\Type\PostAncestors::class,
+			'post-hierarchy'    => Assembler\Type\PostHierarchy::class,
+			'post-rewrite-tags' => Assembler\Type\PostRewriteTags::class,
+			'post-terms'        => Assembler\Type\PostTerms::class,
+			'post-type'         => Assembler\Type\PostType::class,
+			'rewrite-front'     => Assembler\Type\RewriteFront::class,
+			'term'              => Assembler\Type\Term::class,
+			'term-ancestors'    => Assembler\Type\TermAncestors::class
 		];
 
 		foreach ($defaults as $name => $class) {
@@ -156,25 +156,25 @@ class Environment implements Contracts\Environment
 	private function registerDefaultCrumbs(): void
 	{
 		$defaults = [
-			'archive'        => Crumb\Archive::class,
-			'author'         => Crumb\Author::class,
-			'day'            => Crumb\Day::class,
-			'error-404'      => Crumb\Error::class,
-			'home'           => Crumb\Home::class,
-			'minute'         => Crumb\Minute::class,
-			'minute-hour'    => Crumb\MinuteHour::class,
-			'month'          => Crumb\Month::class,
-			'network'        => Crumb\Network::class,
-			'network-site'   => Crumb\NetworkSite::class,
-			'paged'          => Crumb\Paged::class,
-			'paged-comments' => Crumb\PagedComments::class,
-			'paged-singular' => Crumb\PagedSingular::class,
-			'post'           => Crumb\Post::class,
-			'post-type'      => Crumb\PostType::class,
-			'search'         => Crumb\Search::class,
-			'term'           => Crumb\Term::class,
-			'week'           => Crumb\Week::class,
-			'year'           => Crumb\Year::class
+			'archive'        => Crumb\Type\Archive::class,
+			'author'         => Crumb\Type\Author::class,
+			'day'            => Crumb\Type\Day::class,
+			'error-404'      => Crumb\Type\Error::class,
+			'home'           => Crumb\Type\Home::class,
+			'minute'         => Crumb\Type\Minute::class,
+			'minute-hour'    => Crumb\Type\MinuteHour::class,
+			'month'          => Crumb\Type\Month::class,
+			'network'        => Crumb\Type\Network::class,
+			'network-site'   => Crumb\Type\NetworkSite::class,
+			'paged'          => Crumb\Type\Paged::class,
+			'paged-comments' => Crumb\Type\PagedComments::class,
+			'paged-singular' => Crumb\Type\PagedSingular::class,
+			'post'           => Crumb\Type\Post::class,
+			'post-type'      => Crumb\Type\PostType::class,
+			'search'         => Crumb\Type\Search::class,
+			'term'           => Crumb\Type\Term::class,
+			'week'           => Crumb\Type\Week::class,
+			'year'           => Crumb\Type\Year::class
 		];
 
 		foreach ($defaults as $name => $class) {

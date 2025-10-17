@@ -25,22 +25,19 @@ class Html extends Markup
 	 */
 	public function render(): string
 	{
-		// Get an array of breadcrumbs or return.
-		if (! $crumbs = $this->getCrumbs()) {
+		if (! $this->isRenderable()) {
 			return '';
 		}
-
-		// Set baseline count and position variables.
-		$count    = count($crumbs);
-		$position = 1;
 
 		// Build the breadcrumb trail HTML.
 		$html  = "<nav {$this->containerAttr()}>";
 		$html .= '<ol class="breadcrumbs__trail">';
 
-		foreach ($crumbs as $crumb) {
-			$html .= $this->renderCrumb($crumb, $count, $position);
-			++$position;
+		$this->crumbs->rewind();
+
+		while ($this->crumbs->valid()) {
+			$html .= $this->renderCrumb($this->crumbs->current());
+			$this->crumbs->next();
 		}
 
 		$html .= '</ol>';
@@ -53,36 +50,41 @@ class Html extends Markup
 	/**
 	 * Renders the markup for an individual crumb item.
 	 */
-	private function renderCrumb(Crumb $crumb, int $count, int $position): string
+	private function renderCrumb(Crumb $crumb): string
 	{
-		// Get the crumb URL and determine whether to link the crumb.
-		$url       = $this->processCrumbUrl($crumb, $count, $position);
-		$is_last   = $position === $count;
-		$show_last = $this->getOption('show_last_item');
+		if (! $this->isCrumbRenderable($crumb)) {
+			return '';
+		}
 
+		return sprintf(
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
+			esc_attr($crumb->getType()),
+			$this->crumbs->isLast() ? ' aria-current="page"' : '',
+			$this->renderCrumbContent($crumb)
+		);
+	}
+
+	/**
+	 * Renders the markup for an individual crumb's content.
+	 */
+	private function renderCrumbContent(Crumb $crumb): string
+	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="breadcrumbs__crumb-label">%s</span>',
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
-		// Wrap the label with a link if the crumb has one and this is
-		// not the normal last item. However, link the last item if the
-		// original last item was popped off the array.
-		$item = sprintf(
-			$url
-				? '<a href="%s" class="breadcrumbs__crumb-content">%s</a>'
-				: '<span class="breadcrumbs__crumb-content">%2$s</span>',
-			esc_url($url),
-			$label
-		);
+		// Return the linked content if the crumb has a URL.
+		if ($this->isCrumbLinkable($crumb)) {
+			return sprintf(
+				'<a href="%s" class="breadcrumbs__crumb-content">%s</a>',
+				esc_url($crumb->getUrl()),
+				$label
+			);
+		}
 
-		// Build the list item.
-		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
-			esc_attr($crumb->getType()),
-			$is_last && $show_last ? ' aria-current="page"' : '',
-			$item
-		);
+		// Return an unlinked span if there's no URL.
+		return '<span class="breadcrumbs__crumb-content">' . $label . '</span>';
 	}
 }

@@ -80,7 +80,7 @@ class PostHierarchy extends Assembler
 
 				// Check if we've added a post type crumb.
 				foreach ($this->builder->getCrumbs() as $crumb) {
-					if ($crumb instanceof PostType) {
+					if ($crumb->isType('post-type')) {
 						$done_post_type = true;
 						break;
 					}

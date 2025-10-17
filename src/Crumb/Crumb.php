@@ -36,11 +36,19 @@ abstract class Crumb implements Contracts\Crumb
 	) {}
 
 	/**
-	 * Returns the crumb type.
+	 * {@inheritDoc}
 	 */
 	public function getType(): string
 	{
 		return static::TYPE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function isType(string $type): bool
+	{
+		return $type === static::TYPE;
 	}
 
 	/**

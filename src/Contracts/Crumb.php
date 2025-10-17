@@ -27,6 +27,11 @@ interface Crumb
 	public function getType(): string;
 
 	/**
+	 * Determines whether crumb is of a given type.
+	 */
+	public function isType(string $type): bool;
+
+	/**
 	 * Returns an internationalized text label for the crumb.
 	 */
 	public function getLabel(): string;

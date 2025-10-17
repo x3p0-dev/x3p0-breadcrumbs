@@ -38,17 +38,17 @@ class Breadcrumbs implements Block
 	public function render(): string
 	{
 		$builder_options = [
-			'post_taxonomy'    => $this->attributes['postTaxonomy'] ?? [],
+			'labels'           => $this->attributes['labels']         ?? [],
 			'map_rewrite_tags' => $this->attributes['mapRewriteTags'] ?? [],
-			'labels'           => $this->attributes['labels'] ?? []
+			'post_taxonomy'    => $this->attributes['postTaxonomy']   ?? []
 		];
 
 		$markup_options = [
+			'container_attr'  => $this->getWrapperAttributes(),
 			'link_last_item'  => $this->attributes['linkTrailEnd']   ?? false,
-			'show_on_front'   => $this->attributes['showOnHomepage'] ?? false,
 			'show_first_item' => $this->attributes['showTrailStart'] ?? false,
 			'show_last_item'  => $this->attributes['showTrailEnd']   ?? true,
-			'container_attr'  => $this->getWrapperAttributes()
+			'show_on_front'   => $this->attributes['showOnHomepage'] ?? false
 		];
 
 		// Build the breadcrumb trail.

@@ -17,6 +17,13 @@ import clsx from 'clsx';
 // Prevent breadcrumb link events when users click them.
 const preventDefault = (event) => event.preventDefault();
 
+// Returns a crumb link.
+const CrumbLink = ({ children }) => (
+	<a className="breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
+		{children}
+	</a>
+);
+
 // Exports the breadcrumbs block type edit function.
 export default ({
 	attributes: {
@@ -77,12 +84,6 @@ export default ({
 			allowedFormats={ [] }
 			withoutInteractiveFormatting={ true }
 		/>
-	);
-
-	const CrumbLink = ({ children }) => (
-		<a className="breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
-			{children}
-		</a>
 	);
 
 	return (

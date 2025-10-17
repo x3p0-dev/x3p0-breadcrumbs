@@ -95,13 +95,13 @@ const SettingsPanel = ({
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
+				label={ __('Show home breadcrumb', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! showTrailStart }
 				onDeselect={() => setAttributes({ showTrailStart: false })}
 				panelId={ panelId }
 			>
 				<ToggleControl
-					label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
+					label={ __('Show home breadcrumb', 'x3p0-breadcrumbs') }
 					checked={ showTrailStart }
 					onChange={ () => setAttributes({
 						homeIcon:       '',
@@ -112,13 +112,13 @@ const SettingsPanel = ({
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
+				label={ __('Show current breadcrumb', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! showTrailEnd }
 				onDeselect={() => setAttributes({ showTrailEnd: false })}
 				panelId={ panelId }
 			>
 				<ToggleControl
-					label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
+					label={ __('Show current breadcrumb', 'x3p0-breadcrumbs') }
 					checked={ showTrailEnd }
 					onChange={ () => setAttributes({
 						showTrailEnd: ! showTrailEnd
@@ -128,7 +128,7 @@ const SettingsPanel = ({
 			</ToolsPanelItem>
 			{showTrailEnd && (
 				<ToolsPanelItem
-					label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
+					label={ __('Link current breadcrumb', 'x3p0-breadcrumbs') }
 					hasValue={ () => !! linkTrailEnd }
 					onDeselect={() => setAttributes({
 						linkTrailEnd: false
@@ -136,7 +136,7 @@ const SettingsPanel = ({
 					panelId={ panelId }
 				>
 					<ToggleControl
-						label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
+						label={ __('Link current breadcrumb', 'x3p0-breadcrumbs') }
 						checked={ linkTrailEnd }
 						onChange={ () => setAttributes({
 							linkTrailEnd: ! linkTrailEnd

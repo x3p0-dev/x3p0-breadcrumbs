@@ -19,7 +19,7 @@ import {
 } from '@wordpress/components';
 
 // Define the markup options.
-const markupOptions = [
+const MARKUP_OPTIONS = [
 	{
 		key: 'html',
 		name: __('Plain HTML', 'x3p0-breadcrumbs')
@@ -35,140 +35,114 @@ const markupOptions = [
 ];
 
 // Exports the post taxonomy panel.
-const SettingsPanel = ({ attributes, setAttributes }) => {
-	const panelId = useInstanceId(SettingsPanel);
-
-	const {
+const SettingsPanel = ({
+	attributes: {
 		linkTrailEnd,
 		markup,
 		showOnHomepage,
 		showTrailStart,
 		showTrailEnd
-	} = attributes;
-
-	const markupControl = (
-		<CustomSelectControl
-			label={ __('Markup style', 'x3p0-breadcrumbs') }
-			options={ markupOptions }
-			value={ markupOptions.find(
-				(option) => option.key === markup
-			)}
-			onChange={ ({ selectedItem }) => setAttributes({
-				markup: selectedItem.key
-			})}
-			__next40pxDefaultSize={true}
-		/>
-	);
-
-	const showOnHomepageControl = (
-		<ToggleControl
-			label={ __('Show on homepage', 'x3p0-breadcrumbs') }
-			checked={ showOnHomepage }
-			onChange={ () => setAttributes({
-				showOnHomepage: ! showOnHomepage
-			}) }
-			__nextHasNoMarginBottom={ true }
-		/>
-	);
-
-	const showTrailStartControl = (
-		<ToggleControl
-			label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
-			checked={ showTrailStart }
-			onChange={ () => setAttributes({
-				homePrefix:     '',
-				homePrefixType: '',
-				showHomeLabel:  true,
-				showTrailStart: ! showTrailStart
-			}) }
-			__nextHasNoMarginBottom={ true }
-		/>
-	);
-
-	const showTrailEndControl = (
-		<ToggleControl
-			label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
-			checked={ showTrailEnd }
-			onChange={ () => setAttributes({
-				showTrailEnd: ! showTrailEnd
-			}) }
-			__nextHasNoMarginBottom={ true }
-		/>
-	);
-
-	const linkTrailEndControl = (
-		<ToggleControl
-			label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
-			checked={ linkTrailEnd }
-			onChange={ () => setAttributes({
-				linkTrailEnd: ! linkTrailEnd
-			}) }
-			__nextHasNoMarginBottom={ true }
-		/>
-	);
-
-	const resetMarkup = () => setAttributes({ markup: 'rdfa' });
-	const resetShowOnHomepage = () => setAttributes({ showOnHomepage: false });
-	const resetShowTrailStart = () => setAttributes({ showTrailStart: false });
-	const resetShowTrailEnd = () => setAttributes({ showTrailEnd: false });
-	const resetLinkTrailEnd = () => setAttributes({ linkTrailEnd: false });
-
-	const resetPanel = () => {
-		resetMarkup();
-		resetShowOnHomepage();
-		resetShowTrailStart();
-		resetShowTrailEnd();
-		resetLinkTrailEnd();
-	};
+	},
+	setAttributes
+}) => {
+	const panelId = useInstanceId(SettingsPanel);
 
 	return (
 		<ToolsPanel
 			label={__('Settings', 'x3p0-breadcrumbs')}
-			resetAll={ resetPanel }
+			resetAll={() => setAttributes({
+				markup: 'rdfa',
+				showOnHomepage: false,
+				showTrailStart: false,
+				showTrailEnd: false,
+				linkTrailEnd: false
+			})}
 			panelId={ panelId }
 		>
 			<ToolsPanelItem
-				label={ __('Markup Style', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! markup }
-				onDeselect={ resetMarkup }
+				label={ __('Markup style', 'x3p0-breadcrumbs') }
+				hasValue={ () => markup !== 'rdfa' }
+				onDeselect={() => setAttributes({ markup: 'rdfa' })}
 				panelId={ panelId }
 				isShownByDefault={ true }
 			>
-				{ markupControl }
+				<CustomSelectControl
+					label={ __('Markup style', 'x3p0-breadcrumbs') }
+					options={ MARKUP_OPTIONS }
+					value={ MARKUP_OPTIONS.find(
+						(option) => option.key === markup
+					)}
+					onChange={ ({ selectedItem }) => setAttributes({
+						markup: selectedItem.key
+					})}
+					__next40pxDefaultSize={true}
+				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __('Show on homepage', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! showOnHomepage }
-				onDeselect={ resetShowOnHomepage }
+				onDeselect={() => setAttributes({ showOnHomepage: false })}
 				panelId={ panelId }
 				isShownByDefault={ true }
 			>
-				{ showOnHomepageControl }
+				<ToggleControl
+					label={ __('Show on homepage', 'x3p0-breadcrumbs') }
+					checked={ showOnHomepage }
+					onChange={ () => setAttributes({
+						showOnHomepage: ! showOnHomepage
+					}) }
+					__nextHasNoMarginBottom={ true }
+				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! showTrailStart }
-				onDeselect={ resetShowTrailStart }
+				onDeselect={() => setAttributes({ showTrailStart: false })}
 				panelId={ panelId }
 			>
-				{ showTrailStartControl }
+				<ToggleControl
+					label={ __('Show first breadcrumb', 'x3p0-breadcrumbs') }
+					checked={ showTrailStart }
+					onChange={ () => setAttributes({
+						homeIcon:       '',
+						showHomeLabel:  true,
+						showTrailStart: ! showTrailStart
+					}) }
+					__nextHasNoMarginBottom={ true }
+				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
 				label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
 				hasValue={ () => !! showTrailEnd }
-				onDeselect={ resetShowTrailEnd }
+				onDeselect={() => setAttributes({ showTrailEnd: false })}
 				panelId={ panelId }
 			>
-				{ showTrailEndControl }
+				<ToggleControl
+					label={ __('Show last breadcrumb', 'x3p0-breadcrumbs') }
+					checked={ showTrailEnd }
+					onChange={ () => setAttributes({
+						showTrailEnd: ! showTrailEnd
+					}) }
+					__nextHasNoMarginBottom={ true }
+				/>
 			</ToolsPanelItem>
 			{showTrailEnd && (
 				<ToolsPanelItem
 					label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
 					hasValue={ () => !! linkTrailEnd }
-					onDeselect={ resetLinkTrailEnd }
+					onDeselect={() => setAttributes({
+						linkTrailEnd: false
+					})}
 					panelId={ panelId }
 				>
-					{ linkTrailEndControl }
+					<ToggleControl
+						label={ __('Link last breadcrumb', 'x3p0-breadcrumbs') }
+						checked={ linkTrailEnd }
+						onChange={ () => setAttributes({
+							linkTrailEnd: ! linkTrailEnd
+						}) }
+						__nextHasNoMarginBottom={ true }
+					/>
 				</ToolsPanelItem>
 			)}
 		</ToolsPanel>

@@ -28,31 +28,6 @@ interface IterableCollection extends ArrayAccess, Iterator, Countable
 	public function isEmpty(): bool;
 
 	/**
-	 * Checks if the current iterator position is valid.
-	 */
-	public function valid(): bool;
-
-	/**
-	 * Returns the key of the current element.
-	 */
-	public function key(): mixed;
-
-	/**
-	 * Returns the current element.
-	 */
-	public function current(): mixed;
-
-	/**
-	 * Moves the iterator to the next element.
-	 */
-	public function next(): void;
-
-	/**
-	 * Resets the iterator to the first element.
-	 */
-	public function rewind(): void;
-
-	/**
 	 * Returns the current position (1-indexed).
 	 */
 	public function position(): int;

@@ -34,8 +34,6 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 
 	const resetPanelItem = (type) => () => onLabelChange(type, '');
 
-	const resetPanel = () => setAttributes({ labels: undefined });
-
 	const labelSettings = [
 		...(
 			showTrailStart
@@ -68,7 +66,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 	return (
 		<ToolsPanel
 			label={__('Labels', 'x3p0-breadcrumbs')}
-			resetAll={resetPanel}
+			resetAll={() => setAttributes({ labels: undefined })}
 			panelId={panelId}
 		>
 			{labelSettings.map((item) => (

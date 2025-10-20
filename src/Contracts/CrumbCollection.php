@@ -18,4 +18,13 @@ namespace X3P0\Breadcrumbs\Contracts;
  */
 interface CrumbCollection extends IterableCollection
 {
+	/**
+	 * Sets a crumb instance in the collection.
+	 */
+	public function set(?string $name, Crumb $crumb): void;
+
+	/**
+	 * Gets a crumb instance from the collection.
+	 */
+	public function get(string $name): ?Crumb;
 }

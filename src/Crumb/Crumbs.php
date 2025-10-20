@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use InvalidArgumentException;
 use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbCollection};
 use X3P0\Breadcrumbs\Support\Collection;
 
@@ -25,20 +24,36 @@ class Crumbs extends Collection implements CrumbCollection
 	/**
 	 * {@inheritDoc}
 	 */
+	public function set(?string $name, Crumb $crumb): void
+	{
+		if ($name === null) {
+			$this->items[] = $crumb;
+		} else {
+			$this->items[$name] = $crumb;
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function get(string $name): ?Crumb
+	{
+		return $this->items[$name] ?? null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function offsetGet(mixed $offset): ?Crumb
+	{
+		return $this->get($offset);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
-		if (! $value instanceof Crumb) {
-			throw new InvalidArgumentException(esc_html(sprintf(
-				// Translators: %s is a PHP class name.
-				__('Item must implement %s', 'x3p0-breadcrumbs'),
-				Crumb::class
-			)));
-		}
-
-		if ($offset === null) {
-			$this->items[] = $value;
-		} else {
-			$this->items[$offset] = $value;
-		}
+		$this->set($offset, $value);
 	}
 }

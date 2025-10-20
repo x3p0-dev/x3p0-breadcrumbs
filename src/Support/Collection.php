@@ -41,7 +41,7 @@ class Collection implements IterableCollection
 	/**
 	 * {@inheritDoc}
 	 */
-	public function key(): mixed
+	public function key(): int
 	{
 		return $this->index;
 	}

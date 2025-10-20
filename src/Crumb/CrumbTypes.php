@@ -68,13 +68,8 @@ class CrumbTypes implements CrumbTypeRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Crumb
+	public function get(string $name, array $params = []): ?string
 	{
-		if ($this->has($name)) {
-			$crumb = $this->crumbs[$name];
-			return new $crumb(...$params);
-		}
-
-		return null;
+		return $this->has($name) ? $this->crumbs[$name] : null;
 	}
 }

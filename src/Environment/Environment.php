@@ -48,23 +48,47 @@ class Environment implements Contracts\Environment
 	protected Contracts\CrumbTypeRegistry $crumbTypes;
 
 	/**
-	 * Builds a new environment by creating empty collections for queries,
-	 * assemblers, and crumbs. It then registers the defaults.
+	 * Factory for creating query instances.
+	 */
+	protected Contracts\QueryFactory $queryFactory;
+
+	/**
+	 * Factory for creating assembler instances.
+	 */
+	protected Contracts\AssemblerFactory $assemblerFactory;
+
+	/**
+	 * Factory for creating crumb instances.
+	 */
+	protected Contracts\CrumbFactory $crumbFactory;
+
+	/**
+	 * Builds a new environment by creating registries and factories, then
+	 * registers the defaults.
 	 */
 	public function __construct(
 		array $queries = [],
 		array $assemblers = [],
 		array $crumbs = []
 	) {
+		// Initialize registries.
 		$this->queryTypes     = new Query\QueryTypes($queries);
 		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblers);
 		$this->crumbTypes     = new Crumb\CrumbTypes($crumbs);
 
+		// Register the default types.
 		$this->registerDefaultQueryTypes();
 		$this->registerDefaultAssemblerTypes();
 		$this->registerDefaultCrumbTypes();
 
+		// Allow developers to hook into the environment and customize.
 		do_action('x3p0/breadcrumbs/environment', $this);
+
+		// Initialize factories with their respective registries.
+		$this->queryFactory     = new Query\QueryFactory($this->queryTypes);
+		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerTypes);
+		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbTypes);
+
 	}
 
 	/**
@@ -89,6 +113,30 @@ class Environment implements Contracts\Environment
 	public function crumbTypes(): Contracts\CrumbTypeRegistry
 	{
 		return $this->crumbTypes;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function makeQuery(string $name, array $params = []): ?Contracts\Query
+	{
+		return $this->queryFactory->make($name, $params);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function makeAssembler(string $name, array $params = []): ?Contracts\Assembler
+	{
+		return $this->assemblerFactory->make($name, $params);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function makeCrumb(string $name, array $params = []): ?Contracts\Crumb
+	{
+		return $this->crumbFactory->make($name, $params);
 	}
 
 	/**

@@ -36,7 +36,9 @@ interface CrumbTypeRegistry
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns a crumb object or `null`.
+	 * Returns a crumb type.
+	 *
+	 * @return null|class-string<Crumb> $crumb
 	 */
-	public function get(string $name, array $params = []): ?Crumb;
+	public function get(string $name): ?string;
 }

@@ -36,7 +36,9 @@ interface AssemblerTypeRegistry
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns an assembler object or `null`.
+	 * Returns and assembler class or `null`.
+	 *
+	 * @return null|class-string<Assembler>
 	 */
-	public function get(string $name, array $params = []): ?Assembler;
+	public function get(string $name): ?string;
 }

@@ -20,17 +20,32 @@ namespace X3P0\Breadcrumbs\Contracts;
 interface Environment
 {
 	/**
-	 * Returns a query type collection.
+	 * Returns a registry of query types.
 	 */
 	public function queryTypes(): QueryTypeRegistry;
 
 	/**
-	 * Returns an assembler type collection.
+	 * Returns a registry of assembler types.
 	 */
 	public function assemblerTypes(): AssemblerTypeRegistry;
 
 	/**
-	 * Returns a crumb type collection.
+	 * Returns a registry of crumb types.
 	 */
 	public function crumbTypes(): CrumbTypeRegistry;
+
+	/**
+	 * Creates a query instance by name with the given parameters.
+	 */
+	public function makeQuery(string $name, array $params = []): ?Query;
+
+	/**
+	 * Creates an assembler instance by name with the given parameters.
+	 */
+	public function makeAssembler(string $name, array $params = []): ?Assembler;
+
+	/**
+	 * Creates a crumb instance by name with the given parameters.
+	 */
+	public function makeCrumb(string $name, array $params = []): ?Crumb;
 }

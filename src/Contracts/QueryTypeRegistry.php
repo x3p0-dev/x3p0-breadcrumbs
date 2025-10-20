@@ -36,7 +36,9 @@ interface QueryTypeRegistry
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns a query object or `null`.
+	 * Returns a query class string or `null`.
+	 *
+	 * @return null|class-string<Query>
 	 */
-	public function get(string $name, array $params = []): ?Query;
+	public function get(string $name): ?string;
 }

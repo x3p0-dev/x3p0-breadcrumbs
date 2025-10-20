@@ -68,13 +68,8 @@ class QueryTypes implements QueryTypeRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Query
+	public function get(string $name): ?string
 	{
-		if ($this->has($name)) {
-			$query = $this->queries[$name];
-			return new $query(...$params);
-		}
-
-		return null;
+		return $this->has($name) ? $this->queries[$name] : null;
 	}
 }

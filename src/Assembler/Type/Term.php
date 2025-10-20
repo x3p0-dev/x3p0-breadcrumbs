@@ -57,11 +57,15 @@ class Term extends Assembler
 			$this->builder->assemble('path', [ 'path' => $path ]);
 
 			// Check if we've added a post type crumb.
-			foreach ($this->builder->getCrumbs() as $crumb) {
-				if ($crumb instanceof PostType) {
+			$crumbs = $this->builder->getCrumbs();
+			$crumbs->rewind();
+
+			while ($crumbs->valid()) {
+				if ($crumbs->current()->isType('post-type')) {
 					$done_post_type = true;
 					break;
 				}
+				$crumbs->next();
 			}
 		}
 

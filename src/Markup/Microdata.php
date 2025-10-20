@@ -64,7 +64,7 @@ class Microdata extends Html
 			esc_attr($crumb->getType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
-			$this->crumbs->position()
+			esc_attr($this->crumbs->position())
 		);
 	}
 

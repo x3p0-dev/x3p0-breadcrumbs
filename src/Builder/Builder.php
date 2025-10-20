@@ -67,7 +67,7 @@ class Builder implements Contracts\Builder
 			if (! is_subclass_of($builder, Contracts\Builder::class)) {
 				throw new TypeError(esc_html(sprintf(
 					// Translators: %1$s is a PHP class name, %2$s is the hook name.
-					__('Only %1$s classes can be returned when filtering %2$s', 'x3p0-ideas'),
+					__('Only %1$s classes can be returned when filtering %2$s', 'x3p0-breadcrumbs'),
 					Contracts\Builder::class,
 					'x3p0/breadcrumbs/builder/pre/build'
 				)));

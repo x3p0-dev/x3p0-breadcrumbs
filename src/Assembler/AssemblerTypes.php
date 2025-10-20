@@ -41,7 +41,7 @@ class AssemblerTypes implements Contracts\AssemblerRegistry
 		if (! is_subclass_of($assembler, Contracts\Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-ideas'),
+				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
 				Contracts\Assembler::class
 			)));
 		}

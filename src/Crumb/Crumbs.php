@@ -31,7 +31,7 @@ class Crumbs extends Collection implements CrumbCollection
 		if (! $value instanceof Crumb) {
 			throw new InvalidArgumentException(esc_html(sprintf(
 			// Translators: %s is a PHP class name.
-				__('Item must implement %s', 'x3p0-ideas'),
+				__('Item must implement %s', 'x3p0-breadcrumbs'),
 				Crumb::class
 			)));
 		}

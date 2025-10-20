@@ -41,7 +41,7 @@ class QueryTypes implements Contracts\QueryRegistry
 		if (! is_subclass_of($query, Contracts\Query::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-ideas'),
+				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
 				Contracts\Query::class
 			)));
 		}

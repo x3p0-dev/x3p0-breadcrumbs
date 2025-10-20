@@ -21,9 +21,9 @@ interface AssemblerTypeRegistry
 	/**
 	 * Adds an assembler type.
 	 *
-	 * @param class-string<Assembler> $assembler
+	 * @param class-string<Assembler> $type
 	 */
-	public function add(string $name, string $assembler): void;
+	public function add(string $name, string $type): void;
 
 	/**
 	 * Removes an assembler type.

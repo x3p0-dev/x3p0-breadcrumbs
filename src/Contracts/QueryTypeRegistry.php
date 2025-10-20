@@ -21,9 +21,9 @@ interface QueryTypeRegistry
 	/**
 	 * Add a query type.
 	 *
-	 * @param class-string<Query> $query
+	 * @param class-string<Query> $type
 	 */
-	public function add(string $name, string $query): void;
+	public function add(string $name, string $type): void;
 
 	/**
 	 * Removes a query type.

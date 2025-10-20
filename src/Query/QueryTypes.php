@@ -21,24 +21,24 @@ class QueryTypes implements QueryTypeRegistry
 	/**
 	 * Stores the array of query classes.
 	 */
-	protected array $queries = [];
+	protected array $types = [];
 
 	/**
 	 * Allows registering a default set of queries.
 	 */
-	public function __construct(array $queries = [])
+	public function __construct(array $types = [])
 	{
-		foreach ($queries as $name => $class) {
-			$this->add($name, $class);
+		foreach ($types as $name => $type) {
+			$this->add($name, $type);
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $query): void
+	public function add(string $name, string $type): void
 	{
-		if (! is_subclass_of($query, Query::class)) {
+		if (! is_subclass_of($type, Query::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -46,7 +46,7 @@ class QueryTypes implements QueryTypeRegistry
 			)));
 		}
 
-		$this->queries[$name] = $query;
+		$this->types[$name] = $type;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class QueryTypes implements QueryTypeRegistry
 	 */
 	public function remove(string $name): void
 	{
-		unset($this->queries[$name]);
+		unset($this->types[$name]);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class QueryTypes implements QueryTypeRegistry
 	 */
 	public function has(string $name): bool
 	{
-		return isset($this->queries[$name]);
+		return isset($this->types[$name]);
 	}
 
 	/**
@@ -70,6 +70,6 @@ class QueryTypes implements QueryTypeRegistry
 	 */
 	public function get(string $name): ?string
 	{
-		return $this->has($name) ? $this->queries[$name] : null;
+		return $this->has($name) ? $this->types[$name] : null;
 	}
 }

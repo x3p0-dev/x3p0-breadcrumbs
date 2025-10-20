@@ -21,24 +21,24 @@ class AssemblerTypes implements AssemblerTypeRegistry
 	/**
 	 * Stores the array of assembler classes.
 	 */
-	protected array $assemblers = [];
+	protected array $types = [];
 
 	/**
 	 * Allows registering a default set of assemblers.
 	 */
-	public function __construct(array $assemblers = [])
+	public function __construct(array $types = [])
 	{
-		foreach ($assemblers as $name => $class) {
-			$this->add($name, $class);
+		foreach ($types as $name => $type) {
+			$this->add($name, $type);
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $assembler): void
+	public function add(string $name, string $type): void
 	{
-		if (! is_subclass_of($assembler, Assembler::class)) {
+		if (! is_subclass_of($type, Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -46,7 +46,7 @@ class AssemblerTypes implements AssemblerTypeRegistry
 			)));
 		}
 
-		$this->assemblers[$name] = $assembler;
+		$this->types[$name] = $type;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class AssemblerTypes implements AssemblerTypeRegistry
 	 */
 	public function remove(string $name): void
 	{
-		unset($this->assemblers[$name]);
+		unset($this->types[$name]);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class AssemblerTypes implements AssemblerTypeRegistry
 	 */
 	public function has(string $name): bool
 	{
-		return isset($this->assemblers[$name]);
+		return isset($this->types[$name]);
 	}
 
 	/**
@@ -70,6 +70,6 @@ class AssemblerTypes implements AssemblerTypeRegistry
 	 */
 	public function get(string $name, array $params = []): ?string
 	{
-		return $this->has($name) ? $this->assemblers[$name] : null;
+		return $this->has($name) ? $this->types[$name] : null;
 	}
 }

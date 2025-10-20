@@ -19,26 +19,26 @@ use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbTypeRegistry};
 class CrumbTypes implements CrumbTypeRegistry
 {
 	/**
-	 * Stores the array of crumb classes.
+	 * Stores the array of crumb type classes.
 	 */
-	protected array $crumbs = [];
+	protected array $types = [];
 
 	/**
 	 * Allows registering a default set of crumbs.
 	 */
-	public function __construct(array $crumbs = [])
+	public function __construct(array $types = [])
 	{
-		foreach ($crumbs as $name => $class) {
-			$this->add($name, $class);
+		foreach ($types as $name => $type) {
+			$this->add($name, $type);
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $crumb): void
+	public function add(string $name, string $type): void
 	{
-		if (! is_subclass_of($crumb, Crumb::class)) {
+		if (! is_subclass_of($type, Crumb::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -46,7 +46,7 @@ class CrumbTypes implements CrumbTypeRegistry
 			)));
 		}
 
-		$this->crumbs[$name] = $crumb;
+		$this->types[$name] = $type;
 	}
 
 	/**
@@ -54,7 +54,7 @@ class CrumbTypes implements CrumbTypeRegistry
 	 */
 	public function remove(string $name): void
 	{
-		unset($this->crumbs[$name]);
+		unset($this->types[$name]);
 	}
 
 	/**
@@ -62,7 +62,7 @@ class CrumbTypes implements CrumbTypeRegistry
 	 */
 	public function has(string $name): bool
 	{
-		return isset($this->crumbs[$name]);
+		return isset($this->types[$name]);
 	}
 
 	/**
@@ -70,6 +70,6 @@ class CrumbTypes implements CrumbTypeRegistry
 	 */
 	public function get(string $name, array $params = []): ?string
 	{
-		return $this->has($name) ? $this->crumbs[$name] : null;
+		return $this->has($name) ? $this->types[$name] : null;
 	}
 }

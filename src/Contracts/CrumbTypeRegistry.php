@@ -21,9 +21,9 @@ interface CrumbTypeRegistry
 	/**
 	 * Add a crumb type.
 	 *
-	 * @param class-string<Crumb> $crumb
+	 * @param class-string<Crumb> $type
 	 */
-	public function add(string $name, string $crumb): void;
+	public function add(string $name, string $type): void;
 
 	/**
 	 * Removes a crumb type.
@@ -38,7 +38,7 @@ interface CrumbTypeRegistry
 	/**
 	 * Returns a crumb type.
 	 *
-	 * @return null|class-string<Crumb> $crumb
+	 * @return null|class-string<Crumb> $type
 	 */
 	public function get(string $name): ?string;
 }

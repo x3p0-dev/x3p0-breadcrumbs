@@ -67,14 +67,14 @@ class Environment implements Contracts\Environment
 	 * registers the defaults.
 	 */
 	public function __construct(
-		array $queries = [],
-		array $assemblers = [],
-		array $crumbs = []
+		array $queryTypes = [],
+		array $assemblerTypes = [],
+		array $crumbTypes = []
 	) {
 		// Initialize registries.
-		$this->queryTypes     = new Query\QueryTypes($queries);
-		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblers);
-		$this->crumbTypes     = new Crumb\CrumbTypes($crumbs);
+		$this->queryTypes     = new Query\QueryTypes($queryTypes);
+		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblerTypes);
+		$this->crumbTypes     = new Crumb\CrumbTypes($crumbTypes);
 
 		// Register the default types.
 		$this->registerDefaultQueryTypes();
@@ -88,7 +88,6 @@ class Environment implements Contracts\Environment
 		$this->queryFactory     = new Query\QueryFactory($this->queryTypes);
 		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerTypes);
 		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbTypes);
-
 	}
 
 	/**

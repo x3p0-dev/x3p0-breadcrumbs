@@ -26,16 +26,16 @@ class Collection implements IterableCollection
 	protected array $items = [];
 
 	/**
-	 * Stores the current position of the iterator.
+	 * Stores the current index of the iterator.
 	 */
-	protected int $position = 0;
+	protected int $index = 0;
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function valid(): bool
 	{
-		return isset($this->items[$this->position]);
+		return isset($this->items[$this->index]);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Collection implements IterableCollection
 	 */
 	public function key(): mixed
 	{
-		return $this->position;
+		return $this->index;
 	}
 
 	/**
@@ -51,7 +51,7 @@ class Collection implements IterableCollection
 	 */
 	public function current(): mixed
 	{
-		return $this->items[$this->position];
+		return $this->items[$this->index];
 	}
 
 	/**
@@ -59,7 +59,7 @@ class Collection implements IterableCollection
 	 */
 	public function next(): void
 	{
-		$this->position++;
+		$this->index++;
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Collection implements IterableCollection
 	 */
 	public function rewind(): void
 	{
-		$this->position = 0;
+		$this->index = 0;
 	}
 
 	/**
@@ -83,7 +83,7 @@ class Collection implements IterableCollection
 	 */
 	public function position(): int
 	{
-		return $this->position + 1;
+		return $this->index + 1;
 	}
 
 	/**
@@ -91,7 +91,7 @@ class Collection implements IterableCollection
 	 */
 	public function isFirst(): bool
 	{
-		return $this->position === 0;
+		return $this->index === 0;
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Collection implements IterableCollection
 	 */
 	public function isLast(): bool
 	{
-		return $this->position === $this->count() - 1;
+		return $this->index === $this->count() - 1;
 	}
 
 	/**

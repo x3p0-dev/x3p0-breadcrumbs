@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Queries interface.
+ * Assembler type registry interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Queries is meant for storing a registry of `Query` classes.
+ * Stores a registry of assembler types.
  */
-interface QueryRegistry
+interface AssemblerTypeRegistry
 {
 	/**
-	 * Add a query.
+	 * Adds an assembler type.
 	 *
-	 * @param class-string<Query> $query
+	 * @param class-string<Assembler> $assembler
 	 */
-	public function add(string $name, string $query): void;
+	public function add(string $name, string $assembler): void;
 
 	/**
-	 * Removes a query.
+	 * Removes an assembler type.
 	 */
 	public function remove(string $name): void;
 
 	/**
-	 * Checks if a query is registered.
+	 * Checks if an assembler type is registered.
 	 */
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns a query object or `null`.
+	 * Resolves and returns an assembler object or `null`.
 	 */
-	public function get(string $name, array $params = []): ?Query;
+	public function get(string $name, array $params = []): ?Assembler;
 }

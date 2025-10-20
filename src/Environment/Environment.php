@@ -29,7 +29,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\QueryRegistry $queries;
+	protected Contracts\QueryTypeRegistry $queryTypes;
 
 	/**
 	 * Houses a collection where the keys are the builder name and the values
@@ -37,7 +37,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\AssemblerRegistry $assemblers;
+	protected Contracts\AssemblerTypeRegistry $assemblerTypes;
 
 	/**
 	 * Houses a collection where the keys are the crumb name and the values
@@ -45,7 +45,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\CrumbRegistry $crumbs;
+	protected Contracts\CrumbTypeRegistry $crumbTypes;
 
 	/**
 	 * Builds a new environment by creating empty collections for queries,
@@ -56,45 +56,45 @@ class Environment implements Contracts\Environment
 		array $assemblers = [],
 		array $crumbs = []
 	) {
-		$this->queries    = new Query\QueryTypes($queries);
-		$this->assemblers = new Assembler\AssemblerTypes($assemblers);
-		$this->crumbs     = new Crumb\CrumbTypes($crumbs);
+		$this->queryTypes     = new Query\QueryTypes($queries);
+		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblers);
+		$this->crumbTypes     = new Crumb\CrumbTypes($crumbs);
 
-		$this->registerDefaultQueries();
-		$this->registerDefaultAssemblers();
-		$this->registerDefaultCrumbs();
+		$this->registerDefaultQueryTypes();
+		$this->registerDefaultAssemblerTypes();
+		$this->registerDefaultCrumbTypes();
 
 		do_action('x3p0/breadcrumbs/environment', $this);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
-	public function getQueries(): Contracts\QueryRegistry
+	public function queryTypes(): Contracts\QueryTypeRegistry
 	{
-		return $this->queries;
+		return $this->queryTypes;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
-	public function getAssemblers(): Contracts\AssemblerRegistry
+	public function assemblerTypes(): Contracts\AssemblerTypeRegistry
 	{
-		return $this->assemblers;
+		return $this->assemblerTypes;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * {@inheritDoc}
 	 */
-	public function getCrumbs(): Contracts\CrumbRegistry
+	public function crumbTypes(): Contracts\CrumbTypeRegistry
 	{
-		return $this->crumbs;
+		return $this->crumbTypes;
 	}
 
 	/**
 	 * Registers the default query classes with the environment.
 	 */
-	private function registerDefaultQueries(): void
+	private function registerDefaultQueryTypes(): void
 	{
 		$defaults = [
 			'archive'           => Query\Type\Archive::class,
@@ -117,8 +117,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->queries->has($name)) {
-				$this->queries->add($name, $class);
+			if (! $this->queryTypes()->has($name)) {
+				$this->queryTypes()->add($name, $class);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default builder classes with the environment.
 	 */
-	private function registerDefaultAssemblers(): void
+	private function registerDefaultAssemblerTypes(): void
 	{
 		$defaults = [
 			'home'              => Assembler\Type\Home::class,
@@ -144,8 +144,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->assemblers->has($name)) {
-				$this->assemblers->add($name, $class);
+			if (! $this->assemblerTypes()->has($name)) {
+				$this->assemblerTypes()->add($name, $class);
 			}
 		}
 	}
@@ -153,7 +153,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default crumb classes with the environment.
 	 */
-	private function registerDefaultCrumbs(): void
+	private function registerDefaultCrumbTypes(): void
 	{
 		$defaults = [
 			'archive'        => Crumb\Type\Archive::class,
@@ -178,9 +178,33 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->crumbs->has($name)) {
-				$this->crumbs->add($name, $class);
+			if (! $this->crumbTypes()->has($name)) {
+				$this->crumbTypes()->add($name, $class);
 			}
 		}
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function getQueries(): Contracts\QueryTypeRegistry
+	{
+		return $this->queryTypes();
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function getAssemblers(): Contracts\AssemblerTypeRegistry
+	{
+		return $this->assemblerTypes();
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function getCrumbs(): Contracts\CrumbTypeRegistry
+	{
+		return $this->crumbTypes();
 	}
 }

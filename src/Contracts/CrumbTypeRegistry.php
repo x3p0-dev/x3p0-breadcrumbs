@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Crumbs interface.
+ * Crumb type registry interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Crumbs is meant for storing a registry of `Crumb` classes.
+ * Stores a registry of crumb types.
  */
-interface CrumbRegistry
+interface CrumbTypeRegistry
 {
 	/**
-	 * Add a crumb.
+	 * Add a crumb type.
 	 *
 	 * @param class-string<Crumb> $crumb
 	 */
 	public function add(string $name, string $crumb): void;
 
 	/**
-	 * Removes a crumb.
+	 * Removes a crumb type.
 	 */
 	public function remove(string $name): void;
 
 	/**
-	 * Checks if a crumb is registered.
+	 * Checks if a crumb type is registered.
 	 */
 	public function has(string $name): bool;
 

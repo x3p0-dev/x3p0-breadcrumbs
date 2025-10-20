@@ -87,6 +87,18 @@ abstract class Markup implements Contracts\Markup
 	}
 
 	/**
+	 * Returns a string-based version of the container attributes.
+	 */
+	protected function containerAttr(): string
+	{
+		$attrs    = array_keys($this->getOption('container_attr'));
+		$values   = array_values($this->getOption('container_attr'));
+		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
+
+		return implode(' ', array_map($callback, $attrs, $values));
+	}
+
+	/**
 	 * Determines whether the markup is renderable by checking whether there
 	 * are crumbs or conditions in which the HTML shouldn't show.
 	 */
@@ -109,27 +121,6 @@ abstract class Markup implements Contracts\Markup
 			- ($this->getOption('show_last_item') ? 0 : 1);
 
 		return $visible_count > 0;
-	}
-
-	/**
-	 * Helper method for grabbing the breadcrumbs array and removing any
-	 * items that should be removed.
-	 */
-	protected function getCrumbs(): Contracts\CrumbCollection
-	{
-		return $this->crumbs;
-	}
-
-	/**
-	 * Returns a string-based version of the container attributes.
-	 */
-	protected function containerAttr(): string
-	{
-		$attrs    = array_keys($this->getOption('container_attr'));
-		$values   = array_values($this->getOption('container_attr'));
-		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
-
-		return implode(' ', array_map($callback, $attrs, $values));
 	}
 
 	/**

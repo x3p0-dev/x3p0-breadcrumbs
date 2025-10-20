@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Contracts\{Query, QueryTypeRegistry};
 
-class QueryTypes implements Contracts\QueryRegistry
+class QueryTypes implements QueryTypeRegistry
 {
 	/**
 	 * Stores the array of query classes.
@@ -38,11 +38,11 @@ class QueryTypes implements Contracts\QueryRegistry
 	 */
 	public function add(string $name, string $query): void
 	{
-		if (! is_subclass_of($query, Contracts\Query::class)) {
+		if (! is_subclass_of($query, Query::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Contracts\Query::class
+				Query::class
 			)));
 		}
 
@@ -68,7 +68,7 @@ class QueryTypes implements Contracts\QueryRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Contracts\Query
+	public function get(string $name, array $params = []): ?Query
 	{
 		if ($this->has($name)) {
 			$query = $this->queries[$name];

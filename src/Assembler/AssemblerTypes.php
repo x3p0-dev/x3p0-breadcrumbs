@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Contracts\{Assembler, AssemblerTypeRegistry};
 
-class AssemblerTypes implements Contracts\AssemblerRegistry
+class AssemblerTypes implements AssemblerTypeRegistry
 {
 	/**
 	 * Stores the array of assembler classes.
@@ -38,11 +38,11 @@ class AssemblerTypes implements Contracts\AssemblerRegistry
 	 */
 	public function add(string $name, string $assembler): void
 	{
-		if (! is_subclass_of($assembler, Contracts\Assembler::class)) {
+		if (! is_subclass_of($assembler, Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Contracts\Assembler::class
+				Assembler::class
 			)));
 		}
 
@@ -68,7 +68,7 @@ class AssemblerTypes implements Contracts\AssemblerRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Contracts\Assembler
+	public function get(string $name, array $params = []): ?Assembler
 	{
 		if ($this->has($name)) {
 			$assembler = $this->assemblers[$name];

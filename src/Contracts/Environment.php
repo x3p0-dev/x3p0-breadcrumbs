@@ -20,17 +20,17 @@ namespace X3P0\Breadcrumbs\Contracts;
 interface Environment
 {
 	/**
-	 * Returns a query collection.
+	 * Returns a query type collection.
 	 */
-	public function getQueries(): QueryRegistry;
+	public function queryTypes(): QueryTypeRegistry;
 
 	/**
-	 * Returns a builder collection.
+	 * Returns an assembler type collection.
 	 */
-	public function getAssemblers(): AssemblerRegistry;
+	public function assemblerTypes(): AssemblerTypeRegistry;
 
 	/**
-	 * Returns a crumb collection.
+	 * Returns a crumb type collection.
 	 */
-	public function getCrumbs(): CrumbRegistry;
+	public function crumbTypes(): CrumbTypeRegistry;
 }

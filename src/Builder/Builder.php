@@ -109,7 +109,7 @@ class Builder implements Contracts\Builder
 	 */
 	public function query(string $name, array $params = []): void
 	{
-		$query = $this->environment->getQueries()->get(
+		$query = $this->environment->queryTypes()->get(
 			$name,
 			$params + [ 'builder' => $this ]
 		);
@@ -122,7 +122,7 @@ class Builder implements Contracts\Builder
 	 */
 	public function assemble(string $name, array $params = []): void
 	{
-		$assembler = $this->environment->getAssemblers()->get(
+		$assembler = $this->environment->assemblerTypes()->get(
 			$name,
 			$params + [ 'builder' => $this ]
 		);
@@ -135,8 +135,8 @@ class Builder implements Contracts\Builder
 	 */
 	public function addCrumb(string $name, array $params = []): void
 	{
-		if ($this->environment->getCrumbs()->has($name)) {
-			$this->crumbs[] = $this->environment->getCrumbs()->get(
+		if ($this->environment->crumbTypes()->has($name)) {
+			$this->crumbs[] = $this->environment->crumbTypes()->get(
 				$name,
 				$params + [ 'builder' => $this ]
 			);

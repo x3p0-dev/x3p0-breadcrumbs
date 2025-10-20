@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Assemblers interface.
+ * Query type interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -14,29 +14,29 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 /**
- * Assemblers are meant for storing a registry of `Assembler` classes.
+ * Stores a registry of query types.
  */
-interface AssemblerRegistry
+interface QueryTypeRegistry
 {
 	/**
-	 * Adds an assembler.
+	 * Add a query type.
 	 *
-	 * @param class-string<Assembler> $assembler
+	 * @param class-string<Query> $query
 	 */
-	public function add(string $name, string $assembler): void;
+	public function add(string $name, string $query): void;
 
 	/**
-	 * Removes an assembler.
+	 * Removes a query type.
 	 */
 	public function remove(string $name): void;
 
 	/**
-	 * Checks if an assembler is registered.
+	 * Checks if a query type is registered.
 	 */
 	public function has(string $name): bool;
 
 	/**
-	 * Resolves and returns an assembler object or `null`.
+	 * Resolves and returns a query object or `null`.
 	 */
-	public function get(string $name, array $params = []): ?Assembler;
+	public function get(string $name, array $params = []): ?Query;
 }

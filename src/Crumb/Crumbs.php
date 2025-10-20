@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use InvalidArgumentException;
-use X3P0\Breadcrumbs\Contracts\Crumb;
-use X3P0\Breadcrumbs\Contracts\CrumbCollection;
+use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbCollection};
 use X3P0\Breadcrumbs\Support\Collection;
 
 /**

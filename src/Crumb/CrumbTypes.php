@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbTypeRegistry};
 
-class CrumbTypes implements Contracts\CrumbRegistry
+class CrumbTypes implements CrumbTypeRegistry
 {
 	/**
 	 * Stores the array of crumb classes.
@@ -38,11 +38,11 @@ class CrumbTypes implements Contracts\CrumbRegistry
 	 */
 	public function add(string $name, string $crumb): void
 	{
-		if (! is_subclass_of($crumb, Contracts\Crumb::class)) {
+		if (! is_subclass_of($crumb, Crumb::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Contracts\Crumb::class
+				Crumb::class
 			)));
 		}
 
@@ -68,7 +68,7 @@ class CrumbTypes implements Contracts\CrumbRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?Contracts\Crumb
+	public function get(string $name, array $params = []): ?Crumb
 	{
 		if ($this->has($name)) {
 			$crumb = $this->crumbs[$name];

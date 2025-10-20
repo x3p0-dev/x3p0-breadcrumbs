@@ -68,7 +68,7 @@ class AssemblerTypes implements AssemblerTypeRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name, array $params = []): ?string
+	public function get(string $name): ?string
 	{
 		return $this->isRegistered($name) ? $this->types[$name] : null;
 	}

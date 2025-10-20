@@ -52,7 +52,7 @@ class Register implements Bootable
 	 */
 	public function setMetadata(array $metadata): array
 	{
-		if ('x3p0/breadcrumbs' != $metadata['name']) {
+		if ('x3p0/breadcrumbs' !== $metadata['name']) {
 			return $metadata;
 		}
 

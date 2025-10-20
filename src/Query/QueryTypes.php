@@ -16,6 +16,9 @@ namespace X3P0\Breadcrumbs\Query;
 use TypeError;
 use X3P0\Breadcrumbs\Contracts\{Query, QueryTypeRegistry};
 
+/**
+ * Registry class for storing query types.
+ */
 class QueryTypes implements QueryTypeRegistry
 {
 	/**

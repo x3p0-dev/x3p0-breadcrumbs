@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts;
 abstract class Assembler implements Contracts\Assembler
 {
 	/**
-	 * Creates a new query object.
+	 * Creates a new assembler object.
 	 */
 	public function __construct(protected Contracts\Builder $builder)
 	{}

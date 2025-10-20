@@ -16,6 +16,9 @@ namespace X3P0\Breadcrumbs\Crumb;
 use TypeError;
 use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbTypeRegistry};
 
+/**
+ * Registry class for storing crumb types.
+ */
 class CrumbTypes implements CrumbTypeRegistry
 {
 	/**

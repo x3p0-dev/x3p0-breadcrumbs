@@ -16,6 +16,9 @@ namespace X3P0\Breadcrumbs\Assembler;
 use TypeError;
 use X3P0\Breadcrumbs\Contracts\{Assembler, AssemblerTypeRegistry};
 
+/**
+ * Registry class for storing assembler types.
+ */
 class AssemblerTypes implements AssemblerTypeRegistry
 {
 	/**

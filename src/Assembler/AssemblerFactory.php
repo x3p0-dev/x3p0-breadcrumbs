@@ -15,6 +15,10 @@ namespace X3P0\Breadcrumbs\Assembler;
 
 use X3P0\Breadcrumbs\Contracts;
 
+/**
+ * Factory class used for creating new assembler instances from a registry of
+ * assembler types.
+ */
 class AssemblerFactory implements Contracts\AssemblerFactory
 {
 	/**

@@ -15,6 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 use X3P0\Breadcrumbs\Contracts;
 
+/**
+ * Factory class used for creating new crumb instances from a registry of
+ * crumb types.
+ */
 class CrumbFactory implements Contracts\CrumbFactory
 {
 	/**

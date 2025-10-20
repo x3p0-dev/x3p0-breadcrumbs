@@ -15,6 +15,10 @@ namespace X3P0\Breadcrumbs\Query;
 
 use X3P0\Breadcrumbs\Contracts;
 
+/**
+ * Factory class used for creating new query instances from a registry of
+ * query types.
+ */
 class QueryFactory implements Contracts\QueryFactory
 {
 	/**

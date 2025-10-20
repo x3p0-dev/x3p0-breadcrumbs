@@ -23,17 +23,17 @@ interface CrumbTypeRegistry
 	 *
 	 * @param class-string<Crumb> $type
 	 */
-	public function add(string $name, string $type): void;
+	public function register(string $name, string $type): void;
 
 	/**
 	 * Removes a crumb type.
 	 */
-	public function remove(string $name): void;
+	public function unregister(string $name): void;
 
 	/**
 	 * Checks if a crumb type is registered.
 	 */
-	public function has(string $name): bool;
+	public function isRegistered(string $name): bool;
 
 	/**
 	 * Returns a crumb type.

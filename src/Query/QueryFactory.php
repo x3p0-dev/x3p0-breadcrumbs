@@ -29,7 +29,7 @@ class QueryFactory implements Contracts\QueryFactory
 	 */
 	public function make(string $name, array $params = []): ?Contracts\Query
 	{
-		if ($this->queryTypes->has($name)) {
+		if ($this->queryTypes->isRegistered($name)) {
 			$query = $this->queryTypes->get($name);
 			return new $query(...$params);
 		}

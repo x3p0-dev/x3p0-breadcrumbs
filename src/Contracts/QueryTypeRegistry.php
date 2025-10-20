@@ -23,17 +23,17 @@ interface QueryTypeRegistry
 	 *
 	 * @param class-string<Query> $type
 	 */
-	public function add(string $name, string $type): void;
+	public function register(string $name, string $type): void;
 
 	/**
 	 * Removes a query type.
 	 */
-	public function remove(string $name): void;
+	public function unregister(string $name): void;
 
 	/**
 	 * Checks if a query type is registered.
 	 */
-	public function has(string $name): bool;
+	public function isRegistered(string $name): bool;
 
 	/**
 	 * Returns a query class string or `null`.

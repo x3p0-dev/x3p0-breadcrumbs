@@ -23,17 +23,17 @@ interface AssemblerTypeRegistry
 	 *
 	 * @param class-string<Assembler> $type
 	 */
-	public function add(string $name, string $type): void;
+	public function register(string $name, string $type): void;
 
 	/**
 	 * Removes an assembler type.
 	 */
-	public function remove(string $name): void;
+	public function unregister(string $name): void;
 
 	/**
 	 * Checks if an assembler type is registered.
 	 */
-	public function has(string $name): bool;
+	public function isRegistered(string $name): bool;
 
 	/**
 	 * Returns and assembler class or `null`.

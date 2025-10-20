@@ -29,14 +29,14 @@ class QueryTypes implements QueryTypeRegistry
 	public function __construct(array $types = [])
 	{
 		foreach ($types as $name => $type) {
-			$this->add($name, $type);
+			$this->register($name, $type);
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function add(string $name, string $type): void
+	public function register(string $name, string $type): void
 	{
 		if (! is_subclass_of($type, Query::class)) {
 			throw new TypeError(esc_html(sprintf(
@@ -52,7 +52,7 @@ class QueryTypes implements QueryTypeRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function remove(string $name): void
+	public function unregister(string $name): void
 	{
 		unset($this->types[$name]);
 	}
@@ -60,7 +60,7 @@ class QueryTypes implements QueryTypeRegistry
 	/**
 	 * {@inheritdoc}
 	 */
-	public function has(string $name): bool
+	public function isRegistered(string $name): bool
 	{
 		return isset($this->types[$name]);
 	}
@@ -70,6 +70,30 @@ class QueryTypes implements QueryTypeRegistry
 	 */
 	public function get(string $name): ?string
 	{
-		return $this->has($name) ? $this->types[$name] : null;
+		return $this->isRegistered($name) ? $this->types[$name] : null;
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function add(string $name, string $type): void
+	{
+		$this->register($name, $type);
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function remove(string $name): void
+	{
+		$this->unregister($name);
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function has(string $name): bool
+	{
+		return $this->isRegistered($name);
 	}
 }

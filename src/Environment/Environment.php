@@ -164,8 +164,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->queryTypes()->has($name)) {
-				$this->queryTypes()->add($name, $class);
+			if (! $this->queryTypes()->isRegistered($name)) {
+				$this->queryTypes()->register($name, $class);
 			}
 		}
 	}
@@ -191,8 +191,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->assemblerTypes()->has($name)) {
-				$this->assemblerTypes()->add($name, $class);
+			if (! $this->assemblerTypes()->isRegistered($name)) {
+				$this->assemblerTypes()->register($name, $class);
 			}
 		}
 	}
@@ -225,8 +225,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->crumbTypes()->has($name)) {
-				$this->crumbTypes()->add($name, $class);
+			if (! $this->crumbTypes()->isRegistered($name)) {
+				$this->crumbTypes()->register($name, $class);
 			}
 		}
 	}

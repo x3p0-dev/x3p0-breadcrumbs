@@ -29,7 +29,7 @@ class AssemblerFactory implements Contracts\AssemblerFactory
 	 */
 	public function make(string $name, array $params = []): ?Contracts\Assembler
 	{
-		if ($this->assemblerTypes->has($name)) {
+		if ($this->assemblerTypes->isRegistered($name)) {
 			$assembler = $this->assemblerTypes->get($name);
 			return new $assembler(...$params);
 		}

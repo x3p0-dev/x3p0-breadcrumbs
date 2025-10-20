@@ -92,15 +92,15 @@ abstract class Markup implements Contracts\Markup
 	 */
 	protected function isRenderable(): bool
 	{
+		if ($this->crumbs->isEmpty()) {
+			return false;
+		}
+
 		if (
 			is_front_page()
 			&& ! $this->getOption('show_on_front')
 			&& ! Helpers::isPagedView()
 		) {
-			return false;
-		}
-
-		if ($this->crumbs->isEmpty()) {
 			return false;
 		}
 

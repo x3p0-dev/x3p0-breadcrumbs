@@ -72,12 +72,6 @@ class PostTypeArchive extends Query
 			$this->builder->addCrumb('post-type', [ 'type' => $type ]);
 		}
 
-		// If viewing a post type search, add the search crumb. This
-		// handles URLs like `/?s={search}&post_type={type}`.
-		if (is_search()) {
-			$this->builder->addCrumb('search');
-		}
-
 		// If viewing a post type archive by author, add author crumb.
 		// This handles URLs like `/{type}?=author={author}`.
 		if (is_author()) {
@@ -85,6 +79,12 @@ class PostTypeArchive extends Query
 
 			// Add author crumb.
 			$this->builder->addCrumb('author', [ 'user' => $user ]);
+		}
+
+		// If viewing a post type search, add the search crumb. This
+		// handles URLs like `/?s={search}&post_type={type}`.
+		if (is_search()) {
+			$this->builder->addCrumb('search');
 		}
 
 		$this->builder->assemble('paged');

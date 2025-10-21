@@ -50,6 +50,13 @@ class Author extends Query
 		}
 
 		$this->builder->addCrumb('author', [ 'user' => $user ]);
+
+		// If viewing an author search, add the search crumb. This
+		// handles URLs like `/?s={search}&author_name={name}`.
+		if (is_search()) {
+			$this->builder->addCrumb('search');
+		}
+
 		$this->builder->assemble('paged');
 	}
 }

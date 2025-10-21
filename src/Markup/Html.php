@@ -58,7 +58,7 @@ class Html extends Markup
 
 		return sprintf(
 			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
-			esc_attr($crumb->getType()),
+			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb)
 		);

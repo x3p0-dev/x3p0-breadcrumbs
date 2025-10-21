@@ -19,8 +19,6 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Term extends Crumb
 {
-	public const TYPE = 'term';
-
 	/**
 	 * {@inheritdoc}
 	 */

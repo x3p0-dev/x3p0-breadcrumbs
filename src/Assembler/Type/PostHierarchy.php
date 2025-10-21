@@ -83,7 +83,7 @@ class PostHierarchy extends Assembler
 				$crumbs->rewind();
 
 				while ($crumbs->valid()) {
-					if ($crumbs->current()->isType('post-type')) {
+					if ($crumbs->currentIsType('post-type')) {
 						$done_post_type = true;
 						break;
 					}

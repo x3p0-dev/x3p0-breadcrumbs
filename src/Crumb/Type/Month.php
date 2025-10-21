@@ -19,8 +19,6 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Month extends Crumb
 {
-	public const TYPE = 'month';
-
 	/**
 	 * {@inheritdoc}
 	 */

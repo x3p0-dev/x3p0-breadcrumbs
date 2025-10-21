@@ -19,8 +19,6 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class Author extends Crumb
 {
-	public const TYPE = 'author';
-
 	/**
 	 * {@inheritdoc}
 	 */

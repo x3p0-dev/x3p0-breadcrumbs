@@ -31,17 +31,17 @@ class CrumbTypes implements CrumbTypeRegistry
 	 */
 	public function __construct(array $types = [])
 	{
-		foreach ($types as $name => $type) {
-			$this->register($name, $type);
+		foreach ($types as $type => $className) {
+			$this->register($type, $className);
 		}
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function register(string $name, string $type): void
+	public function register(string $type, string $className): void
 	{
-		if (! is_subclass_of($type, Crumb::class)) {
+		if (! is_subclass_of($className, Crumb::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -49,54 +49,63 @@ class CrumbTypes implements CrumbTypeRegistry
 			)));
 		}
 
-		$this->types[$name] = $type;
+		$this->types[$type] = $className;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function unregister(string $name): void
+	public function unregister(string $type): void
 	{
-		unset($this->types[$name]);
+		unset($this->types[$type]);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function isRegistered(string $name): bool
+	public function isRegistered(string $type): bool
 	{
-		return isset($this->types[$name]);
+		return isset($this->types[$type]);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function get(string $name): ?string
+	public function get(string $type): ?string
 	{
-		return $this->isRegistered($name) ? $this->types[$name] : null;
+		return $this->isRegistered($type) ? $this->types[$type] : null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getTypeByClassName(string $className): ?string
+	{
+		$type = array_search($className, $this->types, true);
+		return $type !== false ? $type : null;
 	}
 
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function add(string $name, string $type): void
+	public function add(string $type, string $className): void
 	{
-		$this->register($name, $type);
+		$this->register($type, $className);
 	}
 
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function remove(string $name): void
+	public function remove(string $type): void
 	{
-		$this->unregister($name);
+		$this->unregister($type);
 	}
 
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function has(string $name): bool
+	public function has(string $type): bool
 	{
-		return $this->isRegistered($name);
+		return $this->isRegistered($type);
 	}
 }

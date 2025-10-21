@@ -21,14 +21,6 @@ use X3P0\Breadcrumbs\Contracts;
 abstract class Crumb implements Contracts\Crumb
 {
 	/**
-	 * Defines the crumb type.
-	 *
-	 * @todo Move to interface with PHP 8.1+ requirement (can be overwritten).
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 */
-	public const TYPE = 'default';
-
-	/**
 	 * Creates a new crumb object.
 	 */
 	public function __construct(
@@ -40,7 +32,11 @@ abstract class Crumb implements Contracts\Crumb
 	 */
 	public function getType(): string
 	{
-		return static::TYPE;
+		$type = $this->builder->environment()->crumbTypes()->getTypeByClassName(
+			get_class($this)
+		);
+
+		return $type ?: 'default';
 	}
 
 	/**
@@ -48,7 +44,7 @@ abstract class Crumb implements Contracts\Crumb
 	 */
 	public function isType(string $type): bool
 	{
-		return $type === static::TYPE;
+		return $type === $this->getType();
 	}
 
 	/**

@@ -21,24 +21,29 @@ interface CrumbTypeRegistry
 	/**
 	 * Add a crumb type.
 	 *
-	 * @param class-string<Crumb> $type
+	 * @param class-string<Crumb> $className
 	 */
-	public function register(string $name, string $type): void;
+	public function register(string $type, string $className): void;
 
 	/**
 	 * Removes a crumb type.
 	 */
-	public function unregister(string $name): void;
+	public function unregister(string $type): void;
 
 	/**
 	 * Checks if a crumb type is registered.
 	 */
-	public function isRegistered(string $name): bool;
+	public function isRegistered(string $type): bool;
 
 	/**
 	 * Returns a crumb type.
 	 *
 	 * @return null|class-string<Crumb> $type
 	 */
-	public function get(string $name): ?string;
+	public function get(string $type): ?string;
+
+	/**
+	 * Gets the registered type for a given class name.
+	 */
+	public function getTypeByClassName(string $className): ?string;
 }

@@ -17,8 +17,6 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class PagedSingular extends Crumb
 {
-	public const TYPE = 'paged-singular';
-
 	/**
 	 * {@inheritdoc}
 	 */

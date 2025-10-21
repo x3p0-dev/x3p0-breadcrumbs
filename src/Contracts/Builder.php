@@ -25,6 +25,11 @@ interface Builder
 	public function build(): self;
 
 	/**
+	 * Returns the environment the builder is running in.
+	 */
+	public function environment(): Environment;
+
+	/**
 	 * Returns the breadcrumbs as an array of `Crumb` objects.
 	 */
 	public function getCrumbs(): CrumbCollection;

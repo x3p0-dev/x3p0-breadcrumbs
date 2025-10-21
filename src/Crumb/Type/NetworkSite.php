@@ -17,8 +17,6 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 
 class NetworkSite extends Crumb
 {
-	public const TYPE = 'network-site';
-
 	/**
 	 * {@inheritdoc}
 	 */

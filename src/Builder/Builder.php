@@ -105,6 +105,14 @@ class Builder implements Contracts\Builder
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function environment(): Contracts\Environment
+	{
+		return $this->environment;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function query(string $name, array $params = []): void
@@ -141,7 +149,7 @@ class Builder implements Contracts\Builder
 		);
 
 		if ($crumb) {
-			$this->crumbs[] = $crumb;
+			$this->crumbs->set($name, $crumb);
 		}
 	}
 

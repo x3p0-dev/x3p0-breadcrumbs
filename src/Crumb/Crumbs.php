@@ -72,14 +72,6 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public function currentIsType(string $type): bool
-	{
-		return $type === $this->currentType();
-	}
-
-	/**
 	 * Move forward to the next crumb. Use when iterating.
 	 */
 	public function next(): void
@@ -162,6 +154,14 @@ class Crumbs implements CrumbCollection
 	/**
 	 * {@inheritDoc}
 	 */
+	public function has(string $type): bool
+	{
+		return in_array($type, $this->types, true);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function get(string $type): ?Crumb
 	{
 		$index = array_search($type, $this->types, true);
@@ -173,7 +173,7 @@ class Crumbs implements CrumbCollection
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		return in_array($offset, $this->types, true);
+		return $this->has($offset);
 	}
 
 	/**

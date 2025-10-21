@@ -28,11 +28,6 @@ interface CrumbCollection extends ArrayAccess, Iterator, Countable
 	public function currentType(): string|null;
 
 	/**
-	 * Determines whether the current registered crumb is of a specific type.
-	 */
-	public function currentIsType(string $type): bool;
-
-	/**
 	 * Sets a crumb instance in the collection.
 	 */
 	public function set(string $type, Crumb $crumb): void;
@@ -41,6 +36,11 @@ interface CrumbCollection extends ArrayAccess, Iterator, Countable
 	 * Gets a crumb instance from the collection.
 	 */
 	public function get(string $type): ?Crumb;
+
+	/**
+	 * Determines if a crumb type exists in the collection.
+	 */
+	public function has(string $type): bool;
 
 	/**
 	 * Removes a crumb instance from the collection.

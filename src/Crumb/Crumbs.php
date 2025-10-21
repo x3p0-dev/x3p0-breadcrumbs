@@ -16,7 +16,10 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbCollection};
 
 /**
- * Returns an iterable collection of crumb items.
+ * Returns an iterable collection of crumb instances. Supports array access, but
+ * it will result in a type error if string keys are not provided. This class is
+ * particularly useful when looping through the crumbs. Before looping, be sure
+ * to `rewind()` to reset the internal index.
  */
 class Crumbs implements CrumbCollection
 {
@@ -36,7 +39,7 @@ class Crumbs implements CrumbCollection
 	protected int $index = 0;
 
 	/**
-	 * {@inheritDoc}
+	 * Checks if the current index is valid. Use when iterating.
 	 */
 	public function valid(): bool
 	{
@@ -44,7 +47,8 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the current key (crumb type in this case) of the current
+	 * crumb. Use when iterating.
 	 */
 	public function key(): mixed
 	{
@@ -52,9 +56,9 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the current crumb. Use when iterating.
 	 */
-	public function current(): mixed
+	public function current(): ?Crumb
 	{
 		$type = $this->currentType();
 		return $type !== null ? $this->crumbs[$type] : null;
@@ -63,7 +67,7 @@ class Crumbs implements CrumbCollection
 	/**
 	 * {@inheritDoc}
 	 */
-	public function currentType(): string|null
+	public function currentType(): ?string
 	{
 		return $this->types[$this->index] ?? null;
 	}
@@ -77,7 +81,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Move forward to the next crumb. Use when iterating.
 	 */
 	public function next(): void
 	{
@@ -85,7 +89,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Rewind the iterator to the first crumb.
 	 */
 	public function rewind(): void
 	{
@@ -94,7 +98,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the total count of crumbs in the collection.
 	 */
 	public function count(): int
 	{

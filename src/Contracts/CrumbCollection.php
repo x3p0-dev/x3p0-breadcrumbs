@@ -18,7 +18,7 @@ use Countable;
 use Iterator;
 
 /**
- * Interface for a collection of breadcrumbs with iteration capabilities.
+ * Interface for a collection of crumb instances with iteration capabilities.
  */
 interface CrumbCollection extends ArrayAccess, Iterator, Countable
 {

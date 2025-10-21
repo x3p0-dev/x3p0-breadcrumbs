@@ -24,12 +24,12 @@ use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbCollection};
 class Crumbs implements CrumbCollection
 {
 	/**
-	 * Stores the array of crumb instances in the collection.
+	 * Stores the crumb instances with sequential keys.
 	 */
 	protected array $crumbs = [];
 
 	/**
-	 * Stores the crumb types for iteration with 0-indexed keys.
+	 * Stores the crumb types with sequential keys.
 	 */
 	protected array $types = [];
 
@@ -60,8 +60,7 @@ class Crumbs implements CrumbCollection
 	 */
 	public function current(): ?Crumb
 	{
-		$type = $this->currentType();
-		return $type !== null ? $this->crumbs[$type] : null;
+		return $this->crumbs[$this->index] ?? null;
 	}
 
 	/**
@@ -93,7 +92,6 @@ class Crumbs implements CrumbCollection
 	 */
 	public function rewind(): void
 	{
-		$this->types = array_keys($this->crumbs);
 		$this->index = 0;
 	}
 
@@ -142,8 +140,8 @@ class Crumbs implements CrumbCollection
 	 */
 	public function set(string $type, Crumb $crumb): void
 	{
-		$this->crumbs[$type] = $crumb;
-		$this->resetTypes();
+		$this->crumbs[] = $crumb;
+		$this->types[]  = $type;
 	}
 
 	/**
@@ -151,8 +149,14 @@ class Crumbs implements CrumbCollection
 	 */
 	public function remove(string $type): void
 	{
-		unset($this->crumbs[$type]);
-		$this->resetTypes();
+		foreach ($this->types as $index => $storedType) {
+			if ($storedType === $type) {
+				unset($this->crumbs[$index]);
+				unset($this->types[$index]);
+			}
+		}
+
+		$this->reindex();
 	}
 
 	/**
@@ -160,7 +164,8 @@ class Crumbs implements CrumbCollection
 	 */
 	public function get(string $type): ?Crumb
 	{
-		return $this->crumbs[$type] ?? null;
+		$index = array_search($type, $this->types, true);
+		return $index !== false ? $this->crumbs[$index] : null;
 	}
 
 	/**
@@ -168,7 +173,7 @@ class Crumbs implements CrumbCollection
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
-		return isset($this->crumbs[$offset]);
+		return in_array($offset, $this->types, true);
 	}
 
 	/**
@@ -196,10 +201,11 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * Resets keys.
+	 * Re-indexes arrays to maintain sequential keys.
 	 */
-	protected function resetTypes(): void
+	protected function reindex(): void
 	{
-		$this->types = [];
+		$this->crumbs = array_values($this->crumbs);
+		$this->types  = array_values($this->types);
 	}
 }

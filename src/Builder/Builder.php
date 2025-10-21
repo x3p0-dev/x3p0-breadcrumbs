@@ -78,11 +78,11 @@ class Builder implements Contracts\Builder
 
 		$conditionals = [
 			'is_404'        => 'error-404',
-			'is_search'     => 'search',
 			'is_front_page' => 'front-page',
 			'is_home'       => 'home',
 			'is_singular'   => 'singular',
-			'is_archive'    => 'archive'
+			'is_archive'    => 'archive',
+			'is_search'     => 'search'
 		];
 
 		foreach ($conditionals as $tag => $type) {

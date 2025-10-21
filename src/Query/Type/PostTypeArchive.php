@@ -54,7 +54,7 @@ class PostTypeArchive extends Query
 				$this->builder->assemble('path', [ 'path' => $type->rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
-				if ($this->builder->getCrumbs()->has('post-type')) {
+				if ($this->builder->crumbs()->has('post-type')) {
 					$done_post_type = true;
 				}
 			}

@@ -99,9 +99,17 @@ class Builder implements Contracts\Builder
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getCrumbs(): Contracts\CrumbCollection
+	public function crumbs(): Contracts\CrumbCollection
 	{
 		return $this->crumbs;
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function getCrumbs(): Contracts\CrumbCollection
+	{
+		return $this->crumbs();
 	}
 
 	/**

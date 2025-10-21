@@ -75,7 +75,7 @@ abstract class Markup implements Contracts\Markup
 			], $this->options)
 		);
 
-		$this->crumbs = $this->builder->build()->getCrumbs();
+		$this->crumbs = $this->builder->build()->crumbs();
 	}
 
 	/**

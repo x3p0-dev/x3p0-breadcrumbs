@@ -32,7 +32,7 @@ interface Builder
 	/**
 	 * Returns the breadcrumbs as an array of `Crumb` objects.
 	 */
-	public function getCrumbs(): CrumbCollection;
+	public function crumbs(): CrumbCollection;
 
 	/**
 	 * Returns a specific option or `null` if the option doesn't exist.

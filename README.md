@@ -20,10 +20,10 @@ If you're a block theme author, you can include support for the Breadcrumbs bloc
 <!-- wp:x3p0/breadcrumbs /-->
 ```
 
-That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block (see [`block.json`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/resources/blocks/breadcrumbs/block.json) for all attributes). Here is an example that changes the `separator` attribute to show an arrow:
+That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block (see [`block.json`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/resources/blocks/breadcrumbs/block.json) for all attributes). Here is an example that changes the `separatorIcon` attribute to show an arrow:
 
 ```html
-<!-- wp:x3p0/breadcrumbs {"separator":"arrow"} /-->
+<!-- wp:x3p0/breadcrumbs {"separatorIcon":"svg-arrow"} /-->
 ```
 
 ### Classic Themes

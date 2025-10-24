@@ -49,10 +49,6 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 			: []
 		),
 		{
-			name: 'archives',
-			label: __('Archives', 'x3p0-breadcrumbs')
-		},
-		{
 			name: 'search',
 			label: __('Search Results', 'x3p0-breadcrumbs'),
 			placeholder: __('Search results for: %s', 'x3p0-breadcrumbs')

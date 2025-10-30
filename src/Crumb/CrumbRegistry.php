@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts\CrumbTypeRegistry;
 
 /**
  * Registry class for storing crumb types.
  */
-class CrumbTypes implements CrumbTypeRegistry
+final class CrumbRegistry
 {
 	/**
 	 * Stores the array of crumb type classes.
@@ -37,7 +36,9 @@ class CrumbTypes implements CrumbTypeRegistry
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Add a crumb type.
+	 *
+	 * @param class-string<Crumb> $className
 	 */
 	public function register(string $type, string $className): void
 	{
@@ -53,7 +54,7 @@ class CrumbTypes implements CrumbTypeRegistry
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Removes a crumb type.
 	 */
 	public function unregister(string $type): void
 	{
@@ -61,7 +62,7 @@ class CrumbTypes implements CrumbTypeRegistry
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Checks if a crumb type is registered.
 	 */
 	public function isRegistered(string $type): bool
 	{
@@ -69,7 +70,9 @@ class CrumbTypes implements CrumbTypeRegistry
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Returns a crumb type.
+	 *
+	 * @return null|class-string<Crumb> $type
 	 */
 	public function get(string $type): ?string
 	{
@@ -77,7 +80,7 @@ class CrumbTypes implements CrumbTypeRegistry
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets the registered type for a given class name.
 	 */
 	public function getTypeByClassName(string $className): ?string
 	{

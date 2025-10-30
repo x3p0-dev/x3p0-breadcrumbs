@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts\CrumbCollection;
+use ArrayAccess;
+use Countable;
+use Iterator;
 
 /**
  * Returns an iterable collection of crumb instances. Supports array access, but
@@ -21,7 +23,7 @@ use X3P0\Breadcrumbs\Contracts\CrumbCollection;
  * particularly useful when looping through the crumbs. Before looping, be sure
  * to `rewind()` to reset the internal index.
  */
-class Crumbs implements CrumbCollection
+class CrumbCollection implements ArrayAccess, Iterator, Countable
 {
 	/**
 	 * Stores the crumb instances with sequential keys.
@@ -64,7 +66,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the current registered crumb type.
 	 */
 	public function currentType(): ?string
 	{
@@ -96,7 +98,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the current position (1-indexed).
 	 */
 	public function position(): int
 	{
@@ -104,7 +106,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Checks if the current position is the first element.
 	 */
 	public function isFirst(): bool
 	{
@@ -112,7 +114,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Checks if the current position is the last element.
 	 */
 	public function isLast(): bool
 	{
@@ -120,7 +122,7 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Checks if the collection is empty.
 	 */
 	public function isEmpty(): bool
 	{
@@ -128,21 +130,21 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Sets a crumb instance in the collection.
 	 */
-	public function set(string $type, Crumb $crumb): void
+	public function set(string $key, Crumb $crumb): void
 	{
 		$this->crumbs[] = $crumb;
-		$this->types[]  = $type;
+		$this->types[]  = $key;
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Removes a crumb instance from the collection.
 	 */
-	public function remove(string $type): void
+	public function remove(string $key): void
 	{
 		foreach ($this->types as $index => $storedType) {
-			if ($storedType === $type) {
+			if ($storedType === $key) {
 				unset($this->crumbs[$index]);
 				unset($this->types[$index]);
 			}
@@ -152,19 +154,19 @@ class Crumbs implements CrumbCollection
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Determines if a crumb type exists in the collection.
 	 */
-	public function has(string $type): bool
+	public function has(string $key): bool
 	{
-		return in_array($type, $this->types, true);
+		return in_array($key, $this->types, true);
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Gets a crumb instance from the collection.
 	 */
-	public function get(string $type): ?Crumb
+	public function get(string $key): ?Crumb
 	{
-		$index = array_search($type, $this->types, true);
+		$index = array_search($key, $this->types, true);
 		return $index !== false ? $this->crumbs[$index] : null;
 	}
 

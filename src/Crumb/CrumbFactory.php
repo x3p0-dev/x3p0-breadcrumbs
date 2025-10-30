@@ -13,28 +13,25 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
  * Factory class used for creating new crumb instances from a registry of
  * crumb types.
  */
-class CrumbFactory implements Contracts\CrumbFactory
+final class CrumbFactory
 {
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(
-		private Contracts\CrumbTypeRegistry $crumbTypes
-	) {}
+	public function __construct(private CrumbRegistry $crumbRegistry)
+	{}
 
 	/**
-	 * {@inheritDoc}
+	 * Creates an instance of a crumb object.
 	 */
 	public function make(string $name, array $params = []): ?Crumb
 	{
-		if ($this->crumbTypes->isRegistered($name)) {
-			$crumb = $this->crumbTypes->get($name);
+		if ($this->crumbRegistry->isRegistered($name)) {
+			$crumb = $this->crumbRegistry->get($name);
 			return new $crumb(...$params);
 		}
 

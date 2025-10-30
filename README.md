@@ -98,7 +98,7 @@ If you're a third-party plugin developer, you can also hook into the existing en
 use X3P0\Breadcrumbs\Contracts\Environment;
 
 do_action('x3p0/breadcrumbs/environment', function(Environment $environment) {
-	$environment->crumbTypes()->register('example-crumb', ExampleCrumb::class);
+	$environment->crumbRegistry()->register('example-crumb', ExampleCrumb::class);
 });
 ```
 

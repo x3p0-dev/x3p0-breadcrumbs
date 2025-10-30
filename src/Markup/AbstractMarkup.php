@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -43,7 +44,7 @@ abstract class AbstractMarkup implements Markup
 	/**
 	 * Stores the crumb objects from the builder.
 	 */
-	protected Contracts\CrumbCollection $crumbs;
+	protected CrumbCollection $crumbs;
 
 	/**
 	 * Creates a new markup object. The constructor requires a `Breadcrumbs`

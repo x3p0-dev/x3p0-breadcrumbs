@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Builder;
 
 use TypeError;
 use X3P0\Breadcrumbs\Contracts;
-use X3P0\Breadcrumbs\Crumb\Crumbs;
+use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 
 /**
  * Implements the `Builder` contract using query classes to generate an array of
@@ -26,7 +26,7 @@ class Builder implements Contracts\Builder
 	/**
 	 * Houses the array of `Contracts\Crumb` objects that make up the trail.
 	 */
-	protected Contracts\CrumbCollection $crumbs;
+	protected CrumbCollection $crumbs;
 
 	/**
 	 * Creates a new breadcrumbs object. The constructor requires an
@@ -47,7 +47,7 @@ class Builder implements Contracts\Builder
 			], $this->options)
 		);
 
-		$this->crumbs = new Crumbs();
+		$this->crumbs = new CrumbCollection();
 	}
 
 	/**
@@ -99,7 +99,7 @@ class Builder implements Contracts\Builder
 	/**
 	 * {@inheritdoc}
 	 */
-	public function crumbs(): Contracts\CrumbCollection
+	public function crumbs(): CrumbCollection
 	{
 		return $this->crumbs;
 	}
@@ -107,7 +107,7 @@ class Builder implements Contracts\Builder
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function getCrumbs(): Contracts\CrumbCollection
+	public function getCrumbs(): CrumbCollection
 	{
 		return $this->crumbs();
 	}

@@ -45,7 +45,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\CrumbTypeRegistry $crumbTypes;
+	protected Crumb\CrumbRegistry $crumbRegistry;
 
 	/**
 	 * Factory for creating query instances.
@@ -60,7 +60,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Factory for creating crumb instances.
 	 */
-	protected Contracts\CrumbFactory $crumbFactory;
+	protected Crumb\CrumbFactory $crumbFactory;
 
 	/**
 	 * Builds a new environment by creating registries and factories, then
@@ -74,12 +74,12 @@ class Environment implements Contracts\Environment
 		// Initialize registries.
 		$this->queryTypes     = new Query\QueryTypes($queryTypes);
 		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblerTypes);
-		$this->crumbTypes     = new Crumb\CrumbTypes($crumbTypes);
+		$this->crumbRegistry  = new Crumb\CrumbRegistry($crumbTypes);
 
 		// Register the default types.
 		$this->registerDefaultQueryTypes();
 		$this->registerDefaultAssemblerTypes();
-		$this->registerDefaultCrumbTypes();
+		$this->registerDefaultCrumbs();
 
 		// Allow developers to hook into the environment and customize.
 		do_action('x3p0/breadcrumbs/environment', $this);
@@ -87,7 +87,7 @@ class Environment implements Contracts\Environment
 		// Initialize factories with their respective registries.
 		$this->queryFactory     = new Query\QueryFactory($this->queryTypes);
 		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerTypes);
-		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbTypes);
+		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbRegistry);
 	}
 
 	/**
@@ -109,9 +109,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function crumbTypes(): Contracts\CrumbTypeRegistry
+	public function crumbRegistry(): Crumb\CrumbRegistry
 	{
-		return $this->crumbTypes;
+		return $this->crumbRegistry;
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default crumb classes with the environment.
 	 */
-	private function registerDefaultCrumbTypes(): void
+	private function registerDefaultCrumbs(): void
 	{
 		$defaults = [
 			'archive'        => Crumb\Type\Archive::class,
@@ -225,8 +225,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->crumbTypes()->isRegistered($name)) {
-				$this->crumbTypes()->register($name, $class);
+			if (! $this->crumbRegistry()->isRegistered($name)) {
+				$this->crumbRegistry()->register($name, $class);
 			}
 		}
 	}
@@ -250,8 +250,8 @@ class Environment implements Contracts\Environment
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function getCrumbs(): Contracts\CrumbTypeRegistry
+	public function getCrumbs(): Crumb\CrumbRegistry
 	{
-		return $this->crumbTypes();
+		return $this->crumbRegistry();
 	}
 }

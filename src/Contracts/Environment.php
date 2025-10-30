@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
-use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\{Crumb, CrumbRegistry};
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -36,7 +36,7 @@ interface Environment
 	/**
 	 * Returns a registry of crumb types.
 	 */
-	public function crumbTypes(): CrumbTypeRegistry;
+	public function crumbRegistry(): CrumbRegistry;
 
 	/**
 	 * Creates a query instance by name with the given parameters.

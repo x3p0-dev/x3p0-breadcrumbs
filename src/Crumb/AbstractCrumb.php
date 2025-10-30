@@ -31,7 +31,7 @@ abstract class AbstractCrumb implements Crumb
 	 */
 	public function getType(): string
 	{
-		$type = $this->builder->environment()->crumbTypes()->getTypeByClassName(
+		$type = $this->builder->environment()->crumbRegistry()->getTypeByClassName(
 			get_class($this)
 		);
 

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\Type\PostType;
 
 /**
  * Assembles breadcrumbs based on the given term object.
  */
-class Term extends Assembler
+class Term extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

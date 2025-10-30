@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Rewrite;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 
 /**
  * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
@@ -23,7 +23,7 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
  * though this is set for the post permalink structure, archives, other post
  * types, and taxonomies may still use it.
  */
-class RewriteFront extends Assembler
+class RewriteFront extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

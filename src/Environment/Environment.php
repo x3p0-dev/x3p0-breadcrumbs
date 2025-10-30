@@ -125,7 +125,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function makeAssembler(string $name, array $params = []): ?Contracts\Assembler
+	public function makeAssembler(string $name, array $params = []): ?Assembler\Assembler
 	{
 		return $this->assemblerFactory->make($name, $params);
 	}

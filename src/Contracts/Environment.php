@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Contracts;
 
+use X3P0\Breadcrumbs\Assembler\Assembler;
+
 /**
  * The environment contract is a container for storing queries, assemblers, and
  * crumbs, which are the building blocks for creating a breadcrumb trail.

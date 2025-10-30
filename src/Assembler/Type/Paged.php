@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
  * page. This handles archive-type pagination, single-post pagination via
  * `<!--nextpage-->`, and comments pagination.
  */
-class Paged extends Assembler
+class Paged extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

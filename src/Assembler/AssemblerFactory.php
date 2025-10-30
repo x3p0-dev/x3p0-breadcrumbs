@@ -31,7 +31,7 @@ class AssemblerFactory implements Contracts\AssemblerFactory
 	/**
 	 * {@inheritDoc}
 	 */
-	public function make(string $name, array $params = []): ?Contracts\Assembler
+	public function make(string $name, array $params = []): ?Assembler
 	{
 		if ($this->assemblerTypes->isRegistered($name)) {
 			$assembler = $this->assemblerTypes->get($name);

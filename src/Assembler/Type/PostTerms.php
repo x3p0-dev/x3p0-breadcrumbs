@@ -15,13 +15,13 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_Taxonomy;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * Assembles breadcrumbs based on the given taxonomy for the post.
  */
-class PostTerms extends Assembler
+class PostTerms extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

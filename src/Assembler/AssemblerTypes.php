@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts\{Assembler, AssemblerTypeRegistry};
+use X3P0\Breadcrumbs\Contracts\AssemblerTypeRegistry;
 
 /**
  * Registry class for storing assembler types.

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract assembler.
+ * Assembler interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
- * Implements the `Assembler` interface and creates a custom Assembler object.
+ * `Assembler` classes are essentially helper classes for generating breadcrumbs,
+ * sitting as a layer between `Query` and `Crumb` classes. They are primarily
+ * used for adding crumbs to the overall breadcrumbs collection.
  */
-abstract class Assembler implements Contracts\Assembler
+interface Assembler
 {
 	/**
-	 * Creates a new assembler object.
+	 * Runs the logic for generating breadcrumbs.
 	 */
-	public function __construct(protected Contracts\Builder $builder)
-	{}
+	public function assemble(): void;
 }

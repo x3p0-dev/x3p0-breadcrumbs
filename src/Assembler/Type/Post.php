@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to
  * call based on the given post.
  */
-class Post extends Assembler
+class Post extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

@@ -15,13 +15,13 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post_Type;
 use WP_Rewrite;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
  * Assembles breadcrumbs for the given post type.
  */
-class PostType extends Assembler
+class PostType extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

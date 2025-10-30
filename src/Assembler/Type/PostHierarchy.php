@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\Type\PostType;
 
@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Crumb\Type\PostType;
  * Assemblers breadcrumbs primarily based on the post type rewrite settings of the
  * given post.
  */
-class PostHierarchy extends Assembler
+class PostHierarchy extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

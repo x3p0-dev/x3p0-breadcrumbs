@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 /**
  * Creates a plain HTML representation of the breadcrumbs as an ordered list.
  */
-class Html extends Markup
+class Html extends AbstractMarkup
 {
 	/**
 	 * {@inheritdoc}

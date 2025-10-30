@@ -17,7 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Minute extends AbstractCrumb
+final class Minute extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

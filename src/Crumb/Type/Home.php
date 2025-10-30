@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Home extends AbstractCrumb
+final class Home extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

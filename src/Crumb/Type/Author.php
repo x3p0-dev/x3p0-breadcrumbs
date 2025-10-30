@@ -17,7 +17,7 @@ use WP_User;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Author extends AbstractCrumb
+final class Author extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

@@ -17,7 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Year extends AbstractCrumb
+final class Year extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

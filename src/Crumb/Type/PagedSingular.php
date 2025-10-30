@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class PagedSingular extends AbstractCrumb
+final class PagedSingular extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

@@ -17,7 +17,7 @@ use WP_Post_Type;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class PostType extends AbstractCrumb
+final class PostType extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

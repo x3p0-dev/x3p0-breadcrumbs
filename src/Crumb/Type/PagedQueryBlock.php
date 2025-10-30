@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class PagedQueryBlock extends AbstractCrumb
+final class PagedQueryBlock extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

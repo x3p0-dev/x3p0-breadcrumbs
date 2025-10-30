@@ -17,7 +17,7 @@ use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Term extends AbstractCrumb
+final class Term extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

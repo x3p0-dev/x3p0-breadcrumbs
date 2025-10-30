@@ -204,6 +204,7 @@ class Builder implements Contracts\Builder
 		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 		return [
 			'home'                => __('Home', 'x3p0-breadcrumbs'),
+			'untitled'            => __('Untitled', 'x3p0-breadcrumbs'),
 			'error_404'           => __('404 Not Found', 'x3p0-breadcrumbs'),
 			'archives'            => __('Archives', 'x3p0-breadcrumbs'),
 			// Translators: %s is the search query.

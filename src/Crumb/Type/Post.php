@@ -37,10 +37,10 @@ class Post extends Crumb
 		$post_id = $this->post->ID;
 
 		if (is_single($post_id) || is_page($post_id) || is_attachment($post_id)) {
-			return single_post_title('', false);
+			return single_post_title('', false) ?: $this->builder->getLabel('untitled');
 		}
 
-		return get_the_title($this->post->ID);
+		return get_the_title($this->post->ID) ?: $this->builder->getLabel('untitled');
 	}
 
 	/**

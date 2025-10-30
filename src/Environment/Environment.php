@@ -37,7 +37,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\AssemblerTypeRegistry $assemblerTypes;
+	protected Assembler\AssemblerRegistry $assemblerRegistry;
 
 	/**
 	 * Houses a collection where the keys are the crumb name and the values
@@ -55,7 +55,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Factory for creating assembler instances.
 	 */
-	protected Contracts\AssemblerFactory $assemblerFactory;
+	protected Assembler\AssemblerFactory $assemblerFactory;
 
 	/**
 	 * Factory for creating crumb instances.
@@ -72,13 +72,13 @@ class Environment implements Contracts\Environment
 		array $crumbTypes = []
 	) {
 		// Initialize registries.
-		$this->queryTypes     = new Query\QueryTypes($queryTypes);
-		$this->assemblerTypes = new Assembler\AssemblerTypes($assemblerTypes);
-		$this->crumbRegistry  = new Crumb\CrumbRegistry($crumbTypes);
+		$this->queryTypes        = new Query\QueryTypes($queryTypes);
+		$this->assemblerRegistry = new Assembler\AssemblerRegistry($assemblerTypes);
+		$this->crumbRegistry     = new Crumb\CrumbRegistry($crumbTypes);
 
 		// Register the default types.
 		$this->registerDefaultQueryTypes();
-		$this->registerDefaultAssemblerTypes();
+		$this->registerDefaultAssemblers();
 		$this->registerDefaultCrumbs();
 
 		// Allow developers to hook into the environment and customize.
@@ -86,7 +86,7 @@ class Environment implements Contracts\Environment
 
 		// Initialize factories with their respective registries.
 		$this->queryFactory     = new Query\QueryFactory($this->queryTypes);
-		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerTypes);
+		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerRegistry);
 		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbRegistry);
 	}
 
@@ -101,9 +101,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function assemblerTypes(): Contracts\AssemblerTypeRegistry
+	public function assemblerRegistry(): Assembler\AssemblerRegistry
 	{
-		return $this->assemblerTypes;
+		return $this->assemblerRegistry;
 	}
 
 	/**
@@ -173,7 +173,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default builder classes with the environment.
 	 */
-	private function registerDefaultAssemblerTypes(): void
+	private function registerDefaultAssemblers(): void
 	{
 		$defaults = [
 			'home'              => Assembler\Type\Home::class,
@@ -191,8 +191,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->assemblerTypes()->isRegistered($name)) {
-				$this->assemblerTypes()->register($name, $class);
+			if (! $this->assemblerRegistry()->isRegistered($name)) {
+				$this->assemblerRegistry()->register($name, $class);
 			}
 		}
 	}
@@ -242,9 +242,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function getAssemblers(): Contracts\AssemblerTypeRegistry
+	public function getAssemblers(): Assembler\AssemblerRegistry
 	{
-		return $this->assemblerTypes();
+		return $this->assemblerRegistry();
 	}
 
 	/**

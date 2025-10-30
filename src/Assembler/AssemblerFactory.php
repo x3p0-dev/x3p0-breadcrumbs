@@ -13,28 +13,25 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
  * Factory class used for creating new assembler instances from a registry of
  * assembler types.
  */
-class AssemblerFactory implements Contracts\AssemblerFactory
+final class AssemblerFactory
 {
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(
-		private Contracts\AssemblerTypeRegistry $assemblerTypes
-	) {}
+	public function __construct(private AssemblerRegistry $assemblerRegistry)
+	{}
 
 	/**
-	 * {@inheritDoc}
+	 * Creates an instance of an assembler object.
 	 */
-	public function make(string $name, array $params = []): ?Assembler
+	public function make(string $key, array $params = []): ?Assembler
 	{
-		if ($this->assemblerTypes->isRegistered($name)) {
-			$assembler = $this->assemblerTypes->get($name);
+		if ($this->assemblerRegistry->isRegistered($key)) {
+			$assembler = $this->assemblerRegistry->get($key);
 			return new $assembler(...$params);
 		}
 

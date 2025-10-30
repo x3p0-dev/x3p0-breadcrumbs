@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
  * Assembles breadcrumbs based on a given path by attempting to find a post
  * object within that path.
  */
-class Path extends AbstractAssembler
+final class Path extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

@@ -23,7 +23,7 @@ use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
  * though this is set for the post permalink structure, archives, other post
  * types, and taxonomies may still use it.
  */
-class RewriteFront extends AbstractAssembler
+final class RewriteFront extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

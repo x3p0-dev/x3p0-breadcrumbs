@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Crumb\Type\PostType;
 /**
  * Assembles breadcrumbs based on the given term object.
  */
-class Term extends AbstractAssembler
+final class Term extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

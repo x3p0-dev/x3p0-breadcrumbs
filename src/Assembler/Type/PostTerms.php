@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
 /**
  * Assembles breadcrumbs based on the given taxonomy for the post.
  */
-class PostTerms extends AbstractAssembler
+final class PostTerms extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

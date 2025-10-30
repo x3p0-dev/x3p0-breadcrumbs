@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
  * This is a wrapper to determine a more specific post-related Assembler class to
  * call based on the given post.
  */
-class Post extends AbstractAssembler
+final class Post extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

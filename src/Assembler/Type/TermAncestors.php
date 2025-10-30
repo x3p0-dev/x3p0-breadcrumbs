@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
  * Assembles breadcrumbs based on whether a term has a parent post. It loops
  * through each term until a parent term is no longer found.
  */
-class TermAncestors extends AbstractAssembler
+final class TermAncestors extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

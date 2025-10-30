@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
  * page. This handles archive-type pagination, single-post pagination via
  * `<!--nextpage-->`, and comments pagination.
  */
-class Paged extends AbstractAssembler
+final class Paged extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

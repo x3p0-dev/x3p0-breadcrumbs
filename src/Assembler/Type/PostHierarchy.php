@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Crumb\Type\PostType;
  * Assemblers breadcrumbs primarily based on the post type rewrite settings of the
  * given post.
  */
-class PostHierarchy extends AbstractAssembler
+final class PostHierarchy extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

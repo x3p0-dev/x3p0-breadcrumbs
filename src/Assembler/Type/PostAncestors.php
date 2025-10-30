@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
  * Assembles breadcrumbs based on whether a post has a parent post. It loops
  * through each post until a parent post is no longer found.
  */
-class PostAncestors extends AbstractAssembler
+final class PostAncestors extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

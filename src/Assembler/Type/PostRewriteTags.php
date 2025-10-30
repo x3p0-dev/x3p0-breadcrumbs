@@ -24,7 +24,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
  * core WP `%year%`, `%monthnum%`, `%day%`, and `%author` tags. It will also map
  * any taxonomy tags.
  */
-class PostRewriteTags extends AbstractAssembler
+final class PostRewriteTags extends AbstractAssembler
 {
 	/**
 	 * {@inheritdoc}

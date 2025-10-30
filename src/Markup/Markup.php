@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -129,7 +130,7 @@ abstract class Markup implements Contracts\Markup
 	 * is the first or last item and whether they should be displayed based
 	 * on options passed into the class.
 	 */
-	protected function isCrumbRenderable(Contracts\Crumb $crumb): bool
+	protected function isCrumbRenderable(Crumb $crumb): bool
 	{
 		if (! $crumb->getLabel()) {
 			return false;
@@ -145,7 +146,7 @@ abstract class Markup implements Contracts\Markup
 	 * Helper function for determining whether the breadcrumb has a URL and
 	 * whether it should be linked based on options passed into the class.
 	 */
-	protected function isCrumbLinkable(Contracts\Crumb $crumb): bool
+	protected function isCrumbLinkable(Crumb $crumb): bool
 	{
 		if (! $crumb->getUrl()) {
 			return false;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\Crumb;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
  * Creates an ordered list of the breadcrumbs with Schema.org microdata.

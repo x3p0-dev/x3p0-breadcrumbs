@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Contracts;
 
+use X3P0\Breadcrumbs\Crumb\Crumb;
+
 /**
  * Stores a registry of crumb types.
  */

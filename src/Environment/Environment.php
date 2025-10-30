@@ -133,7 +133,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function makeCrumb(string $name, array $params = []): ?Contracts\Crumb
+	public function makeCrumb(string $name, array $params = []): ?Crumb\Crumb
 	{
 		return $this->crumbFactory->make($name, $params);
 	}

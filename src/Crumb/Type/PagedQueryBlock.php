@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class PagedQueryBlock extends Crumb
+class PagedQueryBlock extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

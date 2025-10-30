@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts\{Crumb, CrumbCollection};
+use X3P0\Breadcrumbs\Contracts\CrumbCollection;
 
 /**
  * Returns an iterable collection of crumb instances. Supports array access, but

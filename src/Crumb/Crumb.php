@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Crumb class.
+ * Crumb interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -13,45 +13,31 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
- * Implements the `Crumb` interface and creates a custom crumb object.
+ * `Crumb` classes represent the final result of an individual breadcrumb item
+ * that has been generated either by `Query` or `Builder` implementations. It
+ * should house all the information for outputting the breadcrumb item on the
+ * front end.
  */
-abstract class Crumb implements Contracts\Crumb
+interface Crumb
 {
 	/**
-	 * Creates a new crumb object.
+	 * Returns a type for the crumb.
 	 */
-	public function __construct(
-		protected Contracts\Builder $builder
-	) {}
+	public function getType(): string;
 
 	/**
-	 * {@inheritDoc}
+	 * Determines whether crumb is of a given type.
 	 */
-	public function getType(): string
-	{
-		$type = $this->builder->environment()->crumbTypes()->getTypeByClassName(
-			get_class($this)
-		);
-
-		return $type ?: 'default';
-	}
+	public function isType(string $type): bool;
 
 	/**
-	 * {@inheritDoc}
+	 * Returns an internationalized text label for the crumb.
 	 */
-	public function isType(string $type): bool
-	{
-		return $type === $this->getType();
-	}
+	public function getLabel(): string;
 
 	/**
-	 * {@inheritdoc}
+	 * Returns a URL for the crumb.
 	 */
-	public function getUrl(): string
-	{
-		return add_query_arg([]);
-	}
+	public function getUrl(): string;
 }

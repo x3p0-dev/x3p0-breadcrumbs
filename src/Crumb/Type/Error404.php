@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-class Error404 extends Crumb
+class Error404 extends AbstractCrumb
 {
 	/**
 	 * {@inheritdoc}

@@ -31,7 +31,7 @@ class CrumbFactory implements Contracts\CrumbFactory
 	/**
 	 * {@inheritDoc}
 	 */
-	public function make(string $name, array $params = []): ?Contracts\Crumb
+	public function make(string $name, array $params = []): ?Crumb
 	{
 		if ($this->crumbTypes->isRegistered($name)) {
 			$crumb = $this->crumbTypes->get($name);

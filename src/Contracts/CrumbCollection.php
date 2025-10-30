@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Contracts;
 use ArrayAccess;
 use Countable;
 use Iterator;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
  * Interface for a collection of crumb instances with iteration capabilities.

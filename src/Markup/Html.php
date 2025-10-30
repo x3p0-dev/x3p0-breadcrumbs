@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\Crumb;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
  * Creates a plain HTML representation of the breadcrumbs as an ordered list.

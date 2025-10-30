@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Query factory interface.
+ * Query class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -11,17 +11,18 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Contracts;
+namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Contracts\Builder;
 
 /**
- * Factory contract for query objects.
+ * Implements the `Query` interface and creates a custom query object.
  */
-interface QueryFactory
+abstract class AbstractQuery implements Query
 {
 	/**
-	 * Creates an instance of a query object.
+	 * Creates a new query object.
 	 */
-	public function make(string $name, array $params = []): ?Query;
+	public function __construct(protected Builder $builder)
+	{}
 }

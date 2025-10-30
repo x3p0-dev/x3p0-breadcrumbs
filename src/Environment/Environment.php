@@ -117,7 +117,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function makeQuery(string $name, array $params = []): ?Contracts\Query
+	public function makeQuery(string $name, array $params = []): ?Query\Query
 	{
 		return $this->queryFactory->make($name, $params);
 	}

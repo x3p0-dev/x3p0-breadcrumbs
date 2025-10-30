@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Query class.
+ * Query interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
- * Implements the `Query` interface and creates a custom query object.
+ * `Query` classes are meant to be paired with the global WordPress queried URL,
+ * such as the front page, single posts, archives, etc. Their purpose is to
+ * call either `Assembler` or `Crumb` classes to generate breadcrumbs.
  */
-abstract class Query implements Contracts\Query
+interface Query
 {
 	/**
-	 * Creates a new query object.
+	 * Runs the logic for generating breadcrumbs.
 	 */
-	public function __construct(protected Contracts\Builder $builder)
-	{}
+	public function query(): void;
 }

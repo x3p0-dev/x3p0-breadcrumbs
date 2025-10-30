@@ -15,9 +15,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Contracts\Builder;
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Tax extends Query
+class Tax extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

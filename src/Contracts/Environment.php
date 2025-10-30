@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Contracts;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Query\Query;
 
 /**
  * The environment contract is a container for storing queries, assemblers, and

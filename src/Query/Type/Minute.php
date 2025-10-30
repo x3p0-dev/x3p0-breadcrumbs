@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Minute extends Query
+class Minute extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

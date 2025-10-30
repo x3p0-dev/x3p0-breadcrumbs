@@ -31,7 +31,7 @@ class QueryFactory implements Contracts\QueryFactory
 	/**
 	 * {@inheritDoc}
 	 */
-	public function make(string $name, array $params = []): ?Contracts\Query
+	public function make(string $name, array $params = []): ?Query
 	{
 		if ($this->queryTypes->isRegistered($name)) {
 			$query = $this->queryTypes->get($name);

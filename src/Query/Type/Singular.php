@@ -15,9 +15,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Builder;
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Singular extends Query
+class Singular extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

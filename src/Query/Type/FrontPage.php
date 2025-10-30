@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\AbstractQuery;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class FrontPage extends Query
+class FrontPage extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

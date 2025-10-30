@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Crumb\Type\PostType;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class PostTypeArchive extends AbstractQuery
+final class PostTypeArchive extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

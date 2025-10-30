@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class MinuteHour extends AbstractQuery
+final class MinuteHour extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

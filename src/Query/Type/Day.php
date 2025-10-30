@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Day extends AbstractQuery
+final class Day extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

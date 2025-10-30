@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
-class FrontPage extends AbstractQuery
+final class FrontPage extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

@@ -18,7 +18,7 @@ use WP_User;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Author extends AbstractQuery
+final class Author extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

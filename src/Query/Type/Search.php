@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Search extends AbstractQuery
+final class Search extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

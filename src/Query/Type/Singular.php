@@ -17,7 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\Contracts\Builder;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-class Singular extends AbstractQuery
+final class Singular extends AbstractQuery
 {
 	/**
 	 * {@inheritdoc}

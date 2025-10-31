@@ -20,9 +20,9 @@ namespace X3P0\Breadcrumbs;
 class BreadcrumbsConfig
 {
 	public function __construct(
-		private array $labels         = [],
 		private array $mapRewriteTags = [],
 		private array $postTaxonomy   = [],
+		private array $labels         = [],
 		private bool  $network        = false
 	) {
 		$this->labels = array_merge($this->defaultLabels(), $this->labels);

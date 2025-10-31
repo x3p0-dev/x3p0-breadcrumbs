@@ -40,9 +40,9 @@ final class Breadcrumbs implements Block
 	public function render(): string
 	{
 		$breadcrumbs_config = new BreadcrumbsConfig(
-			labels:         $this->attributes['labels']         ?? [],
 			mapRewriteTags: $this->attributes['mapRewriteTags'] ?? [],
-			postTaxonomy:   $this->attributes['postTaxonomy']   ?? []
+			postTaxonomy:   $this->attributes['postTaxonomy']   ?? [],
+			labels:         $this->attributes['labels']         ?? []
 		);
 
 		$markup_config = new MarkupConfig(

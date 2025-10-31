@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 
 /**
  * Assembles breadcrumbs based on whether a term has a parent post. It loops

@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Rewrite;
 use WP_User;
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Author extends AbstractQuery

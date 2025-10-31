@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 
 /**
  * Implements the `Assembler` interface and creates a custom Assembler object.

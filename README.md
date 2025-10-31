@@ -51,12 +51,12 @@ This foundation includes three primary interfaces:
 By default, the plugin includes one implementation for both the `Environment` and `Builder` interfaces. It includes three implementations of the `Markup` interface for outputting plain HTML, microdata-formatted, and RDFa-formatted lists.
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
 $environment = new Environment();
-$builder     = new Builder($environment);
+$builder     = new TrailBuilder($environment);
 $markup      = new Html($builder);
 
 echo $markup->render();
@@ -65,11 +65,11 @@ echo $markup->render();
 Or, if you wanted, you could shorten that to:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
-echo (new Html(new Builder(new Environment())))->render();
+echo (new Html(new TrailBuilder(new Environment())))->render();
 ```
 
 ### Environment Configuration
@@ -129,7 +129,7 @@ The `Builder` class accepts two parameters:
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Html;
 
@@ -143,7 +143,7 @@ $builder_options = [
 ];
 
 $environment = new Environment();
-$builder     = new Builder($environment, $builder_options);
+$builder     = new TrailBuilder($environment, $builder_options);
 $markup      = new Html($builder);
 
 echo $markup->render();
@@ -188,7 +188,7 @@ The `Html`, `Microdata`, and `Rdfa` classes, each of which are implementations o
 Here is an example of using Schema.org microdata (via the `Microdata` class) and configuring the options to remove the first item:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Microdata;
 
@@ -197,7 +197,7 @@ $markup_options = [
 ];
 
 $environment = new Environment();
-$builder     = new Builder($environment);
+$builder     = new TrailBuilder($environment);
 $markup      = new Microdata($builder, $markup_options);
 
 echo $markup->render();
@@ -220,12 +220,12 @@ The plugin comes with three classes, which are implementations of the `X3P0\Brea
 Here's an example of swapping out the `Html` implementation shown earlier with the `Rdfa` implementation:
 
 ```php
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\Rdfa;
 
 $environment = new Environment();
-$builder     = new Builder($environment);
+$builder     = new TrailBuilder($environment);
 $markup      = new Rdfa($builder);
 
 echo $markup->render();

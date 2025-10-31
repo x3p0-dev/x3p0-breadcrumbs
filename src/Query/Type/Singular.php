@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Singular extends AbstractQuery

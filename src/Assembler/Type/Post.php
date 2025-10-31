@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to

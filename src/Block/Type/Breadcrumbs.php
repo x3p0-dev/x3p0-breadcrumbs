@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Block\Type;
 
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\Builder\TrailBuilder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 
@@ -53,7 +53,7 @@ final class Breadcrumbs implements Block
 
 		// Build the breadcrumb trail.
 		$environment = new Environment();
-		$builder     = new Builder($environment, $builder_options);
+		$builder     = new TrailBuilder($environment, $builder_options);
 
 		// Get the breadcrumb trail markup.
 		$markup = match ($this->attributes['markup'] ?? 'rdfa') {

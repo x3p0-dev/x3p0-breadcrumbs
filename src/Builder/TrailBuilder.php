@@ -1,0 +1,265 @@
+<?php
+
+/**
+ * Builder class.
+ *
+ * @author    Justin Tadlock <justintadlock@gmail.com>
+ * @copyright Copyright (c) 2009-2025, Justin Tadlock
+ * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
+ * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
+ */
+
+declare(strict_types=1);
+
+namespace X3P0\Breadcrumbs\Builder;
+
+use TypeError;
+use X3P0\Breadcrumbs\Contracts;
+use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+
+/**
+ * Implements the `Builder` contract using query classes to generate an array of
+ * breadcrumbs that can then be used to output a breadcrumb trail.
+ */
+class TrailBuilder implements Builder
+{
+	/**
+	 * Hook name for the builder config.
+	 */
+	private const HOOK_CONFIG = 'x3p0/breadcrumbs/builder/config';
+
+	/**
+	 * Hook name for the pre-build.
+	 */
+	private const HOOK_PRE_BUILD = 'x3p0/breadcrumbs/builder/pre/build';
+
+	/**
+	 * Maps WordPress conditionals to default `Query` classes.
+	 */
+	protected const QUERY_CONDITIONALS = [
+		'is_404'        => 'error-404',
+		'is_front_page' => 'front-page',
+		'is_home'       => 'home',
+		'is_singular'   => 'singular',
+		'is_archive'    => 'archive',
+		'is_search'     => 'search'
+	];
+
+	/**
+	 * Houses the array of `Contracts\Crumb` objects that make up the trail.
+	 */
+	protected CrumbCollection $crumbs;
+
+	/**
+	 * Creates a new breadcrumbs object. The constructor requires an
+	 * `Environment` implementation and an optional array of arguments for
+	 * configuring the generated breadcrumbs.
+	 */
+	public function __construct(
+		protected Contracts\Environment $environment,
+		protected array $options = []
+	) {
+		$this->options = apply_filters(
+			self::HOOK_CONFIG,
+			array_replace_recursive([
+				'labels'           => $this->defaultLabels(),
+				'map_rewrite_tags' => $this->defaultRewriteTags(),
+				'post_taxonomy'    => [],
+				'network'          => false
+			], $this->options)
+		);
+
+		$this->crumbs = new CrumbCollection();
+	}
+
+	/**
+	 * Runs through a series of conditionals based on the current WordPress
+	 * query. Once we figure out which page we're viewing, we create a new
+	 * `Query` object and let it build the breadcrumbs.
+	 *
+	 * @throws TypeError When filter returns invalid type
+	 */
+	public function build(): Builder
+	{
+		// A hook for short-circuiting the breadcrumbs output and
+		// running custom logic. Filters on this hook must return either
+		// an instance of the `Contracts\Builder` interface after
+		// running its own `build()` method or `null`.
+		if ($builder = apply_filters(self::HOOK_PRE_BUILD, null, $this)) {
+
+			// Ensures that we only get `Builder` implementations.
+			if (! $builder instanceof Builder) {
+				throw new TypeError(esc_html(sprintf(
+					// Translators: %1$s is a PHP class name, %2$s is the hook name.
+					__('Only %1$s classes can be returned when filtering %2$s', 'x3p0-breadcrumbs'),
+					Builder::class,
+					self::HOOK_PRE_BUILD
+				)));
+			}
+
+			return $builder;
+		}
+
+		// Loop through the query conditionals and call the mapped query
+		// class. Then, return early.
+		//
+		// @todo This could use an existence check on the query.
+		foreach (static::QUERY_CONDITIONALS as $tag => $type) {
+			if (call_user_func($tag)) {
+				$this->query($type);
+				return $this;
+			}
+		}
+
+		// Return the object for chaining methods.
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function crumbs(): CrumbCollection
+	{
+		return $this->crumbs;
+	}
+
+	/**
+	 * @deprecated 4.0.0
+	 */
+	public function getCrumbs(): CrumbCollection
+	{
+		return $this->crumbs();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function environment(): Contracts\Environment
+	{
+		return $this->environment;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function query(string $name, array $params = []): void
+	{
+		$query = $this->environment->makeQuery(
+			$name,
+			$params + [ 'builder' => $this ]
+		);
+
+		$query && $query->query();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function assemble(string $name, array $params = []): void
+	{
+		$assembler = $this->environment->makeAssembler(
+			$name,
+			$params + [ 'builder' => $this ]
+		);
+
+		$assembler && $assembler->assemble();
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function addCrumb(string $name, array $params = []): void
+	{
+		$crumb = $this->environment->makeCrumb(
+			$name,
+			$params + [ 'builder' => $this ]
+		);
+
+		if ($crumb) {
+			$this->crumbs->set($name, $crumb);
+		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getOption(string $name): mixed
+	{
+		return $this->options[$name] ?? null;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getLabel(string $name): string
+	{
+		$labels = $this->getOption('labels');
+		return $labels[$name] ?? '';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function mapRewriteTags(string $post_type): bool
+	{
+		$mappings = $this->getOption('map_rewrite_tags');
+		return $mappings[$post_type] ?? true;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getPostTaxonomy(string $post_type): string
+	{
+		$taxes = $this->getOption('post_taxonomy');
+		return $taxes[$post_type] ?? '';
+	}
+
+	/**
+	 * Returns an array of default labels.
+	 */
+	protected function defaultLabels(): array
+	{
+		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+		return [
+			'home'                => __('Home', 'x3p0-breadcrumbs'),
+			'untitled'            => __('Untitled', 'x3p0-breadcrumbs'),
+			'error_404'           => __('404 Not Found', 'x3p0-breadcrumbs'),
+			'archives'            => __('Archives', 'x3p0-breadcrumbs'),
+			// Translators: %s is the search query.
+			'search'              => __('Search results for: %s', 'x3p0-breadcrumbs'),
+			// Translators: %s is the page number.
+			'paged'               => __('Page %s', 'x3p0-breadcrumbs'),
+			// Translators: %s is the page number.
+			'paged_comments'      => __('Comment Page %s', 'x3p0-breadcrumbs'),
+			// Translators: Minute archive title. %s is the minute time format.
+			'archive_minute'      => __('Minute %s', 'x3p0-breadcrumbs'),
+			// Translators: Weekly archive title. %s is the week date format.
+			'archive_week'        => __('Week %s', 'x3p0-breadcrumbs'),
+
+			// "%s" is replaced with the translated date/time format.
+			'archive_minute_hour' => '%s',
+			'archive_hour'        => '%s',
+			'archive_day'         => '%s',
+			'archive_month'       => '%s',
+			'archive_year'        => '%s'
+		];
+		// phpcs:enable
+	}
+
+	/**
+	 * Returns an array of the default post rewrite tag settings. Array keys
+	 * should be the post type and array values a boolean that sets whether
+	 * the rewrite tags should be mapped for the permalink structure as
+	 * breadcrumbs.
+	 */
+	protected function defaultRewriteTags(): array
+	{
+		$types = array_filter(
+			get_post_types(['publicly_queryable' => true], 'objects'),
+			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
+		);
+
+		return ['post' => true] + array_fill_keys(array_keys($types), true);
+	}
+}

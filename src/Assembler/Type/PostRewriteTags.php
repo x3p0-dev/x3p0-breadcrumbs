@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post;
 use WP_User;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Contracts\Builder;
+use X3P0\Breadcrumbs\Builder\Builder;
 
 /**
  * This class accepts a permalink structure and attempts to map any rewrite tags

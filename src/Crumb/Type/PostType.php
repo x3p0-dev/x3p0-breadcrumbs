@@ -38,11 +38,7 @@ final class PostType extends AbstractCrumb
 			return post_type_archive_title('', false);
 		}
 
-		return apply_filters(
-			'post_type_archive_title', // Core WP filter hook.
-			$this->type->labels->name,
-			$this->type->name
-		);
+		return $this->type->labels->archives;
 	}
 
 	/**

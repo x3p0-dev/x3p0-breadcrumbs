@@ -38,3 +38,12 @@ function container(): Container
 {
 	return plugin()->container();
 }
+
+/**
+ * Helper function for quickly accessing the breadcrumbs service class and
+ * rendering breadcrumbs.
+ */
+function breadcrumbs(): BreadcrumbsService
+{
+	return container()->get(BreadcrumbsService::class);
+}

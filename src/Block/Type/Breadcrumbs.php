@@ -15,9 +15,7 @@ namespace X3P0\Breadcrumbs\Block\Type;
 
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsService;
-use X3P0\Breadcrumbs\Markup\MarkupConfig;
 
 /**
  * Renders the Breadcrumbs block on the front end.
@@ -39,24 +37,20 @@ final class Breadcrumbs implements Block
 	 */
 	public function render(): string
 	{
-		$breadcrumbs_config = new BreadcrumbsConfig(
-			mapRewriteTags: $this->attributes['mapRewriteTags'] ?? [],
-			postTaxonomy:   $this->attributes['postTaxonomy']   ?? [],
-			labels:         $this->attributes['labels']         ?? []
-		);
-
-		$markup_config = new MarkupConfig(
-			containerAttr: $this->getWrapperAttributes(),
-			showOnFront:   $this->attributes['showOnHomepage'] ?? false,
-			showFirstItem: $this->attributes['showTrailStart'] ?? true,
-			showLastItem:  $this->attributes['showTrailEnd']   ?? true,
-			linkLastItem:  $this->attributes['linkTrailEnd']   ?? false
-		);
-
 		return $this->breadcrumbsService->render(
-			breadcrumbsConfig: $breadcrumbs_config,
-			markupConfig:      $markup_config,
-			markupType:        $this->attributes['markup'] ?? 'rdfa'
+			breadcrumbsConfig: [
+				'mapRewriteTags' => $this->attributes['mapRewriteTags'] ?? [],
+				'postTaxonomy'   => $this->attributes['postTaxonomy']   ?? [],
+				'labels'         => $this->attributes['labels']         ?? []
+			],
+			markupConfig: [
+				'containerAttr' => $this->getWrapperAttributes(),
+				'showOnFront'   => $this->attributes['showOnHomepage'] ?? false,
+				'showFirstItem' => $this->attributes['showTrailStart'] ?? true,
+				'showLastItem'  => $this->attributes['showTrailEnd']   ?? true,
+				'linkLastItem'  => $this->attributes['linkTrailEnd']   ?? false
+			],
+			markupType: $this->attributes['markup'] ?? 'rdfa'
 		);
 	}
 

@@ -24,6 +24,28 @@ use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 class Builder implements Contracts\Builder
 {
 	/**
+	 * Hook name for the builder config.
+	 */
+	private const HOOK_CONFIG = 'x3p0/breadcrumbs/builder/config';
+
+	/**
+	 * Hook name for the pre-build.
+	 */
+	private const HOOK_PRE_BUILD = 'x3p0/breadcrumbs/builder/pre/build';
+
+	/**
+	 * Maps WordPress conditionals to default `Query` classes.
+	 */
+	protected const QUERY_CONDITIONALS = [
+		'is_404'        => 'error-404',
+		'is_front_page' => 'front-page',
+		'is_home'       => 'home',
+		'is_singular'   => 'singular',
+		'is_archive'    => 'archive',
+		'is_search'     => 'search'
+	];
+
+	/**
 	 * Houses the array of `Contracts\Crumb` objects that make up the trail.
 	 */
 	protected CrumbCollection $crumbs;
@@ -38,7 +60,7 @@ class Builder implements Contracts\Builder
 		protected array $options = []
 	) {
 		$this->options = apply_filters(
-			'x3p0/breadcrumbs/builder/config',
+			self::HOOK_CONFIG,
 			array_replace_recursive([
 				'labels'           => $this->defaultLabels(),
 				'map_rewrite_tags' => $this->defaultRewriteTags(),
@@ -54,6 +76,8 @@ class Builder implements Contracts\Builder
 	 * Runs through a series of conditionals based on the current WordPress
 	 * query. Once we figure out which page we're viewing, we create a new
 	 * `Query` object and let it build the breadcrumbs.
+	 *
+	 * @throws TypeError When filter returns invalid type
 	 */
 	public function build(): Contracts\Builder
 	{
@@ -61,31 +85,26 @@ class Builder implements Contracts\Builder
 		// running custom logic. Filters on this hook must return either
 		// an instance of the `Contracts\Builder` interface after
 		// running its own `build()` method or `null`.
-		if ($builder = apply_filters('x3p0/breadcrumbs/builder/pre/build', null, $this)) {
+		if ($builder = apply_filters(self::HOOK_PRE_BUILD, null, $this)) {
 
 			// Ensures that we only get `Builder` implementations.
-			if (! is_subclass_of($builder, Contracts\Builder::class)) {
+			if (! $builder instanceof Contracts\Builder) {
 				throw new TypeError(esc_html(sprintf(
 					// Translators: %1$s is a PHP class name, %2$s is the hook name.
 					__('Only %1$s classes can be returned when filtering %2$s', 'x3p0-breadcrumbs'),
 					Contracts\Builder::class,
-					'x3p0/breadcrumbs/builder/pre/build'
+					self::HOOK_PRE_BUILD
 				)));
 			}
 
 			return $builder;
 		}
 
-		$conditionals = [
-			'is_404'        => 'error-404',
-			'is_front_page' => 'front-page',
-			'is_home'       => 'home',
-			'is_singular'   => 'singular',
-			'is_archive'    => 'archive',
-			'is_search'     => 'search'
-		];
-
-		foreach ($conditionals as $tag => $type) {
+		// Loop through the query conditionals and call the mapped query
+		// class. Then, return early.
+		//
+		// @todo This could use an existence check on the query.
+		foreach (static::QUERY_CONDITIONALS as $tag => $type) {
 			if (call_user_func($tag)) {
 				$this->query($type);
 				return $this;

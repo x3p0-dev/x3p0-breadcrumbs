@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Environment;
 
 use X3P0\Breadcrumbs\Contracts;
-use X3P0\Breadcrumbs\{Assembler, Crumb, Query};
+use X3P0\Breadcrumbs\{Assembler, Crumb, Query, Query\QueryRegistry};
 
 /**
  * The default implementation of the `Environment` interface. It is the backbone
@@ -29,7 +29,7 @@ class Environment implements Contracts\Environment
 	 *
 	 * @todo Make public with property hooks with minimum PHP 8.4 requirement.
 	 */
-	protected Contracts\QueryTypeRegistry $queryTypes;
+	protected Query\QueryRegistry $queryRegistry;
 
 	/**
 	 * Houses a collection where the keys are the builder name and the values
@@ -50,7 +50,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Factory for creating query instances.
 	 */
-	protected Contracts\QueryFactory $queryFactory;
+	protected Query\QueryFactory $queryFactory;
 
 	/**
 	 * Factory for creating assembler instances.
@@ -72,12 +72,12 @@ class Environment implements Contracts\Environment
 		array $crumbTypes = []
 	) {
 		// Initialize registries.
-		$this->queryTypes        = new Query\QueryTypes($queryTypes);
+		$this->queryRegistry     = new Query\QueryRegistry($queryTypes);
 		$this->assemblerRegistry = new Assembler\AssemblerRegistry($assemblerTypes);
 		$this->crumbRegistry     = new Crumb\CrumbRegistry($crumbTypes);
 
 		// Register the default types.
-		$this->registerDefaultQueryTypes();
+		$this->registerDefaultQueries();
 		$this->registerDefaultAssemblers();
 		$this->registerDefaultCrumbs();
 
@@ -85,7 +85,7 @@ class Environment implements Contracts\Environment
 		do_action('x3p0/breadcrumbs/environment', $this);
 
 		// Initialize factories with their respective registries.
-		$this->queryFactory     = new Query\QueryFactory($this->queryTypes);
+		$this->queryFactory     = new Query\QueryFactory($this->queryRegistry);
 		$this->assemblerFactory = new Assembler\AssemblerFactory($this->assemblerRegistry);
 		$this->crumbFactory     = new Crumb\CrumbFactory($this->crumbRegistry);
 	}
@@ -93,9 +93,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * {@inheritDoc}
 	 */
-	public function queryTypes(): Contracts\QueryTypeRegistry
+	public function queryRegistry(): Query\QueryRegistry
 	{
-		return $this->queryTypes;
+		return $this->queryRegistry;
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Environment implements Contracts\Environment
 	/**
 	 * Registers the default query classes with the environment.
 	 */
-	private function registerDefaultQueryTypes(): void
+	private function registerDefaultQueries(): void
 	{
 		$defaults = [
 			'archive'           => Query\Type\Archive::class,
@@ -164,8 +164,8 @@ class Environment implements Contracts\Environment
 		];
 
 		foreach ($defaults as $name => $class) {
-			if (! $this->queryTypes()->isRegistered($name)) {
-				$this->queryTypes()->register($name, $class);
+			if (! $this->queryRegistry()->isRegistered($name)) {
+				$this->queryRegistry()->register($name, $class);
 			}
 		}
 	}
@@ -234,9 +234,9 @@ class Environment implements Contracts\Environment
 	/**
 	 * @deprecated 4.0.0
 	 */
-	public function getQueries(): Contracts\QueryTypeRegistry
+	public function getQueries(): Query\QueryRegistry
 	{
-		return $this->queryTypes();
+		return $this->queryRegistry();
 	}
 
 	/**

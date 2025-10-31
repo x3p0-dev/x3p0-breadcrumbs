@@ -13,23 +13,20 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Contracts;
-
 /**
  * Factory class used for creating new query instances from a registry of
  * query types.
  */
-class QueryFactory implements Contracts\QueryFactory
+final class QueryFactory
 {
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(
-		private Contracts\QueryTypeRegistry $queryTypes
-	) {}
+	public function __construct(private QueryRegistry $queryTypes)
+	{}
 
 	/**
-	 * {@inheritDoc}
+	 * Creates an instance of a query object.
 	 */
 	public function make(string $name, array $params = []): ?Query
 	{

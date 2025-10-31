@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Contracts;
 
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistry};
 use X3P0\Breadcrumbs\Crumb\{Crumb, CrumbRegistry};
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\{Query, QueryRegistry};
 
 /**
  * The environment contract is a container for storing queries, assemblers, and
@@ -26,7 +26,7 @@ interface Environment
 	/**
 	 * Returns a registry of query types.
 	 */
-	public function queryTypes(): QueryTypeRegistry;
+	public function queryRegistry(): QueryRegistry;
 
 	/**
 	 * Returns a registry of assembler types.

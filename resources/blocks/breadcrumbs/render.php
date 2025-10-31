@@ -14,7 +14,7 @@ declare(strict_types=1);
 # Prevent direct access.
 defined('ABSPATH') || exit;
 
-use X3P0\Breadcrumbs\Block\Breadcrumbs;
+use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 
 /**
  * @global array $attributes

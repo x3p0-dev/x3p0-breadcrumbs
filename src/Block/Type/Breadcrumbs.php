@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Block;
+namespace X3P0\Breadcrumbs\Block\Type;
 
 use WP_Block_Supports;
-use X3P0\Breadcrumbs\Contracts\Block;
+use X3P0\Breadcrumbs\Block\Block;
 use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Environment\Environment;
 use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
 /**
  * Renders the Breadcrumbs block on the front end.
  */
-class Breadcrumbs implements Block
+final class Breadcrumbs implements Block
 {
 	/**
 	 * Sets the block attributes.

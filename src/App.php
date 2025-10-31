@@ -76,7 +76,7 @@ class App implements Bootable, Container
 	{
 		$this->instance(
 			'block.register',
-			new Block\Register(__DIR__ . '/../public/blocks')
+			new Block\Registrar(__DIR__ . '/../public/blocks')
 		);
 
 		$this->instance('support.rest', new Rest\Register());

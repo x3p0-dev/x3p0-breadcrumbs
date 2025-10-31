@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
-class Register implements Bootable
+final class Registrar implements Bootable
 {
 	/**
 	 * Sets the path where the built blocks are stored.

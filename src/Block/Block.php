@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Contracts;
+namespace X3P0\Breadcrumbs\Block;
+
+use X3P0\Breadcrumbs\Contracts\Renderable;
 
 /**
  * The block class renders the block type on the front end.

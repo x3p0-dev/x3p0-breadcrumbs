@@ -22,6 +22,6 @@ final class Archive extends AbstractCrumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->builder->getLabel('archives');
+		return $this->context->config()->getLabel('archives');
 	}
 }

@@ -33,7 +33,7 @@ final class RewriteFront extends AbstractAssembler
 	public function assemble(): void
 	{
 		if ($GLOBALS['wp_rewrite']->front) {
-			$this->builder->assemble('path', [
+			$this->context->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->front
 			]);
 		}

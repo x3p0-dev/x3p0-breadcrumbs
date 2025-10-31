@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Contracts\Bootable;
 /**
  * Registers fields with the REST API needed for the block in the editor.
  */
-class Register implements Bootable
+class RestRegistrar implements Bootable
 {
 	/**
 	 * @inheritDoc

@@ -15,8 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post_Type;
 use WP_User;
-use X3P0\Breadcrumbs\Builder\Builder;
-use X3P0\Breadcrumbs\Crumb\Type\PostType;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class PostTypeArchive extends AbstractQuery
@@ -25,11 +24,11 @@ final class PostTypeArchive extends AbstractQuery
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
-		protected ?WP_Post_Type $type = null,
-		protected ?WP_User $user = null
+		protected BreadcrumbsContext $context,
+		protected ?WP_Post_Type      $type = null,
+		protected ?WP_User           $user = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -41,20 +40,20 @@ final class PostTypeArchive extends AbstractQuery
 
 		$done_post_type = false;
 
-		$this->builder->assemble('home');
+		$this->context->assemble('home');
 
 		if (false !== $type->rewrite) {
 			// Build rewrite front crumbs if post type uses it.
 			if ($type->rewrite['with_front']) {
-				$this->builder->assemble('rewrite-front');
+				$this->context->assemble('rewrite-front');
 			}
 
 			// If there's a rewrite slug, check for parents.
 			if (! empty($type->rewrite['slug'])) {
-				$this->builder->assemble('path', [ 'path' => $type->rewrite['slug'] ]);
+				$this->context->assemble('path', [ 'path' => $type->rewrite['slug'] ]);
 
 				// Check if we've added a post type crumb.
-				if ($this->builder->crumbs()->has('post-type')) {
+				if ($this->context->crumbs()->has('post-type')) {
 					$done_post_type = true;
 				}
 			}
@@ -62,7 +61,7 @@ final class PostTypeArchive extends AbstractQuery
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->builder->addCrumb('post-type', [ 'type' => $type ]);
+			$this->context->addCrumb('post-type', [ 'type' => $type ]);
 		}
 
 		// If viewing a post type archive by author, add author crumb.
@@ -71,15 +70,15 @@ final class PostTypeArchive extends AbstractQuery
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->builder->addCrumb('author', [ 'user' => $user ]);
+			$this->context->addCrumb('author', [ 'user' => $user ]);
 		}
 
 		// If viewing a post type search, add the search crumb. This
 		// handles URLs like `/?s={search}&post_type={type}`.
 		if (is_search()) {
-			$this->builder->addCrumb('search');
+			$this->context->addCrumb('search');
 		}
 
-		$this->builder->assemble('paged');
+		$this->context->assemble('paged');
 	}
 }

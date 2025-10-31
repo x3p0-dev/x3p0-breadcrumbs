@@ -15,9 +15,9 @@ namespace X3P0\Breadcrumbs\Block\Type;
 
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
-use X3P0\Breadcrumbs\Builder\TrailBuilder;
-use X3P0\Breadcrumbs\Environment\Environment;
-use X3P0\Breadcrumbs\Markup\{Html, Microdata, Rdfa};
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\BreadcrumbsService;
+use X3P0\Breadcrumbs\Markup\MarkupConfig;
 
 /**
  * Renders the Breadcrumbs block on the front end.
@@ -27,8 +27,10 @@ final class Breadcrumbs implements Block
 	/**
 	 * Sets the block attributes.
 	 */
-	public function __construct(protected array $attributes)
-	{
+	public function __construct(
+		protected BreadcrumbsService $breadcrumbsService,
+		protected array $attributes
+	) {
 		$this->mapDeprecatedAttributes();
 	}
 
@@ -37,32 +39,25 @@ final class Breadcrumbs implements Block
 	 */
 	public function render(): string
 	{
-		$builder_options = [
-			'labels'           => $this->attributes['labels']         ?? [],
-			'map_rewrite_tags' => $this->attributes['mapRewriteTags'] ?? [],
-			'post_taxonomy'    => $this->attributes['postTaxonomy']   ?? []
-		];
+		$breadcrumbs_config = new BreadcrumbsConfig(
+			labels:         $this->attributes['labels']         ?? [],
+			mapRewriteTags: $this->attributes['mapRewriteTags'] ?? [],
+			postTaxonomy:   $this->attributes['postTaxonomy']   ?? []
+		);
 
-		$markup_options = [
-			'container_attr'  => $this->getWrapperAttributes(),
-			'link_last_item'  => $this->attributes['linkTrailEnd']   ?? false,
-			'show_first_item' => $this->attributes['showTrailStart'] ?? false,
-			'show_last_item'  => $this->attributes['showTrailEnd']   ?? true,
-			'show_on_front'   => $this->attributes['showOnHomepage'] ?? false
-		];
+		$markup_config = new MarkupConfig(
+			containerAttr: $this->getWrapperAttributes(),
+			showOnFront:   $this->attributes['showOnHomepage'] ?? false,
+			showFirstItem: $this->attributes['showTrailStart'] ?? true,
+			showLastItem:  $this->attributes['showTrailEnd']   ?? true,
+			linkLastItem:  $this->attributes['linkTrailEnd']   ?? false
+		);
 
-		// Build the breadcrumb trail.
-		$environment = new Environment();
-		$builder     = new TrailBuilder($environment, $builder_options);
-
-		// Get the breadcrumb trail markup.
-		$markup = match ($this->attributes['markup'] ?? 'rdfa') {
-			'microdata' => new Microdata($builder, $markup_options),
-			'rdfa'      => new Rdfa($builder, $markup_options),
-			default     => new Html($builder, $markup_options)
-		};
-
-		return $markup->render();
+		return $this->breadcrumbsService->render(
+			breadcrumbsConfig: $breadcrumbs_config,
+			markupConfig:      $markup_config,
+			markupType:        $this->attributes['markup'] ?? 'rdfa'
+		);
 	}
 
 	/**

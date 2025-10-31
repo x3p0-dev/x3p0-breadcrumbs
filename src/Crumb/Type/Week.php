@@ -23,7 +23,7 @@ final class Week extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->getLabel('archive_week'),
+			$this->context->config()->getLabel('archive_week'),
 			get_the_time(esc_html_x(
 				'W',
 				'weekly archives date format',

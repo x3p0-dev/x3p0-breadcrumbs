@@ -24,7 +24,7 @@ final class PagedQueryBlock extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->getLabel('paged'),
+			$this->context->config()->getLabel('paged'),
 			number_format_i18n(absint(Helpers::getQueryBlockPage()))
 		);
 	}

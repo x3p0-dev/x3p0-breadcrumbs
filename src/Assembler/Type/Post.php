@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to
@@ -27,10 +27,10 @@ final class Post extends AbstractAssembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected WP_Post $post
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -40,28 +40,28 @@ final class Post extends AbstractAssembler
 	{
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
-			$this->builder->assemble('post-ancestors', [
+			$this->context->assemble('post-ancestors', [
 				'post' => $this->post
 			]);
 
 		// If the post doesn't have a parent, get its hierarchy based off the post type.
 		} else {
-			$this->builder->assemble('post-hierarchy', [
+			$this->context->assemble('post-hierarchy', [
 				'post' => $this->post
 			]);
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->builder->getPostTaxonomy($this->post->post_type)) {
-			$this->builder->assemble('post-terms', [
+		if ($this->context->config()->getPostTaxonomy($this->post->post_type)) {
+			$this->context->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(
-					$this->builder->getPostTaxonomy($this->post->post_type)
+					$this->context->config()->getPostTaxonomy($this->post->post_type)
 				)
 			]);
 		}
 
 		// Assembler the post crumb.
-		$this->builder->addCrumb('post', [ 'post' => $this->post ]);
+		$this->context->addCrumb('post', [ 'post' => $this->post ]);
 	}
 }

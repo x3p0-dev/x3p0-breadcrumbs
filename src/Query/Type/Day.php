@@ -22,11 +22,11 @@ final class Day extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
-		$this->builder->addCrumb('year');
-		$this->builder->addCrumb('month');
-		$this->builder->addCrumb('day');
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('year');
+		$this->context->addCrumb('month');
+		$this->context->addCrumb('day');
+		$this->context->assemble('paged');
 	}
 }

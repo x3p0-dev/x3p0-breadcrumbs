@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
 final class MinuteHour extends AbstractCrumb
@@ -25,10 +25,10 @@ final class MinuteHour extends AbstractCrumb
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected ?WP_Post $post = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -37,7 +37,7 @@ final class MinuteHour extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->getLabel('archive_minute_hour'),
+			$this->context->config()->getLabel('archive_minute_hour'),
 			get_the_time(
 				esc_html_x('g:i a', 'minute and hour archives time format', 'x3p0-breadcrumbs'),
 				$this->post

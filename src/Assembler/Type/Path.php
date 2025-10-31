@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -28,10 +28,10 @@ final class Path extends AbstractAssembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected string $path = ''
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -45,8 +45,8 @@ final class Path extends AbstractAssembler
 
 		// If the path is a post, run the parent crumbs and bail early.
 		if ($post = get_page_by_path($path)) {
-			$this->builder->assemble('post-ancestors', [ 'post' => $post ]);
-			$this->builder->addCrumb('post', [ 'post' => $post ]);
+			$this->context->assemble('post-ancestors', [ 'post' => $post ]);
+			$this->context->addCrumb('post', [ 'post' => $post ]);
 			return;
 		}
 
@@ -62,11 +62,11 @@ final class Path extends AbstractAssembler
 			// If a parent post is found, assemble the crumbs via
 			// post ancestor.
 			if ($post instanceof WP_Post) {
-				$this->builder->assemble('post-ancestors', [
+				$this->context->assemble('post-ancestors', [
 					'post' => $post
 				]);
 
-				$this->builder->addCrumb('post', [
+				$this->context->addCrumb('post', [
 					'post' => $post
 				]);
 
@@ -75,7 +75,7 @@ final class Path extends AbstractAssembler
 			// If the slug matches a post type, let's assemble that
 			// by post type and break out of the loop.
 			} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
-				$this->builder->assemble('post-type', [
+				$this->context->assemble('post-type', [
 					'type' => $types[0]
 				]);
 

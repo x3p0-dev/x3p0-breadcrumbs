@@ -22,7 +22,7 @@ final class Error404 extends AbstractCrumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->builder->getLabel('error_404');
+		return $this->context->config()->getLabel('error_404');
 	}
 
 	/**

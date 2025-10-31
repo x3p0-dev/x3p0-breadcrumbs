@@ -25,35 +25,35 @@ final class Archive extends AbstractQuery
 		// Run through the conditionals to determine which type of
 		// archive breadcrumbs to build.
 		if (is_post_type_archive()) {
-			$this->builder->query('post-type-archive');
+			$this->context->query('post-type-archive');
 		} elseif (is_category() || is_tag() || is_tax()) {
-			$this->builder->query('taxonomy');
+			$this->context->query('taxonomy');
 		} elseif (is_author()) {
-			$this->builder->query('author');
+			$this->context->query('author');
 		} elseif (get_query_var('minute') && get_query_var('hour')) {
-			$this->builder->query('minute-hour');
+			$this->context->query('minute-hour');
 		} elseif (get_query_var('minute')) {
-			$this->builder->query('minute');
+			$this->context->query('minute');
 		} elseif (get_query_var('hour')) {
-			$this->builder->query('hour');
+			$this->context->query('hour');
 		} elseif (is_day()) {
-			$this->builder->query('day');
+			$this->context->query('day');
 		} elseif (get_query_var('week')) {
-			$this->builder->query('week');
+			$this->context->query('week');
 		} elseif (is_month()) {
-			$this->builder->query('month');
+			$this->context->query('month');
 		} elseif (is_year()) {
-			$this->builder->query('year');
+			$this->context->query('year');
 		} else {
-			$this->builder->assemble('home');
+			$this->context->assemble('home');
 
 			// Build rewrite front crumbs if date/time query.
 			if (is_date() || is_time()) {
-				$this->builder->assemble('rewrite-front');
+				$this->context->assemble('rewrite-front');
 			}
 
-			$this->builder->addCrumb('archive');
-			$this->builder->assemble('paged');
+			$this->context->addCrumb('archive');
+			$this->context->assemble('paged');
 		}
 	}
 }

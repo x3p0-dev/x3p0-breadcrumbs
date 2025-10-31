@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * Assembles breadcrumbs for the given post type.
@@ -27,10 +27,10 @@ final class PostType extends AbstractAssembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected ?WP_Post_Type $type = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -57,7 +57,7 @@ final class PostType extends AbstractAssembler
 				// front path, we should've already handled that
 				// scenario at this point.
 				if (trim($GLOBALS['wp_rewrite']->front, '/') !== $post->post_name) {
-					$this->builder->addCrumb('post', [
+					$this->context->addCrumb('post', [
 						'post' => $post
 					]);
 				}
@@ -67,6 +67,6 @@ final class PostType extends AbstractAssembler
 		}
 
 		// Add post type crumb.
-		$this->builder->addCrumb('post-type', [ 'type' => $this->type ]);
+		$this->context->addCrumb('post-type', [ 'type' => $this->type ]);
 	}
 }

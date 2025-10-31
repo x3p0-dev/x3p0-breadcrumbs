@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Singular extends AbstractQuery
@@ -23,10 +23,10 @@ final class Singular extends AbstractQuery
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected ?WP_Post $post = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -36,8 +36,8 @@ final class Singular extends AbstractQuery
 	{
 		$post = $this->post ?: get_queried_object();
 
-		$this->builder->assemble('home');
-		$this->builder->assemble('post', [ 'post' => $post ]);
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('post', [ 'post' => $post ]);
+		$this->context->assemble('paged');
 	}
 }

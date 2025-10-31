@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Rewrite;
 use WP_User;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Author extends AbstractQuery
@@ -24,10 +24,10 @@ final class Author extends AbstractQuery
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
-		protected ?WP_User $user = null
+		protected BreadcrumbsContext $context,
+		protected ?WP_User           $user = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -39,24 +39,24 @@ final class Author extends AbstractQuery
 	{
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
 
 		// If $author_base exists, check for parent pages.
 		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
-			$this->builder->assemble('path', [
+			$this->context->assemble('path', [
 				'path' => $GLOBALS['wp_rewrite']->author_base
 			]);
 		}
 
-		$this->builder->addCrumb('author', [ 'user' => $user ]);
+		$this->context->addCrumb('author', [ 'user' => $user ]);
 
 		// If viewing an author search, add the search crumb. This
 		// handles URLs like `/?s={search}&author_name={name}`.
 		if (is_search()) {
-			$this->builder->addCrumb('search');
+			$this->context->addCrumb('search');
 		}
 
-		$this->builder->assemble('paged');
+		$this->context->assemble('paged');
 	}
 }

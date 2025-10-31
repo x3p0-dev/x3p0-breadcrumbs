@@ -21,8 +21,4 @@ use X3P0\Breadcrumbs\Contracts\Renderable;
  */
 interface Markup extends Renderable
 {
-	/**
-	 * Returns a specific option or `null` if the option doesn't exist.
-	 */
-	public function getOption(string $name): mixed;
 }

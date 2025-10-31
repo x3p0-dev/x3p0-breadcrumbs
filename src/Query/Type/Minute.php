@@ -22,9 +22,9 @@ final class Minute extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
-		$this->builder->addCrumb('minute');
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('minute');
+		$this->context->assemble('paged');
 	}
 }

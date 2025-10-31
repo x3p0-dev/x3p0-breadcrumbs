@@ -22,7 +22,7 @@ final class Error extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->addCrumb('error-404');
+		$this->context->assemble('home');
+		$this->context->addCrumb('error-404');
 	}
 }

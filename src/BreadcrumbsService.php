@@ -33,12 +33,17 @@ class BreadcrumbsService
 	/**
 	 * Renders the breadcrumbs with by passing in a breadcrumbs config,
 	 * markup config, and markup type.
+	 *
+	 * @todo Instead of `null`, initialize new configs with minimum PHP 8.1.
 	 */
 	public function render(
-		BreadcrumbsConfig $breadcrumbsConfig,
-		MarkupConfig      $markupConfig,
-		string            $markupType = 'html'
+		?BreadcrumbsConfig $breadcrumbsConfig = null,
+		?MarkupConfig      $markupConfig = null,
+		string             $markupType = 'html'
 	): string {
+		$breadcrumbsConfig = $breadcrumbsConfig ?? new BreadcrumbsConfig();
+		$markupConfig = $markupConfig ?? new MarkupConfig();
+
 		$breadcrumbs = $this->breadcrumbsFactory->make([
 			'config' => $breadcrumbsConfig
 		]);

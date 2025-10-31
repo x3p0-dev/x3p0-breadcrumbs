@@ -21,6 +21,6 @@ use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 /**
  * @global array $attributes
  */
-echo plugin()->container()->get(Breadcrumbs::class, [
+echo container()->get(Breadcrumbs::class, [
 	'attributes' => $attributes
 ])->render(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

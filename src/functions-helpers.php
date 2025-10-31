@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Core\{Application, Plugin, ServiceContainer};
+use X3P0\Breadcrumbs\Core\{Application, Container, Plugin, ServiceContainer};
 
 /**
  * Stores the single instance of the plugin in the static `$plugin` variable.
- * Devs can access any concrete implementation by passing in a reference to its
- * abstract identifier via `plugin()->container()->get($abstract)`.
  */
 function plugin(): Application
 {
@@ -29,4 +27,14 @@ function plugin(): Application
 	}
 
 	return $plugin;
+}
+
+/**
+ * Helper function for quickly accessing the plugin service container. Devs can
+ * access any concrete implementation by passing in a reference to its abstract
+ * identifier via `container()->get($abstract)`.
+ */
+function container(): Container
+{
+	return plugin()->container();
 }

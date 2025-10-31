@@ -23,7 +23,7 @@ final class PagedComments extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->getLabel('paged_comments'),
+			$this->context->config()->getLabel('paged_comments'),
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Microdata markup class.
+ * HTML markup class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,14 +11,15 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Markup;
+namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 
 /**
- * Creates an ordered list of the breadcrumbs with Schema.org microdata.
+ * Creates a plain HTML representation of the breadcrumbs as an ordered list.
  */
-class Microdata extends Html
+class Html extends AbstractMarkup
 {
 	/**
 	 * {@inheritdoc}
@@ -31,7 +32,7 @@ class Microdata extends Html
 
 		// Build the breadcrumb trail HTML.
 		$html  = "<nav {$this->containerAttr()}>";
-		$html .= '<ol class="breadcrumbs__trail" itemscope itemtype="https://schema.org/BreadcrumbList">';
+		$html .= '<ol class="breadcrumbs__trail">';
 
 		$this->crumbs->rewind();
 
@@ -43,8 +44,8 @@ class Microdata extends Html
 		$html .= '</ol>';
 		$html .= '</nav>';
 
-		// Add before/after wrappers and return.
-		return $this->getOption('before') . $html . $this->getOption('after');
+		// Return formatted HTML.
+		return $html;
 	}
 
 	/**
@@ -57,14 +58,10 @@ class Microdata extends Html
 		}
 
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
-				%s
-				<meta itemprop="position" content="%s"/>
-			</li>',
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
 			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
-			$this->renderCrumbContent($crumb),
-			esc_attr($this->crumbs->position())
+			$this->renderCrumbContent($crumb)
 		);
 	}
 
@@ -75,24 +72,20 @@ class Microdata extends Html
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label" itemprop="name">%s</span>',
+			'<span class="breadcrumbs__crumb-label">%s</span>',
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content" itemprop="item">%s</a>',
+				'<a href="%s" class="breadcrumbs__crumb-content">%s</a>',
 				esc_url($crumb->getUrl()),
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
-		return sprintf(
-			'<span class="breadcrumbs__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
-			esc_url($crumb->getUrl()),
-			$label
-		);
+		return '<span class="breadcrumbs__crumb-content">' . $label . '</span>';
 	}
 }

@@ -28,13 +28,13 @@ final class Home extends AbstractAssembler
 	{
 		if (
 			is_multisite()
-			&& $this->builder->getOption('network')
+			&& $this->context->config()->showNetwork()
 			&& ! is_main_site()
 		) {
-			$this->builder->addCrumb('network');
-			$this->builder->addCrumb('network-site');
+			$this->context->addCrumb('network');
+			$this->context->addCrumb('network-site');
 		} else {
-			$this->builder->addCrumb('home');
+			$this->context->addCrumb('home');
 		}
 	}
 }

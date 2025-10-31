@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post;
 use WP_User;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * This class accepts a permalink structure and attempts to map any rewrite tags
@@ -30,11 +30,11 @@ final class PostRewriteTags extends AbstractAssembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected WP_Post $post,
 		protected string $path = ''
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -43,7 +43,7 @@ final class PostRewriteTags extends AbstractAssembler
 	public function assemble(): void
 	{
 		// Bail early if rewrite tag mapping is disabled.
-		if (! $this->builder->mapRewriteTags($this->post->post_type)) {
+		if (! $this->context->config()->mapRewriteTags($this->post->post_type)) {
 			return;
 		}
 
@@ -60,19 +60,19 @@ final class PostRewriteTags extends AbstractAssembler
 	private function mapTag(string $tag): void
 	{
 		match ($tag) {
-			'%year%' => $this->builder->addCrumb('year', [
+			'%year%' => $this->context->addCrumb('year', [
 				'post' => $this->post
 			]),
-			'%monthnum%' => $this->builder->addCrumb('month', [
+			'%monthnum%' => $this->context->addCrumb('month', [
 				'post' => $this->post
 			]),
-			'%day%' => $this->builder->addCrumb('day', [
+			'%day%' => $this->context->addCrumb('day', [
 				'post' => $this->post
 			]),
-			'%author%' => $this->builder->addCrumb('author', [
+			'%author%' => $this->context->addCrumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),
-			$this->useTaxonomy($tag) => $this->builder->assemble('post-terms', [
+			$this->useTaxonomy($tag) => $this->context->assemble('post-terms', [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy(trim($tag, '%'))
 			]),
@@ -94,7 +94,7 @@ final class PostRewriteTags extends AbstractAssembler
 
 		$tax = trim($tag, '%');
 
-		return taxonomy_exists($tax) && $tax !== $this->builder->getPostTaxonomy($this->post->post_type)
+		return taxonomy_exists($tax) && $tax !== $this->context->config()->getPostTaxonomy($this->post->post_type)
 			? $tag
 			: null;
 	}

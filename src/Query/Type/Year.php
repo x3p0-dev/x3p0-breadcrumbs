@@ -22,9 +22,9 @@ final class Year extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
-		$this->builder->addCrumb('year');
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('year');
+		$this->context->assemble('paged');
 	}
 }

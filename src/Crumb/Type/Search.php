@@ -22,7 +22,7 @@ final class Search extends AbstractCrumb
 	 */
 	public function getLabel(): string
 	{
-		return sprintf($this->builder->getLabel('search'), get_search_query());
+		return sprintf($this->context->config()->getLabel('search'), get_search_query());
 	}
 
 	/**

@@ -22,9 +22,9 @@ final class Search extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
-		$this->builder->addCrumb('search');
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('search');
+		$this->context->assemble('paged');
 	}
 }

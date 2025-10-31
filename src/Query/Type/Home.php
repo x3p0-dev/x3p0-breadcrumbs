@@ -23,7 +23,7 @@ final class Home extends AbstractQuery
 	public function query(): void
 	{
 		is_front_page()
-			? $this->builder->query('front-page')
-			: $this->builder->query('singular');
+			? $this->context->query('front-page')
+			: $this->context->query('singular');
 	}
 }

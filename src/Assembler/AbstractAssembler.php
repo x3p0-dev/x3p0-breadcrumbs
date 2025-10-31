@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * Implements the `Assembler` interface and creates a custom Assembler object.
@@ -23,6 +23,6 @@ abstract class AbstractAssembler implements Assembler
 	/**
 	 * Creates a new assembler object.
 	 */
-	public function __construct(protected Builder $builder)
+	public function __construct(protected BreadcrumbsContext $context)
 	{}
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * Implements the `Query` interface and creates a custom query object.
@@ -23,6 +23,6 @@ abstract class AbstractQuery implements Query
 	/**
 	 * Creates a new query object.
 	 */
-	public function __construct(protected Builder $builder)
+	public function __construct(protected BreadcrumbsContext $context)
 	{}
 }

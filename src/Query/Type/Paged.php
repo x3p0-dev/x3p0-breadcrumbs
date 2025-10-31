@@ -22,8 +22,8 @@ final class Paged extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->builder->assemble('home');
-		$this->builder->assemble('rewrite-front');
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('rewrite-front');
+		$this->context->assemble('paged');
 	}
 }

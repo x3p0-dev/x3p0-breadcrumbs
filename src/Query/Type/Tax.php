@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Tax extends AbstractQuery
@@ -23,10 +23,10 @@ final class Tax extends AbstractQuery
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected ?WP_Term $term = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -36,8 +36,8 @@ final class Tax extends AbstractQuery
 	{
 		$term = $this->term ?: get_queried_object();
 
-		$this->builder->assemble('home');
-		$this->builder->assemble('term', [ 'term' => $term ]);
-		$this->builder->assemble('paged');
+		$this->context->assemble('home');
+		$this->context->assemble('term', [ 'term' => $term ]);
+		$this->context->assemble('paged');
 	}
 }

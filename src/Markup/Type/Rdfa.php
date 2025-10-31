@@ -1,7 +1,7 @@
 <?php
 
 /**
- * HTML markup class.
+ * RDFa markup class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Markup;
+namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
- * Creates a plain HTML representation of the breadcrumbs as an ordered list.
+ * Creates an ordered list of the breadcrumbs with RDFa.
  */
-class Html extends AbstractMarkup
+class Rdfa extends Html
 {
 	/**
 	 * {@inheritdoc}
@@ -29,9 +29,8 @@ class Html extends AbstractMarkup
 			return '';
 		}
 
-		// Build the breadcrumb trail HTML.
 		$html  = "<nav {$this->containerAttr()}>";
-		$html .= '<ol class="breadcrumbs__trail">';
+		$html .= '<ol class="breadcrumbs__trail" vocab="https://schema.org/" typeof="BreadcrumbList">';
 
 		$this->crumbs->rewind();
 
@@ -43,12 +42,12 @@ class Html extends AbstractMarkup
 		$html .= '</ol>';
 		$html .= '</nav>';
 
-		// Add before/after wrappers and return.
-		return $this->getOption('before') . $html . $this->getOption('after');
+		// Return formatted HTML.
+		return $html;
 	}
 
 	/**
-	 * Renders the markup for an individual crumb item.
+	 * Renders the markup for an individual crumb.
 	 */
 	private function renderCrumb(Crumb $crumb): string
 	{
@@ -57,10 +56,14 @@ class Html extends AbstractMarkup
 		}
 
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
+			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" property="itemListElement" typeof="ListItem"%s>
+				%s
+				<meta property="position" content="%s"/>
+			</li>',
 			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
-			$this->renderCrumbContent($crumb)
+			$this->renderCrumbContent($crumb),
+			esc_attr($this->crumbs->position())
 		);
 	}
 
@@ -71,14 +74,14 @@ class Html extends AbstractMarkup
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label">%s</span>',
+			'<span class="breadcrumbs__crumb-label" property="name">%s</span>',
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content">%s</a>',
+				'<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>',
 				esc_url($crumb->getUrl()),
 				$label
 			);

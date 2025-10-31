@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
 final class Year extends AbstractCrumb
@@ -23,10 +23,10 @@ final class Year extends AbstractCrumb
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected ?WP_Post $post = null
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -35,7 +35,7 @@ final class Year extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->builder->getLabel('archive_year'),
+			$this->context->config()->getLabel('archive_year'),
 			get_the_time(esc_html_x(
 				'Y',
 				'yearly archives date format',

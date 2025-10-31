@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Block service provider.
+ * Query service provider.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,28 +11,20 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Block;
+namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class BlockServiceProvider extends ServiceProvider implements Bootable
+class QueryServiceProvider extends ServiceProvider
 {
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(BlockRegistrar::class);
-	}
+		$this->container->singleton(QueryRegistry::class);
+		$this->container->singleton(QueryFactory::class);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function boot(): void
-	{
-		$this->container->get(BlockRegistrar::class, [
-			'path' => __DIR__ . '/../../public/blocks'
-		])->boot();
+		QueryRegistrar::register($this->container->get(QueryRegistry::class));
 	}
 }

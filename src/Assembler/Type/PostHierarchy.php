@@ -15,8 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
-use X3P0\Breadcrumbs\Builder\Builder;
-use X3P0\Breadcrumbs\Crumb\Type\PostType;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * Assemblers breadcrumbs primarily based on the post type rewrite settings of the
@@ -28,10 +27,10 @@ final class PostHierarchy extends AbstractAssembler
 	 * {@inheritdoc}
 	 */
 	public function __construct(
-		protected Builder $builder,
+		protected BreadcrumbsContext $context,
 		protected WP_Post $post
 	) {
-		parent::__construct($this->builder);
+		parent::__construct(...func_get_args());
 	}
 
 	/**
@@ -51,10 +50,10 @@ final class PostHierarchy extends AbstractAssembler
 		// map the rewrite tags, and bail early.
 		if ('post' === $type->name) {
 			// Add $wp_rewrite->front to the trail.
-			$this->builder->assemble('rewrite-front');
+			$this->context->assemble('rewrite-front');
 
 			// Map the rewrite tags.
-			$this->builder->assemble('post-rewrite-tags', [
+			$this->context->assemble('post-rewrite-tags', [
 				'post' => $this->post,
 				'path' => get_option('permalink_structure')
 			]);
@@ -69,17 +68,17 @@ final class PostHierarchy extends AbstractAssembler
 		if ($rewrite) {
 			// Assembler the rewrite front crumbs.
 			if ($rewrite['with_front']) {
-				$this->builder->assemble('rewrite-front');
+				$this->context->assemble('rewrite-front');
 			}
 
 			// If there's a path, check for parents.
 			if ($rewrite['slug']) {
-				$this->builder->assemble('path', [
+				$this->context->assemble('path', [
 					'path' => $rewrite['slug']
 				]);
 
 				// Check if we've added a post type crumb.
-				if ($this->builder->crumbs()->has('post-type')) {
+				if ($this->context->crumbs()->has('post-type')) {
 					$done_post_type = true;
 				}
 			}
@@ -87,12 +86,12 @@ final class PostHierarchy extends AbstractAssembler
 
 		// Fall back to the post type crumb if not getting from path.
 		if (! $done_post_type && $type->has_archive) {
-			$this->builder->assemble('post-type', [ 'type' => $type ]);
+			$this->context->assemble('post-type', [ 'type' => $type ]);
 		}
 
 		// Map the rewrite tags if there's a `%` in the slug.
 		if ($rewrite && str_contains($rewrite['slug'], '%')) {
-			$this->builder->assemble('post-rewrite-tags', [
+			$this->context->assemble('post-rewrite-tags', [
 				'post' => $this->post,
 				'path' => $rewrite['slug']
 			]);

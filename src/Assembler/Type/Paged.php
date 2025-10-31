@@ -30,19 +30,19 @@ final class Paged extends AbstractAssembler
 	{
 		// If viewing a paged archive-type page.
 		if (is_paged()) {
-			$this->builder->addCrumb('paged');
+			$this->context->addCrumb('paged');
 
 		// If viewing a paged singular post.
 		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->builder->addCrumb('paged-singular');
+			$this->context->addCrumb('paged-singular');
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
-			$this->builder->addCrumb('paged-comments');
+			$this->context->addCrumb('paged-comments');
 
 		// If viewing a paged Query Loop block view.
 		} elseif (Helpers::isPagedQueryBlock()) {
-			$this->builder->addCrumb('paged-query-block');
+			$this->context->addCrumb('paged-query-block');
 		}
 	}
 }

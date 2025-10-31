@@ -11,6 +11,8 @@
 
 declare(strict_types=1);
 
+namespace X3P0\Breadcrumbs;
+
 # Prevent direct access.
 defined('ABSPATH') || exit;
 
@@ -19,4 +21,6 @@ use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 /**
  * @global array $attributes
  */
-echo (new Breadcrumbs($attributes))->render(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo plugin()->container()->make(Breadcrumbs::class, [
+	'attributes' => $attributes
+])->render(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

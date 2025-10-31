@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Builder\Builder;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
  * Implements the `Crumb` interface and creates a custom crumb object.
@@ -23,28 +23,8 @@ abstract class AbstractCrumb implements Crumb
 	/**
 	 * Creates a new crumb object.
 	 */
-	public function __construct(protected Builder $builder)
+	public function __construct(protected BreadcrumbsContext $context)
 	{}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getType(): string
-	{
-		$type = $this->builder->environment()->crumbRegistry()->getTypeByClassName(
-			get_class($this)
-		);
-
-		return $type ?: 'default';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function isType(string $type): bool
-	{
-		return $type === $this->getType();
-	}
 
 	/**
 	 * {@inheritdoc}

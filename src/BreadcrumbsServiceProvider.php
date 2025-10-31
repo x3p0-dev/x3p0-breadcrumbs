@@ -1,7 +1,7 @@
 <?php
 
 /**
- * REST API service provider.
+ * Breadcrumbs service provider.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,26 +11,19 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Rest;
+namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class RestServiceProvider extends ServiceProvider implements Bootable
+class BreadcrumbsServiceProvider extends ServiceProvider
 {
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(RestRegistrar::class);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function boot(): void
-	{
-		$this->container->get(RestRegistrar::class)->boot();
+		$this->container->singleton(BreadcrumbsFactory::class);
+		$this->container->transient(Breadcrumbs::class);
+		$this->container->transient(BreadcrumbsService::class);
 	}
 }

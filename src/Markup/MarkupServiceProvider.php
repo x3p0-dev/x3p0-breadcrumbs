@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Block service provider.
+ * Markup service provider.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,28 +11,20 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Block;
+namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class BlockServiceProvider extends ServiceProvider implements Bootable
+class MarkupServiceProvider extends ServiceProvider
 {
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(BlockRegistrar::class);
-	}
+		$this->container->singleton(MarkupRegistry::class);
+		$this->container->singleton(MarkupFactory::class);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function boot(): void
-	{
-		$this->container->get(BlockRegistrar::class, [
-			'path' => __DIR__ . '/../../public/blocks'
-		])->boot();
+		MarkupRegistrar::register($this->container->get(MarkupRegistry::class));
 	}
 }

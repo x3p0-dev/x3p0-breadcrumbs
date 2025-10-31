@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Builder\Builder;
 use X3P0\Breadcrumbs\Crumb\{Crumb, CrumbCollection};
 use X3P0\Breadcrumbs\Tools\Helpers;
 
@@ -41,59 +40,22 @@ abstract class AbstractMarkup implements Markup
 	];
 
 	/**
-	 * Stores the crumb objects from the builder.
-	 */
-	protected CrumbCollection $crumbs;
-
-	/**
 	 * Creates a new markup object. The constructor requires a `Breadcrumbs`
 	 * implementation and an optional array of arguments for configuring the
 	 * generated markup.
 	 */
 	public function __construct(
-		protected Builder $builder,
-		protected array $options = []
-	) {
-		$this->options = apply_filters(
-			'x3p0/breadcrumbs/markup/config',
-			array_replace_recursive([
-				'show_on_front'      => false,
-				'show_first_item'    => true,
-				'show_last_item'     => true,
-				'link_last_item'     => false,
-				'before'             => '',
-				'after'              => '',
-				'container_attr'     => [
-					'class'      => 'breadcrumbs',
-					'role'       => 'navigation',
-					'aria-label' => __(
-						'Breadcrumbs',
-						'x3p0-breadcrumbs'
-					),
-					'data-wp-interactive'   => 'x3p0/breadcrumbs',
-					'data-wp-router-region' => 'breadcrumbs'
-				]
-			], $this->options)
-		);
-
-		$this->crumbs = $this->builder->build()->crumbs();
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getOption(string $name): mixed
-	{
-		return $this->options[$name] ?? null;
-	}
+		protected CrumbCollection $crumbs,
+		protected MarkupConfig $config
+	) {}
 
 	/**
 	 * Returns a string-based version of the container attributes.
 	 */
 	protected function containerAttr(): string
 	{
-		$attrs    = array_keys($this->getOption('container_attr'));
-		$values   = array_values($this->getOption('container_attr'));
+		$attrs    = array_keys($this->config->getContainerAttr());
+		$values   = array_values($this->config->getContainerAttr());
 		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
 
 		return implode(' ', array_map($callback, $attrs, $values));
@@ -111,15 +73,15 @@ abstract class AbstractMarkup implements Markup
 
 		if (
 			is_front_page()
-			&& ! $this->getOption('show_on_front')
+			&& ! $this->config->showOnFront()
 			&& ! Helpers::isPagedView()
 		) {
 			return false;
 		}
 
 		$visible_count = $this->crumbs->count()
-			- ($this->getOption('show_first_item') ? 0 : 1)
-			- ($this->getOption('show_last_item') ? 0 : 1);
+			- ($this->config->showFirstItem() ? 0 : 1)
+			- ($this->config->showLastItem() ? 0 : 1);
 
 		return $visible_count > 0;
 	}
@@ -137,8 +99,8 @@ abstract class AbstractMarkup implements Markup
 		}
 
 		return ! (
-			($this->crumbs->isFirst() && ! $this->getOption('show_first_item'))
-			|| ($this->crumbs->isLast() && ! $this->getOption('show_last_item'))
+			($this->crumbs->isFirst() && ! $this->config->showFirstItem())
+			|| ($this->crumbs->isLast() && ! $this->config->showLastItem())
 		);
 	}
 
@@ -154,6 +116,6 @@ abstract class AbstractMarkup implements Markup
 
 		$is_last = $this->crumbs->count() === $this->crumbs->position();
 
-		return ! $is_last || $this->getOption('link_last_item');
+		return ! $is_last || $this->config->linkLastItem();
 	}
 }

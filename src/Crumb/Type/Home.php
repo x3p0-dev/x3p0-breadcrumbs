@@ -22,7 +22,7 @@ final class Home extends AbstractCrumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->builder->getLabel('home');
+		return $this->context->config()->getLabel('home');
 	}
 
 	/**

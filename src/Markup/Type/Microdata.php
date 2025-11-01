@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 
 /**
  * Creates an ordered list of the breadcrumbs with Schema.org microdata.
  */
-class Microdata extends Html
+class Microdata extends AbstractMarkup
 {
 	/**
 	 * {@inheritdoc}

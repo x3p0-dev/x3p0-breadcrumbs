@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 
 /**
  * Creates an ordered list of the breadcrumbs with RDFa.
  */
-class Rdfa extends Html
+class Rdfa extends AbstractMarkup
 {
 	/**
 	 * {@inheritdoc}

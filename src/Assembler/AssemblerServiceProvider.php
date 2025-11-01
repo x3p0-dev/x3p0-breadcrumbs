@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class AssemblerServiceProvider extends ServiceProvider implements Bootable
+final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}

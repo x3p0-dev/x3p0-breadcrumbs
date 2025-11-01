@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Core\Container;
 /**
  * Factory class for making breadcrumbs objects.
  */
-class BreadcrumbsFactory
+final class BreadcrumbsFactory
 {
 	/**
 	 * Sets up the initial factory state.

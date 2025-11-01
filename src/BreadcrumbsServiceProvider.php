@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class BreadcrumbsServiceProvider extends ServiceProvider
+final class BreadcrumbsServiceProvider extends ServiceProvider
 {
 	/**
 	 * @inheritDoc

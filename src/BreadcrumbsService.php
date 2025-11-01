@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Markup\MarkupFactory;
  * Support class for more quickly rendering a breadcrumb trail. It hides away
  * some of the complexity in favor of a simpler API.
  */
-class BreadcrumbsService
+final class BreadcrumbsService
 {
 	/**
 	 * Sets up the initial service state.

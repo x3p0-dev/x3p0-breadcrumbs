@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Markup\MarkupRegistry;
 /**
  * Factory class for making markup objects.
  */
-class MarkupFactory
+final class MarkupFactory
 {
 	/**
 	 * Sets up the initial object state.

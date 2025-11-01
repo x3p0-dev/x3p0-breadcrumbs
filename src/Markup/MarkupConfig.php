@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs\Markup;
  * Creates a config for passing into markup objects, which is used to determine
  * how to display the breadcrumb trail.
  */
-class MarkupConfig
+final class MarkupConfig
 {
 	/**
 	 * Sets up the initial config state.

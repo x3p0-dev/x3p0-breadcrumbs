@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class BlockServiceProvider extends ServiceProvider implements Bootable
+final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}

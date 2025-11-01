@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
  * Provides a simple API for queries, assemblers, and crumbs to build the crumb
  * collection. Wraps the factories and collection to hide complexity.
  */
-class BreadcrumbsContext
+final class BreadcrumbsContext
 {
 	public function __construct(
 		private CrumbCollection   $crumbs,

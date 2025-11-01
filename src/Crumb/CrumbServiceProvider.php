@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class CrumbServiceProvider extends ServiceProvider implements Bootable
+final class CrumbServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}

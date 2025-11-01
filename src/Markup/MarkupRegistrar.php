@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Markup;
 /**
  * Registers classes with the markup registry.
  */
-class MarkupRegistrar
+final class MarkupRegistrar
 {
 	/**
 	 * An array of markup keys and their associated classes, to be stored

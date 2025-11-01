@@ -23,7 +23,7 @@ use Iterator;
  * particularly useful when looping through the crumbs. Before looping, be sure
  * to `rewind()` to reset the internal index.
  */
-class CrumbCollection implements ArrayAccess, Iterator, Countable
+final class CrumbCollection implements ArrayAccess, Iterator, Countable
 {
 	/**
 	 * Stores the crumb instances with sequential keys.

@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs;
  * Creates a config for passing into breadcrumbs objects that determines how
  * the crumbs collection is generated.
  */
-class BreadcrumbsConfig
+final class BreadcrumbsConfig
 {
 	public function __construct(
 		private array $mapRewriteTags = [],

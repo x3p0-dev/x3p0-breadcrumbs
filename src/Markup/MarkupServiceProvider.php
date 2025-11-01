@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Markup;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class MarkupServiceProvider extends ServiceProvider implements Bootable
+final class MarkupServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}

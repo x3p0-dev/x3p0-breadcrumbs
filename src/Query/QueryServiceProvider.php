@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class QueryServiceProvider extends ServiceProvider implements Bootable
+final class QueryServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}

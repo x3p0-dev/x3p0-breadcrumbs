@@ -18,7 +18,7 @@ use TypeError;
 /**
  * Stores the markup classes that can later be instantiated as objects.
  */
-class MarkupRegistry
+final class MarkupRegistry
 {
 	/**
 	 * Stores the array of markup classes.

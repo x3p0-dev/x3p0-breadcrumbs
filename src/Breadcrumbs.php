@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
  * A wrapper around the query, assembler, and crumb classes that takes a config
  * and generates a crumbs collection.
  */
-class Breadcrumbs
+final class Breadcrumbs
 {
 	/**
 	 * Maps WordPress conditionals to default `Query` classes.

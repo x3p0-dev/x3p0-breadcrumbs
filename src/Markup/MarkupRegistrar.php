@@ -25,7 +25,8 @@ final class MarkupRegistrar
 	private const MARKUPS = [
 		'html'      => Type\Html::class,
 		'microdata' => Type\Microdata::class,
-		'rdfa'      => Type\Rdfa::class
+		'rdfa'      => Type\Rdfa::class,
+		'json-ld'   => Type\JsonLinkedData::class
 	];
 
 	/**

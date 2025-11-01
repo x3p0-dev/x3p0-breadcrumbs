@@ -270,7 +270,19 @@ echo breadcrumbs()->render(
 
 ### Advanced Use Cases
 
-**TODO:** Actually write this bit out.
+#### Outputting JSON Linked Data (JSON-LD)
+
+The plugin has a markup implementation for outputting JSON-LD style formats in the `<head>` of your webpage. This feature is not currently enabled by default since the plugin's primary purpose is to make displayable breadcrumbs via the block editor.
+
+To enable it, you can call the normal `breadcrumbs()->render()` method and just pass in the `json-ld` markup type. And, of course, hook it to `wp_head`:
+
+```php
+use function X3P0\Breadcrumbs\breadcrumbs;
+
+add_action('wp_head', function() {
+	echo breadcrumbs()->render(markupType: 'json-ld');
+});
+```
 
 ## License
 

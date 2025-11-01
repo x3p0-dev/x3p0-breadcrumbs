@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class QueryServiceProvider extends ServiceProvider
+class QueryServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}
@@ -24,7 +25,13 @@ class QueryServiceProvider extends ServiceProvider
 	{
 		$this->container->singleton(QueryRegistry::class);
 		$this->container->singleton(QueryFactory::class);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function boot(): void
+	{
 		QueryRegistrar::register($this->container->get(QueryRegistry::class));
 	}
 }

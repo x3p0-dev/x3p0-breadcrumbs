@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class CrumbServiceProvider extends ServiceProvider
+class CrumbServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}
@@ -24,7 +25,13 @@ class CrumbServiceProvider extends ServiceProvider
 	{
 		$this->container->singleton(CrumbRegistry::class);
 		$this->container->singleton(CrumbFactory::class);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function boot(): void
+	{
 		CrumbRegistrar::register($this->container->get(CrumbRegistry::class));
 	}
 }

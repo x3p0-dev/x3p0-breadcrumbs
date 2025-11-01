@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class MarkupServiceProvider extends ServiceProvider
+class MarkupServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}
@@ -24,7 +25,13 @@ class MarkupServiceProvider extends ServiceProvider
 	{
 		$this->container->singleton(MarkupRegistry::class);
 		$this->container->singleton(MarkupFactory::class);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function boot(): void
+	{
 		MarkupRegistrar::register($this->container->get(MarkupRegistry::class));
 	}
 }

@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use X3P0\Breadcrumbs\Contracts\Bootable;
 use X3P0\Breadcrumbs\Core\ServiceProvider;
 
-class AssemblerServiceProvider extends ServiceProvider
+class AssemblerServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
 	 * {@inheritDoc}
@@ -24,7 +25,13 @@ class AssemblerServiceProvider extends ServiceProvider
 	{
 		$this->container->singleton(AssemblerRegistry::class);
 		$this->container->singleton(AssemblerFactory::class);
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public function boot(): void
+	{
 		AssemblerRegistrar::register($this->container->get(AssemblerRegistry::class));
 	}
 }

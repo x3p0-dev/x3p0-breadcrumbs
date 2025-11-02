@@ -32,12 +32,12 @@ final class BreadcrumbsConfig
 	/**
 	 * Static helper function for creating the config from an array.
 	 */
-	public static function fromArray(array $options = []): static
+	public static function fromArray(array $options = []): self
 	{
-		return new static(
-			labels:         $options['labels']           ?? [],
+		return new self(
 			mapRewriteTags: $options['map_rewrite_tags'] ?? [],
 			postTaxonomy:   $options['post_taxonomy']    ?? [],
+			labels:         $options['labels']           ?? [],
 			network:        $options['network']          ?? false
 		);
 	}

@@ -41,9 +41,9 @@ final class MarkupConfig
 	/**
 	 * Static helper function for creating the config from an array.
 	 */
-	public static function fromArray(array $options): static
+	public static function fromArray(array $options): self
 	{
-		return new static(
+		return new self(
 			containerAttr: $options['containerAttr'] ?? [],
 			showOnFront:   $options['showOnFront']   ?? false,
 			showFirstItem: $options['showFirstItem'] ?? true,

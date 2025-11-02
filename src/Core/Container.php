@@ -20,17 +20,17 @@ interface Container
 	/**
 	 * Bind an abstract to a concrete implementation.
 	 */
-	public function bind(string $abstract, Closure|string|null $concrete = null, bool $shared = false): void;
+	public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void;
 
 	/**
 	 * Register a transient service (new instance each time).
 	 */
-	public function transient(string $abstract, Closure|string|null $concrete = null): void;
+	public function transient(string $abstract, mixed $concrete = null): void;
 
 	/**
 	 * Bind a singleton (cached instance).
 	 */
-	public function singleton(string $abstract, Closure|string|null $concrete = null): void;
+	public function singleton(string $abstract, mixed $concrete = null): void;
 
 	/**
 	 * Register an existing instance as a singleton.

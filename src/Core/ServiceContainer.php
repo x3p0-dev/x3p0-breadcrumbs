@@ -38,11 +38,8 @@ final class ServiceContainer implements Container
 	/**
 	 * {@inheritDoc}
 	 */
-	public function bind(
-		string $abstract,
-		Closure|string|null $concrete = null,
-		bool $shared = false
-	): void {
+	public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void
+	{
 		// If no concrete is provided, use the abstract as concrete.
 		if ($concrete === null) {
 			$concrete = $abstract;
@@ -64,20 +61,16 @@ final class ServiceContainer implements Container
 	/**
 	 * {@inheritDoc}
 	 */
-	public function transient(
-		string $abstract,
-		Closure|string|null $concrete = null
-	): void {
+	public function transient(string $abstract, mixed $concrete = null): void
+	{
 		$this->bind($abstract, $concrete);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function singleton(
-		string $abstract,
-		Closure|string|null $concrete = null
-	): void {
+	public function singleton(string $abstract, mixed $concrete = null): void
+	{
 		$this->bind($abstract, $concrete, true);
 	}
 
@@ -193,7 +186,7 @@ final class ServiceContainer implements Container
 		} catch (ReflectionException $e) {
 			throw new Exception(esc_html(sprintf(
 			// Translators: %s is a class name.
-				__('Target class %s does not exist.', 'x3p-breadcrumbs'),
+				__('Target class %s does not exist.', 'x3p0-breadcrumbs'),
 				$concrete
 			)), 0, $e);
 		}
@@ -201,7 +194,7 @@ final class ServiceContainer implements Container
 		if (! $reflector->isInstantiable()) {
 			throw new Exception(esc_html(sprintf(
 			// Translators: %s is a class name.
-				__('Target %s is not instantiable.', 'x3p-breadcrumbs'),
+				__('Target %s is not instantiable.', 'x3p0-breadcrumbs'),
 				$concrete
 			)));
 		}
@@ -249,7 +242,7 @@ final class ServiceContainer implements Container
 			}
 
 			// Handle union types or built-in types
-			if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
+			if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
 				$dependencies[] = $this->resolveNonTyped($param);
 				continue;
 			}
@@ -283,7 +276,7 @@ final class ServiceContainer implements Container
 		}
 
 		throw new Exception(esc_html(sprintf(
-		// Translators: %s is a parameter name.
+			// Translators: %s is a parameter name.
 			__('Cannot resolve parameter %s.', 'x3p0-breadcrumbs'),
 			$param->getName()
 		)));

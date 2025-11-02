@@ -22,6 +22,48 @@ use WP_Post_Type;
 class Helpers
 {
 	/**
+	 * WordPress doesn't have an `is_hour()` function, so we determine this
+	 * on our own using query vars.
+	 */
+	public static function isHour(): bool
+	{
+		return is_time()
+			&& get_query_var('year')
+			&& get_query_var('monthnum')
+			&& get_query_var('day')
+			&& get_query_var('hour');
+	}
+
+	/**
+	 * WordPress doesn't have an `is_minute()` function, so we determine this
+	 * on our own using query vars.
+	 */
+	public static function isMinute(): bool
+	{
+		return is_time()
+			&& get_query_var('year')
+			&& get_query_var('monthnum')
+			&& get_query_var('day')
+			&& get_query_var('hour')
+			&& get_query_var('minute');
+	}
+
+	/**
+	 * WordPress doesn't have an `is_second()` function, so we determine this
+	 * on our own using query vars.
+	 */
+	public static function isSecond(): bool
+	{
+		return is_time()
+			&& get_query_var('year')
+			&& get_query_var('monthnum')
+			&& get_query_var('day')
+			&& get_query_var('hour')
+			&& get_query_var('minute')
+			&& get_query_var('second');
+	}
+
+	/**
 	 * Determines whether we're viewing a paginated page.
 	 */
 	public static function isPagedView(): bool

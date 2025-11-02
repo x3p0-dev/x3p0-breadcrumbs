@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Tools\Helpers;
 
 final class Archive extends AbstractQuery
 {
@@ -30,11 +31,11 @@ final class Archive extends AbstractQuery
 			$this->context->query('taxonomy');
 		} elseif (is_author()) {
 			$this->context->query('author');
-		} elseif (get_query_var('minute') && get_query_var('hour')) {
-			$this->context->query('minute-hour');
-		} elseif (get_query_var('minute')) {
+		} elseif (Helpers::isSecond()) {
+			$this->context->query('second');
+		} elseif (Helpers::isMinute()) {
 			$this->context->query('minute');
-		} elseif (get_query_var('hour')) {
+		} elseif (Helpers::isHour()) {
 			$this->context->query('hour');
 		} elseif (is_day()) {
 			$this->context->query('day');

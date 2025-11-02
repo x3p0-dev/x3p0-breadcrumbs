@@ -24,6 +24,9 @@ final class Hour extends AbstractQuery
 	{
 		$this->context->assemble('home');
 		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('year');
+		$this->context->addCrumb('month');
+		$this->context->addCrumb('day');
 		$this->context->addCrumb('hour');
 		$this->context->assemble('paged');
 	}

@@ -69,6 +69,15 @@ final class PostRewriteTags extends AbstractAssembler
 			'%day%' => $this->context->addCrumb('day', [
 				'post' => $this->post
 			]),
+			'%hour%' => $this->context->addCrumb('hour', [
+				'post' => $this->post
+			]),
+			'%minute%' => $this->context->addCrumb('minute', [
+				'post' => $this->post
+			]),
+			'%second%' => $this->context->addCrumb('second', [
+				'post' => $this->post
+			]),
 			'%author%' => $this->context->addCrumb('author', [
 				'user' => new WP_User($this->post->post_author)
 			]),

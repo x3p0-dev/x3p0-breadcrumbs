@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Minute + Hour query class.
+ * Second query class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
-final class MinuteHour extends AbstractQuery
+final class Second extends AbstractQuery
 {
 	/**
 	 * @inheritDoc
@@ -24,7 +24,12 @@ final class MinuteHour extends AbstractQuery
 	{
 		$this->context->assemble('home');
 		$this->context->assemble('rewrite-front');
-		$this->context->addCrumb('minute-hour');
+		$this->context->addCrumb('year');
+		$this->context->addCrumb('month');
+		$this->context->addCrumb('day');
+		$this->context->addCrumb('hour');
+		$this->context->addCrumb('minute');
+		$this->context->addCrumb('second');
 		$this->context->assemble('paged');
 	}
 }

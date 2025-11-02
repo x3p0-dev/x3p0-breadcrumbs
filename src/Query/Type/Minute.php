@@ -24,6 +24,10 @@ final class Minute extends AbstractQuery
 	{
 		$this->context->assemble('home');
 		$this->context->assemble('rewrite-front');
+		$this->context->addCrumb('year');
+		$this->context->addCrumb('month');
+		$this->context->addCrumb('day');
+		$this->context->addCrumb('hour');
 		$this->context->addCrumb('minute');
 		$this->context->assemble('paged');
 	}

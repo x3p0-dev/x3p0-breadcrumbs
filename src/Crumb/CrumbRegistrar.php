@@ -25,8 +25,8 @@ final class CrumbRegistrar
 		'day'               => Type\Day::class,
 		'error-404'         => Type\Error404::class,
 		'home'              => Type\Home::class,
+		'hour'              => Type\Hour::class,
 		'minute'            => Type\Minute::class,
-		'minute-hour'       => Type\MinuteHour::class,
 		'month'             => Type\Month::class,
 		'network'           => Type\Network::class,
 		'network-site'      => Type\NetworkSite::class,
@@ -37,6 +37,7 @@ final class CrumbRegistrar
 		'post'              => Type\Post::class,
 		'post-type'         => Type\PostType::class,
 		'search'            => Type\Search::class,
+		'second'            => Type\Second::class,
 		'term'              => Type\Term::class,
 		'week'              => Type\Week::class,
 		'year'              => Type\Year::class

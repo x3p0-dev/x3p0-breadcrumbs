@@ -91,14 +91,16 @@ final class BreadcrumbsConfig
 			'paged'               => __('Page %s', 'x3p0-breadcrumbs'),
 			// Translators: %s is the page number.
 			'paged_comments'      => __('Comment Page %s', 'x3p0-breadcrumbs'),
+			// Translators: Hour archive title. %s is the hour time format.
+			'archive_hour'        => __('Hour %s', 'x3p0-breadcrumbs'),
 			// Translators: Minute archive title. %s is the minute time format.
 			'archive_minute'      => __('Minute %s', 'x3p0-breadcrumbs'),
+			// Translators: Second archive title. %s is the second time format.
+			'archive_second'      => __('Second %s', 'x3p0-breadcrumbs'),
 			// Translators: Weekly archive title. %s is the week date format.
 			'archive_week'        => __('Week %s', 'x3p0-breadcrumbs'),
 
 			// "%s" is replaced with the translated date/time format.
-			'archive_minute_hour' => '%s',
-			'archive_hour'        => '%s',
 			'archive_day'         => '%s',
 			'archive_month'       => '%s',
 			'archive_year'        => '%s'

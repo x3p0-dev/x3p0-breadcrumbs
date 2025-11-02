@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Minute crumb class.
+ * Second crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -17,7 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 
-final class Minute extends AbstractCrumb
+final class Second extends AbstractCrumb
 {
 	/**
 	 * @inheritDoc
@@ -35,9 +35,9 @@ final class Minute extends AbstractCrumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_minute'),
+			$this->context->config()->getLabel('archive_second'),
 			get_the_time(
-				esc_html_x('i', 'minute archives time format', 'x3p0-breadcrumbs'),
+				esc_html_x('s', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post
 			)
 		);
@@ -53,23 +53,25 @@ final class Minute extends AbstractCrumb
 		$day    = zeroise(absint(get_the_time('d', $this->post)), 2);
 		$hour   = zeroise(absint(get_the_time('H', $this->post)), 2);
 		$minute = zeroise(absint(get_the_time('i', $this->post)), 2);
+		$second = zeroise(absint(get_the_time('s', $this->post)), 2);
 
-		// WordPress doesn't have a minute structure function, so we're
+		// WordPress doesn't have a second structure function, so we're
 		// building off the date structure.
 		$structure = $GLOBALS['wp_rewrite']->get_date_permastruct();
 
 		if (! empty($structure)) {
-			$structure = trailingslashit($structure) . '%hour%/%minute%';
+			$structure = trailingslashit($structure) . '%hour%/%minute%/%second%';
 
 			$structure = str_replace('%year%',     $year,    $structure);
 			$structure = str_replace('%monthnum%', $month,   $structure);
 			$structure = str_replace('%day%',      $day,     $structure);
 			$structure = str_replace('%hour%',     $hour,    $structure);
 			$structure = str_replace('%minute%',   $minute,  $structure);
+			$structure = str_replace('%second%',   $second,  $structure);
 
-			return home_url(user_trailingslashit($structure, 'minute'));
+			return home_url(user_trailingslashit($structure, 'second'));
 		}
 
-		return home_url('?m=' . $year . $month . $day . $hour . $minute);
+		return home_url('?m=' . $year . $month . $day . $hour . $minute . $second);
 	}
 }

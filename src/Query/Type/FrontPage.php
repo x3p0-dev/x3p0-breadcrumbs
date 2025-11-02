@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
 final class FrontPage extends AbstractQuery
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function query(): void
 	{

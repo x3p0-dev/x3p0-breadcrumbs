@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Query\AbstractQuery;
 final class Day extends AbstractQuery
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function query(): void
 	{

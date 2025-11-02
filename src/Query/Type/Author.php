@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Query\AbstractQuery;
 final class Author extends AbstractQuery
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -31,7 +31,7 @@ final class Author extends AbstractQuery
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */

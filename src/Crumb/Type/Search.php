@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 final class Search extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{
@@ -26,7 +26,7 @@ final class Search extends AbstractCrumb
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getUrl(): string
 	{

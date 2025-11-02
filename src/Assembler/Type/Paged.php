@@ -24,7 +24,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
 final class Paged extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function assemble(): void
 	{

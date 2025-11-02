@@ -24,7 +24,7 @@ final class BlockRegistrar implements Bootable
 	{}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function boot(): void
 	{

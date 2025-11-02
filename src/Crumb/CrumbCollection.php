@@ -171,7 +171,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function offsetExists(mixed $offset): bool
 	{
@@ -179,7 +179,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function offsetGet(mixed $offset): ?Crumb
 	{
@@ -187,7 +187,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function offsetSet(mixed $offset, mixed $value): void
 	{
@@ -195,7 +195,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function offsetUnset(mixed $offset): void
 	{

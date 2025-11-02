@@ -25,7 +25,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
 final class Path extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -35,7 +35,7 @@ final class Path extends AbstractAssembler
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function assemble(): void
 	{

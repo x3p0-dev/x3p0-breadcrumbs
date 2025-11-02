@@ -22,9 +22,9 @@ namespace X3P0\Breadcrumbs\Contracts;
 interface Bootable
 {
 	/**
-	 * Bootstraps the class. This is often useful for adding actions or
-	 * filters in WordPress, but it can also be used to bootstrap any other
-	 * code that you wouldn't normally add to the class constructor.
+	 * This is often useful for adding actions or filters in WordPress, but
+	 * it can also be used to bootstrap any other code that you wouldn't
+	 * normally add to the class constructor.
 	 */
 	public function boot(): void;
 }

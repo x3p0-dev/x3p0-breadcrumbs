@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Core\ServiceProvider;
 final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function register(): void
 	{
@@ -29,7 +29,7 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function boot(): void
 	{

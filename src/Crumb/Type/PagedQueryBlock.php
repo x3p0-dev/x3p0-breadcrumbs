@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
 final class PagedQueryBlock extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{

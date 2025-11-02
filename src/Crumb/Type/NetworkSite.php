@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 final class NetworkSite extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{
@@ -26,7 +26,7 @@ final class NetworkSite extends AbstractCrumb
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getUrl(): string
 	{

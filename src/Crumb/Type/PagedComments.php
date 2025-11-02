@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 final class PagedComments extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{

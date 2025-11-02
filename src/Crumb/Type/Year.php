@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 final class Year extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -30,7 +30,7 @@ final class Year extends AbstractCrumb
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{
@@ -45,7 +45,7 @@ final class Year extends AbstractCrumb
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getUrl(): string
 	{

@@ -36,7 +36,7 @@ final class ServiceContainer implements Container
 	protected array $instances = [];
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void
 	{
@@ -54,12 +54,12 @@ final class ServiceContainer implements Container
 
 		$this->bindings[$abstract] = [
 			'concrete' => $concrete,
-			'shared'   => $shared,
+			'shared'   => $shared
 		];
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function transient(string $abstract, mixed $concrete = null): void
 	{
@@ -67,7 +67,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function singleton(string $abstract, mixed $concrete = null): void
 	{
@@ -75,7 +75,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function instance(string $abstract, mixed $instance): void
 	{
@@ -83,12 +83,12 @@ final class ServiceContainer implements Container
 
 		$this->bindings[$abstract] = [
 			'concrete' => fn() => $instance,
-			'shared'   => true,
+			'shared'   => true
 		];
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 * @throws Exception
 	 */
 	public function get(string $abstract, array $parameters = []): mixed
@@ -124,7 +124,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 * @throws Exception
 	 */
 	public function make(string $abstract, array $parameters = []): object
@@ -133,7 +133,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function has(string $abstract): bool
 	{
@@ -141,7 +141,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function isShared(string $abstract): bool
 	{
@@ -150,7 +150,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function isBuildable(mixed $concrete): bool
 	{

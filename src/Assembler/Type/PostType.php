@@ -24,7 +24,7 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 final class PostType extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -34,7 +34,7 @@ final class PostType extends AbstractAssembler
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */

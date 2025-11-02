@@ -33,7 +33,7 @@ final class Breadcrumbs implements Block
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function render(): string
 	{

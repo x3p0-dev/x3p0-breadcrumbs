@@ -72,7 +72,7 @@ final class Plugin implements Application
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function container(): Container
 	{
@@ -80,7 +80,7 @@ final class Plugin implements Application
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @inheritDoc
 	 */
 	public function register(string|object $provider): void
 	{
@@ -97,7 +97,9 @@ final class Plugin implements Application
 	}
 
 	/**
-	 * Boot all registered service providers.
+	 * {@inheritDoc}
+	 *
+	 * This `boot()` method boots all registered service providers.
 	 */
 	public function boot(): void
 	{

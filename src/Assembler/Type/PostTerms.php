@@ -24,7 +24,7 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 final class PostTerms extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -35,7 +35,7 @@ final class PostTerms extends AbstractAssembler
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function assemble(): void
 	{

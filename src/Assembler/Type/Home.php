@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 final class Home extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function assemble(): void
 	{

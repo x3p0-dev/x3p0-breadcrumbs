@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Query\AbstractQuery;
 final class PostTypeArchive extends AbstractQuery
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
@@ -32,7 +32,7 @@ final class PostTypeArchive extends AbstractQuery
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function query(): void
 	{

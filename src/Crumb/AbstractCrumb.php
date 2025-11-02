@@ -27,7 +27,7 @@ abstract class AbstractCrumb implements Crumb
 	{}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getUrl(): string
 	{

@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 class Microdata extends AbstractMarkup
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function render(): string
 	{

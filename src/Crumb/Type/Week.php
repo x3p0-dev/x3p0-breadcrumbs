@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
 final class Week extends AbstractCrumb
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getLabel(): string
 	{
@@ -33,7 +33,7 @@ final class Week extends AbstractCrumb
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 */
 	public function getUrl(): string
 	{

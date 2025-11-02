@@ -26,7 +26,7 @@ use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 final class RewriteFront extends AbstractAssembler
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritDoc
 	 *
 	 * @global WP_Rewrite $GLOBALS['wp_rewrite']
 	 */

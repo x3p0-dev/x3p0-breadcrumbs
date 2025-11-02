@@ -22,21 +22,15 @@ final class QueryRegistrar
 	private const QUERIES = [
 		'archive'           => Type\Archive::class,
 		'author'            => Type\Author::class,
-		'day'               => Type\Day::class,
+		'date'              => Type\Date::class,
 		'error-404'         => Type\Error::class,
 		'front-page'        => Type\FrontPage::class,
 		'home'              => Type\Home::class,
-		'hour'              => Type\Hour::class,
-		'minute'            => Type\Minute::class,
-		'month'             => Type\Month::class,
 		'paged'             => Type\Paged::class,
 		'post-type-archive' => Type\PostTypeArchive::class,
 		'search'            => Type\Search::class,
-		'second'            => Type\Second::class,
 		'singular'          => Type\Singular::class,
-		'taxonomy'          => Type\Tax::class,
-		'week'              => Type\Week::class,
-		'year'              => Type\Year::class
+		'taxonomy'          => Type\Tax::class
 	];
 
 	/**

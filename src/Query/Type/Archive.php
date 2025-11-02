@@ -31,28 +31,10 @@ final class Archive extends AbstractQuery
 			$this->context->query('taxonomy');
 		} elseif (is_author()) {
 			$this->context->query('author');
-		} elseif (Helpers::isSecond()) {
-			$this->context->query('second');
-		} elseif (Helpers::isMinute()) {
-			$this->context->query('minute');
-		} elseif (Helpers::isHour()) {
-			$this->context->query('hour');
-		} elseif (is_day()) {
-			$this->context->query('day');
-		} elseif (get_query_var('week')) {
-			$this->context->query('week');
-		} elseif (is_month()) {
-			$this->context->query('month');
-		} elseif (is_year()) {
-			$this->context->query('year');
+		} elseif (is_date()) {
+			$this->context->query('date');
 		} else {
 			$this->context->assemble('home');
-
-			// Build rewrite front crumbs if date/time query.
-			if (is_date() || is_time()) {
-				$this->context->assemble('rewrite-front');
-			}
-
 			$this->context->addCrumb('archive');
 			$this->context->assemble('paged');
 		}

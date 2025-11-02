@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Post taxonomy terms on single post views are no longer sorted by the plugin. This allows third-party plugins to manage the sorting. This is particularly important for SEO plugins that allow you to set a "primary" term for a post.
+- Correctly determine when a weekly archive is being displayed.
 
 ### Removed
 

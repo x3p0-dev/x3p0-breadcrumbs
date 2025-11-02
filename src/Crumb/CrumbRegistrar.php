@@ -20,25 +20,26 @@ final class CrumbRegistrar
 	 * in the crumb registry.
 	 */
 	private const CRUMBS = [
-		'archive'        => Type\Archive::class,
-		'author'         => Type\Author::class,
-		'day'            => Type\Day::class,
-		'error-404'      => Type\Error404::class,
-		'home'           => Type\Home::class,
-		'minute'         => Type\Minute::class,
-		'minute-hour'    => Type\MinuteHour::class,
-		'month'          => Type\Month::class,
-		'network'        => Type\Network::class,
-		'network-site'   => Type\NetworkSite::class,
-		'paged'          => Type\Paged::class,
-		'paged-comments' => Type\PagedComments::class,
-		'paged-singular' => Type\PagedSingular::class,
-		'post'           => Type\Post::class,
-		'post-type'      => Type\PostType::class,
-		'search'         => Type\Search::class,
-		'term'           => Type\Term::class,
-		'week'           => Type\Week::class,
-		'year'           => Type\Year::class
+		'archive'           => Type\Archive::class,
+		'author'            => Type\Author::class,
+		'day'               => Type\Day::class,
+		'error-404'         => Type\Error404::class,
+		'home'              => Type\Home::class,
+		'minute'            => Type\Minute::class,
+		'minute-hour'       => Type\MinuteHour::class,
+		'month'             => Type\Month::class,
+		'network'           => Type\Network::class,
+		'network-site'      => Type\NetworkSite::class,
+		'paged'             => Type\Paged::class,
+		'paged-comments'    => Type\PagedComments::class,
+		'paged-query-block' => Type\PagedQueryBlock::class,
+		'paged-singular'    => Type\PagedSingular::class,
+		'post'              => Type\Post::class,
+		'post-type'         => Type\PostType::class,
+		'search'            => Type\Search::class,
+		'term'              => Type\Term::class,
+		'week'              => Type\Week::class,
+		'year'              => Type\Year::class
 	];
 
 	/**

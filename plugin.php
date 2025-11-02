@@ -21,7 +21,7 @@ namespace X3P0\Breadcrumbs;
 # Prevent direct access.
 defined('ABSPATH') || exit;
 
-# Register autoloader for classes.
+# Load the autoloader.
 if (! class_exists(Core\Plugin::class) && is_file(__DIR__ . '/vendor/autoload.php')) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }

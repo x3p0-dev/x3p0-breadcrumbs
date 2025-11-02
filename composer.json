@@ -5,39 +5,42 @@
 	"scripts": {
 		"build": [
 			"composer update --no-dev",
-			"composer dump-autoload -o --no-dev"
+			"composer dump-autoload -a --no-dev"
 		],
 		"dev": [
 			"composer update",
 			"composer dump-autoload"
 		],
-		"phpcs": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
-		"phpstan": "vendor/bin/phpstan analyse --memory-limit 1G",
 		"zip": "composer archive --file=x3p0-breadcrumbs"
+	},
+	"autoload": {
+		"psr-4": {
+			"X3P0\\Breadcrumbs\\": "src/"
+		},
+		"files" : [
+			"src/functions-helpers.php"
+		],
+		"exclude-from-classmap": [
+			"vendor/"
+		]
 	},
 	"require": {
                 "php": ">=8.0"
 	},
 	"require-dev": {
-		"wp-coding-standards/wpcs": "^3.0",
-		"phpcompatibility/phpcompatibility-wp": "*",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-		"phpstan/phpstan": "^1.12",
-		"szepeviktor/phpstan-wordpress": "^1.3",
 		"symfony/var-dumper": "^7.1"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"config": {
-		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
-		},
 		"archive-dir": "./",
 		"archive-format": "zip"
 	},
 	"archive": {
 		"exclude": [
-			"/vendor"
+			"/vendor",
+			"!/vendor/autoload.php",
+			"!/vendor/composer/"
 		]
 	},
 	"authors": [

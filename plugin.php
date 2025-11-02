@@ -4,7 +4,7 @@
  * Plugin Name:       X3P0: Breadcrumbs
  * Plugin URI:        https://github.com/x3p0-dev/x3p0-breadcrumbs
  * Description:       A breadcrumbs block for WordPress.
- * Version:           3.1.0
+ * Version:           4.0.0-alpha
  * Requires at least: 6.8
  * Requires PHP:      8.0
  * Author:            Justin Tadlock
@@ -22,11 +22,9 @@ namespace X3P0\Breadcrumbs;
 defined('ABSPATH') || exit;
 
 # Register autoloader for classes.
-require_once 'src/Autoload.php';
-Autoload::register();
-
-# Load functions files.
-require_once 'src/functions-helpers.php';
+if (! class_exists(Core\Plugin::class) && is_file(__DIR__ . '/vendor/autoload.php')) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
 
 # Initialize the plugin.
 add_action('plugins_loaded', fn() => plugin(), 9999);

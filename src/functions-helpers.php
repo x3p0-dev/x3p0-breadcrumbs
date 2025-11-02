@@ -16,14 +16,15 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Core\{Application, Container, Plugin, ServiceContainer};
 
 /**
- * Stores the single instance of the plugin in the static `$plugin` variable.
+ * Returns the `Plugin` object, which is stored as a single instance in the
+ * static `$plugin` variable.
  */
 function plugin(): Application
 {
 	static $plugin;
 
 	if (! $plugin instanceof Plugin) {
-		do_action('x3p0/breadcrumbs/init', $plugin = new Plugin(new ServiceContainer()));
+		$plugin = new Plugin(new ServiceContainer());
 	}
 
 	return $plugin;

@@ -34,19 +34,40 @@ final class Plugin implements Application
 	private array $providers = [];
 
 	/**
-	 * Registers the default service providers.
+	 * Sets up the initial object state.
 	 */
 	public function __construct(protected Container $container)
 	{
-		$this->container->instance(Container::class, $container);
+		// Allow third-party devs to hook in before anything runs.
+		do_action('x3p0/breadcrumbs/init', $this);
 
-		$this->register(QueryServiceProvider::class);
+		// Register default bindings and service providers.
+		$this->registerDefaultBindings();
+		$this->registerDefaultProviders();
+
+		// Allow third-party devs to register service providers.
+		do_action('x3p0/breadcrumbs/register', $this);
+	}
+
+	/**
+	 * Registers default container bindings.
+	 */
+	private function registerDefaultBindings(): void
+	{
+		$this->container->instance(Container::class, $this->container);
+	}
+
+	/**
+	 * Registers the default service providers.
+	 */
+	private function registerDefaultProviders(): void
+	{
 		$this->register(AssemblerServiceProvider::class);
+		$this->register(BreadcrumbsServiceProvider::class);
+		$this->register(BlockServiceProvider::class);
 		$this->register(CrumbServiceProvider::class);
 		$this->register(MarkupServiceProvider::class);
-		$this->register(BreadcrumbsServiceProvider::class);
-
-		$this->register(BlockServiceProvider::class);
+		$this->register(QueryServiceProvider::class);
 		$this->register(RestServiceProvider::class);
 	}
 
@@ -76,7 +97,7 @@ final class Plugin implements Application
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Boot all registered service providers.
 	 */
 	public function boot(): void
 	{
@@ -85,5 +106,8 @@ final class Plugin implements Application
 				$provider->boot();
 			}
 		}
+
+		// Allow third-party devs access to hook in when booting.
+		do_action('x3p0/breadcrumbs/boot', $this);
 	}
 }

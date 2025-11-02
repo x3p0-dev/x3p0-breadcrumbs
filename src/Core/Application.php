@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Core;
 
-interface Application
+use X3P0\Breadcrumbs\Contracts\Bootable;
+
+interface Application extends Bootable
 {
 	/**
 	 * Get the container instance.
@@ -24,9 +26,4 @@ interface Application
 	 * Register a service provider with the application.
 	 */
 	public function register(string|ServiceProvider $provider): void;
-
-	/**
-	 * Boot all registered service providers.
-	 */
-	public function boot(): void;
 }

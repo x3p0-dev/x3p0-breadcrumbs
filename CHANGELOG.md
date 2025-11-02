@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `shadow` block support. You can now add shadows—not sure how I missed adding this before.
 - Content-only editing support for the block. When enabled, the toolbar controls no longer appear. However, users can edit the Home label directly in the editor canvas.
 - New `JsonLinkedData` markup class for outputting JSON-LD breadcrumbs in the site head. This is not output by default, but developers can opt in.
+- New hooks:
+  - `x3p0/breadcrumbs/register` - Fires just after the plugin's default service providers are registered.
+  - `x3p0/breadcrumbs/boot` - Fires just after the plugin's default services providers have been booted.
 
 ### Changed
 

@@ -28,5 +28,8 @@ Autoload::register();
 # Load functions files.
 require_once 'src/functions-helpers.php';
 
-# Bootstrap the plugin.
-add_action('plugins_loaded', fn() => plugin()->boot(), PHP_INT_MIN);
+# Initialize the plugin.
+add_action('plugins_loaded', fn() => plugin(), 9999);
+
+# Boot registered services.
+add_action('plugins_loaded', fn() => plugin()->boot(), PHP_INT_MAX);

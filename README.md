@@ -284,6 +284,69 @@ add_action('wp_head', function() {
 });
 ```
 
+#### Available Hooks
+
+The plugin comes with several action hooks that you might find useful for advanced use cases.
+
+##### `x3p0/breadcrumbs/init`
+
+Fires immediately as the `X3P0\Breadcrumbs\Core\Plugin` class is initialized and passes the class instance to actions attached to the hook.
+
+```php
+do_action('x3p0/breadcrumbs/init', $plugin);
+```
+
+##### `x3p0/breadcrumbs/register`
+
+Fires immediately after the `X3P0\Breadcrumbs\Core\Plugin` class registers its default bindings with the container and registers service providers. The plugin object is passed to actions attached to the hook.
+
+```php
+do_action('x3p0/breadcrumbs/register', $plugin);
+```
+
+##### `x3p0/breadcrumbs/boot`
+
+Fires immediately after the `X3P0\Breadcrumbs\Core\Plugin` class has booted all registered service providers. The plugin object is passed to actions attached to the hook.
+
+```php
+do_action('x3p0/breadcrumbs/boot', $plugin);
+```
+
+##### `x3p0/breadcrumbs/resolve/query-type`
+
+This fires just after the resolution of the `Query` class to call when the breadcrumbs are just being collected. These are mapped to WordPress conditional tags to determine which page to show. Generally speaking, if you want to change which breadcrumbs are shown for a particular page, this is what you hook into and change the query type.
+
+```php
+apply_filters('x3p0/breadcrumbs/resolve/query-type', $queryType);
+```
+
+For example, if you've registered a custom `Query` class (see below), you might want it to execute when your particular plugin's page(s) are active:
+
+```php
+add_filter(
+	'x3p0/breadcrumbs/resolve/query-type',
+	fn($queryType) => $your_condition ? 'custom-query' : $queryType
+);
+```
+
+#### Registering Custom Queries, Assemblers, and Crumbs
+
+There may be times when you need to register custom `Query`, `Assembler`, and `Crumb` classes for custom use cases. The following is a quick example of how to register these:
+
+```php
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
+use X3P0\Breadcrumbs\Query\QueryRegistry;
+
+add_action('x3p0/breadcrumbs/boot', function($plugin) {
+	$plugin->container()->get(QueryRegistry::class)->register('your-query',YourQuery::class);
+	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler',YourAssembler::class);
+	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb',YourCrumb::class);
+})
+```
+
+Please study the plugin's existing query, assembler, and crumb classes if you need to understand the conventions and, more precisely, the interfaces to use.
+
 ## License
 
 X3P0 Breadcrumbs is licensed under the GPL version 3.0 or later.

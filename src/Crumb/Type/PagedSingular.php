@@ -27,4 +27,38 @@ final class PagedSingular extends AbstractCrumb
 			number_format_i18n(absint(get_query_var('page')))
 		);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * Borrowed from `_wp_link_page()`.
+	 * @link https://developer.wordpress.org/reference/functions/_wp_link_page/
+	 */
+	public function getUrl(): string
+	{
+		$post = get_post();
+		$page = get_query_var('page') ? absint(get_query_var('page')) : 1;
+
+		if (
+			! get_option('permalink_structure')
+			|| in_array($post->post_status, ['draft', 'pending'], true)
+		) {
+			return add_query_arg('page', $page, get_permalink());
+		}
+
+		if (
+			'page' === get_option('show_on_front')
+			&& (int) get_option('page_on_front') === $post->ID
+		) {
+			return trailingslashit(get_permalink()) . user_trailingslashit(
+				$GLOBALS['wp_rewrite']->pagination_base . "/{$page}",
+				'single_paged'
+			);
+		}
+
+		return trailingslashit(get_permalink()) . user_trailingslashit(
+			$page,
+			'single_paged'
+		);
+	}
 }

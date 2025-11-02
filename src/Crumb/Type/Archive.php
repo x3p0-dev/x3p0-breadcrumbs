@@ -24,4 +24,12 @@ final class Archive extends AbstractCrumb
 	{
 		return $this->context->config()->getLabel('archives');
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getUrl(): string
+	{
+		return add_query_arg([]);
+	}
 }

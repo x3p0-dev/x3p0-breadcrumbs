@@ -28,4 +28,12 @@ final class PagedQueryBlock extends AbstractCrumb
 			number_format_i18n(absint(Helpers::getQueryBlockPage()))
 		);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getUrl(): string
+	{
+		return add_query_arg([]);
+	}
 }

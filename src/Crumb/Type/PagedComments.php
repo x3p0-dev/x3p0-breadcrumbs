@@ -27,4 +27,14 @@ final class PagedComments extends AbstractCrumb
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getUrl(): string
+	{
+		return str_replace('#comments', '', get_comments_pagenum_link(
+			get_query_var('cpage') ? absint(get_query_var('cpage')) : 1
+		));
+	}
 }

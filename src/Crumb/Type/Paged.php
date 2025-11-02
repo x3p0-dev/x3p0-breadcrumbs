@@ -27,4 +27,14 @@ final class Paged extends AbstractCrumb
 			number_format_i18n(absint(get_query_var('paged')))
 		);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getUrl(): string
+	{
+		return get_pagenum_link(
+			get_query_var('paged') ? absint(get_query_var('paged')) : 1
+		);
+	}
 }

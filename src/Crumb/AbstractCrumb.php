@@ -25,4 +25,12 @@ abstract class AbstractCrumb implements Crumb
 	 */
 	public function __construct(protected BreadcrumbsContext $context)
 	{}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function getUrl(): string
+	{
+		return '';
+	}
 }

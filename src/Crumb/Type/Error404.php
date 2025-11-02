@@ -24,12 +24,4 @@ final class Error404 extends AbstractCrumb
 	{
 		return $this->context->config()->getLabel('error_404');
 	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getUrl(): string
-	{
-		return '';
-	}
 }

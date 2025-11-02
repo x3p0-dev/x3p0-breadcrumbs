@@ -62,7 +62,14 @@ final class Breadcrumbs
 			config:           $this->config
 		);
 
-		if ($queryType = $this->resolveQueryType()) {
+		// Allow plugin developers to hook in and filter the type of
+		// query class to call.
+		$queryType = apply_filters(
+			'x3p0/breadcrumbs/resolve/query-type',
+			$this->resolveQueryType()
+		);
+
+		if ($queryType) {
 			$context->query($queryType);
 		}
 

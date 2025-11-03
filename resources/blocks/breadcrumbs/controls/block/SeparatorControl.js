@@ -1,5 +1,5 @@
 /**
- * Separator component.
+ * Separator control component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -13,9 +13,12 @@ import { SymbolPicker, ToolbarDropdown } from '../../components';
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 import { next } from '@wordpress/icons';
-import {Path, SVG} from "@wordpress/primitives";
+import { Path, SVG } from "@wordpress/primitives";
 
-const OPTIONS = [
+/**
+ * Stores the available separator icon options.
+ */
+const ICON_OPTIONS = [
 	{
 		value: 'svg-chevron',
 		label: __('Chevron', 'x3p0-breadcrumbs'),
@@ -82,7 +85,12 @@ const OPTIONS = [
 	}
 ];
 
-export default ({ attributes: { separatorIcon }, setAttributes }) => (
+/**
+ * Renders the separator control.
+ * @param props
+ * @returns {JSX.Element}
+ */
+const SeparatorControl = ({ attributes: { separatorIcon }, setAttributes }) => (
 	<ToolbarDropdown
 		value={ separatorIcon }
 		label={ __('Separator', 'x3p0-breadcrumbs') }
@@ -91,9 +99,11 @@ export default ({ attributes: { separatorIcon }, setAttributes }) => (
 		<SymbolPicker
 			value={ separatorIcon }
 			onChange={ (value) => setAttributes({ separatorIcon: value }) }
-			options={ OPTIONS }
+			options={ ICON_OPTIONS }
 			label={ __('Separator', 'x3p0-breadcrumbs') }
 			description={ __('Pick an icon or symbol that sits in between and separates breadcrumb items.', 'x3p0-breadcrumbs') }
 		/>
 	</ToolbarDropdown>
 );
+
+export default SeparatorControl;

@@ -1,5 +1,5 @@
 /**
- * Rewrite tags panel.
+ * Rewrite tags panel component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -17,6 +17,11 @@ import {
 	ToggleControl
 } from '@wordpress/components';
 
+/**
+ * Renders a `<ToolsPanel>` component with the block's rewrite tag controls.
+ * @param props
+ * @returns {JSX.Element}
+ */
 const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(RewriteTagsPanel);
 	const { mapRewriteTags = {} } = attributes;

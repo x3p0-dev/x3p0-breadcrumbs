@@ -1,5 +1,5 @@
 /**
- * Labels panel.
+ * Labels panel component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -16,6 +16,11 @@ import {
 	__experimentalToolsPanelItem as ToolsPanelItem
 } from '@wordpress/components';
 
+/**
+ * Renders a `<ToolsPanel>` component with the block's label controls.
+ * @param props
+ * @returns {JSX.Element}
+ */
 const LabelsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(LabelsPanel);
 	const { labels = {}, showHomeLabel, showTrailStart } = attributes;

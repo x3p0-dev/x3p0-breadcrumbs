@@ -1,5 +1,5 @@
 /**
- * Registers the breadcrumbs block.
+ * Registers the breadcrumbs toolbar.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -12,7 +12,7 @@ import './scss/index.scss';
 import './scss/style.scss';
 
 // Import dependencies.
-import {registerBlockType} from '@wordpress/blocks';
+import { registerBlockType } from '@wordpress/blocks';
 
 // Import the block data and components.
 import metadata   from './block.json';

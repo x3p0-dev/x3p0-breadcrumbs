@@ -1,5 +1,5 @@
 /**
- * Returns the breadcrumb trail element.
+ * Returns the breadcrumbs block content.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -14,18 +14,32 @@ import {RichText, useBlockProps, useInnerBlocksProps} from '@wordpress/block-edi
 // Third-party dependencies.
 import clsx from 'clsx';
 
-// Prevent breadcrumb link events when users click them.
+/**
+ * Prevent breadcrumb link events when users click them.
+ * @param event
+ * @returns {*}
+ */
 const preventDefault = (event) => event.preventDefault();
 
-// Returns a crumb link.
+/**
+ * Faux crumb link for the content canvas.
+ * @param children
+ * @returns {JSX.Element}
+ * @constructor
+ */
 const CrumbLink = ({ children }) => (
 	<a className="breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
 		{children}
 	</a>
 );
 
-// Exports the breadcrumbs block type edit function.
-const Index = ({
+/**
+ * Creates the Breadcrumbs block content to be rendered in the editor.
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const BreadcrumbsContent = ({
 	attributes: {
 		labels = {},
 		homeIcon,
@@ -49,8 +63,8 @@ const Index = ({
 		})
 	});
 
-	// We must use inner block props for layout styles to work properly in
-	// the admin, even though this block doesn't have nested blocks.
+	// We must use inner toolbar props for layout styles to work properly in
+	// the admin, even though this toolbar doesn't have nested blocks.
 	const innerBlockProps = useInnerBlocksProps(blockProps);
 
 	// We need a default home label value for non-editing contexts when
@@ -132,4 +146,4 @@ const Index = ({
 	);
 };
 
-export default Index;
+export default BreadcrumbsContent;

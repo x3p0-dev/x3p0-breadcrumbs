@@ -1,5 +1,5 @@
 /**
- * Toolbar dropdown control.
+ * Toolbar dropdown component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -10,6 +10,12 @@
 // WordPress dependencies.
 import { Dropdown, ToolbarButton } from '@wordpress/components';
 
+/**
+ * Wrapper around the WordPress `<Dropdown>` and `<ToolbarButton>` components
+ * for quickly creating a toolbar dropdown.
+ * @param props
+ * @returns {JSX.Element}
+ */
 export const ToolbarDropdown = ({
 	value,
 	label,

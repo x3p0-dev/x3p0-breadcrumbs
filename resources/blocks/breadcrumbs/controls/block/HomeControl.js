@@ -1,5 +1,5 @@
 /**
- * Home Prefix component.
+ * Home control component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -15,9 +15,12 @@ import { __ } from '@wordpress/i18n';
 import { home as controlIcon } from '@wordpress/icons';
 import { useEffect } from '@wordpress/element';
 import { Flex, ToggleControl } from '@wordpress/components';
-import {G, Path, Rect, SVG} from "@wordpress/primitives";
+import { G, Path, Rect, SVG } from "@wordpress/primitives";
 
-const OPTIONS = [
+/**
+ * Stores the available home icon options.
+ */
+const ICON_OPTIONS = [
 	{
 		value: '',
 		label: __('None', 'x3p0-breadcrumbs'),
@@ -94,7 +97,12 @@ const OPTIONS = [
 	}
 ];
 
-export default ({
+/**
+ * Renders the home icon and related controls.
+ * @param props
+ * @returns {JSX.Element|null}
+ */
+const HomeControl = ({
 	attributes: {
 		homeIcon,
 		showHomeLabel,
@@ -122,7 +130,7 @@ export default ({
 				<SymbolPicker
 					value={ homeIcon }
 					onChange={ (value) => setAttributes({ homeIcon: value }) }
-					options={ OPTIONS }
+					options={ ICON_OPTIONS }
 					label={ __('Home Icon', 'x3p0-breadcrumbs') }
 					description={ __('Pick an icon or symbol for the home breadcrumb item.', 'x3p0-breadcrumbs') }
 				/>
@@ -139,3 +147,5 @@ export default ({
 		</ToolbarDropdown>
 	);
 };
+
+export default HomeControl;

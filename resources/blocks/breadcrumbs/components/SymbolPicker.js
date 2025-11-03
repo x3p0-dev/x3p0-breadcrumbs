@@ -1,5 +1,5 @@
 /**
- * Symbol picker control.
+ * Symbol picker component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -8,12 +8,14 @@
  */
 
 // WordPress dependencies.
-import {
-	BaseControl,
-	Button,
-	__experimentalGrid as Grid
-} from '@wordpress/components';
+import { BaseControl, Button, __experimentalGrid as Grid } from '@wordpress/components';
 
+/**
+ * Wrapping around the WordPress `<Grid>` component for rendering a grid-based
+ * symbol/icon picker.
+ * @param props
+ * @returns {JSX.Element}
+ */
 export const SymbolPicker = ({
 	value,
 	onChange,

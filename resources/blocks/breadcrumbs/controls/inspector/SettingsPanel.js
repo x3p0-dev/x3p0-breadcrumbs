@@ -1,5 +1,5 @@
 /**
- * Post taxonomies panel.
+ * Settings panel component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -34,7 +34,11 @@ const MARKUP_OPTIONS = [
 	}
 ];
 
-// Exports the post taxonomy panel.
+/**
+ * Renders a `<ToolsPanel>` component with the block's primary setting controls.
+ * @param props
+ * @returns {JSX.Element}
+ */
 const SettingsPanel = ({
 	attributes: {
 		linkTrailEnd,

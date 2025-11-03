@@ -1,5 +1,5 @@
 /**
- * Returns the block inspector controls.
+ * Block inspector controls.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -16,8 +16,13 @@ import SettingsPanel     from './SettingsPanel';
 // WordPress dependencies.
 import { InspectorControls } from '@wordpress/block-editor';
 
-// Exports the breadcrumbs block type edit function.
-const BreadcrumbsInspectorControls = (props) => (
+/**
+ * Wrapper around the WordPress `<InspectorControls>` component for building the
+ * block's custom inspector controls.
+ * @param props
+ * @returns {JSX.Element}
+ */
+const BreadcrumbsInspector = (props) => (
 	<InspectorControls group="settings">
 		<SettingsPanel {...props}/>
 		<LabelsPanel {...props}/>
@@ -26,4 +31,4 @@ const BreadcrumbsInspectorControls = (props) => (
 	</InspectorControls>
 );
 
-export default BreadcrumbsInspectorControls;
+export default BreadcrumbsInspector;

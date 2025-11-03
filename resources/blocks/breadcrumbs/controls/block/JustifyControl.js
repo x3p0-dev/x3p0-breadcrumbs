@@ -1,5 +1,5 @@
 /**
- * Handles the edit component for the breadcrumbs block.
+ * Justify control component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -10,8 +10,12 @@
 // WordPress dependencies.
 import { JustifyContentControl } from '@wordpress/block-editor';
 
-// Exports the breadcrumbs block type edit function.
-export default ({ attributes: { justifyContent }, setAttributes }) => (
+/**
+ * Renders the content justification control.
+ * @param props
+ * @returns {JSX.Element}
+ */
+const JustifyControl = ({ attributes: { justifyContent }, setAttributes }) => (
 	<JustifyContentControl
 		allowedControls={ [ 'left', 'center', 'right' ] }
 		value={ justifyContent }
@@ -24,3 +28,5 @@ export default ({ attributes: { justifyContent }, setAttributes }) => (
 		} }
 	/>
 );
+
+export default JustifyControl;

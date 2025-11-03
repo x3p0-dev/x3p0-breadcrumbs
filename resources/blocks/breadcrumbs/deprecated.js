@@ -7,6 +7,9 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
+/**
+ * Returns an array for use in block deprecations.
+ */
 export default [
 	{
 		"attributes" : {

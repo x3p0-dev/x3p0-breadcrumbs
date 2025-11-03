@@ -7,14 +7,19 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
-import BreadcrumbsBlockControls     from './controls/block';
-import BreadcrumbsInspectorControls from './controls/inspector';
-import BreadcrumbsContent           from './content';
+import BreadcrumbsToolbar   from './controls/block/BreadcrumbsToolbar';
+import BreadcrumbsInspector from './controls/inspector/BreadcrumbsInspector';
+import BreadcrumbsContent   from './content/BreadcrumbsContent';
 
+/**
+ * Renders the block edit component.
+ * @param props
+ * @returns {JSX.Element}
+ */
 export default (props) => (
 	<>
-		<BreadcrumbsBlockControls {...props}/>
-		<BreadcrumbsInspectorControls {...props}/>
+		<BreadcrumbsToolbar {...props}/>
+		<BreadcrumbsInspector {...props}/>
 		<BreadcrumbsContent {...props}/>
 	</>
 );

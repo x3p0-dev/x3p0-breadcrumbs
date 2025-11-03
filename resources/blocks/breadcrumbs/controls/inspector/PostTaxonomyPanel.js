@@ -1,5 +1,5 @@
 /**
- * Post taxonomies panel.
+ * Post taxonomies panel component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -16,6 +16,11 @@ import {
 	__experimentalToolsPanelItem as ToolsPanelItem
 } from '@wordpress/components';
 
+/**
+ * Renders a `<ToolsPanel>` component with the block's post taxonomy controls.
+ * @param props
+ * @returns {JSX.Element}
+ */
 const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(PostTaxonomyPanel);
 	const { postTaxonomy = {} } = attributes;

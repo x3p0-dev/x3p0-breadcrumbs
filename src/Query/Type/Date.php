@@ -33,7 +33,7 @@ final class Date extends AbstractQuery
 			'hour'   => $hour,
 			'minute' => $minute,
 			'second' => $second
-		] = $this->getPlainDateQueryVars();
+		] = $this->getQueryStringDate();
 
 		if (is_year() || get_query_var('year') || $year) {
 			$this->context->addCrumb('year');
@@ -70,12 +70,9 @@ final class Date extends AbstractQuery
 	 * Helper function for parsing date URLs when using plain permalinks
 	 * like: `?m=YYYYMMDDHHMMSS`
 	 */
-	private function getPlainDateQueryVars(): array
+	private function getQueryStringDate(): array
 	{
-		// Get from query var and remove non-numeric characters
-		$dateString = preg_replace('/[^0-9]/', '', get_query_var('m'));
-
-		// Define mapping of component lengths and positions
+		// Define mapping of component lengths and positions.
 		$components = [
 			'year'   => [0, 4],
 			'month'  => [4, 2],
@@ -85,13 +82,21 @@ final class Date extends AbstractQuery
 			'second' => [12, 2]
 		];
 
+		// Bail early, returning `false` for each array item.
+		if (! get_option('permalink_structure') || ! get_query_var('m')) {
+			return array_fill_keys(array_keys($components), false);
+		}
+
+		// Get from query var and remove non-numeric characters.
+		$dateString = preg_replace('/[^0-9]/', '', get_query_var('m'));
+
 		$result = [];
 		$length = strlen($dateString);
 
 		foreach ($components as $key => [$start, $len]) {
 			$result[$key] = ($start + $len <= $length)
 				? substr($dateString, $start, $len)
-				: null;
+				: false;
 		}
 
 		return $result;

@@ -10,7 +10,7 @@
 // WordPress dependencies.
 import { Dropdown, ToolbarButton } from '@wordpress/components';
 
-const ToolbarDropdown = ({
+export const ToolbarDropdown = ({
 	value,
 	label,
 	icon,
@@ -37,5 +37,3 @@ const ToolbarDropdown = ({
 		renderContent={ () => children }
 	/>
 );
-
-export default ToolbarDropdown;

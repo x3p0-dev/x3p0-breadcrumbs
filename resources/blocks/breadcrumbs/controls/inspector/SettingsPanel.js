@@ -18,7 +18,7 @@ import {
 	ToggleControl
 } from '@wordpress/components';
 
-// Define the markup options.
+// Define the content options.
 const MARKUP_OPTIONS = [
 	{
 		key: 'html',

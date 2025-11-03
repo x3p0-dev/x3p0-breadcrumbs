@@ -25,7 +25,7 @@ const CrumbLink = ({ children }) => (
 );
 
 // Exports the breadcrumbs block type edit function.
-export default ({
+const Index = ({
 	attributes: {
 		labels = {},
 		homeIcon,
@@ -131,3 +131,5 @@ export default ({
 		</nav>
 	);
 };
+
+export default Index;

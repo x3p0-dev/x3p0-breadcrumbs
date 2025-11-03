@@ -8,16 +8,16 @@
  */
 
 // Internal dependencies.
-import LabelsPanel from './panel-labels';
-import PostTaxonomyPanel from './panel-post-taxonomy';
-import RewriteTagsPanel from './panel-rewrite-tags';
-import SettingsPanel from './panel-settings';
+import LabelsPanel       from './LabelsPanel';
+import PostTaxonomyPanel from './PostTaxonomyPanel';
+import RewriteTagsPanel  from './RewriteTagsPanel';
+import SettingsPanel     from './SettingsPanel';
 
 // WordPress dependencies.
 import { InspectorControls } from '@wordpress/block-editor';
 
 // Exports the breadcrumbs block type edit function.
-export default (props) => (
+const BreadcrumbsInspectorControls = (props) => (
 	<InspectorControls group="settings">
 		<SettingsPanel {...props}/>
 		<LabelsPanel {...props}/>
@@ -25,3 +25,5 @@ export default (props) => (
 		<PostTaxonomyPanel {...props}/>
 	</InspectorControls>
 );
+
+export default BreadcrumbsInspectorControls;

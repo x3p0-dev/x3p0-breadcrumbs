@@ -7,5 +7,5 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
-export { default as SymbolPicker }    from './symbol-picker';
-export { default as ToolbarDropdown } from './toolbar-dropdown';
+export { SymbolPicker }    from './SymbolPicker';
+export { ToolbarDropdown } from './ToolbarDropdown';

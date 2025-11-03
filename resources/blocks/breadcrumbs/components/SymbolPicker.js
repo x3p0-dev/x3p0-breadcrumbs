@@ -14,7 +14,7 @@ import {
 	__experimentalGrid as Grid
 } from '@wordpress/components';
 
-const SymbolPicker = ({
+export const SymbolPicker = ({
 	value,
 	onChange,
 	options,
@@ -47,5 +47,3 @@ const SymbolPicker = ({
 		</Grid>
 	</BaseControl>
 );
-
-export default SymbolPicker;

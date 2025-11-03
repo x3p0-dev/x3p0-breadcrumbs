@@ -7,14 +7,14 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
-import Toolbar    from './toolbar';
-import Inspector  from './inspector';
-import Markup     from './markup';
+import BreadcrumbsBlockControls     from './controls/block';
+import BreadcrumbsInspectorControls from './controls/inspector';
+import BreadcrumbsContent           from './content';
 
 export default (props) => (
 	<>
-		<Toolbar {...props}/>
-		<Inspector {...props}/>
-		<Markup {...props}/>
+		<BreadcrumbsBlockControls {...props}/>
+		<BreadcrumbsInspectorControls {...props}/>
+		<BreadcrumbsContent {...props}/>
 	</>
 );

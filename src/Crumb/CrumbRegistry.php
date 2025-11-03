@@ -16,31 +16,31 @@ namespace X3P0\Breadcrumbs\Crumb;
 use TypeError;
 
 /**
- * Registry class for storing crumb types.
+ * Registry for storing crumb classes.
  */
 final class CrumbRegistry
 {
 	/**
-	 * Stores the array of crumb type classes.
+	 * Stores the array of crumb classes.
 	 */
-	protected array $types = [];
+	protected array $crumbs = [];
 
 	/**
-	 * Allows registering a default set of crumbs.
+	 * Allows registering a default set of crumb classes.
 	 */
-	public function __construct(array $types = [])
+	public function __construct(array $crumbs = [])
 	{
-		foreach ($types as $type => $className) {
-			$this->register($type, $className);
+		foreach ($crumbs as $key => $className) {
+			$this->register($key, $className);
 		}
 	}
 
 	/**
-	 * Add a crumb type.
+	 * Add a crumb class.
 	 *
 	 * @param class-string<Crumb> $className
 	 */
-	public function register(string $type, string $className): void
+	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Crumb::class)) {
 			throw new TypeError(esc_html(sprintf(
@@ -50,65 +50,32 @@ final class CrumbRegistry
 			)));
 		}
 
-		$this->types[$type] = $className;
+		$this->crumbs[$key] = $className;
 	}
 
 	/**
-	 * Removes a crumb type.
+	 * Removes a crumb class.
 	 */
-	public function unregister(string $type): void
+	public function unregister(string $key): void
 	{
-		unset($this->types[$type]);
+		unset($this->crumbs[$key]);
 	}
 
 	/**
-	 * Checks if a crumb type is registered.
+	 * Checks if a crumb class is registered.
 	 */
-	public function isRegistered(string $type): bool
+	public function isRegistered(string $key): bool
 	{
-		return isset($this->types[$type]);
+		return isset($this->crumbs[$key]);
 	}
 
 	/**
 	 * Returns a crumb type.
 	 *
-	 * @return null|class-string<Crumb> $type
+	 * @return null|class-string<Crumb>
 	 */
-	public function get(string $type): ?string
+	public function get(string $key): ?string
 	{
-		return $this->isRegistered($type) ? $this->types[$type] : null;
-	}
-
-	/**
-	 * Gets the registered type for a given class name.
-	 */
-	public function getTypeByClassName(string $className): ?string
-	{
-		$type = array_search($className, $this->types, true);
-		return $type !== false ? $type : null;
-	}
-
-	/**
-	 * @deprecated 4.0.0
-	 */
-	public function add(string $type, string $className): void
-	{
-		$this->register($type, $className);
-	}
-
-	/**
-	 * @deprecated 4.0.0
-	 */
-	public function remove(string $type): void
-	{
-		$this->unregister($type);
-	}
-
-	/**
-	 * @deprecated 4.0.0
-	 */
-	public function has(string $type): bool
-	{
-		return $this->isRegistered($type);
+		return $this->isRegistered($key) ? $this->crumbs[$key] : null;
 	}
 }

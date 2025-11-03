@@ -26,23 +26,23 @@ final class MarkupRegistry
 	protected array $markups = [];
 
 	/**
-	 * Allows registering a default set of markups.
+	 * Allows registering a default set of markup classes.
 	 */
 	public function __construct(array $markups = [])
 	{
-		foreach ($markups as $key => $markupClass) {
-			$this->register($key, $markupClass);
+		foreach ($markups as $key => $className) {
+			$this->register($key, $className);
 		}
 	}
 
 	/**
 	 * Registers a markup class.
 	 *
-	 * @param class-string<Markup> $markupClass
+	 * @param class-string<Markup> $className
 	 */
-	public function register(string $key, string $markupClass): void
+	public function register(string $key, string $className): void
 	{
-		if (! is_subclass_of($markupClass, Markup::class)) {
+		if (! is_subclass_of($className, Markup::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -50,7 +50,7 @@ final class MarkupRegistry
 			)));
 		}
 
-		$this->markups[$key] = $markupClass;
+		$this->markups[$key] = $className;
 	}
 
 	/**
@@ -62,7 +62,7 @@ final class MarkupRegistry
 	}
 
 	/**
-	 * Checks if a markup is registered.
+	 * Checks if a markup class is registered.
 	 */
 	public function isRegistered(string $key): bool
 	{

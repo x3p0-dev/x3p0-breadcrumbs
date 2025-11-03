@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Registers classes with the markup registry.
+ * Registers markup classes with the registry.
  */
 final class MarkupRegistrar
 {

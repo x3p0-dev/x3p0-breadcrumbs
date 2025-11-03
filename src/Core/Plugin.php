@@ -99,7 +99,7 @@ final class Plugin implements Application
 	/**
 	 * {@inheritDoc}
 	 *
-	 * This `boot()` method boots all registered service providers.
+	 * Boots all service providers that implement the `Bootable` interface.
 	 */
 	public function boot(): void
 	{

@@ -26,23 +26,23 @@ final class QueryRegistry
 	protected array $queries = [];
 
 	/**
-	 * Allows registering a default set of queries.
+	 * Allows registering a default set of query classes.
 	 */
 	public function __construct(array $queries = [])
 	{
-		foreach ($queries as $key => $queryClass) {
-			$this->register($key, $queryClass);
+		foreach ($queries as $key => $className) {
+			$this->register($key, $className);
 		}
 	}
 
 	/**
 	 * Registers a query class.
 	 *
-	 * @param class-string<Query> $queryClass
+	 * @param class-string<Query> $className
 	 */
-	public function register(string $key, string $queryClass): void
+	public function register(string $key, string $className): void
 	{
-		if (! is_subclass_of($queryClass, Query::class)) {
+		if (! is_subclass_of($className, Query::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -50,7 +50,7 @@ final class QueryRegistry
 			)));
 		}
 
-		$this->queries[$key] = $queryClass;
+		$this->queries[$key] = $className;
 	}
 
 	/**
@@ -62,7 +62,7 @@ final class QueryRegistry
 	}
 
 	/**
-	 * Checks if a query is registered.
+	 * Checks if a query class is registered.
 	 */
 	public function isRegistered(string $key): bool
 	{

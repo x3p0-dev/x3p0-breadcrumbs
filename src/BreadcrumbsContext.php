@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
-use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
 use X3P0\Breadcrumbs\Query\QueryFactory;
 
 /**
- * Provides a simple API for queries, assemblers, and crumbs to build the crumb
- * collection. Wraps the factories and collection to hide complexity.
+ * Provides a simple API to pass into query, assembler, and crumb classes so
+ * that they can build the crumb collection. Wraps the factories and collection
+ * with helper methods to hide complexity.
  */
 final class BreadcrumbsContext
 {
@@ -33,11 +33,11 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Run a query by name.
+	 * Run a query by key.
 	 */
-	public function query(string $name, array $params = []): void
+	public function query(string $key, array $params = []): void
 	{
-		$query = $this->queryFactory->make($name, [
+		$query = $this->queryFactory->make($key, [
 			'context' => $this,
 			...$params
 		]);
@@ -46,11 +46,11 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Run an assembler by name.
+	 * Run an assembler by key.
 	 */
-	public function assemble(string $name, array $params = []): void
+	public function assemble(string $key, array $params = []): void
 	{
-		$assembler = $this->assemblerFactory->make($name, [
+		$assembler = $this->assemblerFactory->make($key, [
 			'context' => $this,
 			...$params
 		]);
@@ -59,17 +59,17 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Add a crumb by name.
+	 * Add a crumb by key.
 	 */
-	public function addCrumb(string $name, array $params = []): void
+	public function addCrumb(string $key, array $params = []): void
 	{
-		$crumb = $this->crumbFactory->make($name, [
+		$crumb = $this->crumbFactory->make($key, [
 			'context' => $this,
 			...$params
 		]);
 
 		if ($crumb) {
-			$this->crumbs->set($name, $crumb);
+			$this->crumbs->set($key, $crumb);
 		}
 	}
 
@@ -84,7 +84,7 @@ final class BreadcrumbsContext
 	/**
 	 * Access the crumb collection.
 	 */
-	public function crumbs(): Crumb\CrumbCollection
+	public function crumbs(): CrumbCollection
 	{
 		return $this->crumbs;
 	}

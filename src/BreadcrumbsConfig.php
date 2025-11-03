@@ -19,6 +19,9 @@ namespace X3P0\Breadcrumbs;
  */
 final class BreadcrumbsConfig
 {
+	/**
+	 * Sets up the initial config state.
+	 */
 	public function __construct(
 		private array $mapRewriteTags = [],
 		private array $postTaxonomy   = [],

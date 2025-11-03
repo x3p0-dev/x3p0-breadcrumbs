@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+/**
+ * Registers assembler classes with the registry.
+ */
 final class AssemblerRegistrar
 {
 	/**

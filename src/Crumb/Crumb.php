@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 /**
  * `Crumb` classes represent the final result of an individual breadcrumb item
- * that has been generated either by `Query` or `Builder` implementations. It
+ * that has been generated either by `Query` or `Assembler` implementations. It
  * should house all the information for outputting the breadcrumb item on the
  * front end.
  */

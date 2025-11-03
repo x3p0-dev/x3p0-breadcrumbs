@@ -18,8 +18,8 @@ use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * Assemblers breadcrumbs primarily based on the post type rewrite settings of the
- * given post.
+ * Assembles breadcrumbs primarily based on the post type rewrite settings of
+ * the given post.
  */
 final class PostHierarchy extends AbstractAssembler
 {

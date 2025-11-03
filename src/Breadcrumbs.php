@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
-use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
 use X3P0\Breadcrumbs\Query\QueryFactory;
 
 /**
@@ -81,7 +80,7 @@ final class Breadcrumbs
 	 */
 	private function resolveQueryType(): ?string
 	{
-		foreach (static::QUERY_CONDITIONALS as $tag => $type) {
+		foreach (self::QUERY_CONDITIONALS as $tag => $type) {
 			if (call_user_func($tag)) {
 				return $type;
 			}

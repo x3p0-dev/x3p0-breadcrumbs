@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Assemblers out breadcrumbs based on whether we're currently viewing a "paged"
+ * Assembles out breadcrumbs based on whether we're currently viewing a "paged"
  * page. This handles archive-type pagination, single-post pagination via
  * `<!--nextpage-->`, and comments pagination.
  */

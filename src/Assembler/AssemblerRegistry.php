@@ -26,23 +26,23 @@ final class AssemblerRegistry
 	protected array $assemblers = [];
 
 	/**
-	 * Allows registering a default set of assemblers.
+	 * Allows registering a default set of assembler classes.
 	 */
 	public function __construct(array $assemblers = [])
 	{
-		foreach ($assemblers as $name => $type) {
-			$this->register($name, $type);
+		foreach ($assemblers as $key => $className) {
+			$this->register($key, $className);
 		}
 	}
 
 	/**
 	 * Registers an assembler class.
 	 *
-	 * @param class-string<Assembler> $assemblerClass
+	 * @param class-string<Assembler> $className
 	 */
-	public function register(string $key, string $assemblerClass): void
+	public function register(string $key, string $className): void
 	{
-		if (! is_subclass_of($assemblerClass, Assembler::class)) {
+		if (! is_subclass_of($className, Assembler::class)) {
 			throw new TypeError(esc_html(sprintf(
 				// Translators: %s is a PHP class name.
 				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
@@ -50,7 +50,7 @@ final class AssemblerRegistry
 			)));
 		}
 
-		$this->assemblers[$key] = $assemblerClass;
+		$this->assemblers[$key] = $className;
 	}
 
 	/**

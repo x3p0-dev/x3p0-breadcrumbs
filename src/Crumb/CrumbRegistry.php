@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use TypeError;
+use X3P0\Breadcrumbs\Contracts\ClassRegistry;
 
 /**
  * Registry for storing crumb classes.
  */
-final class CrumbRegistry
+final class CrumbRegistry implements ClassRegistry
 {
 	/**
 	 * Stores the array of crumb classes.

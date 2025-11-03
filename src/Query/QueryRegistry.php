@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 use TypeError;
+use X3P0\Breadcrumbs\Contracts\ClassRegistry;
 
 /**
  * Registry class for storing query classes.
  */
-final class QueryRegistry
+final class QueryRegistry implements ClassRegistry
 {
 	/**
 	 * Stores the array of query classes.

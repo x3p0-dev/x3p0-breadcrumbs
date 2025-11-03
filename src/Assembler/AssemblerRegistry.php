@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use TypeError;
+use X3P0\Breadcrumbs\Contracts\ClassRegistry;
 
 /**
  * Registry class for storing assembler classes.
  */
-final class AssemblerRegistry
+final class AssemblerRegistry implements ClassRegistry
 {
 	/**
 	 * Stores the array of assembler classes.

@@ -13,7 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - New **Post Taxonomies** block option, which lets you choose which taxonomy's terms to display in the breadcrumb trail for single post views.
 - New **Labels** block option, which lets you customize a subset of labels that most commonly need to be changed:
   - Home
-  - Archives
   - Search Results
   - 404
 - The Home label can now be edited directly from the content canvas.
@@ -24,9 +23,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Hour, minute, and second archive breadcrumbs.
   - Posts with hour, minute, and seconds in their permalink structure now show those crumbs (assuming rewrite mapping is enabled).
 - New `JsonLinkedData` markup class for outputting JSON-LD breadcrumbs in the site head. This is not output by default, but developers can opt in.
-- New hooks:
+- New action hooks:
+  - `x3p0/breadcrumbs/init` - Fires just before the plugin's default service providers are registered.
   - `x3p0/breadcrumbs/register` - Fires just after the plugin's default service providers are registered.
   - `x3p0/breadcrumbs/boot` - Fires just after the plugin's default services providers have been booted.
+- New filter hooks:
+  - `x3p0/breadcrumbs/resolve/query-type` - Allows filtering when query class type is used to determine the breadcrumbs for the current page.
 
 ### Changed
 

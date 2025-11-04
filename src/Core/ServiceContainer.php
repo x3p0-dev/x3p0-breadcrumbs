@@ -16,7 +16,6 @@ namespace X3P0\Breadcrumbs\Core;
 use Closure;
 use Exception;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
 
@@ -40,22 +39,15 @@ final class ServiceContainer implements Container
 	 */
 	public function bind(string $abstract, mixed $concrete = null, bool $shared = false): void
 	{
+		unset($this->instances[$abstract]);
+
 		// If no concrete is provided, use the abstract as concrete.
 		if ($concrete === null) {
 			$concrete = $abstract;
 		}
 
-		// Wrap string class names in a closure.
-		if (is_string($concrete)) {
-			$concrete = function (ServiceContainer $container, array $parameters = []) use ($concrete) {
-				return $container->make($concrete, $parameters);
-			};
-		}
-
-		$this->bindings[$abstract] = [
-			'concrete' => $concrete,
-			'shared'   => $shared
-		];
+		// Add the binding with its concrete and shared values.
+		$this->bindings[$abstract] = compact('concrete', 'shared');
 	}
 
 	/**
@@ -80,11 +72,6 @@ final class ServiceContainer implements Container
 	public function instance(string $abstract, mixed $instance): void
 	{
 		$this->instances[$abstract] = $instance;
-
-		$this->bindings[$abstract] = [
-			'concrete' => fn() => $instance,
-			'shared'   => true
-		];
 	}
 
 	/**
@@ -103,19 +90,14 @@ final class ServiceContainer implements Container
 
 		// If we can't build an object, assume we should return the value.
 		if (! $this->isBuildable($concrete)) {
-
-			// If we don't actually have this, return false.
-			if (! $this->has($abstract)) {
-				return false;
-			}
-
 			return $concrete;
 		}
 
 		// Build the object.
 		$object = $this->build($concrete, $parameters);
 
-		// Cache singletons (only if no custom parameters).
+		// Cache as an instance if this is a shared/singleton binding
+		// and no unique parameters have been passed in.
 		if ($this->isShared($abstract) && empty($parameters)) {
 			$this->instances[$abstract] = $object;
 		}
@@ -181,39 +163,21 @@ final class ServiceContainer implements Container
 		}
 
 		// Otherwise, resolve as a class.
-		try {
-			$reflector = new ReflectionClass($concrete);
-		} catch (ReflectionException $e) {
-			throw new Exception(esc_html(sprintf(
-			// Translators: %s is a class name.
-				__('Target class %s does not exist.', 'x3p0-breadcrumbs'),
-				$concrete
-			)), 0, $e);
-		}
+		$reflector = new ReflectionClass($concrete);
 
-		if (! $reflector->isInstantiable()) {
-			throw new Exception(esc_html(sprintf(
-			// Translators: %s is a class name.
-				__('Target %s is not instantiable.', 'x3p0-breadcrumbs'),
-				$concrete
-			)));
-		}
-
+		// Get the class constructor method.
 		$constructor = $reflector->getConstructor();
 
-		// No constructor, just instantiate.
+		// If there's no constructor, just instantiate.
 		if ($constructor === null) {
 			return new $concrete();
 		}
 
-		// Resolve constructor dependencies.
-		$dependencies = $this->resolveDependencies(
+		// Resolve constructor dependencies and create new instance.
+		return $reflector->newInstanceArgs($this->resolveDependencies(
 			$constructor->getParameters(),
 			$parameters
-		);
-
-
-		return $reflector->newInstanceArgs($dependencies);
+		));
 	}
 
 	/**
@@ -235,30 +199,24 @@ final class ServiceContainer implements Container
 
 			$type = $param->getType();
 
-			// Handle no type hint
-			if ($type === null) {
-				$dependencies[] = $this->resolveNonTyped($param);
-				continue;
-			}
-
-			// Handle union types or built-in types
+			// Handle anything that is not a named or built-in type.
 			if (! $type instanceof ReflectionNamedType || $type->isBuiltin()) {
 				$dependencies[] = $this->resolveNonTyped($param);
 				continue;
 			}
 
-			// Resolve typed dependency
+			// Resolve typed dependency.
 			$className = $type->getName();
 
-			try {
+			// If class is registered with the container, resolve it.
+			if ($this->has($className)) {
 				$dependencies[] = $this->get($className);
-			} catch (Exception $e) {
-				// If we can't resolve and there's a default, use it
-				if ($param->isDefaultValueAvailable()) {
-					$dependencies[] = $param->getDefaultValue();
-				} else {
-					throw $e;
-				}
+				continue;
+			}
+
+			// If the class exists, resolve it.
+			if (class_exists($className)) {
+				$dependencies[] = $this->make($className);
 			}
 		}
 
@@ -266,7 +224,7 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * Resolve a non-typed or built-in typed parameter
+	 * Resolve a non-typed or built-in typed parameter.
 	 * @throws Exception
 	 */
 	private function resolveNonTyped(ReflectionParameter $param): mixed

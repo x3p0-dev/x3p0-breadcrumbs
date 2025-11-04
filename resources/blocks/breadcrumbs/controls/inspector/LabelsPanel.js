@@ -60,7 +60,8 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 		},
 		{
 			name: 'error_404',
-			label: __('404 Not Found', 'x3p0-breadcrumbs')
+			label: __('404 Not Found', 'x3p0-breadcrumbs'),
+			placeholder: __('Page not found', 'x3p0-breadcrumbs')
 		}
 	];
 

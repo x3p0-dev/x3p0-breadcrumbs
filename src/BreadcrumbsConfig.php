@@ -86,7 +86,7 @@ final class BreadcrumbsConfig
 		return [
 			'home'                => __('Home', 'x3p0-breadcrumbs'),
 			'untitled'            => __('Untitled', 'x3p0-breadcrumbs'),
-			'error_404'           => __('404 Not Found', 'x3p0-breadcrumbs'),
+			'error_404'           => __('Page not found', 'x3p0-breadcrumbs'),
 			'archives'            => __('Archives', 'x3p0-breadcrumbs'),
 			// Translators: %s is the search query.
 			'search'              => __('Search results for: %s', 'x3p0-breadcrumbs'),

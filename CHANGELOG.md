@@ -37,7 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `separator` and `separatorType` → `separatorIcon`
   - `homePrefix` and `homePrefixType`→ `homeIcon`
 - The block preview in the content canvas now shows Home → Ancestor → Parent → Current. This change was implemented so that users can better see the effects of removing the first and/or last breadcrumbs in the editor.
-- The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. This has always been the case. It's just defined in `block.json` now.
+- The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. These have always been the only options. It's just defined in `block.json` now.
+- The `404 Not Found` label has been changed to `Page not found` to match WordPress's default output for 404 document titles.
 
 ### Fixed
 

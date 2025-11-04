@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
-use X3P0\Breadcrumbs\Tools\Helpers;
 
 final class Date extends AbstractQuery
 {
@@ -33,7 +32,7 @@ final class Date extends AbstractQuery
 			'hour'   => $hour,
 			'minute' => $minute,
 			'second' => $second
-		] = $this->getQueryStringDate();
+		] = $this->getQueryStringDateVars();
 
 		if (is_year() || get_query_var('year') || $year) {
 			$this->context->addCrumb('year');
@@ -68,12 +67,14 @@ final class Date extends AbstractQuery
 
 	/**
 	 * Helper function for parsing date URLs when using plain permalinks
-	 * like: `?m=YYYYMMDDHHMMSS`
+	 * like: `?m=YYYYMMDDHHMMSS` This function splits the query string into
+	 * its individual substrings and maps them to the year, month, day,
+	 * hour, minute, and second variables.
 	 */
-	private function getQueryStringDate(): array
+	private function getQueryStringDateVars(): array
 	{
-		// Define mapping of component lengths and positions.
-		$components = [
+		// Define mapping of substring lengths and positions.
+		$parts = [
 			'year'   => [0, 4],
 			'month'  => [4, 2],
 			'day'    => [6, 2],
@@ -82,23 +83,25 @@ final class Date extends AbstractQuery
 			'second' => [12, 2]
 		];
 
-		// Bail early, returning `false` for each array item.
-		if (! get_option('permalink_structure') || ! get_query_var('m')) {
-			return array_fill_keys(array_keys($components), false);
+		// If the site uses pretty permalinks, or we're not viewing a
+		// date archive with the `?m` query string, bail early and
+		// return `false` for each array item.
+		if (get_option('permalink_structure') || ! get_query_var('m')) {
+			return array_fill_keys(array_keys($parts), false);
 		}
 
 		// Get from query var and remove non-numeric characters.
 		$dateString = preg_replace('/[^0-9]/', '', get_query_var('m'));
 
-		$result = [];
+		$vars   = [];
 		$length = strlen($dateString);
 
-		foreach ($components as $key => [$start, $len]) {
-			$result[$key] = ($start + $len <= $length)
+		foreach ($parts as $key => [$start, $len]) {
+			$vars[$key] = ($start + $len <= $length)
 				? substr($dateString, $start, $len)
 				: false;
 		}
 
-		return $result;
+		return $vars;
 	}
 }

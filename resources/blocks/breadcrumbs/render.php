@@ -21,6 +21,8 @@ use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 /**
  * @global array $attributes
  */
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 echo container()->get(Breadcrumbs::class, [
 	'attributes' => $attributes
-])->render(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+])->render();
+// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped

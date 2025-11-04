@@ -11,7 +11,9 @@
 			"composer update",
 			"composer dump-autoload"
 		],
-		"zip": "composer archive --file=x3p0-breadcrumbs"
+		"zip": "composer archive --file=x3p0-breadcrumbs",
+		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
+		"fix:php": "./vendor/bin/phpcbf -d error_reporting=E_ALL^E_DEPRECATED -s --colors ."
 	},
 	"autoload": {
 		"psr-4": {
@@ -28,13 +30,19 @@
                 "php": ">=8.0"
 	},
 	"require-dev": {
-		"symfony/var-dumper": "^7.1"
+		"wp-coding-standards/wpcs": "^3.0",
+		"phpcompatibility/phpcompatibility-wp": "*",
+		"symfony/var-dumper": "^7.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,
 	"config": {
 		"archive-dir": "./",
-		"archive-format": "zip"
+		"archive-format": "zip",
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	},
 	"archive": {
 		"exclude": [

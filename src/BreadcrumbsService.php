@@ -37,8 +37,8 @@ final class BreadcrumbsService
 	 */
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = [],
-		MarkupConfig|array      $markupConfig      = [],
-		string                  $markupType        = 'html'
+		MarkupConfig|array $markupConfig = [],
+		string $markupType = 'html'
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
 			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)

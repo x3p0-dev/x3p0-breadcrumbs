@@ -61,11 +61,13 @@ final class Minute extends AbstractCrumb
 		if (! empty($structure)) {
 			$structure = trailingslashit($structure) . '%hour%/%minute%';
 
-			$structure = str_replace('%year%',     $year,    $structure);
-			$structure = str_replace('%monthnum%', $month,   $structure);
-			$structure = str_replace('%day%',      $day,     $structure);
-			$structure = str_replace('%hour%',     $hour,    $structure);
-			$structure = str_replace('%minute%',   $minute,  $structure);
+			// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
+			$structure = str_replace('%year%',     $year,   $structure);
+			$structure = str_replace('%monthnum%', $month,  $structure);
+			$structure = str_replace('%day%',      $day,    $structure);
+			$structure = str_replace('%hour%',     $hour,   $structure);
+			$structure = str_replace('%minute%',   $minute, $structure);
+			// phpcs:enable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 
 			return home_url(user_trailingslashit($structure, 'minute'));
 		}

@@ -25,7 +25,7 @@ final class Author extends AbstractQuery
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
-		protected ?WP_User           $user = null
+		protected ?WP_User $user = null
 	) {
 		parent::__construct(...func_get_args());
 	}

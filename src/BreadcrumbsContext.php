@@ -25,10 +25,10 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
 final class BreadcrumbsContext
 {
 	public function __construct(
-		private CrumbCollection   $crumbs,
-		private QueryFactory      $queryFactory,
-		private AssemblerFactory  $assemblerFactory,
-		private CrumbFactory      $crumbFactory,
+		private CrumbCollection $crumbs,
+		private QueryFactory $queryFactory,
+		private AssemblerFactory $assemblerFactory,
+		private CrumbFactory $crumbFactory,
 		private BreadcrumbsConfig $config
 	) {}
 

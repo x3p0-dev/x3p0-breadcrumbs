@@ -37,12 +37,12 @@ final class BreadcrumbsConfig
 	 */
 	public static function fromArray(array $options = []): self
 	{
-		return new self(
-			mapRewriteTags: $options['map_rewrite_tags'] ?? [],
-			postTaxonomy:   $options['post_taxonomy']    ?? [],
-			labels:         $options['labels']           ?? [],
-			network:        $options['network']          ?? false
-		);
+		return new self(...array_intersect_key($options, array_flip([
+			'mapRewriteTags',
+			'postTaxonomy',
+			'labels',
+			'network',
+		])));
 	}
 
 	/**

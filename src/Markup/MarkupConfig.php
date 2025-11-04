@@ -43,13 +43,13 @@ final class MarkupConfig
 	 */
 	public static function fromArray(array $options): self
 	{
-		return new self(
-			containerAttr: $options['containerAttr'] ?? [],
-			showOnFront:   $options['showOnFront']   ?? false,
-			showFirstItem: $options['showFirstItem'] ?? true,
-			showLastItem:  $options['showLastItem']  ?? true,
-			linkLastItem:  $options['linkLastItem']  ?? false
-		);
+		return new self(...array_intersect_key($options, array_flip([
+			'containerAttr',
+			'showOnFront',
+			'showFirstItem',
+			'showLastItem',
+			'linkLastItem'
+		])));
 	}
 
 	/**

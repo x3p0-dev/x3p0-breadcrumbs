@@ -34,7 +34,7 @@ final class Date extends AbstractQuery
 			'hour'   => $hour,
 			'minute' => $minute,
 			'second' => $second
-		] = $this->getQueryStringDateVars();
+		] = $this->getQueryStringVars();
 
 		if (is_year() || get_query_var('year') || $year) {
 			$this->context->addCrumb(CrumbRegistrar::YEAR);
@@ -73,7 +73,7 @@ final class Date extends AbstractQuery
 	 * its individual substrings and maps them to the year, month, day,
 	 * hour, minute, and second variables.
 	 */
-	private function getQueryStringDateVars(): array
+	private function getQueryStringVars(): array
 	{
 		// Define mapping of substring lengths and positions.
 		$parts = [

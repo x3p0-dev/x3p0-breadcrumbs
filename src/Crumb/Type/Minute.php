@@ -56,9 +56,7 @@ final class Minute extends AbstractCrumb
 
 		// WordPress doesn't have a minute structure function, so we're
 		// building off the date structure.
-		$structure = $GLOBALS['wp_rewrite']->get_date_permastruct();
-
-		if (! empty($structure)) {
+		if ($structure = $GLOBALS['wp_rewrite']->get_date_permastruct()) {
 			$structure = trailingslashit($structure) . '%hour%/%minute%';
 
 			// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma

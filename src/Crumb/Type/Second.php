@@ -57,9 +57,7 @@ final class Second extends AbstractCrumb
 
 		// WordPress doesn't have a second structure function, so we're
 		// building off the date structure.
-		$structure = $GLOBALS['wp_rewrite']->get_date_permastruct();
-
-		if (! empty($structure)) {
+		if ($structure = $GLOBALS['wp_rewrite']->get_date_permastruct()) {
 			$structure = trailingslashit($structure) . '%hour%/%minute%/%second%';
 
 			// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma

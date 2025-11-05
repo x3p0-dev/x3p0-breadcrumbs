@@ -57,9 +57,7 @@ final class Hour extends AbstractCrumb
 
 		// WordPress doesn't have an hour structure function, so we're
 		// building off the date structure.
-		$structure = $GLOBALS['wp_rewrite']->get_date_permastruct();
-
-		if (! empty($structure)) {
+		if ($structure = $GLOBALS['wp_rewrite']->get_date_permastruct()) {
 			$structure = trailingslashit($structure) . '%hour%';
 
 			// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma

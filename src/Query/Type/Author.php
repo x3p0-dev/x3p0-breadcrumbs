@@ -44,10 +44,10 @@ final class Author extends AbstractQuery
 		$this->context->assemble(AssemblerRegistrar::HOME);
 		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 
-		// If $author_base exists, check for parent pages.
-		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
+		// If author base exists, check for parent pages.
+		if ($base = $GLOBALS['wp_rewrite']->author_base) {
 			$this->context->assemble(AssemblerRegistrar::PATH, [
-				'path' => $GLOBALS['wp_rewrite']->author_base
+				'path' => $base
 			]);
 		}
 

@@ -28,10 +28,10 @@ final class CrumbFactory
 	/**
 	 * Creates an instance of a crumb object.
 	 */
-	public function make(string $name, array $params = []): ?Crumb
+	public function make(string $key, array $params = []): ?Crumb
 	{
-		if ($this->crumbRegistry->isRegistered($name)) {
-			$crumb = $this->crumbRegistry->get($name);
+		if ($this->crumbRegistry->isRegistered($key)) {
+			$crumb = $this->crumbRegistry->get($key);
 			return new $crumb(...$params);
 		}
 

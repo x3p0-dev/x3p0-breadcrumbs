@@ -30,10 +30,10 @@ final class MarkupFactory
 	/**
 	 * Creates an instance of a markup object.
 	 */
-	public function make(string $name, array $params = []): ?Markup
+	public function make(string $key, array $params = []): ?Markup
 	{
-		if ($this->markupRegistry->isRegistered($name)) {
-			$markup = $this->markupRegistry->get($name);
+		if ($this->markupRegistry->isRegistered($key)) {
+			$markup = $this->markupRegistry->get($key);
 			return new $markup(...$params);
 		}
 

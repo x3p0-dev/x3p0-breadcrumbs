@@ -22,16 +22,16 @@ final class QueryFactory
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(private QueryRegistry $queryTypes)
+	public function __construct(private QueryRegistry $queryRegistry)
 	{}
 
 	/**
 	 * Creates an instance of a query object.
 	 */
-	public function make(string $name, array $params = []): ?Query
+	public function make(string $key, array $params = []): ?Query
 	{
-		if ($this->queryTypes->isRegistered($name)) {
-			$query = $this->queryTypes->get($name);
+		if ($this->queryRegistry->isRegistered($key)) {
+			$query = $this->queryRegistry->get($key);
 			return new $query(...$params);
 		}
 

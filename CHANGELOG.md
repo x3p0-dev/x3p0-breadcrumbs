@@ -2,33 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [4.0.0] - _Unreleased_
 
 ### Added
 
-- New **Rewrite Tags** block option, which lets you select which post types map to rewrite tags (e.g., `%category%`, `%author%`, etc.). Only post types with rewrite tags in their slugs appear as options.
-- New **Post Taxonomies** block option, which lets you choose which taxonomy's terms to display in the breadcrumb trail for single post views.
-- New **Labels** block option, which lets you customize a subset of labels that most commonly need to be changed:
+- **Rewrite Tags** block option, which lets you select which post types map to rewrite tags (e.g., `%category%`, `%author%`, etc.). Only post types with rewrite tags in their slugs appear as options.
+- **Post Taxonomies** block option, which lets you choose which taxonomy's terms to display in the breadcrumb trail for single post views.
+- **Labels** block option, which lets you customize a subset of labels that most commonly need to be changed:
   - Home
   - Search Results
   - 404
-- The Home label can now be edited directly from the content canvas.
-- `ariaLabel` block support. WordPress doesn't display a UI control for this, but it's possible to change the default `Breadcrumbs` label via the Code Editor view.
-- `shadow` block support. You can now add shadows—not sure how I missed adding this before.
+- The Home label can also be edited directly from the content canvas.
 - Content-only editing support for the block. When enabled, the toolbar controls no longer appear. However, users can edit the Home label directly in the editor canvas.
-- New time-based breadcrumbs:
+- Block supports:
+  - `ariaLabel`: WordPress doesn't display a UI control for this, but it's possible to change the default `Breadcrumbs` label via the Code Editor view.
+  - `shadow`: you can now add shadows—not sure how I missed adding this before.
+- Time-based breadcrumbs:
   - Hour, minute, and second archive breadcrumbs.
   - Posts with hour, minute, and seconds in their permalink structure now show those crumbs (assuming rewrite mapping is enabled).
-- New `JsonLinkedData` markup class for outputting JSON-LD breadcrumbs in the site head. This is not output by default, but developers can opt in.
-- New action hooks:
+- A `JsonLinkedData` markup class for outputting JSON-LD breadcrumbs in the site head. This is not output by default, but developers can opt in.
+- Action hooks:
   - `x3p0/breadcrumbs/init` - Fires just before the plugin's default service providers are registered.
   - `x3p0/breadcrumbs/register` - Fires just after the plugin's default service providers are registered.
   - `x3p0/breadcrumbs/boot` - Fires just after the plugin's default services providers have been booted.
-- New filter hooks:
-  - `x3p0/breadcrumbs/resolve/query-type` - Allows filtering when query class type is used to determine the breadcrumbs for the current page.
+- Filter hooks:
+  - `x3p0/breadcrumbs/resolve/query-type` - Allows filtering the primary query type used to determine the breadcrumbs for the current page.
 
 ### Changed
 
@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The block preview in the content canvas now shows Home → Ancestor → Parent → Current. This change was implemented so that users can better see the effects of removing the first and/or last breadcrumbs in the editor.
 - The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. These have always been the only options. It's just defined in `block.json` now.
 - The `404 Not Found` label has been changed to `Page not found` to match WordPress's default output for 404 document titles.
+- The plugin now uses Composer for autoloading instead of the previous custom `Autoload` class.
 
 ### Fixed
 

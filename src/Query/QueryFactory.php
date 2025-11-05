@@ -30,8 +30,7 @@ final class QueryFactory
 	 */
 	public function make(string $key, array $params = []): ?Query
 	{
-		if ($this->queryRegistry->isRegistered($key)) {
-			$query = $this->queryRegistry->get($key);
+		if ($query = $this->queryRegistry->get($key)) {
 			return new $query(...$params);
 		}
 

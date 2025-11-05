@@ -32,8 +32,7 @@ final class MarkupFactory
 	 */
 	public function make(string $key, array $params = []): ?Markup
 	{
-		if ($this->markupRegistry->isRegistered($key)) {
-			$markup = $this->markupRegistry->get($key);
+		if ($markup = $this->markupRegistry->get($key)) {
 			return new $markup(...$params);
 		}
 

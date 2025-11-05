@@ -30,8 +30,7 @@ final class CrumbFactory
 	 */
 	public function make(string $key, array $params = []): ?Crumb
 	{
-		if ($this->crumbRegistry->isRegistered($key)) {
-			$crumb = $this->crumbRegistry->get($key);
+		if ($crumb = $this->crumbRegistry->get($key)) {
 			return new $crumb(...$params);
 		}
 

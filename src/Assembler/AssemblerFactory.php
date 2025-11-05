@@ -30,8 +30,7 @@ final class AssemblerFactory
 	 */
 	public function make(string $key, array $params = []): ?Assembler
 	{
-		if ($this->assemblerRegistry->isRegistered($key)) {
-			$assembler = $this->assemblerRegistry->get($key);
+		if ($assembler = $this->assemblerRegistry->get($key)) {
 			return new $assembler(...$params);
 		}
 

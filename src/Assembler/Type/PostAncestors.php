@@ -89,14 +89,11 @@ final class PostAncestors extends AbstractAssembler
 			]);
 		}
 
-		if ($parents) {
-			array_map(
-				fn($parent) => $this->context->addCrumb(
-					CrumbRegistrar::POST,
-					[ 'post' => $parent ]
-				),
-				array_reverse($parents)
-			);
+		// Reverse the parents and add their crumbs.
+		foreach (array_reverse($parents) as $parent) {
+			$this->context->addCrumb(CrumbRegistrar::POST, [
+				'post' => $parent
+			]);
 		}
 	}
 }

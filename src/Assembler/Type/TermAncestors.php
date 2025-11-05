@@ -54,16 +54,11 @@ final class TermAncestors extends AbstractAssembler
 			$term_id = $term->parent;
 		}
 
-		// If we have parent terms, reverse the array to put them in the
-		// proper order for the trail.
-		if ($parents) {
-			array_map(
-				fn($parent) => $this->context->addCrumb(
-					CrumbRegistrar::TERM,
-					[ 'term' => $parent ]
-				),
-				array_reverse($parents)
-			);
+		// Reverse the parents and add their crumbs.
+		foreach (array_reverse($parents) as $parent) {
+			$this->context->addCrumb(CrumbRegistrar::TERM, [
+				'term' => $parent
+			]);
 		}
 	}
 }

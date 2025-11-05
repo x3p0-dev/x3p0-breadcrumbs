@@ -61,7 +61,7 @@ final class PostTypeArchive extends AbstractQuery
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->context->addCrumb('post-type', [ 'type' => $type ]);
+			$this->context->addCrumb('post-type', [ 'postType' => $type ]);
 		}
 
 		// If viewing a post type archive by author, add author crumb.

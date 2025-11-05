@@ -64,7 +64,7 @@ final class Term extends AbstractAssembler
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
 			$this->context->assemble('post-type', [
-				'type' => get_post_type_object(
+				'postType' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
 			]);

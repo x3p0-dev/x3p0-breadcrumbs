@@ -24,7 +24,7 @@ final class PostType extends AbstractCrumb
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
-		protected WP_Post_Type $type
+		protected WP_Post_Type $postType
 	) {
 		parent::__construct(...func_get_args());
 	}
@@ -34,11 +34,11 @@ final class PostType extends AbstractCrumb
 	 */
 	public function getLabel(): string
 	{
-		if (is_post_type_archive($this->type->name)) {
+		if (is_post_type_archive($this->postType->name)) {
 			return post_type_archive_title('', false);
 		}
 
-		return $this->type->labels->archives;
+		return $this->postType->labels->archives;
 	}
 
 	/**
@@ -46,6 +46,6 @@ final class PostType extends AbstractCrumb
 	 */
 	public function getUrl(): string
 	{
-		return get_post_type_archive_link($this->type->name);
+		return get_post_type_archive_link($this->postType->name);
 	}
 }

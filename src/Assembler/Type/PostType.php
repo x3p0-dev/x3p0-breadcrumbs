@@ -28,7 +28,7 @@ final class PostType extends AbstractAssembler
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
-		protected ?WP_Post_Type $type = null
+		protected ?WP_Post_Type $postType = null
 	) {
 		parent::__construct(...func_get_args());
 	}
@@ -40,12 +40,12 @@ final class PostType extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
-		if (! $this->type) {
+		if (! $this->postType) {
 			return;
 		}
 
 		// If this the post type is `post`, add the posts page and bail.
-		if ('post' === $this->type->name) {
+		if ('post' === $this->postType->name) {
 			$show_on_front = get_option('show_on_front');
 			$post_id       = get_option('page_for_posts');
 
@@ -67,6 +67,6 @@ final class PostType extends AbstractAssembler
 		}
 
 		// Add post type crumb.
-		$this->context->addCrumb('post-type', [ 'type' => $this->type ]);
+		$this->context->addCrumb('post-type', [ 'postType' => $this->postType ]);
 	}
 }

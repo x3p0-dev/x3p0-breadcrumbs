@@ -76,7 +76,7 @@ final class Path extends AbstractAssembler
 			// by post type and break out of the loop.
 			} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
 				$this->context->assemble('post-type', [
-					'type' => $types[0]
+					'postType' => $types[0]
 				]);
 
 				break;

@@ -20,12 +20,14 @@ use X3P0\Breadcrumbs\Query\{AbstractQuery, QueryRegistrar};
 final class Archive extends AbstractQuery
 {
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * Runs through multiple conditionals to determine which type of archive
+	 * breadcrumbs to build by calling more specific query implementations,
+	 * with a fallback to a generic set of archives crumbs.
 	 */
 	public function query(): void
 	{
-		// Run through the conditionals to determine which type of
-		// archive breadcrumbs to build.
 		if (is_post_type_archive()) {
 			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
 		} elseif (is_category() || is_tag() || is_tax()) {

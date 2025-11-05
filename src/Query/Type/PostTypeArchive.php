@@ -27,7 +27,7 @@ final class PostTypeArchive extends AbstractQuery
 	 */
 	public function __construct(
 		protected BreadcrumbsContext $context,
-		protected ?WP_Post_Type $type = null,
+		protected ?WP_Post_Type $postType = null,
 		protected ?WP_User $user = null
 	) {
 		parent::__construct(...func_get_args());
@@ -38,7 +38,7 @@ final class PostTypeArchive extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$type = $this->type ?: get_post_type_object(get_query_var('post_type'));
+		$type = $this->postType ?: get_post_type_object(get_query_var('post_type'));
 
 		$done_post_type = false;
 

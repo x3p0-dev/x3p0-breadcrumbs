@@ -15,7 +15,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post_Type;
 use WP_User;
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class PostTypeArchive extends AbstractQuery
@@ -40,20 +42,22 @@ final class PostTypeArchive extends AbstractQuery
 
 		$done_post_type = false;
 
-		$this->context->assemble('home');
+		$this->context->assemble(AssemblerRegistrar::HOME);
 
 		if (false !== $type->rewrite) {
 			// Build rewrite front crumbs if post type uses it.
 			if ($type->rewrite['with_front']) {
-				$this->context->assemble('rewrite-front');
+				$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 			}
 
 			// If there's a rewrite slug, check for parents.
 			if (! empty($type->rewrite['slug'])) {
-				$this->context->assemble('path', [ 'path' => $type->rewrite['slug'] ]);
+				$this->context->assemble(AssemblerRegistrar::PATH, [
+					'path' => $type->rewrite['slug']
+				]);
 
 				// Check if we've added a post type crumb.
-				if ($this->context->crumbs()->has('post-type')) {
+				if ($this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
 					$done_post_type = true;
 				}
 			}
@@ -61,7 +65,9 @@ final class PostTypeArchive extends AbstractQuery
 
 		// Add post type crumb.
 		if (! $done_post_type) {
-			$this->context->addCrumb('post-type', [ 'postType' => $type ]);
+			$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
+				'postType' => $type
+			]);
 		}
 
 		// If viewing a post type archive by author, add author crumb.
@@ -70,15 +76,17 @@ final class PostTypeArchive extends AbstractQuery
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->context->addCrumb('author', [ 'user' => $user ]);
+			$this->context->addCrumb(CrumbRegistrar::AUTHOR, [
+				'user' => $user
+			]);
 		}
 
 		// If viewing a post type search, add the search crumb. This
 		// handles URLs like `/?s={search}&post_type={type}`.
 		if (is_search()) {
-			$this->context->addCrumb('search');
+			$this->context->addCrumb(CrumbRegistrar::SEARCH);
 		}
 
-		$this->context->assemble('paged');
+		$this->context->assemble(AssemblerRegistrar::PAGED);
 	}
 }

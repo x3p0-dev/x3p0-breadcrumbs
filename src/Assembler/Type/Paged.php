@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -30,19 +31,19 @@ final class Paged extends AbstractAssembler
 	{
 		// If viewing a paged archive-type page.
 		if (is_paged()) {
-			$this->context->addCrumb('paged');
+			$this->context->addCrumb(CrumbRegistrar::PAGED);
 
 		// If viewing a paged singular post.
 		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->context->addCrumb('paged-singular');
+			$this->context->addCrumb(CrumbRegistrar::PAGED_SINGULAR);
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {
-			$this->context->addCrumb('paged-comments');
+			$this->context->addCrumb(CrumbRegistrar::PAGED_COMMENTS);
 
 		// If viewing a paged Query Loop block view.
 		} elseif (Helpers::isPagedQueryBlock()) {
-			$this->context->addCrumb('paged-query-block');
+			$this->context->addCrumb(CrumbRegistrar::PAGED_QUERY_BLOCK);
 		}
 	}
 }

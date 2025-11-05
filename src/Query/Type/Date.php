@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Date extends AbstractQuery
@@ -22,8 +24,8 @@ final class Date extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->context->assemble('home');
-		$this->context->assemble('rewrite-front');
+		$this->context->assemble(AssemblerRegistrar::HOME);
+		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 
 		[
 			'year'   => $year,
@@ -35,34 +37,34 @@ final class Date extends AbstractQuery
 		] = $this->getQueryStringDateVars();
 
 		if (is_year() || get_query_var('year') || $year) {
-			$this->context->addCrumb('year');
+			$this->context->addCrumb(CrumbRegistrar::YEAR);
 		}
 
 		if (is_month() || get_query_var('monthnum') || $month) {
-			$this->context->addCrumb('month');
+			$this->context->addCrumb(CrumbRegistrar::MONTH);
 		}
 
 		if (get_query_var('w')) {
-			$this->context->addCrumb('week');
+			$this->context->addCrumb(CrumbRegistrar::WEEK);
 		}
 
 		if (is_day() || get_query_var('day') || $day) {
-			$this->context->addCrumb('day');
+			$this->context->addCrumb(CrumbRegistrar::DAY);
 		}
 
 		if (get_query_var('hour') || $hour) {
-			$this->context->addCrumb('hour');
+			$this->context->addCrumb(CrumbRegistrar::HOUR);
 		}
 
 		if (get_query_var('minute') || $minute) {
-			$this->context->addCrumb('minute');
+			$this->context->addCrumb(CrumbRegistrar::MINUTE);
 		}
 
 		if (get_query_var('second') || $second) {
-			$this->context->addCrumb('second');
+			$this->context->addCrumb(CrumbRegistrar::SECOND);
 		}
 
-		$this->context->assemble('paged');
+		$this->context->assemble(AssemblerRegistrar::PAGED);
 	}
 
 	/**

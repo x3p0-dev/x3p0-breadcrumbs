@@ -17,6 +17,7 @@ use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs for the given post type.
@@ -57,7 +58,7 @@ final class PostType extends AbstractAssembler
 				// front path, we should've already handled that
 				// scenario at this point.
 				if (trim($GLOBALS['wp_rewrite']->front, '/') !== $post->post_name) {
-					$this->context->addCrumb('post', [
+					$this->context->addCrumb(CrumbRegistrar::POST, [
 						'post' => $post
 					]);
 				}
@@ -67,6 +68,8 @@ final class PostType extends AbstractAssembler
 		}
 
 		// Add post type crumb.
-		$this->context->addCrumb('post-type', [ 'postType' => $this->postType ]);
+		$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
+			'postType' => $this->postType
+		]);
 	}
 }

@@ -15,8 +15,9 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_Taxonomy;
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs based on the given taxonomy for the post.
@@ -50,13 +51,15 @@ final class PostTerms extends AbstractAssembler
 			// If the term has a parent, add its ancestor crumbs to
 			// the breadcrumb trail.
 			if (0 < $term->parent) {
-				$this->context->assemble('term-ancestors', [
+				$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
 					'term' => $term
 				]);
 			}
 
 			// Add term crumb.
-			$this->context->addCrumb('term', [ 'term' => $term ]);
+			$this->context->addCrumb(CrumbRegistrar::TERM, [
+				'term' => $term
+			]);
 		}
 	}
 }

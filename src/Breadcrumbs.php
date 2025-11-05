@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
-use X3P0\Breadcrumbs\Query\QueryFactory;
+use X3P0\Breadcrumbs\Query\{QueryFactory, QueryRegistrar};
 
 /**
  * A wrapper around the query, assembler, and crumb classes that takes a config
@@ -27,12 +27,12 @@ final class Breadcrumbs
 	 * Maps WordPress conditionals to default `Query` classes.
 	 */
 	protected const QUERY_CONDITIONALS = [
-		'is_404'        => 'error-404',
-		'is_front_page' => 'front-page',
-		'is_home'       => 'home',
-		'is_singular'   => 'singular',
-		'is_archive'    => 'archive',
-		'is_search'     => 'search'
+		'is_404'        => QueryRegistrar::ERROR_404,
+		'is_front_page' => QueryRegistrar::FRONT_PAGE,
+		'is_home'       => QueryRegistrar::HOME,
+		'is_singular'   => QueryRegistrar::SINGULAR,
+		'is_archive'    => QueryRegistrar::ARCHIVE,
+		'is_search'     => QueryRegistrar::SEARCH
 	];
 
 	/**

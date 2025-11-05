@@ -15,7 +15,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Rewrite;
 use WP_User;
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Author extends AbstractQuery
@@ -39,24 +41,24 @@ final class Author extends AbstractQuery
 	{
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		$this->context->assemble('home');
-		$this->context->assemble('rewrite-front');
+		$this->context->assemble(AssemblerRegistrar::HOME);
+		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 
 		// If $author_base exists, check for parent pages.
 		if (! empty($GLOBALS['wp_rewrite']->author_base)) {
-			$this->context->assemble('path', [
+			$this->context->assemble(AssemblerRegistrar::PATH, [
 				'path' => $GLOBALS['wp_rewrite']->author_base
 			]);
 		}
 
-		$this->context->addCrumb('author', [ 'user' => $user ]);
+		$this->context->addCrumb(CrumbRegistrar::AUTHOR, [ 'user' => $user ]);
 
 		// If viewing an author search, add the search crumb. This
 		// handles URLs like `/?s={search}&author_name={name}`.
 		if (is_search()) {
-			$this->context->addCrumb('search');
+			$this->context->addCrumb(CrumbRegistrar::SEARCH);
 		}
 
-		$this->context->assemble('paged');
+		$this->context->assemble(AssemblerRegistrar::PAGED);
 	}
 }

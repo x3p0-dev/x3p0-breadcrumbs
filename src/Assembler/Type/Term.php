@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs based on the given term object.
@@ -43,27 +44,29 @@ final class Term extends AbstractAssembler
 		// Will either be `false` or an array.
 		$rewrite = $taxonomy->rewrite;
 
-		// Assembler rewrite front crumbs if taxonomy uses it.
+		// Assemble rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
-			$this->context->assemble('rewrite-front');
+			$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 		}
 
-		// Assembler crumbs based on the rewrite slug.
+		// Assemble crumbs based on the rewrite slug.
 		if ($rewrite && $rewrite['slug']) {
 			$path = trim($rewrite['slug'], '/');
 
-			// Assembler path crumbs.
-			$this->context->assemble('path', [ 'path' => $path ]);
+			// Assemble path crumbs.
+			$this->context->assemble(AssemblerRegistrar::PATH, [
+				'path' => $path
+			]);
 
 			// Check if we've added a post type crumb.
-			if ($this->context->crumbs()->has('post-type')) {
+			if ($this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
 				$done_post_type = true;
 			}
 		}
 
 		// If the taxonomy has a single post type.
 		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
-			$this->context->assemble('post-type', [
+			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
 				'postType' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
@@ -72,10 +75,14 @@ final class Term extends AbstractAssembler
 
 		// If the taxonomy is hierarchical, list the parent terms.
 		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
-			$this->context->assemble('term-ancestors', [ 'term' => $this->term ]);
+			$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
+				'term' => $this->term
+			]);
 		}
 
-		// Assembler the term crumb.
-		$this->context->addCrumb('term', [ 'term' => $this->term ]);
+		// Add the term crumb.
+		$this->context->addCrumb(CrumbRegistrar::TERM, [
+			'term' => $this->term
+		]);
 	}
 }

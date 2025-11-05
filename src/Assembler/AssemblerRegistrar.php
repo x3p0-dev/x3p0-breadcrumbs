@@ -18,33 +18,49 @@ namespace X3P0\Breadcrumbs\Assembler;
  */
 final class AssemblerRegistrar
 {
+	public const HOME              = 'home';
+	public const PAGED             = 'paged';
+	public const PATH              = 'path';
+	public const POST              = 'post';
+	public const POST_ANCESTORS    = 'post-ancestors';
+	public const POST_HIERARCHY    = 'post-hierarchy';
+	public const POST_REWRITE_TAGS = 'post-rewrite-tags';
+	public const POST_TERMS        = 'post-terms';
+	public const POST_TYPE         = 'post-type';
+	public const REWRITE_FRONT     = 'rewrite-front';
+	public const TERM              = 'term';
+	public const TERM_ANCESTORS    = 'term-ancestors';
+
 	/**
 	 * An array of assembler keys and their associated classes, to be stored
 	 * in the assembler registry.
 	 */
-	private const ASSEMBLERS = [
-		'home'              => Type\Home::class,
-		'paged'             => Type\Paged::class,
-		'path'              => Type\Path::class,
-		'post'              => Type\Post::class,
-		'post-ancestors'    => Type\PostAncestors::class,
-		'post-hierarchy'    => Type\PostHierarchy::class,
-		'post-rewrite-tags' => Type\PostRewriteTags::class,
-		'post-terms'        => Type\PostTerms::class,
-		'post-type'         => Type\PostType::class,
-		'rewrite-front'     => Type\RewriteFront::class,
-		'term'              => Type\Term::class,
-		'term-ancestors'    => Type\TermAncestors::class
-	];
+	private static function getAssemblers(): array
+	{
+		return [
+			self::HOME              => Type\Home::class,
+			self::PAGED             => Type\Paged::class,
+			self::PATH              => Type\Path::class,
+			self::POST              => Type\Post::class,
+			self::POST_ANCESTORS    => Type\PostAncestors::class,
+			self::POST_HIERARCHY    => Type\PostHierarchy::class,
+			self::POST_REWRITE_TAGS => Type\PostRewriteTags::class,
+			self::POST_TERMS        => Type\PostTerms::class,
+			self::POST_TYPE         => Type\PostType::class,
+			self::REWRITE_FRONT     => Type\RewriteFront::class,
+			self::TERM              => Type\Term::class,
+			self::TERM_ANCESTORS    => Type\TermAncestors::class,
+		];
+	}
 
 	/**
 	 * Registers default assemblers with the registry.
 	 */
 	public static function register(AssemblerRegistry $assemblerRegistry): void
 	{
-		foreach (self::ASSEMBLERS as $key => $assemblerClass) {
+		foreach (self::getAssemblers() as $key => $className) {
 			if (! $assemblerRegistry->isRegistered($key)) {
-				$assemblerRegistry->register($key, $assemblerClass);
+				$assemblerRegistry->register($key, $className);
 			}
 		}
 	}

@@ -15,8 +15,9 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * This class accepts a permalink structure and attempts to map any rewrite tags
@@ -60,31 +61,34 @@ final class PostRewriteTags extends AbstractAssembler
 	private function mapTag(string $tag): void
 	{
 		match ($tag) {
-			'%year%' => $this->context->addCrumb('year', [
+			'%year%' => $this->context->addCrumb(CrumbRegistrar::YEAR, [
 				'post' => $this->post
 			]),
-			'%monthnum%' => $this->context->addCrumb('month', [
+			'%monthnum%' => $this->context->addCrumb(CrumbRegistrar::MONTH, [
 				'post' => $this->post
 			]),
-			'%day%' => $this->context->addCrumb('day', [
+			'%day%' => $this->context->addCrumb(CrumbRegistrar::DAY, [
 				'post' => $this->post
 			]),
-			'%hour%' => $this->context->addCrumb('hour', [
+			'%hour%' => $this->context->addCrumb(CrumbRegistrar::HOUR, [
 				'post' => $this->post
 			]),
-			'%minute%' => $this->context->addCrumb('minute', [
+			'%minute%' => $this->context->addCrumb(CrumbRegistrar::MINUTE, [
 				'post' => $this->post
 			]),
-			'%second%' => $this->context->addCrumb('second', [
+			'%second%' => $this->context->addCrumb(CrumbRegistrar::SECOND, [
 				'post' => $this->post
 			]),
-			'%author%' => $this->context->addCrumb('author', [
+			'%author%' => $this->context->addCrumb(CrumbRegistrar::AUTHOR, [
 				'user' => new WP_User($this->post->post_author)
 			]),
-			$this->useTaxonomy($tag) => $this->context->assemble('post-terms', [
-				'post'     => $this->post,
-				'taxonomy' => get_taxonomy(trim($tag, '%'))
-			]),
+			$this->useTaxonomy($tag) => $this->context->assemble(
+				AssemblerRegistrar::POST_TERMS,
+				[
+					'post'     => $this->post,
+					'taxonomy' => get_taxonomy(trim($tag, '%'))
+				]
+			),
 			default => false
 		};
 	}

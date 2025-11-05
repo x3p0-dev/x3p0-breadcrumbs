@@ -18,32 +18,47 @@ namespace X3P0\Breadcrumbs\Query;
  */
 final class QueryRegistrar
 {
+	public const ARCHIVE           = 'archive';
+	public const AUTHOR            = 'author';
+	public const DATE              = 'date';
+	public const ERROR_404         = 'error-404';
+	public const FRONT_PAGE        = 'front-page';
+	public const HOME              = 'home';
+	public const PAGED             = 'paged';
+	public const POST_TYPE_ARCHIVE = 'post-type-archive';
+	public const SEARCH            = 'search';
+	public const SINGULAR          = 'singular';
+	public const TAXONOMY          = 'taxonomy';
+
 	/**
 	 * An array of query keys and their associated classes, to be stored
 	 * in the query registry.
 	 */
-	private const QUERIES = [
-		'archive'           => Type\Archive::class,
-		'author'            => Type\Author::class,
-		'date'              => Type\Date::class,
-		'error-404'         => Type\Error::class,
-		'front-page'        => Type\FrontPage::class,
-		'home'              => Type\Home::class,
-		'paged'             => Type\Paged::class,
-		'post-type-archive' => Type\PostTypeArchive::class,
-		'search'            => Type\Search::class,
-		'singular'          => Type\Singular::class,
-		'taxonomy'          => Type\Tax::class
-	];
+	private static function getQueries(): array
+	{
+		return [
+			self::ARCHIVE           => Type\Archive::class,
+			self::AUTHOR            => Type\Author::class,
+			self::DATE              => Type\Date::class,
+			self::ERROR_404         => Type\Error::class,
+			self::FRONT_PAGE        => Type\FrontPage::class,
+			self::HOME              => Type\Home::class,
+			self::PAGED             => Type\Paged::class,
+			self::POST_TYPE_ARCHIVE => Type\PostTypeArchive::class,
+			self::SEARCH            => Type\Search::class,
+			self::SINGULAR          => Type\Singular::class,
+			self::TAXONOMY          => Type\Tax::class,
+		];
+	}
 
 	/**
 	 * Registers default queries with the registry.
 	 */
 	public static function register(QueryRegistry $queryRegistry): void
 	{
-		foreach (self::QUERIES as $key => $queryClass) {
+		foreach (self::getQueries() as $key => $className) {
 			if (! $queryRegistry->isRegistered($key)) {
-				$queryRegistry->register($key, $queryClass);
+				$queryRegistry->register($key, $className);
 			}
 		}
 	}

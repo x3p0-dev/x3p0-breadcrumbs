@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Markup\{MarkupConfig, MarkupFactory};
+use X3P0\Breadcrumbs\Markup\{MarkupConfig, MarkupFactory, MarkupRegistrar};
 
 /**
  * Support class for more quickly rendering a breadcrumb trail. It hides away
@@ -38,7 +38,7 @@ final class BreadcrumbsService
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = [],
 		MarkupConfig|array $markupConfig = [],
-		string $markupType = 'html'
+		string $markupType = MarkupRegistrar::HTML
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
 			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)

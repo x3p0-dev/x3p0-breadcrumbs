@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to
@@ -40,28 +41,28 @@ final class Post extends AbstractAssembler
 	{
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
-			$this->context->assemble('post-ancestors', [
+			$this->context->assemble(AssemblerRegistrar::POST_ANCESTORS, [
 				'post' => $this->post
 			]);
 
 		// If the post doesn't have a parent, get its hierarchy based off the post type.
 		} else {
-			$this->context->assemble('post-hierarchy', [
+			$this->context->assemble(AssemblerRegistrar::POST_HIERARCHY, [
 				'post' => $this->post
 			]);
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($this->context->config()->getPostTaxonomy($this->post->post_type)) {
-			$this->context->assemble('post-terms', [
+		if ($taxonomy = $this->context->config()->getPostTaxonomy($this->post->post_type)) {
+			$this->context->assemble(AssemblerRegistrar::POST_TERMS, [
 				'post'     => $this->post,
-				'taxonomy' => get_taxonomy(
-					$this->context->config()->getPostTaxonomy($this->post->post_type)
-				)
+				'taxonomy' => get_taxonomy($taxonomy)
 			]);
 		}
 
 		// Assembler the post crumb.
-		$this->context->addCrumb('post', [ 'post' => $this->post ]);
+		$this->context->addCrumb(CrumbRegistrar::POST, [
+			'post' => $this->post
+		]);
 	}
 }

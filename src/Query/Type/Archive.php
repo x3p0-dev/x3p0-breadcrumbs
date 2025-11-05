@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
-use X3P0\Breadcrumbs\Query\AbstractQuery;
-use X3P0\Breadcrumbs\Tools\Helpers;
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Query\{AbstractQuery, QueryRegistrar};
 
 final class Archive extends AbstractQuery
 {
@@ -26,17 +27,17 @@ final class Archive extends AbstractQuery
 		// Run through the conditionals to determine which type of
 		// archive breadcrumbs to build.
 		if (is_post_type_archive()) {
-			$this->context->query('post-type-archive');
+			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
 		} elseif (is_category() || is_tag() || is_tax()) {
-			$this->context->query('taxonomy');
+			$this->context->query(QueryRegistrar::TAXONOMY);
 		} elseif (is_author()) {
-			$this->context->query('author');
+			$this->context->query(QueryRegistrar::AUTHOR);
 		} elseif (is_date()) {
-			$this->context->query('date');
+			$this->context->query(QueryRegistrar::DATE);
 		} else {
-			$this->context->assemble('home');
-			$this->context->addCrumb('archive');
-			$this->context->assemble('paged');
+			$this->context->assemble(AssemblerRegistrar::HOME);
+			$this->context->addCrumb(CrumbRegistrar::ARCHIVE);
+			$this->context->assemble(AssemblerRegistrar::PAGED);
 		}
 	}
 }

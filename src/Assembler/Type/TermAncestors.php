@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs based on whether a term has a parent post. It loops
@@ -56,9 +57,13 @@ final class TermAncestors extends AbstractAssembler
 		// If we have parent terms, reverse the array to put them in the
 		// proper order for the trail.
 		if ($parents) {
-			array_map(function ($parent) {
-				$this->context->addCrumb('term', [ 'term' => $parent ]);
-			}, array_reverse($parents));
+			array_map(
+				fn($parent) => $this->context->addCrumb(
+					CrumbRegistrar::TERM,
+					[ 'term' => $parent ]
+				),
+				array_reverse($parents)
+			);
 		}
 	}
 }

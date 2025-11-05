@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Term;
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
@@ -36,8 +37,8 @@ final class Tax extends AbstractQuery
 	{
 		$term = $this->term ?: get_queried_object();
 
-		$this->context->assemble('home');
-		$this->context->assemble('term', [ 'term' => $term ]);
-		$this->context->assemble('paged');
+		$this->context->assemble(AssemblerRegistrar::HOME);
+		$this->context->assemble(AssemblerRegistrar::TERM, [ 'term' => $term ]);
+		$this->context->assemble(AssemblerRegistrar::PAGED);
 	}
 }

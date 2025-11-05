@@ -18,23 +18,31 @@ namespace X3P0\Breadcrumbs\Markup;
  */
 final class MarkupRegistrar
 {
+	public const HTML      = 'html';
+	public const MICRODATA = 'microdata';
+	public const RDFA      = 'rdfa';
+	public const JSON_LD   = 'json-ld';
+
 	/**
 	 * An array of markup keys and their associated classes, to be stored
 	 * in the markup registry.
 	 */
-	private const MARKUPS = [
-		'html'      => Type\Html::class,
-		'microdata' => Type\Microdata::class,
-		'rdfa'      => Type\Rdfa::class,
-		'json-ld'   => Type\JsonLinkedData::class
-	];
+	private static function getMarkups(): array
+	{
+		return [
+			self::HTML      => Type\Html::class,
+			self::MICRODATA => Type\Microdata::class,
+			self::RDFA      => Type\Rdfa::class,
+			self::JSON_LD   => Type\JsonLinkedData::class,
+		];
+	}
 
 	/**
 	 * Registers default markups with the registry.
 	 */
 	public static function register(MarkupRegistry $markupRegistry): void
 	{
-		foreach (self::MARKUPS as $key => $markupClass) {
+		foreach (self::getMarkups() as $key => $markupClass) {
 			if (! $markupRegistry->isRegistered($key)) {
 				$markupRegistry->register($key, $markupClass);
 			}

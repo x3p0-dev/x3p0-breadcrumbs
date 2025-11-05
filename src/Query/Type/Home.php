@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\QueryRegistrar;
 
 final class Home extends AbstractQuery
 {
@@ -23,7 +24,7 @@ final class Home extends AbstractQuery
 	public function query(): void
 	{
 		is_front_page()
-			? $this->context->query('front-page')
-			: $this->context->query('singular');
+			? $this->context->query(QueryRegistrar::FRONT_PAGE)
+			: $this->context->query(QueryRegistrar::SINGULAR);
 	}
 }

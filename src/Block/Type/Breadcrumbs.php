@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Block\Type;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
 use X3P0\Breadcrumbs\BreadcrumbsService;
+use X3P0\Breadcrumbs\Markup\MarkupRegistrar;
 
 /**
  * Renders the Breadcrumbs block on the front end.
@@ -50,7 +51,7 @@ final class Breadcrumbs implements Block
 				'showLastItem'  => $this->attributes['showTrailEnd']   ?? true,
 				'linkLastItem'  => $this->attributes['linkTrailEnd']   ?? false
 			],
-			markupType: $this->attributes['markup'] ?? 'rdfa'
+			markupType: $this->attributes['markup'] ?? MarkupRegistrar::RDFA
 		);
 	}
 

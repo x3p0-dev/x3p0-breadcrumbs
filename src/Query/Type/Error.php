@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
 
 final class Error extends AbstractQuery
@@ -22,7 +24,7 @@ final class Error extends AbstractQuery
 	 */
 	public function query(): void
 	{
-		$this->context->assemble('home');
-		$this->context->addCrumb('error-404');
+		$this->context->assemble(AssemblerRegistrar::HOME);
+		$this->context->addCrumb(CrumbRegistrar::ERROR_404);
 	}
 }

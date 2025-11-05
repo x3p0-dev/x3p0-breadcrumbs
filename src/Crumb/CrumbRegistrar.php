@@ -18,42 +18,67 @@ namespace X3P0\Breadcrumbs\Crumb;
  */
 final class CrumbRegistrar
 {
+	public const ARCHIVE           = 'archive';
+	public const AUTHOR            = 'author';
+	public const DAY               = 'day';
+	public const ERROR_404         = 'error-404';
+	public const HOME              = 'home';
+	public const HOUR              = 'hour';
+	public const MINUTE            = 'minute';
+	public const MONTH             = 'month';
+	public const NETWORK           = 'network';
+	public const NETWORK_SITE      = 'network-site';
+	public const PAGED             = 'paged';
+	public const PAGED_COMMENTS    = 'paged-comments';
+	public const PAGED_QUERY_BLOCK = 'paged-query-block';
+	public const PAGED_SINGULAR    = 'paged-singular';
+	public const POST              = 'post';
+	public const POST_TYPE         = 'post-type';
+	public const SEARCH            = 'search';
+	public const SECOND            = 'second';
+	public const TERM              = 'term';
+	public const WEEK              = 'week';
+	public const YEAR              = 'year';
+
 	/**
 	 * An array of crumb keys and their associated classes, to be stored
 	 * in the crumb registry.
 	 */
-	private const CRUMBS = [
-		'archive'           => Type\Archive::class,
-		'author'            => Type\Author::class,
-		'day'               => Type\Day::class,
-		'error-404'         => Type\Error404::class,
-		'home'              => Type\Home::class,
-		'hour'              => Type\Hour::class,
-		'minute'            => Type\Minute::class,
-		'month'             => Type\Month::class,
-		'network'           => Type\Network::class,
-		'network-site'      => Type\NetworkSite::class,
-		'paged'             => Type\Paged::class,
-		'paged-comments'    => Type\PagedComments::class,
-		'paged-query-block' => Type\PagedQueryBlock::class,
-		'paged-singular'    => Type\PagedSingular::class,
-		'post'              => Type\Post::class,
-		'post-type'         => Type\PostType::class,
-		'search'            => Type\Search::class,
-		'second'            => Type\Second::class,
-		'term'              => Type\Term::class,
-		'week'              => Type\Week::class,
-		'year'              => Type\Year::class
-	];
+	private static function getCrumbs(): array
+	{
+		return [
+			self::ARCHIVE           => Type\Archive::class,
+			self::AUTHOR            => Type\Author::class,
+			self::DAY               => Type\Day::class,
+			self::ERROR_404         => Type\Error404::class,
+			self::HOME              => Type\Home::class,
+			self::HOUR              => Type\Hour::class,
+			self::MINUTE            => Type\Minute::class,
+			self::MONTH             => Type\Month::class,
+			self::NETWORK           => Type\Network::class,
+			self::NETWORK_SITE      => Type\NetworkSite::class,
+			self::PAGED             => Type\Paged::class,
+			self::PAGED_COMMENTS    => Type\PagedComments::class,
+			self::PAGED_QUERY_BLOCK => Type\PagedQueryBlock::class,
+			self::PAGED_SINGULAR    => Type\PagedSingular::class,
+			self::POST              => Type\Post::class,
+			self::POST_TYPE         => Type\PostType::class,
+			self::SEARCH            => Type\Search::class,
+			self::SECOND            => Type\Second::class,
+			self::TERM              => Type\Term::class,
+			self::WEEK              => Type\Week::class,
+			self::YEAR              => Type\Year::class,
+		];
+	}
 
 	/**
 	 * Registers default crumbs with the registry.
 	 */
 	public static function register(CrumbRegistry $crumbRegistry): void
 	{
-		foreach (self::CRUMBS as $key => $crumbClass) {
+		foreach (self::getCrumbs() as $key => $className) {
 			if (! $crumbRegistry->isRegistered($key)) {
-				$crumbRegistry->register($key, $crumbClass);
+				$crumbRegistry->register($key, $className);
 			}
 		}
 	}

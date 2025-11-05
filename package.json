@@ -18,20 +18,20 @@
 		"url": "https://github.com/x3p0-dev/x3p0-breadcrumbs/issues"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^30.25.0"
+		"@wordpress/scripts": "^30.27.0"
 	},
 	"dependencies": {
-		"@wordpress/block-editor": "^15.5.0",
-		"@wordpress/blocks": "^15.5.0",
-		"@wordpress/components": "^30.5.0",
-		"@wordpress/compose": "^7.32.0",
-		"@wordpress/core-data": "^7.32.0",
-		"@wordpress/data": "^10.32.0",
-		"@wordpress/element": "^6.32.0",
-		"@wordpress/hooks": "^4.32.0",
-		"@wordpress/i18n": "^6.5.0",
-		"@wordpress/icons": "^10.32.0",
-		"@wordpress/primitives": "^4.32.0",
+		"@wordpress/block-editor": "^15.7.0",
+		"@wordpress/blocks": "^15.7.0",
+		"@wordpress/components": "^30.7.0",
+		"@wordpress/compose": "^7.34.0",
+		"@wordpress/core-data": "^7.34.0",
+		"@wordpress/data": "^10.34.0",
+		"@wordpress/element": "^6.34.0",
+		"@wordpress/hooks": "^4.34.0",
+		"@wordpress/i18n": "^6.7.0",
+		"@wordpress/icons": "^11.1.0",
+		"@wordpress/primitives": "^4.34.0",
 		"clsx": "^2.1.1"
 	}
 }

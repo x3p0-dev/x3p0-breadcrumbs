@@ -36,6 +36,8 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 			return false;
 		}
 
+		// The plugin adds the `x3p0-breadcrumbs/rewrite` field via the
+		// REST API, which includes the post type rewrite rules.
 		const rewrite = postType['x3p0-breadcrumbs/rewrite'];
 
 		return rewrite?.slug?.includes('%');
@@ -50,7 +52,7 @@ const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	// rewrite tags are enabled by default. So we need to explicitly tell
 	// the Breadcrumbs script on the PHP end how to handle this.
 	const onRewriteTagChange = (postType, checked) => {
-		const updatedRewriteTags = { ...mapRewriteTags };
+		const updatedRewriteTags = {...mapRewriteTags};
 
 		updatedRewriteTags[postType] = !! checked;
 

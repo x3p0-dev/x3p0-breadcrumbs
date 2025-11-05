@@ -56,16 +56,16 @@ const BreadcrumbsContent = ({
 	const blockProps = useBlockProps({
 		className: clsx({
 			'breadcrumbs': true,
-			[ `has-home-${homeIcon}` ] : showTrailStart && homeIcon,
-			[ 'hide-home-label' ] : showTrailStart && ! showHomeLabel,
-			[ `has-sep-${separatorIcon}` ] : separatorIcon,
-			[ `is-content-justification-${ justifyContent }` ] : justifyContent
+			[`has-home-${homeIcon}`] : showTrailStart && homeIcon,
+			['hide-home-label'] : showTrailStart && ! showHomeLabel,
+			[`has-sep-${separatorIcon}`] : separatorIcon,
+			[`is-content-justification-${justifyContent}`] : justifyContent
 		})
 	});
 
-	// We must use inner toolbar props for layout styles to work properly in
-	// the admin, even though this toolbar doesn't have nested blocks.
-	const innerBlockProps = useInnerBlocksProps(blockProps);
+	// We must use inner blocks props for layout styles to work properly in
+	// the admin, even though this block doesn't have nested blocks.
+	const innerBlocksProps = useInnerBlocksProps(blockProps);
 
 	// We need a default home label value for non-editing contexts when
 	// there's no saved value. This is because `RichText` will not show the
@@ -79,13 +79,13 @@ const BreadcrumbsContent = ({
 		<RichText
 			tagName="span"
 			className="breadcrumbs__crumb-label"
-			aria-label={ __('Home breadcrumb label', 'x3p0-breadcrumbs') }
-			placeholder={ __('Home', 'x3p0-breadcrumbs') }
-			value={ homeValue }
-			multiline={ false }
-			disableLineBreaks={ true }
-			onChange={ (value) => {
-				const updatedLabels = { ...labels };
+			aria-label={__('Home breadcrumb label', 'x3p0-breadcrumbs')}
+			placeholder={__('Home', 'x3p0-breadcrumbs')}
+			value={homeValue}
+			multiline={false}
+			disableLineBreaks={true}
+			onChange={(value) => {
+				const updatedLabels = {...labels};
 
 				if (value) {
 					updatedLabels.home = value;
@@ -95,13 +95,13 @@ const BreadcrumbsContent = ({
 
 				setAttributes({ labels: updatedLabels });
 			}}
-			allowedFormats={ [] }
-			withoutInteractiveFormatting={ true }
+			allowedFormats={[]}
+			withoutInteractiveFormatting={true}
 		/>
 	);
 
 	return (
-		<nav {...innerBlockProps}>
+		<nav {...innerBlocksProps}>
 			<ol className="breadcrumbs__trail">
 				{showTrailStart && (
 					<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
@@ -113,14 +113,14 @@ const BreadcrumbsContent = ({
 				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
 					<CrumbLink>
 						<span className="breadcrumbs__crumb-label">
-							{ __('Ancestor', 'x3p0-breadcrumbs') }
+							{__('Ancestor', 'x3p0-breadcrumbs')}
 						</span>
 					</CrumbLink>
 				</li>
 				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
 					<CrumbLink>
 						<span className="breadcrumbs__crumb-label">
-							{ __('Parent', 'x3p0-breadcrumbs') }
+							{__('Parent', 'x3p0-breadcrumbs')}
 						</span>
 					</CrumbLink>
 				</li>
@@ -129,13 +129,13 @@ const BreadcrumbsContent = ({
 						{linkTrailEnd ? (
 							<CrumbLink>
 								<span className="breadcrumbs__crumb-label">
-									{ __('Current', 'x3p0-breadcrumbs') }
+									{__('Current', 'x3p0-breadcrumbs')}
 								</span>
 							</CrumbLink>
 						) : (
 							<span className="breadcrumbs__crumb-content">
 								<span className="breadcrumbs__crumb-label">
-									{ __('Current', 'x3p0-breadcrumbs') }
+									{__('Current', 'x3p0-breadcrumbs')}
 								</span>
 							</span>
 						)}

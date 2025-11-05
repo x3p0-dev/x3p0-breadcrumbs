@@ -58,7 +58,7 @@ const PostTaxonomyPanel = ({ attributes, setAttributes }) => {
 	// delete post types without assigned taxonomies from the attribute
 	// since they are not enabled by default.
 	const onTaxonomyChange = (postType, taxonomy) => {
-		const updatedPostTaxonomy = { ...postTaxonomy };
+		const updatedPostTaxonomy = {...postTaxonomy};
 
 		if (taxonomy) {
 			updatedPostTaxonomy[postType] = taxonomy;

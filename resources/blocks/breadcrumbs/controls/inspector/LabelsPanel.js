@@ -26,7 +26,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 	const { labels = {}, showHomeLabel, showTrailStart } = attributes;
 
 	const onLabelChange = (type, value) => {
-		const updatedLabels = { ...labels };
+		const updatedLabels = {...labels};
 
 		if (value) {
 			updatedLabels[type] = value;

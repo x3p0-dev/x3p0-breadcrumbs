@@ -92,16 +92,16 @@ const ICON_OPTIONS = [
  */
 const SeparatorControl = ({ attributes: { separatorIcon }, setAttributes }) => (
 	<ToolbarDropdown
-		value={ separatorIcon }
-		label={ __('Separator', 'x3p0-breadcrumbs') }
-		icon={ next }
+		value={separatorIcon}
+		label={__('Separator', 'x3p0-breadcrumbs')}
+		icon={next}
 	>
 		<SymbolPicker
-			value={ separatorIcon }
-			onChange={ (value) => setAttributes({ separatorIcon: value }) }
-			options={ ICON_OPTIONS }
-			label={ __('Separator', 'x3p0-breadcrumbs') }
-			description={ __('Pick an icon or symbol that sits in between and separates breadcrumb items.', 'x3p0-breadcrumbs') }
+			value={separatorIcon}
+			onChange={(value) => setAttributes({ separatorIcon: value })}
+			options={ICON_OPTIONS}
+			label={__('Separator', 'x3p0-breadcrumbs')}
+			description={__('Pick an icon or symbol that sits in between and separates breadcrumb items.', 'x3p0-breadcrumbs')}
 		/>
 	</ToolbarDropdown>
 );

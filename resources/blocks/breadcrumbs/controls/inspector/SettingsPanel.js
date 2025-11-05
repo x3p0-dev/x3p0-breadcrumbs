@@ -61,91 +61,91 @@ const SettingsPanel = ({
 				showTrailEnd: false,
 				linkTrailEnd: false
 			})}
-			panelId={ panelId }
+			panelId={panelId}
 		>
 			<ToolsPanelItem
-				label={ __('Markup style', 'x3p0-breadcrumbs') }
-				hasValue={ () => markup !== 'rdfa' }
+				label={__('Markup style', 'x3p0-breadcrumbs')}
+				hasValue={() => markup !== 'rdfa'}
 				onDeselect={() => setAttributes({ markup: 'rdfa' })}
-				panelId={ panelId }
-				isShownByDefault={ true }
+				panelId={panelId}
+				isShownByDefault={true}
 			>
 				<CustomSelectControl
 					label={ __('Markup style', 'x3p0-breadcrumbs') }
-					options={ MARKUP_OPTIONS }
-					value={ MARKUP_OPTIONS.find(
+					options={MARKUP_OPTIONS}
+					value={MARKUP_OPTIONS.find(
 						(option) => option.key === markup
 					)}
-					onChange={ ({ selectedItem }) => setAttributes({
+					onChange={({ selectedItem }) => setAttributes({
 						markup: selectedItem.key
 					})}
 					__next40pxDefaultSize={true}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __('Show on homepage', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! showOnHomepage }
+				label={__('Show on homepage', 'x3p0-breadcrumbs')}
+				hasValue={() => !! showOnHomepage}
 				onDeselect={() => setAttributes({ showOnHomepage: false })}
-				panelId={ panelId }
-				isShownByDefault={ true }
+				panelId={panelId}
+				isShownByDefault={true}
 			>
 				<ToggleControl
-					label={ __('Show on homepage', 'x3p0-breadcrumbs') }
-					checked={ showOnHomepage }
-					onChange={ () => setAttributes({
+					label={__('Show on homepage', 'x3p0-breadcrumbs')}
+					checked={showOnHomepage}
+					onChange={() => setAttributes({
 						showOnHomepage: ! showOnHomepage
-					}) }
-					__nextHasNoMarginBottom={ true }
+					})}
+					__nextHasNoMarginBottom={true}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __('Show home breadcrumb', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! showTrailStart }
+				label={__('Show home breadcrumb', 'x3p0-breadcrumbs')}
+				hasValue={() => !! showTrailStart}
 				onDeselect={() => setAttributes({ showTrailStart: false })}
-				panelId={ panelId }
+				panelId={panelId}
 			>
 				<ToggleControl
-					label={ __('Show home breadcrumb', 'x3p0-breadcrumbs') }
-					checked={ showTrailStart }
-					onChange={ () => setAttributes({
+					label={__('Show home breadcrumb', 'x3p0-breadcrumbs')}
+					checked={showTrailStart}
+					onChange={() => setAttributes({
 						homeIcon:       '',
 						showHomeLabel:  true,
 						showTrailStart: ! showTrailStart
-					}) }
-					__nextHasNoMarginBottom={ true }
+					})}
+					__nextHasNoMarginBottom={true}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={ __('Show current breadcrumb', 'x3p0-breadcrumbs') }
-				hasValue={ () => !! showTrailEnd }
+				label={__('Show current breadcrumb', 'x3p0-breadcrumbs')}
+				hasValue={() => !! showTrailEnd}
 				onDeselect={() => setAttributes({ showTrailEnd: false })}
-				panelId={ panelId }
+				panelId={panelId}
 			>
 				<ToggleControl
-					label={ __('Show current breadcrumb', 'x3p0-breadcrumbs') }
-					checked={ showTrailEnd }
-					onChange={ () => setAttributes({
+					label={__('Show current breadcrumb', 'x3p0-breadcrumbs')}
+					checked={showTrailEnd }
+					onChange={() => setAttributes({
 						showTrailEnd: ! showTrailEnd
-					}) }
-					__nextHasNoMarginBottom={ true }
+					})}
+					__nextHasNoMarginBottom={true}
 				/>
 			</ToolsPanelItem>
 			{showTrailEnd && (
 				<ToolsPanelItem
-					label={ __('Link current breadcrumb', 'x3p0-breadcrumbs') }
-					hasValue={ () => !! linkTrailEnd }
+					label={__('Link current breadcrumb', 'x3p0-breadcrumbs')}
+					hasValue={() => !! linkTrailEnd}
 					onDeselect={() => setAttributes({
 						linkTrailEnd: false
 					})}
-					panelId={ panelId }
+					panelId={panelId}
 				>
 					<ToggleControl
-						label={ __('Link current breadcrumb', 'x3p0-breadcrumbs') }
-						checked={ linkTrailEnd }
-						onChange={ () => setAttributes({
+						label={__('Link current breadcrumb', 'x3p0-breadcrumbs')}
+						checked={linkTrailEnd}
+						onChange={() => setAttributes({
 							linkTrailEnd: ! linkTrailEnd
-						}) }
-						__nextHasNoMarginBottom={ true }
+						})}
+						__nextHasNoMarginBottom={true}
 					/>
 				</ToolsPanelItem>
 			)}

@@ -122,25 +122,27 @@ const HomeControl = ({
 
 	return (
 		<ToolbarDropdown
-			value={ homeIcon }
-			label={ __('Home Icon', 'x3p0-breadcrumbs') }
-			icon={ controlIcon }
+			value={homeIcon}
+			label={__('Home Icon', 'x3p0-breadcrumbs')}
+			icon={controlIcon}
 		>
 			<Flex direction="column" gap="4">
 				<SymbolPicker
-					value={ homeIcon }
-					onChange={ (value) => setAttributes({ homeIcon: value }) }
-					options={ ICON_OPTIONS }
-					label={ __('Home Icon', 'x3p0-breadcrumbs') }
-					description={ __('Pick an icon or symbol for the home breadcrumb item.', 'x3p0-breadcrumbs') }
+					value={homeIcon}
+					onChange={(value) => setAttributes({
+						homeIcon: value
+					})}
+					options={ICON_OPTIONS}
+					label={__('Home Icon', 'x3p0-breadcrumbs')}
+					description={__('Pick an icon or symbol for the home breadcrumb item.', 'x3p0-breadcrumbs')}
 				/>
 				<ToggleControl
-					label={ __('Show home label', 'x3p0-breadcrumbs') }
-					checked={ showHomeLabel }
-					onChange={ () => setAttributes({
+					label={__('Show home label', 'x3p0-breadcrumbs')}
+					checked={showHomeLabel}
+					onChange={() => setAttributes({
 						showHomeLabel: ! showHomeLabel
-					}) }
-					disabled={ ! homeIcon }
+					})}
+					disabled={! homeIcon}
 					__nextHasNoMarginBottom
 				/>
 			</Flex>

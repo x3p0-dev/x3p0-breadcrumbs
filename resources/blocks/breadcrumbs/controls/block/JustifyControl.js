@@ -17,15 +17,15 @@ import { JustifyContentControl } from '@wordpress/block-editor';
  */
 const JustifyControl = ({ attributes: { justifyContent }, setAttributes }) => (
 	<JustifyContentControl
-		allowedControls={ [ 'left', 'center', 'right' ] }
-		value={ justifyContent }
-		onChange={ (value) => setAttributes({
+		allowedControls={[ 'left', 'center', 'right' ]}
+		value={justifyContent}
+		onChange={(value) => setAttributes({
 			justifyContent: value
-		}) }
-		popoverProps={ {
+		})}
+		popoverProps={{
 			position: 'bottom right',
 			variant: 'toolbar'
-		} }
+		}}
 	/>
 );
 

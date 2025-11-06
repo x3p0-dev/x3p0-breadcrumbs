@@ -43,13 +43,13 @@ final class PostHierarchy extends AbstractAssembler
 		// happen when a post has a parent with a post type that is no
 		// longer registered. For example, an attachment that was
 		// uploaded to a post with a type, such as `product`.
-		if (! $type = get_post_type_object(get_post_type($this->post->ID))) {
+		if (! $postType = get_post_type_object(get_post_type($this->post->ID))) {
 			return;
 		};
 
 		// If this is the 'post' post type, get the rewrite front items,
 		// map the rewrite tags, and bail early.
-		if ('post' === $type->name) {
+		if ('post' === $postType->name) {
 			// Add $wp_rewrite->front to the trail.
 			$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 
@@ -62,8 +62,7 @@ final class PostHierarchy extends AbstractAssembler
 			return;
 		}
 
-		$rewrite        = $type->rewrite;
-		$done_post_type = false;
+		$rewrite = $postType->rewrite;
 
 		// If the post type has rewrite rules.
 		if ($rewrite) {
@@ -77,18 +76,17 @@ final class PostHierarchy extends AbstractAssembler
 				$this->context->assemble(AssemblerRegistrar::PATH, [
 					'path' => $rewrite['slug']
 				]);
-
-				// Check if we've added a post type crumb.
-				if ($this->context->crumbs()->has(CrumbRegistrar::POST)) {
-					$done_post_type = true;
-				}
 			}
 		}
 
-		// Fall back to the post type crumb if not getting from path.
-		if (! $done_post_type && $type->has_archive) {
+		// Fall back to the post type crumb if the post type was not
+		// already added via another method.
+		if (
+			! $this->context->crumbs()->has(CrumbRegistrar::POST)
+			&& $postType->has_archive
+		) {
 			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
-				'postType' => $type
+				'postType' => $postType
 			]);
 		}
 

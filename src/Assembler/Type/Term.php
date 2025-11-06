@@ -38,11 +38,8 @@ final class Term extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
-		$taxonomy       = get_taxonomy($this->term->taxonomy);
-		$done_post_type = false;
-
-		// Will either be `false` or an array.
-		$rewrite = $taxonomy->rewrite;
+		$taxonomy = get_taxonomy($this->term->taxonomy);
+		$rewrite  = $taxonomy->rewrite; // false|array
 
 		// Assemble rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
@@ -57,15 +54,15 @@ final class Term extends AbstractAssembler
 			$this->context->assemble(AssemblerRegistrar::PATH, [
 				'path' => $path
 			]);
-
-			// Check if we've added a post type crumb.
-			if ($this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
-				$done_post_type = true;
-			}
 		}
 
-		// If the taxonomy has a single post type.
-		if (! $done_post_type && 1 === count($taxonomy->object_type)) {
+		// If there's not already a post type crumb and the taxonomy has
+		// a single post type, add its crumb since the taxonomy should
+		// be considered a part of the larger content type.
+		if (
+			! $this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)
+			&& 1 === count($taxonomy->object_type)
+		) {
 			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
 				'postType' => get_post_type_object(
 					$taxonomy->object_type[0]
@@ -73,8 +70,8 @@ final class Term extends AbstractAssembler
 			]);
 		}
 
-		// If the taxonomy is hierarchical, list the parent terms.
-		if (is_taxonomy_hierarchical($taxonomy->name) && $this->term->parent) {
+		// If the term has a parent, get its ancestors.
+		if (0 < $this->term->parent) {
 			$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
 				'term' => $this->term
 			]);

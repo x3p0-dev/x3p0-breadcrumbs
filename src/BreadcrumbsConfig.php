@@ -48,9 +48,9 @@ final class BreadcrumbsConfig
 	/**
 	 * Gets a label.
 	 */
-	public function getLabel(string $name): string
+	public function getLabel(string $key): string
 	{
-		return $this->labels[$name] ?? '';
+		return $this->labels[$key] ?? '';
 	}
 
 	/**

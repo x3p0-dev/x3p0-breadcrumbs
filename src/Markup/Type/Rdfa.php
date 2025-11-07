@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 
 /**
  * Creates an ordered list of the breadcrumbs with RDFa.
  */
-class Rdfa extends AbstractMarkup
+final class Rdfa extends Html
 {
 	/**
 	 * @inheritDoc
@@ -30,27 +29,17 @@ class Rdfa extends AbstractMarkup
 			return '';
 		}
 
-		$html  = "<nav {$this->containerAttr()}>";
-		$html .= '<ol class="breadcrumbs__trail" vocab="https://schema.org/" typeof="BreadcrumbList">';
-
-		$this->crumbs->rewind();
-
-		while ($this->crumbs->valid()) {
-			$html .= $this->renderCrumb($this->crumbs->current());
-			$this->crumbs->next();
-		}
-
-		$html .= '</ol>';
-		$html .= '</nav>';
-
-		// Return formatted HTML.
-		return $html;
+		return sprintf(
+			'<nav %s><ol class="breadcrumbs__trail" vocab="https://schema.org/" typeof="BreadcrumbList">%s</ol></nav>',
+			$this->containerAttr(),
+			$this->renderCrumbs()
+		);
 	}
 
 	/**
 	 * Renders the markup for an individual crumb.
 	 */
-	private function renderCrumb(Crumb $crumb): string
+	protected function renderCrumb(Crumb $crumb): string
 	{
 		if (! $this->isCrumbRenderable($crumb)) {
 			return '';

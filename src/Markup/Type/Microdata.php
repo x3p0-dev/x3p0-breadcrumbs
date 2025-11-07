@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Markup\AbstractMarkup;
 
 /**
  * Creates an ordered list of the breadcrumbs with Schema.org microdata.
  */
-class Microdata extends AbstractMarkup
+final class Microdata extends Html
 {
 	/**
 	 * @inheritDoc
@@ -30,28 +29,17 @@ class Microdata extends AbstractMarkup
 			return '';
 		}
 
-		// Build the breadcrumb trail HTML.
-		$html  = "<nav {$this->containerAttr()}>";
-		$html .= '<ol class="breadcrumbs__trail" itemscope itemtype="https://schema.org/BreadcrumbList">';
-
-		$this->crumbs->rewind();
-
-		while ($this->crumbs->valid()) {
-			$html .= $this->renderCrumb($this->crumbs->current());
-			$this->crumbs->next();
-		}
-
-		$html .= '</ol>';
-		$html .= '</nav>';
-
-		// Return formatted HTML.
-		return $html;
+		return sprintf(
+			'<nav %s><ol class="breadcrumbs__trail" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
+			$this->containerAttr(),
+			$this->renderCrumbs()
+		);
 	}
 
 	/**
 	 * Renders the markup for an individual crumb item.
 	 */
-	private function renderCrumb(Crumb $crumb): string
+	protected function renderCrumb(Crumb $crumb): string
 	{
 		if (! $this->isCrumbRenderable($crumb)) {
 			return '';

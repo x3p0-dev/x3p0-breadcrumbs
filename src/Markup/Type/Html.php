@@ -30,10 +30,19 @@ class Html extends AbstractMarkup
 			return '';
 		}
 
-		// Build the breadcrumb trail HTML.
-		$html  = "<nav {$this->containerAttr()}>";
-		$html .= '<ol class="breadcrumbs__trail">';
+		return sprintf(
+			'<nav %s><ol class="breadcrumbs__trail">%s</ol></nav>',
+			$this->containerAttr(),
+			$this->renderCrumbs()
+		);
+	}
 
+	/**
+	 * Renders the breadcrumbs items.
+	 */
+	protected function renderCrumbs(): string
+	{
+		$html = '';
 		$this->crumbs->rewind();
 
 		while ($this->crumbs->valid()) {
@@ -41,17 +50,13 @@ class Html extends AbstractMarkup
 			$this->crumbs->next();
 		}
 
-		$html .= '</ol>';
-		$html .= '</nav>';
-
-		// Return formatted HTML.
 		return $html;
 	}
 
 	/**
 	 * Renders the markup for an individual crumb item.
 	 */
-	private function renderCrumb(Crumb $crumb): string
+	protected function renderCrumb(Crumb $crumb): string
 	{
 		if (! $this->isCrumbRenderable($crumb)) {
 			return '';

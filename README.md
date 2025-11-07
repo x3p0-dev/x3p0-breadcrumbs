@@ -1,6 +1,6 @@
 # X3P0: Breadcrumbs
 
-![Mostly decorative banner that displays a screenshot of the Breadcrumbs block in action.](/.wporg/banner-1544x500.png)
+![Mostly decorative banner that displays a screenshot of the Breadcrumbs block in action and Nova, the brand's mascot, in a wheat field holding a baguette.](/.wporg/banner-1544x500.png)
 
 The X3P0: Breadcrumbs plugin is a breadcrumbs plugin reimagined for a modern, block-based WordPress.
 
@@ -28,7 +28,7 @@ That will output the block with the defaults. Of course, you can configure it by
 
 ### Classic Themes
 
-If you're using or building a classic theme, you can wrap the Breadcrumbs block markup inside the WordPress `do_blocks()` function to parse the markup with PHP. Place the following code in your `header.php` template on in another template where you want to output the breadcrumbs:
+If you're using or building a classic theme, you can wrap the Breadcrumbs block markup inside the WordPress `do_blocks()` function to parse the markup with PHP. Place the following code in your `header.php` template or in another template where you want to output the breadcrumbs:
 
 ```php
 <?= do_blocks('<!-- wp:x3p0/breadcrumbs /-->') ?>
@@ -96,7 +96,7 @@ echo breadcrumbs()->render(
 
 The `BreadcrumbsConfig` class accepts multiple parameters:
 
-- **`mapRewriteTags:`** An array of post types and whether to generate breadcrumbs based on the post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, this is set to `true` for any post type rewrite slug that has `%` character in it.
+- **`mapRewriteTags:`** An array of post types and whether to generate breadcrumbs based on each post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, this is set to `true` for any post type rewrite slug that has `%` character in it.
 - **`postTaxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 - **`labels`:** An array of internationalized crumb labels that can be customized:
 	- **`home`:** `Home`
@@ -209,7 +209,7 @@ The `markupType` parameter of `breadcrumbs()->render()` can be one of three valu
 
 - **`html`:** Renders a plain HTML list of breadcrumbs. This is the default.
 - **`microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
-- **`rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs.
+- **`rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs (_recommended for most use cases_).
 
 This example uses RDFa schema attributes:
 
@@ -252,20 +252,16 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$breadcrumbs_config = new BreadcrumbsConfig(
-	mapRewriteTags: ['post' => false],
-	postTaxonomy:   ['post' => 'category']
-);
-
-$markup_config = new MarkupConfig(
-	showFirstItem: false,
-	linkLastItem:  true
-);
-
 echo breadcrumbs()->render(
-	breadcrumbsConfig: $breadcrumbs_config,
-	markupConfig:      $markup_config,
-	markupType:        'rdfa'
+	breadcrumbsConfig: new BreadcrumbsConfig(
+		mapRewriteTags: ['post' => false],
+		postTaxonomy:   ['post' => 'category']
+	),
+	markupConfig: new MarkupConfig(
+		showFirstItem: false,
+		linkLastItem:  true
+	),
+	markupType: 'rdfa'
 );
 ```
 
@@ -344,7 +340,7 @@ add_action('x3p0/breadcrumbs/boot', function(Application $plugin) {
 	$plugin->container()->get(QueryRegistry::class)->register('your-query',YourQuery::class);
 	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler',YourAssembler::class);
 	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb',YourCrumb::class);
-})
+});
 ```
 
 Please study the plugin's existing query, assembler, and crumb classes if you need to understand the conventions and, more precisely, the interfaces to use.

@@ -44,13 +44,6 @@
 		background: transparent;
 	}
 
-	// This zeroes out any margin/padding from global padding in core.
-	.editor-styles-wrapper &.alignfull > .wp-block-x3p0-breadcrumbs__trail,
-	&.alignfull > .wp-block-x3p0-breadcrumbs__trail {
-		margin: 0;
-		padding: 0;
-	}
-
 	// Content justification.
 	&.is-content-justification-right  { justify-content: flex-end;   }
 	&.is-content-justification-left   { justify-content: flex-start; }

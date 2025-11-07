@@ -154,8 +154,9 @@ echo breadcrumbs()->render(
 
 The `MarkupConfig` class accepts several parameters:
 
+- **`namespace`:** Used as a prefix for classes in a BEM-style structure (e.g., `{namespace}__{element}--{modifier}`). Defaults to `breadcrumbs` (note: the Breadcrumbs block uses `wp-x3p0-block-breadcrumbs`).
 - **`containerAttr`:** An array of HTML attributes and values to apply to the container:
-	- **`class`:** `breadcrumbs`
+	- **`class`:** `{namespace}`
 	- **`role`:** `navigation`
 	- **`aria-label`:** `Breadcrumbs`
 	- **`data-wp-interactive`:** `x3p0/breadcrumbs`
@@ -334,11 +335,12 @@ add_filter(
 There may be times when you need to register custom `Query`, `Assembler`, and `Crumb` classes for custom use cases. The following is a quick example of how to register these:
 
 ```php
+use X3P0\Breadcrumbs\Core\Application;
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Query\QueryRegistry;
 
-add_action('x3p0/breadcrumbs/boot', function($plugin) {
+add_action('x3p0/breadcrumbs/boot', function(Application $plugin) {
 	$plugin->container()->get(QueryRegistry::class)->register('your-query',YourQuery::class);
 	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler',YourAssembler::class);
 	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb',YourCrumb::class);

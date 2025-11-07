@@ -8,13 +8,13 @@
 ///
 /// Styles the breadcrumb trail.
 ///
-/// `.breadcrumbs` is the `<nav>` wrapping element.
-/// `.breadcrumbs__trail` is the `<ul>` element.
-/// `.breadcrumbs__crumb` is the `<li>` element.
-/// `.breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
-/// `.breadcrumbs__crumb-label` is the inner `<span>` element.
+/// `.wp-block-x3p0-breadcrumbs` is the `<nav>` wrapping element.
+/// `.wp-block-x3p0-breadcrumbs__trail` is the `<ul>` element.
+/// `.wp-block-x3p0-breadcrumbs__crumb` is the `<li>` element.
+/// `.wp-block-x3p0-breadcrumbs__crumb-content` is the `<a>`/`<span>` element.
+/// `.wp-block-x3p0-breadcrumbs__crumb-label` is the inner `<span>` element.
 ///
-.breadcrumbs {
+.wp-block-x3p0-breadcrumbs {
 	&,
 	&__trail,
 	&__crumb,
@@ -45,8 +45,8 @@
 	}
 
 	// This zeroes out any margin/padding from global padding in core.
-	.editor-styles-wrapper &.alignfull > .breadcrumbs__trail,
-	&.alignfull > .breadcrumbs__trail {
+	.editor-styles-wrapper &.alignfull > .wp-block-x3p0-breadcrumbs__trail,
+	&.alignfull > .wp-block-x3p0-breadcrumbs__trail {
 		margin: 0;
 		padding: 0;
 	}
@@ -58,9 +58,9 @@
 
 	// Hides the home crumb label.
 	&.hide-home-label :where(
-		.breadcrumbs__crumb--home,
-		.breadcrumbs__crumb--network
-	) .breadcrumbs__crumb-label {
+		.wp-block-x3p0-breadcrumbs__crumb--home,
+		.wp-block-x3p0-breadcrumbs__crumb--network
+	) .wp-block-x3p0-breadcrumbs__crumb-label {
 		clip: rect(1px, 1px, 1px, 1px);
 		word-wrap: normal !important;
 		border: 0;
@@ -178,6 +178,6 @@
 }
 
 // Flip icons for RTL.
-:where([dir=rtl], .rtl) .breadcrumbs__crumb:where(:not(:first-child))::before {
+:where([dir=rtl], .rtl) .wp-block-x3p0-breadcrumbs__crumb:where(:not(:first-child))::before {
 	transform: scaleX(-1);
 }

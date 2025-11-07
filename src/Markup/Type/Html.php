@@ -31,8 +31,9 @@ class Html extends AbstractMarkup
 		}
 
 		return sprintf(
-			'<nav %s><ol class="breadcrumbs__trail">%s</ol></nav>',
+			'<nav %s><ol class="%s__trail">%s</ol></nav>',
 			$this->containerAttr(),
+			esc_attr($this->config->namespace()),
 			$this->renderCrumbs()
 		);
 	}
@@ -63,7 +64,8 @@ class Html extends AbstractMarkup
 		}
 
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s"%s>%s</li>',
+			'<li class="%1$s__crumb %1$s__crumb--%2$s"%3$s>%4$s</li>',
+			esc_attr($this->config->namespace()),
 			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb)
@@ -77,20 +79,26 @@ class Html extends AbstractMarkup
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label">%s</span>',
+			'<span class="%s__crumb-label">%s</span>',
+			esc_attr($this->config->namespace()),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content">%s</a>',
+				'<a href="%s" class="%s__crumb-content">%s</a>',
 				esc_url($crumb->getUrl()),
+				esc_attr($this->config->namespace()),
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
-		return '<span class="breadcrumbs__crumb-content">' . $label . '</span>';
+		return sprintf(
+			'<span class="%s__crumb-content">%s</span>',
+			esc_attr($this->config->namespace()),
+			$label
+		);
 	}
 }

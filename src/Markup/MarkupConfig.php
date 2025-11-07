@@ -23,14 +23,17 @@ final class MarkupConfig
 	 * Sets up the initial config state.
 	 */
 	public function __construct(
-		private array $containerAttr = [],
-		private bool  $showOnFront   = false,
-		private bool  $showFirstItem = true,
-		private bool  $showLastItem  = true,
-		private bool  $linkLastItem  = false
+		private string $namespace     = 'breadcrumbs',
+		private array  $containerAttr = [],
+		private bool   $showOnFront   = false,
+		private bool   $showFirstItem = true,
+		private bool   $showLastItem  = true,
+		private bool   $linkLastItem  = false
 	) {
+		$this->namespace = sanitize_html_class($this->namespace, 'breadcrumbs');
+
 		$this->containerAttr = array_merge([
-			'class'                 => 'breadcrumbs',
+			'class'                 => $this->namespace,
 			'role'                  => 'navigation',
 			'aria-label'            => __('Breadcrumbs', 'x3p0-breadcrumbs'),
 			'data-wp-interactive'   => 'x3p0/breadcrumbs',
@@ -44,12 +47,21 @@ final class MarkupConfig
 	public static function fromArray(array $options): self
 	{
 		return new self(...array_intersect_key($options, array_flip([
+			'namespace',
 			'containerAttr',
 			'showOnFront',
 			'showFirstItem',
 			'showLastItem',
 			'linkLastItem'
 		])));
+	}
+
+	/**
+	 * Returns the markup namespace, which can be used for class prefixes.
+	 */
+	public function namespace(): string
+	{
+		return $this->namespace;
 	}
 
 	/**

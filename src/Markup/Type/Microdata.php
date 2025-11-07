@@ -30,8 +30,9 @@ final class Microdata extends Html
 		}
 
 		return sprintf(
-			'<nav %s><ol class="breadcrumbs__trail" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
+			'<nav %s><ol class="%s__trail" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
 			$this->containerAttr(),
+			esc_attr($this->config->namespace()),
 			$this->renderCrumbs()
 		);
 	}
@@ -46,10 +47,11 @@ final class Microdata extends Html
 		}
 
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
-				%s
-				<meta itemprop="position" content="%s"/>
+			'<li class="%1$s__crumb %1$s__crumb--%2$s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%3$s>
+				%4$s
+				<meta itemprop="position" content="%5$s"/>
 			</li>',
+			esc_attr($this->config->namespace()),
 			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
@@ -64,22 +66,25 @@ final class Microdata extends Html
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label" itemprop="name">%s</span>',
+			'<span class="%s__crumb-label" itemprop="name">%s</span>',
+			esc_attr($this->config->namespace()),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content" itemprop="item">%s</a>',
+				'<a href="%s" class="%s__crumb-content" itemprop="item">%s</a>',
 				esc_url($crumb->getUrl()),
+				esc_attr($this->config->namespace()),
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
 		return sprintf(
-			'<span class="breadcrumbs__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
+			'<span class="%s__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
+			esc_attr($this->config->namespace()),
 			esc_url($crumb->getUrl()),
 			$label
 		);

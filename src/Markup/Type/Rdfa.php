@@ -30,8 +30,9 @@ final class Rdfa extends Html
 		}
 
 		return sprintf(
-			'<nav %s><ol class="breadcrumbs__trail" vocab="https://schema.org/" typeof="BreadcrumbList">%s</ol></nav>',
+			'<nav %s><ol class="%s__trail" vocab="https://schema.org/" typeof="BreadcrumbList">%s</ol></nav>',
 			$this->containerAttr(),
+			esc_attr($this->config->namespace()),
 			$this->renderCrumbs()
 		);
 	}
@@ -46,10 +47,11 @@ final class Rdfa extends Html
 		}
 
 		return sprintf(
-			'<li class="breadcrumbs__crumb breadcrumbs__crumb--%s" property="itemListElement" typeof="ListItem"%s>
-				%s
-				<meta property="position" content="%s"/>
+			'<li class="%1$s__crumb %1$s__crumb--%2$s" property="itemListElement" typeof="ListItem"%3$s>
+				%4$s
+				<meta property="position" content="%5$s"/>
 			</li>',
+			esc_attr($this->config->namespace()),
 			esc_attr($this->crumbs->currentType()),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
@@ -64,20 +66,26 @@ final class Rdfa extends Html
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="breadcrumbs__crumb-label" property="name">%s</span>',
+			'<span class="%s__crumb-label" property="name">%s</span>',
+			esc_attr($this->config->namespace()),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="breadcrumbs__crumb-content" property="item" typeof="WebPage">%s</a>',
+				'<a href="%s" class="%s__crumb-content" property="item" typeof="WebPage">%s</a>',
 				esc_url($crumb->getUrl()),
+				esc_attr($this->config->namespace()),
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
-		return '<span class="breadcrumbs__crumb-content">' . $label . '</span>';
+		return sprintf(
+			'<span class="%s__crumb-content">%s</span>',
+			esc_attr($this->config->namespace()),
+			$label
+		);
 	}
 }

@@ -28,7 +28,7 @@ const preventDefault = (event) => event.preventDefault();
  * @constructor
  */
 const CrumbLink = ({ children }) => (
-	<a className="breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
+	<a className="wp-block-x3p0-breadcrumbs__crumb-content" href="#breadcrumb-link" onClick={preventDefault}>
 		{children}
 	</a>
 );
@@ -78,7 +78,7 @@ const BreadcrumbsContent = ({
 	const homeLabel = (
 		<RichText
 			tagName="span"
-			className="breadcrumbs__crumb-label"
+			className="wp-block-x3p0-breadcrumbs__crumb-label"
 			aria-label={__('Home breadcrumb label', 'x3p0-breadcrumbs')}
 			placeholder={__('Home', 'x3p0-breadcrumbs')}
 			value={homeValue}
@@ -102,39 +102,39 @@ const BreadcrumbsContent = ({
 
 	return (
 		<nav {...innerBlocksProps}>
-			<ol className="breadcrumbs__trail">
+			<ol className="wp-block-x3p0-breadcrumbs__trail">
 				{showTrailStart && (
-					<li className="breadcrumbs__crumb breadcrumbs__crumb--home">
+					<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--home">
 						<CrumbLink>
 							{homeLabel}
 						</CrumbLink>
 					</li>
 				)}
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+				<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
 					<CrumbLink>
-						<span className="breadcrumbs__crumb-label">
+						<span className="wp-block-x3p0-breadcrumbs__crumb-label">
 							{__('Ancestor', 'x3p0-breadcrumbs')}
 						</span>
 					</CrumbLink>
 				</li>
-				<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+				<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
 					<CrumbLink>
-						<span className="breadcrumbs__crumb-label">
+						<span className="wp-block-x3p0-breadcrumbs__crumb-label">
 							{__('Parent', 'x3p0-breadcrumbs')}
 						</span>
 					</CrumbLink>
 				</li>
 				{showTrailEnd && (
-					<li className="breadcrumbs__crumb breadcrumbs__crumb--post">
+					<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
 						{linkTrailEnd ? (
 							<CrumbLink>
-								<span className="breadcrumbs__crumb-label">
+								<span className="wp-block-x3p0-breadcrumbs__crumb-label">
 									{__('Current', 'x3p0-breadcrumbs')}
 								</span>
 							</CrumbLink>
 						) : (
-							<span className="breadcrumbs__crumb-content">
-								<span className="breadcrumbs__crumb-label">
+							<span className="wp-block-x3p0-breadcrumbs__crumb-content">
+								<span className="wp-block-x3p0-breadcrumbs__crumb-label">
 									{__('Current', 'x3p0-breadcrumbs')}
 								</span>
 							</span>

@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
   - `x3p0/breadcrumbs/boot` - Fires just after the plugin's default services providers have been booted.
 - Filter hooks:
   - `x3p0/breadcrumbs/resolve/query-type` - Allows filtering the primary query type used to determine the breadcrumbs for the current page.
+- `namespace` argument for the markup configuration, which allows controlling the HTML class prefixes or each element (defaults to `breadcrumbs`).
 
 ### Changed
 
@@ -42,6 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 - The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. These have always been the only options. It's just defined in `block.json` now.
 - The `404 Not Found` label has been changed to `Page not found` to match WordPress's default output for 404 document titles.
 - The plugin now uses Composer for autoloading instead of the previous custom `Autoload` class.
+- All nested elements for the block now use the `.wp-block-x3p0-breadcrumbs__` prefix instead of `.breadcrumbs__`.
 
 ### Fixed
 

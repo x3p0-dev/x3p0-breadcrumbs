@@ -24,10 +24,10 @@ final class MarkupConfig
 	 */
 	public function __construct(
 		private array $containerAttr = [],
-		private bool $showOnFront = false,
-		private bool $showFirstItem = true,
-		private bool $showLastItem = true,
-		private bool $linkLastItem = false
+		private bool  $showOnFront   = false,
+		private bool  $showFirstItem = true,
+		private bool  $showLastItem  = true,
+		private bool  $linkLastItem  = false
 	) {
 		$this->containerAttr = array_merge([
 			'class'                 => 'breadcrumbs',

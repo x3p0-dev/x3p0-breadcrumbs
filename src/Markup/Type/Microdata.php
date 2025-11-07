@@ -30,9 +30,9 @@ final class Microdata extends Html
 		}
 
 		return sprintf(
-			'<nav %s><ol class="%s__trail" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
+			'<nav %s><ol class="%s" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
 			$this->containerAttr(),
-			esc_attr($this->config->namespace()),
+			esc_attr($this->scopeClasses('trail')),
 			$this->renderCrumbs()
 		);
 	}
@@ -47,12 +47,14 @@ final class Microdata extends Html
 		}
 
 		return sprintf(
-			'<li class="%1$s__crumb %1$s__crumb--%2$s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%3$s>
-				%4$s
-				<meta itemprop="position" content="%5$s"/>
+			'<li class="%1s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
+				%s
+				<meta itemprop="position" content="%s"/>
 			</li>',
-			esc_attr($this->config->namespace()),
-			esc_attr($this->crumbs->currentType()),
+			esc_attr($this->scopeClasses([
+				'crumb',
+				'crumb--' . $this->crumbs->currentType()
+			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
 			esc_attr($this->crumbs->position())
@@ -66,25 +68,25 @@ final class Microdata extends Html
 	{
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
-			'<span class="%s__crumb-label" itemprop="name">%s</span>',
-			esc_attr($this->config->namespace()),
+			'<span class="%s" itemprop="name">%s</span>',
+			esc_attr($this->scopeClasses('crumb-label')),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="%s__crumb-content" itemprop="item">%s</a>',
+				'<a href="%s" class="%s" itemprop="item">%s</a>',
 				esc_url($crumb->getUrl()),
-				esc_attr($this->config->namespace()),
+				esc_attr($this->scopeClasses('crumb-content')),
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
 		return sprintf(
-			'<span class="%s__crumb-content" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
-			esc_attr($this->config->namespace()),
+			'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
+			esc_attr($this->scopeClasses('crumb-content')),
 			esc_url($crumb->getUrl()),
 			$label
 		);

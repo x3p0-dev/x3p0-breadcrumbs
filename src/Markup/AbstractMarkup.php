@@ -118,4 +118,17 @@ abstract class AbstractMarkup implements Markup
 
 		return ! $is_last || $this->config->linkLastItem();
 	}
+
+	/**
+	 * Helper method for prefixing classes with the namespace.
+	 */
+	protected function scopeClasses(string|array $class): string
+	{
+		$namespace = $this->config->namespace();
+
+		return implode(' ', array_map(
+			fn($className) => "{$namespace}__{$className}",
+			(array) $class
+		));
+	}
 }

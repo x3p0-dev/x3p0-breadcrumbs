@@ -64,28 +64,30 @@ final class Breadcrumbs implements Block
 	 */
 	private function getWrapperAttributes(): array
 	{
-		$classes = [];
+		// Get the block attributes from block supports.
+		$attr = WP_Block_Supports::get_instance()->apply_block_supports();
 
-		// If there is a selected home icon, define the class.
-		if (
-			$this->attributes['showTrailStart']
-			&& $this->attributes['homeIcon']
-		) {
-			$classes['home'] = sprintf(
+		// Define the classes array, pulling from block supports if it
+		// has any classes already.
+		$classes = isset($attr['class']) ? explode(' ', $attr['class']) : [];
+
+		// If there is a selected home icon, define the class. Also,
+		// potentially add the class for hiding the home label, which
+		// should only ever be triggered in the case of an icon.
+		if ($this->attributes['showTrailStart'] && $this->attributes['homeIcon']) {
+			$classes[] = sprintf(
 				'has-home-%s',
 				$this->attributes['homeIcon']
 			);
 
-			// The option for showing the home label should only
-			// ever be triggered if there's an icon set for it.
 			if (! $this->attributes['showHomeLabel']) {
-				$classes['home-label'] = 'hide-home-label';
+				$classes[] = 'hide-home-label';
 			}
 		}
 
 		// If there's a selected separator, define the class for it.
 		if ($this->attributes['separatorIcon']) {
-			$classes['sep'] = sprintf(
+			$classes[] = sprintf(
 				'has-sep-%s',
 				$this->attributes['separatorIcon']
 			);
@@ -93,22 +95,14 @@ final class Breadcrumbs implements Block
 
 		// If there's a selected content justification, add a class.
 		if (! empty($this->attributes['justifyContent'])) {
-			$classes['justify'] = sprintf(
+			$classes[] = sprintf(
 				'is-content-justification-%s',
 				$this->attributes['justifyContent']
 			);
 		}
 
-		// Get the block attributes from block supports.
-		$attr = WP_Block_Supports::get_instance()->apply_block_supports();
-
-		// If there's a class from the block attributes, explode it and
-		// append the results to our array of classes.
-		if (isset($attr['class'])) {
-			$classes = $classes + explode(' ', $attr['class']);
-		}
-
-		// Join all classes into a single string.
+		// Join all classes into a single string and re-add them to the
+		// original attributes array.
 		$attr['class'] = implode(' ', $classes);
 
 		return $attr;

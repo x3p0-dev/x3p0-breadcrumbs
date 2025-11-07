@@ -66,7 +66,7 @@ final class Breadcrumbs implements Block
 		// Set up some default class names.
 		$classes = ['breadcrumbs' => 'breadcrumbs'];
 
-		// If there is a selected home prefix, define the class.
+		// If there is a selected home icon, define the class.
 		if (
 			$this->attributes['showTrailStart']
 			&& $this->attributes['homeIcon']
@@ -76,8 +76,8 @@ final class Breadcrumbs implements Block
 				$this->attributes['homeIcon']
 			);
 
-			// The option for showing the home label should only ever be
-			// triggered if there's an icon set for it.
+			// The option for showing the home label should only
+			// ever be triggered if there's an icon set for it.
 			if (! $this->attributes['showHomeLabel']) {
 				$classes['home-label'] = 'hide-home-label';
 			}

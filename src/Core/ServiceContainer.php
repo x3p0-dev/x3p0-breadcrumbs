@@ -229,14 +229,12 @@ final class ServiceContainer implements Container
 	 */
 	private function resolveNonTyped(ReflectionParameter $param): mixed
 	{
-		if ($param->isDefaultValueAvailable()) {
-			return $param->getDefaultValue();
-		}
-
-		throw new Exception(esc_html(sprintf(
-			// Translators: %s is a parameter name.
-			__('Cannot resolve parameter %s.', 'x3p0-breadcrumbs'),
-			$param->getName()
-		)));
+		return $param->isDefaultValueAvailable()
+			? $param->getDefaultValue()
+			: throw new Exception(esc_html(sprintf(
+				// Translators: %s is a parameter name.
+				__('Cannot resolve parameter %s.', 'x3p0-breadcrumbs'),
+				$param->getName()
+			)));
 	}
 }

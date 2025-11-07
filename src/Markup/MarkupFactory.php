@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Markup\Markup;
-use X3P0\Breadcrumbs\Markup\MarkupRegistry;
-
 /**
  * Factory class for making markup objects.
  */

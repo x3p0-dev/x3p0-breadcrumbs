@@ -24,7 +24,7 @@ use X3P0\Breadcrumbs\Rest\RestServiceProvider;
 
 /**
  * The Plugin class is an implementation of the Application interface. It's used
- * to bootstrap the plugin and register the default service providers.
+ * to register and boot the default service providers, bootstrapping the plugin.
  */
 final class Plugin implements Application
 {
@@ -82,14 +82,14 @@ final class Plugin implements Application
 	/**
 	 * @inheritDoc
 	 */
-	public function register(string|object $provider): void
+	public function register(ServiceProvider|string $provider): void
 	{
-		if (! is_subclass_of($provider, ServiceProvider::class)) {
-			return;
+		if (is_string($provider) && is_subclass_of($provider, ServiceProvider::class)) {
+			$provider = new $provider($this->container);
 		}
 
-		if (is_string($provider)) {
-			$provider = new $provider($this->container);
+		if (! $provider instanceof ServiceProvider) {
+			return;
 		}
 
 		$provider->register();

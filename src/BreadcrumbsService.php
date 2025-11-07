@@ -40,13 +40,13 @@ final class BreadcrumbsService
 		MarkupConfig|array $markupConfig = [],
 		string $markupType = MarkupRegistrar::HTML
 	): string {
-		$breadcrumbsConfig = is_array($breadcrumbsConfig)
-			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)
-			: $breadcrumbsConfig;
+		if (is_array($breadcrumbsConfig)) {
+			$breadcrumbsConfig = BreadcrumbsConfig::fromArray($breadcrumbsConfig);
+		}
 
-		$markupConfig = is_array($markupConfig)
-			? MarkupConfig::fromArray($markupConfig)
-			: $markupConfig;
+		if (is_array($markupConfig)) {
+			$markupConfig = MarkupConfig::fromArray($markupConfig);
+		}
 
 		$breadcrumbs = $this->breadcrumbsFactory->make([
 			'config' => $breadcrumbsConfig
@@ -57,6 +57,6 @@ final class BreadcrumbsService
 			'config' => $markupConfig
 		]);
 
-		return $markup->render();
+		return $markup?->render() ?? '';
 	}
 }

@@ -15,6 +15,10 @@ namespace X3P0\Breadcrumbs\Core;
 
 use X3P0\Breadcrumbs\Contracts\Bootable;
 
+/**
+ * Defines the application interface, which should be a wrapper for a container
+ * implementation that provides access to registering service providers.
+ */
 interface Application extends Bootable
 {
 	/**
@@ -25,5 +29,5 @@ interface Application extends Bootable
 	/**
 	 * Register a service provider with the application.
 	 */
-	public function register(string|ServiceProvider $provider): void;
+	public function register(ServiceProvider|string $provider): void;
 }

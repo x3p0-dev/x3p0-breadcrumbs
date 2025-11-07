@@ -24,6 +24,10 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
  */
 final class BreadcrumbsContext
 {
+	/**
+	 * Collects the various instances needed for building breadcrumbs as
+	 * class properties.
+	 */
 	public function __construct(
 		private CrumbCollection   $crumbs,
 		private QueryFactory      $queryFactory,

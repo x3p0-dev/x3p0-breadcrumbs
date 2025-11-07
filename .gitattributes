@@ -47,6 +47,7 @@ tests/ export-ignore
 .gitignore export-ignore
 .phpcs.xml export-ignore
 .phpcs.xml.dist export-ignore
+.phpstorm.meta.php export-ignore
 composer.json export-ignore
 composer.lock export-ignore
 package-lock.json export-ignore

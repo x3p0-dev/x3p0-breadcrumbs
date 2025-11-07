@@ -45,12 +45,12 @@ final class Breadcrumbs implements Block
 				'labels'         => $this->attributes['labels']         ?? []
 			],
 			markupConfig: [
-				'namespace'     => 'wp-block-x3p0-breadcrumbs',
-				'containerAttr' => $this->getWrapperAttributes(),
-				'showOnFront'   => $this->attributes['showOnHomepage'] ?? false,
-				'showFirstItem' => $this->attributes['showTrailStart'] ?? true,
-				'showLastItem'  => $this->attributes['showTrailEnd']   ?? true,
-				'linkLastItem'  => $this->attributes['linkTrailEnd']   ?? false
+				'namespace'      => 'wp-block-x3p0-breadcrumbs',
+				'containerAttr'  => $this->getWrapperAttributes(),
+				'showOnFront'    => $this->attributes['showOnHomepage'] ?? false,
+				'showFirstCrumb' => $this->attributes['showTrailStart'] ?? true,
+				'showLastCrumb'  => $this->attributes['showTrailEnd']   ?? true,
+				'linkLastCrumb'  => $this->attributes['linkTrailEnd']   ?? false
 			],
 			markupType: $this->attributes['markup'] ?? MarkupRegistrar::RDFA
 		);

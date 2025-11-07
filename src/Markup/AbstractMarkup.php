@@ -89,8 +89,8 @@ abstract class AbstractMarkup implements Markup
 		}
 
 		$visible_count = $this->crumbs->count()
-			- ($this->config->showFirstItem() ? 0 : 1)
-			- ($this->config->showLastItem() ? 0 : 1);
+			- ($this->config->showFirstCrumb() ? 0 : 1)
+			- ($this->config->showLastCrumb() ? 0 : 1);
 
 		return $visible_count > 0;
 	}
@@ -108,8 +108,8 @@ abstract class AbstractMarkup implements Markup
 		}
 
 		return ! (
-			($this->crumbs->isFirst() && ! $this->config->showFirstItem())
-			|| ($this->crumbs->isLast() && ! $this->config->showLastItem())
+			($this->crumbs->isFirst() && ! $this->config->showFirstCrumb())
+			|| ($this->crumbs->isLast() && ! $this->config->showLastCrumb())
 		);
 	}
 
@@ -125,7 +125,7 @@ abstract class AbstractMarkup implements Markup
 
 		$is_last = $this->crumbs->count() === $this->crumbs->position();
 
-		return ! $is_last || $this->config->linkLastItem();
+		return ! $is_last || $this->config->linkLastCrumb();
 	}
 
 	/**

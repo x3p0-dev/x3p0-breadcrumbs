@@ -162,9 +162,9 @@ The `MarkupConfig` class accepts several parameters:
 	- **`data-wp-interactive`:** `x3p0/breadcrumbs`
 	- **`data-wp-router-region`:** `breadcrumbs`
 - **`showOnFront`:** Whether to show the breadcrumbs on the site front page. Defaults to `false`.
-- **`showFirstItem`:** Whether to display the first (homepage) breadcrumb. Defaults to `true`.
-- **`showLastItem`:** Whether to display the last (current page) breadcrumb. Defaults to `true`.
-- **`linkLastItem`:** Whether to link the last (current page) breadcrumb. Defaults to `false`. The `showLastItem` parameter must be enabled for this to work.
+- **`showFirstCrumb`:** Whether to display the first (homepage) breadcrumb. Defaults to `true`.
+- **`showLastCrumb`:** Whether to display the last (current page) breadcrumb. Defaults to `true`.
+- **`linkLastCrumb`:** Whether to link the last (current page) breadcrumb. Defaults to `false`. The `showLastCrumb` parameter must be enabled for this to work.
 
 Here is an example of using array-style formatting to disable the first breadcrumb and link the last one:
 
@@ -172,8 +172,8 @@ Here is an example of using array-style formatting to disable the first breadcru
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $markup_config = [
-	'showFirstItem' => false,
-	'linkLastItem'  => true
+	'showFirstCrumb' => false,
+	'linkLastCrumb'  => true
 ];
 
 echo breadcrumbs()->render(
@@ -190,8 +190,8 @@ use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $markup_config = new MarkupConfig(
-	showFirstItem: false,
-	linkLastItem:  true
+	showFirstCrumb: false,
+	linkLastCrumb:  true
 );
 
 echo breadcrumbs()->render(
@@ -238,8 +238,8 @@ echo breadcrumbs()->render(
 		'postTaxonomy'   => ['post' => 'category']
 	],
 	markupConfig: [
-		'showFirstItem' => false,
-		'linkLastItem'  => true
+		'showFirstCrumb' => false,
+		'linkLastCrumb'  => true
 	],
 	markupType: 'rdfa'
 );
@@ -258,8 +258,8 @@ echo breadcrumbs()->render(
 		postTaxonomy:   ['post' => 'category']
 	),
 	markupConfig: new MarkupConfig(
-		showFirstItem: false,
-		linkLastItem:  true
+		showFirstCrumb: false,
+		linkLastCrumb:  true
 	),
 	markupType: 'rdfa'
 );

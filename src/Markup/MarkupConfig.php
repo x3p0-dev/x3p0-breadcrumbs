@@ -23,12 +23,12 @@ final class MarkupConfig
 	 * Sets up the initial config state.
 	 */
 	public function __construct(
-		private string $namespace     = 'breadcrumbs',
-		private array  $containerAttr = [],
-		private bool   $showOnFront   = false,
-		private bool   $showFirstItem = true,
-		private bool   $showLastItem  = true,
-		private bool   $linkLastItem  = false
+		private string $namespace      = 'breadcrumbs',
+		private array  $containerAttr  = [],
+		private bool   $showOnFront    = false,
+		private bool   $showFirstCrumb = true,
+		private bool   $showLastCrumb  = true,
+		private bool   $linkLastCrumb  = false
 	) {
 		$this->namespace = sanitize_html_class($this->namespace, 'breadcrumbs');
 
@@ -50,9 +50,9 @@ final class MarkupConfig
 			'namespace',
 			'containerAttr',
 			'showOnFront',
-			'showFirstItem',
-			'showLastItem',
-			'linkLastItem'
+			'showFirstCrumb',
+			'showLastCrumb',
+			'linkLastCrumb'
 		])));
 	}
 
@@ -83,24 +83,24 @@ final class MarkupConfig
 	/**
 	 * Determines whether to show the first breadcrumb in the trail.
 	 */
-	public function showFirstItem(): bool
+	public function showFirstCrumb(): bool
 	{
-		return $this->showFirstItem;
+		return $this->showFirstCrumb;
 	}
 
 	/**
 	 * Determines whether to show the last breadcrumb in the  trail.
 	 */
-	public function showLastItem(): bool
+	public function showLastCrumb(): bool
 	{
-		return $this->showLastItem;
+		return $this->showLastCrumb;
 	}
 
 	/**
 	 * Determines whether to link the last breadcrumb in the trail.
 	 */
-	public function linkLastItem(): bool
+	public function linkLastCrumb(): bool
 	{
-		return $this->linkLastItem;
+		return $this->linkLastCrumb;
 	}
 }

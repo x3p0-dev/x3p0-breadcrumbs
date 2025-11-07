@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Core;
 
-use Closure;
-
+/**
+ * Defines the dependency injection container interface, which allows for
+ * binding concrete implementations to abstracts. The container supports
+ * transient, singleton, and single-instance bindings.
+ */
 interface Container
 {
 	/**
@@ -51,14 +54,4 @@ interface Container
 	 * Check if an abstract is bound.
 	 */
 	public function has(string $abstract): bool;
-
-	/**
-	 * Check if an abstract is bound as a singleton.
-	 */
-	public function isShared(string $abstract): bool;
-
-	/**
-	 * Determine if the given concrete is buildable.
-	 */
-	public function isBuildable(mixed $concrete): bool;
 }

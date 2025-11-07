@@ -123,18 +123,18 @@ final class ServiceContainer implements Container
 	}
 
 	/**
-	 * @inheritDoc
+	 * Check if an abstract is bound as a singleton.
 	 */
-	public function isShared(string $abstract): bool
+	private function isShared(string $abstract): bool
 	{
 		return isset($this->bindings[$abstract])
 			&& $this->bindings[$abstract]['shared'] === true;
 	}
 
 	/**
-	 * @inheritDoc
+	 * Determine if the given concrete is buildable.
 	 */
-	public function isBuildable(mixed $concrete): bool
+	private function isBuildable(mixed $concrete): bool
 	{
 		return $concrete instanceof Closure
 			|| (is_string($concrete) && class_exists($concrete));

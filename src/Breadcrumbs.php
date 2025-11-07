@@ -50,11 +50,9 @@ final class Breadcrumbs
 	 */
 	public function generate(): CrumbCollection
 	{
-		$crumbs = new CrumbCollection();
-
 		// Create the context that will be passed to queries/assemblers
 		$context = new BreadcrumbsContext(
-			crumbs:           $crumbs,
+			crumbs:           new CrumbCollection(),
 			queryFactory:     $this->queryFactory,
 			assemblerFactory: $this->assemblerFactory,
 			crumbFactory:     $this->crumbFactory,
@@ -72,7 +70,7 @@ final class Breadcrumbs
 			$context->query($queryType);
 		}
 
-		return $crumbs;
+		return $context->crumbs();
 	}
 
 	/**

@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 
 ### Changed
 
+- A complete overhaul of the public-facing developer API. The plugin is no longer compatible with classes/functions earlier than 4.0.0 for people who were extending it with PHP.
 - Because the new Rewrite Tags and Post Taxonomies block options were added, the block no longer defaults to display a category for posts. This can be set manually by the user, within patterns, or within theme templates.
 - Under the hood, for the same reason as above, the PHP code no longer auto-sets the category taxonomy for posts when the permalink structure is set to `%postname%`. This was a relic from the code when users didn't have direct control over the settings.
 - All block panels now use the Tools Panel component, which brings them up to date with the Core blocks in WordPress 6.9.

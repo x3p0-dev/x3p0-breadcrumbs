@@ -23,7 +23,7 @@ final class BreadcrumbsFactory
 	/**
 	 * Sets up the initial factory state.
 	 */
-	public function __construct(private Container $container)
+	public function __construct(private readonly Container $container)
 	{}
 
 	/**

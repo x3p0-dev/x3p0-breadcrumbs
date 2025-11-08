@@ -22,7 +22,7 @@ final class CrumbFactory
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(private CrumbRegistry $crumbRegistry)
+	public function __construct(private readonly CrumbRegistry $crumbRegistry)
 	{}
 
 	/**

@@ -39,10 +39,10 @@ final class Breadcrumbs
 	 * Sets up initial object state.
 	 */
 	public function __construct(
-		private QueryFactory      $queryFactory,
-		private AssemblerFactory  $assemblerFactory,
-		private CrumbFactory      $crumbFactory,
-		private BreadcrumbsConfig $config
+		private readonly QueryFactory      $queryFactory,
+		private readonly AssemblerFactory  $assemblerFactory,
+		private readonly CrumbFactory      $crumbFactory,
+		private readonly BreadcrumbsConfig $config
 	) {}
 
 	/**

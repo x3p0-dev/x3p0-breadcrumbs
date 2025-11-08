@@ -23,12 +23,12 @@ final class MarkupConfig
 	 * Sets up the initial config state.
 	 */
 	public function __construct(
-		private string $namespace      = 'breadcrumbs',
-		private array  $containerAttr  = [],
-		private bool   $showOnFront    = false,
-		private bool   $showFirstCrumb = true,
-		private bool   $showLastCrumb  = true,
-		private bool   $linkLastCrumb  = false
+		private string        $namespace      = 'breadcrumbs',
+		private array         $containerAttr  = [],
+		private readonly bool $showOnFront    = false,
+		private readonly bool $showFirstCrumb = true,
+		private readonly bool $showLastCrumb  = true,
+		private readonly bool $linkLastCrumb  = false
 	) {
 		$this->namespace = sanitize_html_class($this->namespace, 'breadcrumbs');
 

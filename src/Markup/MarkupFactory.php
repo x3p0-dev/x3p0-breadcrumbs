@@ -21,7 +21,7 @@ final class MarkupFactory
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(private MarkupRegistry $markupRegistry)
+	public function __construct(private readonly MarkupRegistry $markupRegistry)
 	{}
 
 	/**

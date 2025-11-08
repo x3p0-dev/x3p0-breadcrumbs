@@ -29,11 +29,11 @@ final class BreadcrumbsContext
 	 * class properties.
 	 */
 	public function __construct(
-		private CrumbCollection   $crumbs,
-		private QueryFactory      $queryFactory,
-		private AssemblerFactory  $assemblerFactory,
-		private CrumbFactory      $crumbFactory,
-		private BreadcrumbsConfig $config
+		private readonly CrumbCollection   $crumbs,
+		private readonly QueryFactory      $queryFactory,
+		private readonly AssemblerFactory  $assemblerFactory,
+		private readonly CrumbFactory      $crumbFactory,
+		private readonly BreadcrumbsConfig $config
 	) {}
 
 	/**

@@ -22,7 +22,7 @@ final class AssemblerFactory
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(private AssemblerRegistry $assemblerRegistry)
+	public function __construct(private readonly AssemblerRegistry $assemblerRegistry)
 	{}
 
 	/**

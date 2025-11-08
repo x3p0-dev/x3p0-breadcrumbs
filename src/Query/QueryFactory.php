@@ -22,7 +22,7 @@ final class QueryFactory
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(private QueryRegistry $queryRegistry)
+	public function __construct(private readonly QueryRegistry $queryRegistry)
 	{}
 
 	/**

@@ -23,10 +23,10 @@ final class BreadcrumbsConfig
 	 * Sets up the initial config state.
 	 */
 	public function __construct(
-		private array $mapRewriteTags = [],
-		private array $postTaxonomy   = [],
-		private array $labels         = [],
-		private bool  $network        = false
+		private array          $mapRewriteTags = [],
+		private readonly array $postTaxonomy   = [],
+		private array          $labels         = [],
+		private readonly bool  $network        = false
 	) {
 		$this->labels = array_merge($this->defaultLabels(), $this->labels);
 		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $this->mapRewriteTags);

@@ -35,7 +35,7 @@
 	-->
 	<rule ref="PHPCompatibilityWP">
 		<!-- Configure PHP version to test. -->
-		<config name="testVersion" value="8.0-"/>
+		<config name="testVersion" value="8.1-"/>
 		<include-pattern>*\.php$</include-pattern>
 	</rule>
 

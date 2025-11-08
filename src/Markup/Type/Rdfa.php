@@ -32,7 +32,7 @@ final class Rdfa extends Html
 		return sprintf(
 			'<nav %s><ol class="%s" vocab="https://schema.org/" typeof="BreadcrumbList">%s</ol></nav>',
 			$this->containerAttr(),
-			esc_attr($this->scopeClasses('trail')),
+			esc_attr($this->scopeClass('trail')),
 			$this->renderCrumbs()
 		);
 	}
@@ -51,7 +51,7 @@ final class Rdfa extends Html
 				%s
 				<meta property="position" content="%s"/>
 			</li>',
-			esc_attr($this->scopeClasses([
+			esc_attr($this->scopeClass([
 				'crumb',
 				'crumb--' . $this->crumbs->currentType()
 			])),
@@ -69,7 +69,7 @@ final class Rdfa extends Html
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="%s" property="name">%s</span>',
-			esc_attr($this->scopeClasses('crumb-label')),
+			esc_attr($this->scopeClass('crumb-label')),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
@@ -78,7 +78,7 @@ final class Rdfa extends Html
 			return sprintf(
 				'<a href="%s" class="%s" property="item" typeof="WebPage">%s</a>',
 				esc_url($crumb->getUrl()),
-				esc_attr($this->scopeClasses('crumb-content')),
+				esc_attr($this->scopeClass('crumb-content')),
 				$label
 			);
 		}
@@ -86,7 +86,7 @@ final class Rdfa extends Html
 		// Return an unlinked span if there's no URL.
 		return sprintf(
 			'<span class="%s">%s</span>',
-			esc_attr($this->scopeClasses('crumb-content')),
+			esc_attr($this->scopeClass('crumb-content')),
 			$label
 		);
 	}

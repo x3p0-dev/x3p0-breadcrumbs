@@ -131,7 +131,7 @@ abstract class AbstractMarkup implements Markup
 	/**
 	 * Helper method for prefixing classes with the namespace.
 	 */
-	protected function scopeClasses(string|array $class): string
+	protected function scopeClass(string|array $class): string
 	{
 		$namespace = $this->config->namespace();
 

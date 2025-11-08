@@ -33,7 +33,7 @@ class Html extends AbstractMarkup
 		return sprintf(
 			'<nav %s><ol class="%s">%s</ol></nav>',
 			$this->containerAttr(),
-			esc_attr($this->scopeClasses('trail')),
+			esc_attr($this->scopeClass('trail')),
 			$this->renderCrumbs()
 		);
 	}
@@ -65,7 +65,7 @@ class Html extends AbstractMarkup
 
 		return sprintf(
 			'<li class="%s"%s>%s</li>',
-			esc_attr($this->scopeClasses([
+			esc_attr($this->scopeClass([
 				'crumb',
 				'crumb--' . $this->crumbs->currentType()
 			])),
@@ -82,7 +82,7 @@ class Html extends AbstractMarkup
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="%s">%s</span>',
-			esc_attr($this->scopeClasses('crumb-label')),
+			esc_attr($this->scopeClass('crumb-label')),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
@@ -91,7 +91,7 @@ class Html extends AbstractMarkup
 			return sprintf(
 				'<a href="%s" class="%s">%s</a>',
 				esc_url($crumb->getUrl()),
-				esc_attr($this->scopeClasses('crumb-content')),
+				esc_attr($this->scopeClass('crumb-content')),
 				$label
 			);
 		}
@@ -99,7 +99,7 @@ class Html extends AbstractMarkup
 		// Return an unlinked span if there's no URL.
 		return sprintf(
 			'<span class="%s">%s</span>',
-			esc_attr($this->scopeClasses('crumb-content')),
+			esc_attr($this->scopeClass('crumb-content')),
 			$label
 		);
 	}

@@ -32,7 +32,7 @@ final class Microdata extends Html
 		return sprintf(
 			'<nav %s><ol class="%s" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
 			$this->containerAttr(),
-			esc_attr($this->scopeClasses('trail')),
+			esc_attr($this->scopeClass('trail')),
 			$this->renderCrumbs()
 		);
 	}
@@ -51,7 +51,7 @@ final class Microdata extends Html
 				%s
 				<meta itemprop="position" content="%s"/>
 			</li>',
-			esc_attr($this->scopeClasses([
+			esc_attr($this->scopeClass([
 				'crumb',
 				'crumb--' . $this->crumbs->currentType()
 			])),
@@ -69,7 +69,7 @@ final class Microdata extends Html
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="%s" itemprop="name">%s</span>',
-			esc_attr($this->scopeClasses('crumb-label')),
+			esc_attr($this->scopeClass('crumb-label')),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 
@@ -78,7 +78,7 @@ final class Microdata extends Html
 			return sprintf(
 				'<a href="%s" class="%s" itemprop="item">%s</a>',
 				esc_url($crumb->getUrl()),
-				esc_attr($this->scopeClasses('crumb-content')),
+				esc_attr($this->scopeClass('crumb-content')),
 				$label
 			);
 		}
@@ -86,7 +86,7 @@ final class Microdata extends Html
 		// Return an unlinked span if there's no URL.
 		return sprintf(
 			'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
-			esc_attr($this->scopeClasses('crumb-content')),
+			esc_attr($this->scopeClass('crumb-content')),
 			esc_url($crumb->getUrl()),
 			$label
 		);

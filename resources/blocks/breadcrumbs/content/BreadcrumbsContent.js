@@ -55,7 +55,6 @@ const BreadcrumbsContent = ({
 }) => {
 	const blockProps = useBlockProps({
 		className: clsx({
-			'breadcrumbs': true,
 			[`has-home-${homeIcon}`] : showTrailStart && homeIcon,
 			['hide-home-label'] : showTrailStart && ! showHomeLabel,
 			[`has-sep-${separatorIcon}`] : separatorIcon,

@@ -65,4 +65,7 @@
 	<!-- Require strict type declarations. -->
 	<rule ref="Generic.PHP.RequireStrictTypes"/>
 
+	<!-- Disallow long arrays. -->
+	<rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
 </ruleset>

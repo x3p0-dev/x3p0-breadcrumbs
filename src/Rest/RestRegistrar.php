@@ -18,8 +18,16 @@ use X3P0\Breadcrumbs\Contracts\Bootable;
 /**
  * Registers fields with the REST API needed for the block in the editor.
  */
-class RestRegistrar implements Bootable
+final class RestRegistrar implements Bootable
 {
+	/**
+	 * Defines the rewrite REST field attribute name.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const REWRITE_ATTRIBUTE = 'x3p0-breadcrumbs/rewrite';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -33,8 +41,8 @@ class RestRegistrar implements Bootable
 	 */
 	public function register(): void
 	{
-		register_rest_field('type', 'x3p0-breadcrumbs/rewrite', [
-			'get_callback' => $this->getTypeRewriteField(...),
+		register_rest_field('type', self::REWRITE_ATTRIBUTE, [
+			'get_callback' => $this->getPostTypeRewrite(...),
 			'schema' => [
 				'description' => __('Post type rewrite configuration.', 'x3p0-breadcrumbs'),
 				'type'        => [ 'object', 'null' ],
@@ -48,7 +56,7 @@ class RestRegistrar implements Bootable
 	 * Returns rewrite data for `GET` responses. The `$data['slug']`
 	 * property is expected to be a post type slug.
 	 */
-	public function getTypeRewriteField(array $data): ?array
+	public function getPostTypeRewrite(array $data): ?array
 	{
 		// The WordPress `post` post type's rewrite rules are defined in
 		// the database and not as part of the post type registration.

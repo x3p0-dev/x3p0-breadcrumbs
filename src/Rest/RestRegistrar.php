@@ -25,7 +25,7 @@ class RestRegistrar implements Bootable
 	 */
 	public function boot(): void
 	{
-		add_action('rest_api_init', [$this, 'register']);
+		add_action('rest_api_init', $this->register(...));
 	}
 
 	/**
@@ -34,7 +34,7 @@ class RestRegistrar implements Bootable
 	public function register(): void
 	{
 		register_rest_field('type', 'x3p0-breadcrumbs/rewrite', [
-			'get_callback' => [$this, 'getTypeRewriteField'],
+			'get_callback' => $this->getTypeRewriteField(...),
 			'schema' => [
 				'description' => __('Post type rewrite configuration.', 'x3p0-breadcrumbs'),
 				'type'        => [ 'object', 'null' ],

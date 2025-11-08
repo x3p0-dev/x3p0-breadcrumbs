@@ -27,7 +27,7 @@ if (is_file(__DIR__ . '/vendor/autoload.php')) {
 }
 
 # Initialize the plugin.
-add_action('plugins_loaded', fn() => plugin(), 9999);
+add_action('plugins_loaded', plugin(...), 9999);
 
 # Boot registered services.
 add_action('plugins_loaded', fn() => plugin()->boot(), PHP_INT_MAX);

@@ -28,10 +28,10 @@ final class PostType extends AbstractAssembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		protected BreadcrumbsContext $context,
+		BreadcrumbsContext $context,
 		protected ?WP_Post_Type $postType = null
 	) {
-		parent::__construct(...func_get_args());
+		parent::__construct(context: $context);
 	}
 
 	/**

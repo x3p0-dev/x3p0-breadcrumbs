@@ -28,10 +28,10 @@ final class PostAncestors extends AbstractAssembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		protected BreadcrumbsContext $context,
+		BreadcrumbsContext $context,
 		protected WP_Post $post
 	) {
-		parent::__construct(...func_get_args());
+		parent::__construct(context: $context);
 	}
 
 	/**

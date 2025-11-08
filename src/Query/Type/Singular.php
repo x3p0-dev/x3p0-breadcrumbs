@@ -24,10 +24,10 @@ final class Singular extends AbstractQuery
 	 * @inheritDoc
 	 */
 	public function __construct(
-		protected BreadcrumbsContext $context,
+		BreadcrumbsContext $context,
 		protected ?WP_Post $post = null
 	) {
-		parent::__construct(...func_get_args());
+		parent::__construct(context: $context);
 	}
 
 	/**

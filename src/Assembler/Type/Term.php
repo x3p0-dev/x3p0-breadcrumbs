@@ -27,10 +27,10 @@ final class Term extends AbstractAssembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		protected BreadcrumbsContext $context,
+		BreadcrumbsContext $context,
 		protected WP_Term $term
 	) {
-		parent::__construct(...func_get_args());
+		parent::__construct(context: $context);
 	}
 
 	/**

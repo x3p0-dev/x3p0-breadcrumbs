@@ -45,7 +45,7 @@ final class PostHierarchy extends AbstractAssembler
 		// uploaded to a post with a type, such as `product`.
 		if (! $postType = get_post_type_object(get_post_type($this->post->ID))) {
 			return;
-		};
+		}
 
 		// If this is the 'post' post type, get the rewrite front items,
 		// map the rewrite tags, and bail early.

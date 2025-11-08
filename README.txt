@@ -1,6 +1,7 @@
 === Breadcrumbs Block – Navigation Trail ===
 
 Contributors: greenshady
+Donate link: http://a.co/02ggsr2
 Tags: breadcrumbs, navigation, block, seo, trail
 Requires at least: 6.8
 Tested up to: 6.8
@@ -13,7 +14,7 @@ Add breadcrumb navigation to any site. Works with block and classic themes. Auto
 
 == Description ==
 
-X3P0: Breadcrumbs is the most advanced breadcrumb navigation system for WordPress. Built on 15+ years of development, it automatically detects your permalink structure and displays accurate breadcrumbs for every page on your site.
+X3P0: Breadcrumbs is the most robust breadcrumb navigation system for WordPress. Built on 15+ years of development, it automatically detects your permalink structure and displays accurate breadcrumbs for every page on your site.
 
 Perfect for improving site navigation and SEO, this breadcrumbs plugin works seamlessly with both block themes and classic themes. Simply insert the Breadcrumbs block via the WordPress Site Editor or add it to your theme templates.
 
@@ -21,7 +22,7 @@ Perfect for improving site navigation and SEO, this breadcrumbs plugin works sea
 
 **Automatic Site Structure Detection**
 
-The plugin automatically detects your permalink setup and builds breadcrumbs based on your site's hierarchy. No configuration needed – it just works out of the box. But you can also customize if you need to change it.
+The plugin automatically detects your permalink setup and builds breadcrumbs based on your site's hierarchy. No configuration needed–it just works out of the box. But you can also customize if you need to change it.
 
 **Custom Post Type Support**
 
@@ -31,7 +32,7 @@ Automatically recognizes custom post types and custom taxonomies created by othe
 
 Insert breadcrumbs using the WordPress block editor in any template, template part, or pattern. For classic themes, easily add breadcrumbs using a simple PHP function call.
 
-**Advanced Developer Customization**
+**Developer Customization**
 
 Built on a robust object-oriented PHP foundation with extensive hooks and filters. Developers can customize every aspect of breadcrumb generation and display.
 
@@ -90,10 +91,11 @@ The breadcrumbs plugin automatically handles:
 
 **Block Settings:**
 
-- Show/hide on front page
-- Show/hide first item (home link)
-- Show/hide last item (current page)
-- Choose separator style (slash, arrow, greater-than, bullet, chevron)
+- Show/hide on the homepage
+- Show/hide first crumb (home link)
+- Show/hide last crumb (current page)
+- Link the last crumb (current page)
+- Choose separator style (e.g., slash, arrow, greater-than, bullet, chevron)
 - Customize labels and text
 - Determine whether to automatically detect permalink structure
 - Choose taxonomies to match post types
@@ -103,8 +105,7 @@ The breadcrumbs plugin automatically handles:
 - Custom query classes for unique breadcrumb logic
 - Custom assembler classes for conditional breadcrumb display
 - Custom crumb classes for specialized breadcrumb items
-- Filter hooks for modifying builder configuration
-- Filter hooks for modifying markup options
+- Filter hooks for modifying which breadcrumbs are shown
 
 = How It Works =
 
@@ -119,7 +120,7 @@ The plugin automatically detects these settings and builds the most accurate bre
 
 = Developer Documentation =
 
-For developers who want to customize breadcrumbs programmatically, the plugin provides extensive PHP classes and hooks. Read the [GitHub repository](https://github.com/x3p0-dev/x3p0-breadcrumbs) for full developer documentation.
+For developers who want to customize breadcrumbs programmatically, the plugin provides extensive PHP classes and hooks. See the [GitHub repository](https://github.com/x3p0-dev/x3p0-breadcrumbs) for full developer documentation.
 
 = Why Choose X3P0: Breadcrumbs? =
 
@@ -152,7 +153,7 @@ Yes. The plugin automatically detects all custom post types and taxonomies on yo
 
 = Can I customize the breadcrumb separator? =
 
-Yes. In the block settings panel, you can choose from several separator styles including slash (/), arrow (→), greater-than (>), bullet (•), and chevron (›).
+Yes. In the block settings panel, you can choose from several separator styles, including slash (/), arrow (→), bullet (•), chevron (›), and more.
 
 = How do I hide breadcrumbs on the homepage? =
 
@@ -174,8 +175,6 @@ Yes. The plugin includes three markup options: plain HTML, Schema.org microdata,
 
 In the block settings panel, select the label you want to customize under the **Labels** panel. This provides a subset of common labels that you may want to modify.
 
-For more advanced use cases, use the `x3p0/breadcrumbs/builder/config` filter hook to modify labels for home, archives, search results, pagination, and date archives. See the developer documentation for examples.
-
 = Why don't my breadcrumbs show parent pages? =
 
 Make sure your pages are actually set as parent/child in the page editor. The plugin reads the page hierarchy from WordPress and displays it automatically.
@@ -186,7 +185,7 @@ Yes. You can insert the Breadcrumbs block into any page builder that supports Wo
 
 = How do I add custom breadcrumbs for specific pages? =
 
-Developers can create custom query classes or use the `x3p0/breadcrumbs/builder/pre/build` filter hook to implement custom breadcrumb logic for specific conditions.
+Developers can use the `x3p0/breadcrumbs/resolve/query-type` filter hook to implement custom breadcrumb logic for specific conditions.
 
 = Can I hide the current page from breadcrumbs? =
 
@@ -243,35 +242,57 @@ Visit different page types (single posts, category archives, pages, search resul
 
 == Changelog ==
 
-= 3.1.0 - October 5, 2025 =
+= 4.0.0 =
 
 **Added**
 
-- `spacing.blockGap` support was added, which now lets theme authors and users control the spacing between breadcrumb items via the standard block gap/spacing design tools.
-  - WordPress 6.9: Theme authors should switch to styling this via `styles.blocks.x3p0/breadcrumbs.spacing.blockGap` (as of the current release date, this works with the Gutenberg plugin enabled).
-  - WordPress 6.8: `blockGap` styling doesn't work in `theme.json`, so this is needed in the `css` field for the block: `&.is-layout-flex { gap: var(--wp--preset--spacing--20); }`
-  - The old `settings.x3p0/breadcrumbs.blockGap` configuration will still work.
-  - The fallback `blockGap` style for the block is `0.5rem`.
-- Horizontal flex `layout` support was added, primarily as a requirement for `blockGap` to work. This is not configurable, but it does use the WordPress layout implementation instead of custom CSS.
-
-**Fixed**
-
-- Corrected handling of the option for showing breadcrumbs on the front page. Previously, they did not appear if enabled.
-- Editor scripts translations should now work. Previously, a call to `wp_set_script_translations()` was missing.
-- The `Container` interface previously incorrectly extended the `Bootable` interface.
-- Accessibility: The `aria-current` attribute is now applied to the last breadcrumb item.
+- **Rewrite Tags** block option, which lets you select which post types map to rewrite tags (e.g., `%category%`, `%author%`, etc.). Only post types with rewrite tags in their slugs appear as options.
+- **Post Taxonomies** block option, which lets you choose which taxonomy's terms to display in the breadcrumb trail for single post views.
+- **Labels** block option, which lets you customize a subset of labels that most commonly need to be changed:
+  - Home
+  - Search Results
+  - 404
+- The Home label can also be edited directly from the content canvas.
+- Content-only editing support for the block. When enabled, the toolbar controls no longer appear. However, users can edit the Home label directly in the editor canvas.
+- Block supports:
+  - `ariaLabel`: WordPress doesn't display a UI control for this, but it's possible to change the default `Breadcrumbs` label via the Code Editor view.
+  - `shadow`: you can now add shadows—not sure how I missed adding this before.
+- Time-based breadcrumbs:
+  - Hour, minute, and second archive breadcrumbs.
+  - Posts with hour, minute, and seconds in their permalink structure now show those crumbs (assuming rewrite mapping is enabled).
+- A `JsonLinkedData` markup class for outputting JSON-LD breadcrumbs in the site head. This is not output by default, but developers can opt in.
+- Action hooks:
+  - `x3p0/breadcrumbs/init` - Fires just before the plugin's default service providers are registered.
+  - `x3p0/breadcrumbs/register` - Fires just after the plugin's default service providers are registered.
+  - `x3p0/breadcrumbs/boot` - Fires just after the plugin's default services providers have been booted.
+- Filter hooks:
+  - `x3p0/breadcrumbs/resolve/query-type` - Allows filtering the primary query type used to determine the breadcrumbs for the current page.
+- `namespace` argument for the markup configuration, which allows controlling the HTML class prefixes or each element (defaults to `breadcrumbs`).
 
 **Changed**
 
-- The plugin now only supports WordPress 6.8. Any back-compat code for older versions has been removed.
-- Interactivity router region support moved to the `container_attr` array for `Markup` classes. These attributes are no longer forcefully injected and can be overwritten.
-- The `breadcrumbs` value is now applied to the `data-wp-router-region` attribute.
-- When filtering `x3p0/breadcrumbs/builder/pre/build` a type error will be thrown if a non-null value other than `X3P0\Breadcrumbs\Contracts\Builder` implementation is returned.
+- A complete overhaul of the public-facing developer API. The plugin is no longer compatible with classes/functions earlier than 4.0.0 for people who were extending it with PHP.
+- Because the new Rewrite Tags and Post Taxonomies block options were added, the block no longer defaults to display a category for posts. This can be set manually by the user, within patterns, or within theme templates.
+- Under the hood, for the same reason as above, the PHP code no longer auto-sets the category taxonomy for posts when the permalink structure is set to `%postname%`. This was a relic from the code when users didn't have direct control over the settings.
+- All block panels now use the Tools Panel component, which brings them up to date with the Core blocks in WordPress 6.9.
+- The icon-based block attributes have been merged into single attributes. The block is still backwards compatible with the old attributes with no current plans for removing their support:
+  - `separator` and `separatorType` → `separatorIcon`
+  - `homePrefix` and `homePrefixType`→ `homeIcon`
+- The block preview in the content canvas now shows Home → Ancestor → Parent → Current. This change was implemented so that users can better see the effects of removing the first and/or last breadcrumbs in the editor.
+- The `justifyContent` attribute is strictly limited to `left`, `center`, and `right`. These have always been the only options. It's just defined in `block.json` now.
+- The `404 Not Found` label has been changed to `Page not found` to match WordPress's default output for 404 document titles.
+- The plugin now uses Composer for autoloading instead of the previous custom `Autoload` class.
+- All nested elements for the block now use the `.wp-block-x3p0-breadcrumbs__` prefix instead of `.breadcrumbs__`.
+
+**Fixed**
+
+- Post taxonomy terms on single post views are no longer sorted by the plugin. This allows third-party plugins to manage the sorting. This is particularly important for SEO plugins that allow you to set a "primary" term for a post.
+- Correctly determine when a weekly archive is being displayed.
 
 **Removed**
 
-- The `Plugin` class was removed and renamed to `App`. This should not affect old installations since third-party devs should have been using the `plugin()` helper function.
-- The `Trail` class has been removed, which was deprecated in version 2.0.0.
+- Support for editing the Block layout. Previously, you could change how the block wrapped, but this was just UI clutter that served no practical purpose.
+- Call to `wp_set_script_translations()` for the block. WordPress already handles this through the normal block registration process.
 
 For complete version history, see the [changelog on GitHub](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/CHANGELOG.md).
 
@@ -279,4 +300,6 @@ For complete version history, see the [changelog on GitHub](https://github.com/x
 
 = 4.0.0 =
 
-The Breadcrumbs block now has **Post Taxonomies** and **Map Rewrite Tags** options. Therefore, you may need to manually set these options to get the structure that you prefer.
+The block now has **Post Taxonomies** and **Map Rewrite Tags** options. You may need to set these options to get the structure that you prefer.
+
+Developers: the public API has changed. See the [GitHub README](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/README.md) for more info.

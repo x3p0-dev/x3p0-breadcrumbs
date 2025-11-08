@@ -23,7 +23,7 @@ abstract class ServiceProvider
 	/**
 	 * Accepts a container implementation for registering services.
 	 */
-	public function __construct(protected Container $container)
+	public function __construct(protected readonly Container $container)
 	{}
 
 	/**

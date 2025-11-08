@@ -36,7 +36,7 @@ final class Plugin implements Application
 	/**
 	 * Sets up the initial object state.
 	 */
-	public function __construct(protected Container $container)
+	public function __construct(protected readonly Container $container)
 	{
 		// Allow third-party devs to hook in before anything runs.
 		do_action('x3p0/breadcrumbs/init', $this);

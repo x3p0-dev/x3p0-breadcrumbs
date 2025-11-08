@@ -27,7 +27,7 @@ final class Breadcrumbs implements Block
 	 * Sets the block attributes.
 	 */
 	public function __construct(
-		protected BreadcrumbsService $breadcrumbsService,
+		protected readonly BreadcrumbsService $breadcrumbsService,
 		protected array $attributes
 	) {
 		$this->mapDeprecatedAttributes();

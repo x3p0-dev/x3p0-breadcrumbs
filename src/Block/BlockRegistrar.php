@@ -20,7 +20,7 @@ final class BlockRegistrar implements Bootable
 	/**
 	 * Sets the path where the built blocks are stored.
 	 */
-	public function __construct(protected string $path)
+	public function __construct(protected readonly string $path)
 	{}
 
 	/**

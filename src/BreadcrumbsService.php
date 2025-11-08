@@ -25,8 +25,8 @@ final class BreadcrumbsService
 	 * Sets up the initial service state.
 	 */
 	public function __construct(
-		protected BreadcrumbsFactory $breadcrumbsFactory,
-		protected MarkupFactory $markupFactory
+		protected readonly BreadcrumbsFactory $breadcrumbsFactory,
+		protected readonly MarkupFactory      $markupFactory
 	) {}
 
 	/**

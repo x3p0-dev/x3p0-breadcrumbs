@@ -21,6 +21,7 @@ use X3P0\Breadcrumbs\Crumb\CrumbServiceProvider;
 use X3P0\Breadcrumbs\Markup\MarkupServiceProvider;
 use X3P0\Breadcrumbs\Query\QueryServiceProvider;
 use X3P0\Breadcrumbs\Rest\RestServiceProvider;
+use X3P0\Breadcrumbs\Shortcode\ShortcodeServiceProvider;
 
 /**
  * The Plugin class is an implementation of the Application interface. It's used
@@ -69,6 +70,7 @@ final class Plugin implements Application
 		$this->register(MarkupServiceProvider::class);
 		$this->register(QueryServiceProvider::class);
 		$this->register(RestServiceProvider::class);
+		$this->register(ShortcodeServiceProvider::class);
 	}
 
 	/**

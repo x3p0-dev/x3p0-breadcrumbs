@@ -38,39 +38,45 @@ final class BreadcrumbsContext
 
 	/**
 	 * Run a query by key.
+	 *
+	 * @todo With minimum PHP 8.1 support, use array unpacking (string keys).
 	 */
 	public function query(string $key, array $params = []): void
 	{
-		$query = $this->queryFactory->make($key, [
-			'context' => $this,
-			...$params
-		]);
+		$query = $this->queryFactory->make($key, array_merge(
+			$params,
+			['context' => $this]
+		));
 
 		$query?->query();
 	}
 
 	/**
 	 * Run an assembler by key.
+	 *
+	 * @todo With minimum PHP 8.1 support, use array unpacking (string keys).
 	 */
 	public function assemble(string $key, array $params = []): void
 	{
-		$assembler = $this->assemblerFactory->make($key, [
-			'context' => $this,
-			...$params
-		]);
+		$assembler = $this->assemblerFactory->make($key, array_merge(
+			$params,
+			['context' => $this]
+		));
 
 		$assembler?->assemble();
 	}
 
 	/**
 	 * Add a crumb by key.
+	 *
+	 * @todo With minimum PHP 8.1 support, use array unpacking (string keys).
 	 */
 	public function addCrumb(string $key, array $params = []): void
 	{
-		$crumb = $this->crumbFactory->make($key, [
-			'context' => $this,
-			...$params
-		]);
+		$crumb = $this->crumbFactory->make($key, array_merge(
+			$params,
+			['context' => $this]
+		));
 
 		if ($crumb) {
 			$this->crumbs->set($key, $crumb);

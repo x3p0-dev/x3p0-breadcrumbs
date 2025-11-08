@@ -23,8 +23,8 @@ final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(AssemblerRegistry::class);
 		$this->container->singleton(AssemblerFactory::class);
+		$this->container->singleton(AssemblerRegistry::class);
 	}
 
 	/**

@@ -23,8 +23,8 @@ final class MarkupServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(MarkupRegistry::class);
 		$this->container->singleton(MarkupFactory::class);
+		$this->container->singleton(MarkupRegistry::class);
 	}
 
 	/**

@@ -23,8 +23,8 @@ final class QueryServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(QueryRegistry::class);
 		$this->container->singleton(QueryFactory::class);
+		$this->container->singleton(QueryRegistry::class);
 	}
 
 	/**

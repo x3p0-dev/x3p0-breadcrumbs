@@ -23,8 +23,8 @@ final class CrumbServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(CrumbRegistry::class);
 		$this->container->singleton(CrumbFactory::class);
+		$this->container->singleton(CrumbRegistry::class);
 	}
 
 	/**

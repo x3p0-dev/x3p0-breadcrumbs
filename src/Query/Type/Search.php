@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
-use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\{AbstractQuery, QueryRegistrar};
 
 final class Search extends AbstractQuery
 {
@@ -24,6 +24,13 @@ final class Search extends AbstractQuery
 	 */
 	public function query(): void
 	{
+		// If this is also a post type archive, forward to the post type
+		// archive query, which will handle post type + search queries.
+		if (is_post_type_archive()) {
+			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			return;
+		}
+
 		$this->context->assemble(AssemblerRegistrar::HOME);
 		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 		$this->context->addCrumb(CrumbRegistrar::SEARCH);

@@ -19,6 +19,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\QueryRegistrar;
 
 final class Author extends AbstractQuery
 {
@@ -39,6 +40,13 @@ final class Author extends AbstractQuery
 	 */
 	public function query(): void
 	{
+		// If this is also a post type archive, forward to the post type
+		// archive query, which will handle post type + author queries.
+		if (is_post_type_archive()) {
+			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			return;
+		}
+
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
 		$this->context->assemble(AssemblerRegistrar::HOME);

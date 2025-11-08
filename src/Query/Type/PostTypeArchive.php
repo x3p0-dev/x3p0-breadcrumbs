@@ -40,8 +40,6 @@ final class PostTypeArchive extends AbstractQuery
 	{
 		$type = $this->postType ?: get_post_type_object(get_query_var('post_type'));
 
-		$done_post_type = false;
-
 		$this->context->assemble(AssemblerRegistrar::HOME);
 
 		if (false !== $type->rewrite) {
@@ -55,16 +53,11 @@ final class PostTypeArchive extends AbstractQuery
 				$this->context->assemble(AssemblerRegistrar::PATH, [
 					'path' => $type->rewrite['slug']
 				]);
-
-				// Check if we've added a post type crumb.
-				if ($this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
-					$done_post_type = true;
-				}
 			}
 		}
 
-		// Add post type crumb.
-		if (! $done_post_type) {
+		// Add post type crumb if not already in the crumbs collection.
+		if (! $this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
 			$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
 				'postType' => $type
 			]);

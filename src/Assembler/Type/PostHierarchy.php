@@ -82,7 +82,7 @@ final class PostHierarchy extends AbstractAssembler
 		// Fall back to the post type crumb if the post type was not
 		// already added via another method.
 		if (
-			! $this->context->crumbs()->has(CrumbRegistrar::POST)
+			! $this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)
 			&& $postType->has_archive
 		) {
 			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [

@@ -62,4 +62,7 @@
 	<!-- Enforce tabbed indentation. -->
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
 
+	<!-- Require strict type declarations. -->
+	<rule ref="Generic.PHP.RequireStrictTypes"/>
+
 </ruleset>

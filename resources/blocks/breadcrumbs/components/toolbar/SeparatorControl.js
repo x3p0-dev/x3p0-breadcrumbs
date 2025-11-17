@@ -8,7 +8,7 @@
  */
 
 // Internal dependencies.
-import { SymbolPicker, ToolbarDropdown } from '../../components';
+import { SymbolPicker, ToolbarDropdown } from '../ui';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';

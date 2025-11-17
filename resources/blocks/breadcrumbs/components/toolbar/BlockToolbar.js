@@ -1,5 +1,5 @@
 /**
- * Breadcrumbs toolbar (block controls) component.
+ * Block toolbar (block controls) component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -21,7 +21,7 @@ import { BlockControls, useBlockEditingMode } from '@wordpress/block-editor';
  * @param props
  * @returns {JSX.Element}
  */
-const BreadcrumbsToolbar = (props) => 'default' === useBlockEditingMode() && (
+const BlockToolbar = (props) => 'default' === useBlockEditingMode() && (
 	<>
 		<BlockControls group="block">
 			<JustifyControl {...props}/>
@@ -33,4 +33,4 @@ const BreadcrumbsToolbar = (props) => 'default' === useBlockEditingMode() && (
 	</>
 );
 
-export default BreadcrumbsToolbar;
+export default BlockToolbar;

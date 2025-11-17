@@ -16,7 +16,7 @@ import { registerBlockType } from '@wordpress/blocks';
 
 // Import the block data and components.
 import metadata   from './block.json';
-import edit       from './edit'
+import edit       from './edit';
 import icon       from './icon';
 import deprecated from './deprecated';
 

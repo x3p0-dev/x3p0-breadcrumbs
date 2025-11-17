@@ -22,7 +22,7 @@ import { InspectorControls } from '@wordpress/block-editor';
  * @param props
  * @returns {JSX.Element}
  */
-const BreadcrumbsInspector = (props) => (
+const BlockInspector = (props) => (
 	<InspectorControls group="settings">
 		<SettingsPanel {...props}/>
 		<LabelsPanel {...props}/>
@@ -31,4 +31,4 @@ const BreadcrumbsInspector = (props) => (
 	</InspectorControls>
 );
 
-export default BreadcrumbsInspector;
+export default BlockInspector;

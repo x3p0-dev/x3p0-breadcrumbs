@@ -1,5 +1,5 @@
 /**
- * Returns the breadcrumbs block content.
+ * Block content.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -39,7 +39,7 @@ const CrumbLink = ({ children }) => (
  * @returns {JSX.Element}
  * @constructor
  */
-const BreadcrumbsContent = ({
+const BlockContent = ({
 	attributes: {
 		labels = {},
 		homeIcon,
@@ -145,4 +145,4 @@ const BreadcrumbsContent = ({
 	);
 };
 
-export default BreadcrumbsContent;
+export default BlockContent;

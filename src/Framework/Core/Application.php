@@ -110,8 +110,6 @@ abstract class Application
 	}
 
 	/**
-	 * {@inheritDoc}
-	 *
 	 * Boots all service providers that implement the `Bootable` interface.
 	 */
 	public function boot(): void

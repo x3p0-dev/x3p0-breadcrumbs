@@ -5,12 +5,17 @@
 	"scripts": {
 		"build": [
 			"composer update --no-dev",
+			"@prefix",
 			"composer dump-autoload -a --no-dev"
 		],
 		"dev": [
 			"composer update",
+			"@prefix",
 			"composer dump-autoload"
 		],
+		"prefix": "php scripts/prefix-dependencies.php",
+		"post-install-cmd": ["@prefix"],
+		"post-update-cmd": ["@prefix"],
 		"zip": "composer archive --file=x3p0-breadcrumbs",
 		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
 		"fix:php": "./vendor/bin/phpcbf -d error_reporting=E_ALL^E_DEPRECATED -s --colors ."
@@ -22,12 +27,16 @@
 		"files" : [
 			"src/functions-helpers.php"
 		],
+		"classmap": [
+			"packages/"
+		],
 		"exclude-from-classmap": [
 			"vendor/"
 		]
 	},
 	"require": {
-                "php": ">=8.1"
+                "php": ">=8.1",
+		"x3p0-dev/x3p0-framework": "dev-master"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^3.0",

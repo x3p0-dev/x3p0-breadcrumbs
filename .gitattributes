@@ -26,9 +26,11 @@
 ## -----------------------------------------------------------------------------
 
 # Ignore development folders.
+bin/ export-ignore
 dev/ export-ignore
 docs/ export-ignore
 node_modules/ export-ignore
+scripts/ export-ignore
 tests/ export-ignore
 
 # Ignore development files.

@@ -1,6 +1,7 @@
 /.idea
 /.idea
 /node_modules
+/packages
 /vendor
 *.map
 *.zip

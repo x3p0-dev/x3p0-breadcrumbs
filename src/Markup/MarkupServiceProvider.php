@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
-use X3P0\Breadcrumbs\Core\ServiceProvider;
+use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class MarkupServiceProvider extends ServiceProvider implements Bootable
 {

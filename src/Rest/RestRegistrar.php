@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Rest;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
  * Registers fields with the REST API needed for the block in the editor.

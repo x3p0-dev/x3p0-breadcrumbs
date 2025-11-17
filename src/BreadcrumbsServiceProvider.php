@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Core\ServiceProvider;
+use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {

@@ -3,15 +3,17 @@
 /**
  * Container interface.
  *
+ * @version   1.0.0
+ * @package   X3P0\Framework
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2009-2025, Justin Tadlock
- * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
- * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
+ * @copyright Copyright (c) 2025, Justin Tadlock
+ * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link      https://github.com/x3p0-dev
  */
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Core;
+namespace X3P0\Breadcrumbs\Framework\Core;
 
 /**
  * Defines the dependency injection container interface, which allows for
@@ -31,7 +33,7 @@ interface Container
 	public function transient(string $abstract, mixed $concrete = null): void;
 
 	/**
-	 * Bind a singleton (cached instance).
+	 * Register a singleton service (cached instance).
 	 */
 	public function singleton(string $abstract, mixed $concrete = null): void;
 

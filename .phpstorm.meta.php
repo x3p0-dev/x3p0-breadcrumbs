@@ -14,8 +14,8 @@ declare (strict_types = 1);
 namespace PHPSTORM_META
 {
 	// For get() method.
-	override(\X3P0\Breadcrumbs\Core\Container::get(0), map(['' => '@']));
+	override(\X3P0\Breadcrumbs\Framework\Core\Container::get(0), map(['' => '@']));
 
 	// For make() method.
-	override(\X3P0\Breadcrumbs\Core\Container::make(0), map(['' => '@']));
+	override(\X3P0\Breadcrumbs\Framework\Core\Container::make(0), map(['' => '@']));
 }

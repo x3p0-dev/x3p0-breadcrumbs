@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\Contracts\Bootable;
+use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 final class BlockRegistrar implements Bootable
 {

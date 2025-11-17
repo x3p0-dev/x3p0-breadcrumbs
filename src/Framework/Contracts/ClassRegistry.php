@@ -3,15 +3,17 @@
 /**
  * Class registry interface.
  *
+ * @version   1.0.0
+ * @package   X3P0\Framework
  * @author    Justin Tadlock <justintadlock@gmail.com>
- * @copyright Copyright (c) 2009-2025, Justin Tadlock
- * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
- * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
+ * @copyright Copyright (c) 2025, Justin Tadlock
+ * @license   https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
+ * @link      https://github.com/x3p0-dev
  */
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Contracts;
+namespace X3P0\Breadcrumbs\Framework\Contracts;
 
 /**
  * Defines an interface for creating a registry of class names (not instances),

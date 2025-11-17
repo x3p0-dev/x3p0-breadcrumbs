@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use TypeError;
-use X3P0\Breadcrumbs\Contracts\ClassRegistry;
+use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 
 /**
  * Stores the markup classes that can later be instantiated as objects.

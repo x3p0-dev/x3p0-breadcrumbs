@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\Renderable;
+use X3P0\Breadcrumbs\Framework\Contracts\Renderable;
 
 /**
  * Markup classes are responsible for rendering the final HTML for a breadcrumb

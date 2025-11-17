@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block\Type;
 
+use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
 use X3P0\Breadcrumbs\BreadcrumbsService;
@@ -26,33 +27,31 @@ final class Breadcrumbs implements Block
 	/**
 	 * Sets the block attributes.
 	 */
-	public function __construct(
-		protected readonly BreadcrumbsService $breadcrumbsService,
-		protected array $attributes
-	) {
-		$this->mapDeprecatedAttributes();
-	}
+	public function __construct(protected readonly BreadcrumbsService $breadcrumbsService)
+	{}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function render(): string
+	public function render(array $attributes, string $content, WP_Block $block): string
 	{
+		$attributes = $this->mapDeprecatedAttributes($attributes);
+
 		return $this->breadcrumbsService->render(
 			breadcrumbsConfig: [
-				'mapRewriteTags' => $this->attributes['mapRewriteTags'] ?? [],
-				'postTaxonomy'   => $this->attributes['postTaxonomy']   ?? [],
-				'labels'         => $this->attributes['labels']         ?? []
+				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
+				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],
+				'labels'         => $attributes['labels']         ?? []
 			],
 			markupConfig: [
 				'namespace'      => 'wp-block-x3p0-breadcrumbs',
-				'containerAttr'  => $this->getWrapperAttributes(),
-				'showOnFront'    => $this->attributes['showOnHomepage'] ?? false,
-				'showFirstCrumb' => $this->attributes['showTrailStart'] ?? true,
-				'showLastCrumb'  => $this->attributes['showTrailEnd']   ?? true,
-				'linkLastCrumb'  => $this->attributes['linkTrailEnd']   ?? false
+				'containerAttr'  => $this->getWrapperAttributes($attributes),
+				'showOnFront'    => $attributes['showOnHomepage'] ?? false,
+				'showFirstCrumb' => $attributes['showTrailStart'] ?? true,
+				'showLastCrumb'  => $attributes['showTrailEnd']   ?? true,
+				'linkLastCrumb'  => $attributes['linkTrailEnd']   ?? false
 			],
-			markupType: $this->attributes['markup'] ?? MarkupRegistrar::RDFA
+			markupType: $attributes['markup'] ?? MarkupRegistrar::RDFA
 		);
 	}
 
@@ -62,7 +61,7 @@ final class Breadcrumbs implements Block
 	 * because the breadcrumb markup implementations require attributes be
 	 * passed as an array.
 	 */
-	private function getWrapperAttributes(): array
+	private function getWrapperAttributes(array $attributes): array
 	{
 		// Get the block attributes from block supports.
 		$attr = WP_Block_Supports::get_instance()->apply_block_supports();
@@ -74,30 +73,30 @@ final class Breadcrumbs implements Block
 		// If there is a selected home icon, define the class. Also,
 		// potentially add the class for hiding the home label, which
 		// should only ever be triggered in the case of an icon.
-		if ($this->attributes['showTrailStart'] && $this->attributes['homeIcon']) {
+		if ($attributes['showTrailStart'] && $attributes['homeIcon']) {
 			$classes[] = sprintf(
 				'has-home-%s',
-				$this->attributes['homeIcon']
+				$attributes['homeIcon']
 			);
 
-			if (! $this->attributes['showHomeLabel']) {
+			if (! $attributes['showHomeLabel']) {
 				$classes[] = 'hide-home-label';
 			}
 		}
 
 		// If there's a selected separator, define the class for it.
-		if ($this->attributes['separatorIcon']) {
+		if ($attributes['separatorIcon']) {
 			$classes[] = sprintf(
 				'has-sep-%s',
-				$this->attributes['separatorIcon']
+				$attributes['separatorIcon']
 			);
 		}
 
 		// If there's a selected content justification, add a class.
-		if (! empty($this->attributes['justifyContent'])) {
+		if (! empty($attributes['justifyContent'])) {
 			$classes[] = sprintf(
 				'is-content-justification-%s',
-				$this->attributes['justifyContent']
+				$attributes['justifyContent']
 			);
 		}
 
@@ -111,22 +110,24 @@ final class Breadcrumbs implements Block
 	/**
 	 * Maps deprecated attributes to new attributes.
 	 */
-	private function mapDeprecatedAttributes(): void
+	private function mapDeprecatedAttributes(array $attributes): array
 	{
-		$separator      = $this->attributes['separator']      ?? null;
-		$separatorType  = $this->attributes['separatorType']  ?? null;
-		$homePrefix     = $this->attributes['homePrefix']     ?? null;
-		$homePrefixType = $this->attributes['homePrefixType'] ?? null;
+		$separator      = $attributes['separator']      ?? null;
+		$separatorType  = $attributes['separatorType']  ?? null;
+		$homePrefix     = $attributes['homePrefix']     ?? null;
+		$homePrefixType = $attributes['homePrefixType'] ?? null;
 
 		if ($separator || $separatorType) {
 			$type = 'mask' === $separatorType ? 'svg' : ($separatorType ?: 'svg');
 			$icon = $separator ?: 'chevron';
-			$this->attributes['separatorIcon'] = "{$type}-{$icon}";
+			$attributes['separatorIcon'] = "{$type}-{$icon}";
 		}
 
 		if ($homePrefix && $homePrefixType) {
 			$type = 'mask' === $homePrefixType ? 'svg' : $homePrefixType;
-			$this->attributes['homeIcon'] = "{$type}-{$homePrefix}";
+			$attributes['homeIcon'] = "{$type}-{$homePrefix}";
 		}
+
+		return $attributes;
 	}
 }

@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\Framework\Contracts\Renderable;
+use WP_Block;
 
 /**
  * The block class renders the block type on the front end.
  */
-interface Block extends Renderable
+interface Block
 {
+	/**
+	 * Block render callback.
+	 */
+	public function render(array $attributes, string $content, WP_Block $block): string;
 }

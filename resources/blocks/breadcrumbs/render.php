@@ -16,13 +16,18 @@ namespace X3P0\Breadcrumbs;
 # Prevent direct access.
 defined('ABSPATH') || exit;
 
+use WP_Block;
 use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 
 /**
- * @global array $attributes
+ * @global array    $attributes Block attributes.
+ * @global string   $content    The block content.
+ * @global WP_Block $block      Block instance.
  */
 // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-echo container()->get(Breadcrumbs::class, [
-	'attributes' => $attributes
-])->render();
+echo container()->get(Breadcrumbs::class)->render(
+	attributes: $attributes,
+	content:    $content,
+	block:      $block
+);
 // phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -34,7 +34,7 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 			fn($container) => new BlockRegistrar(self::BLOCKS_PATH)
 		);
 
-		$this->container->transient(Breadcrumbs::class);
+		$this->container->singleton(Breadcrumbs::class);
 	}
 
 	/**

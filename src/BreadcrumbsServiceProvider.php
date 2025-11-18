@@ -22,7 +22,6 @@ final class BreadcrumbsServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		$this->container->transient(Breadcrumbs::class);
 		$this->container->singleton(BreadcrumbsFactory::class);
 		$this->container->singleton(BreadcrumbsService::class);
 	}

@@ -5,16 +5,17 @@
 	"scripts": {
 		"build": [
 			"composer update --no-dev",
-			"@prelude",
 			"composer dump-autoload -a --no-dev"
 		],
 		"dev": [
 			"composer update",
-			"@prelude",
 			"composer dump-autoload"
 		],
 		"prelude": "X3P0\\Breadcrumbs\\Scripts\\Prelude::compose",
 		"post-install-cmd": [
+			"@prelude"
+		],
+		"post-update-cmd": [
 			"@prelude"
 		],
 		"zip": "composer archive --file=x3p0-breadcrumbs",

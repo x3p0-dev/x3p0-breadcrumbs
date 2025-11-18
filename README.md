@@ -283,30 +283,22 @@ add_action('wp_head', function() {
 
 #### Available Hooks
 
-The plugin comes with several action hooks that you might find useful for advanced use cases.
-
-##### `x3p0/breadcrumbs/init`
-
-Fires immediately as the `X3P0\Breadcrumbs\Core\Plugin` class is initialized and passes the class instance to actions attached to the hook.
-
-```php
-do_action('x3p0/breadcrumbs/init', $plugin);
-```
+The plugin comes with a few hooks that you might find useful for advanced use cases.
 
 ##### `x3p0/breadcrumbs/register`
 
-Fires immediately after the `X3P0\Breadcrumbs\Core\Plugin` class registers its default bindings with the container and registers service providers. The plugin object is passed to actions attached to the hook.
+Fires immediately after the `X3P0\Breadcrumbs\Plugin` class registers its default bindings with the container and registers service providers. The plugin object is passed to actions attached to the hook.
 
 ```php
 do_action('x3p0/breadcrumbs/register', $plugin);
 ```
 
-##### `x3p0/breadcrumbs/boot`
+##### `x3p0/breadcrumbs/booted`
 
-Fires immediately after the `X3P0\Breadcrumbs\Core\Plugin` class has booted all registered service providers. The plugin object is passed to actions attached to the hook.
+Fires immediately after the `X3P0\Breadcrumbs\Plugin` class has booted all registered service providers. The plugin object is passed to actions attached to the hook.
 
 ```php
-do_action('x3p0/breadcrumbs/boot', $plugin);
+do_action('x3p0/breadcrumbs/booted', $plugin);
 ```
 
 ##### `x3p0/breadcrumbs/resolve/query-type`

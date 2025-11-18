@@ -5,17 +5,18 @@
 	"scripts": {
 		"build": [
 			"composer update --no-dev",
-			"@prefix",
+			"@prelude",
 			"composer dump-autoload -a --no-dev"
 		],
 		"dev": [
 			"composer update",
-			"@prefix",
+			"@prelude",
 			"composer dump-autoload"
 		],
-		"prefix": "X3P0\\Breadcrumbs\\Scripts\\Composer\\PackagePrefixer::prefix",
-		"post-install-cmd": ["@prefix"],
-		"post-update-cmd": ["@prefix"],
+		"prelude": "X3P0\\Breadcrumbs\\Scripts\\Prelude::compose",
+		"post-install-cmd": [
+			"@prelude"
+		],
 		"zip": "composer archive --file=x3p0-breadcrumbs",
 		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
 		"fix:php": "./vendor/bin/phpcbf -d error_reporting=E_ALL^E_DEPRECATED -s --colors ."
@@ -56,11 +57,13 @@
 		}
 	},
 	"extra": {
-		"package-prefixer": {
-			"vendor-path": "x3p0-dev",
-			"output-path": "packages",
-			"search-namespace": "X3P0",
-			"replace-namespace": "X3P0\\Breadcrumbs"
+		"x3p0": {
+			"prelude": {
+				"vendor-path": "x3p0-dev",
+				"output-path": "packages",
+				"search-namespace": "X3P0",
+				"replace-namespace": "X3P0\\Breadcrumbs"
+			}
 		}
 	},
 	"archive": {

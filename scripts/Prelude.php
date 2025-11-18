@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Composer package prefixer.
+ * Prelude: Composer package prefixer.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025, Justin Tadlock
@@ -11,20 +11,22 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Scripts\Composer;
+namespace X3P0\Breadcrumbs\Scripts;
 
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
+use Composer\{Composer, Factory};
+use Composer\Script\Event;
 
 /**
  * Used in Composer to add X3PO packages to the `/packages` folder and prefix
  * them with the project namespace. For example, `X3PO\Framework` becomes
- * `X3P0\Namespace\Framework`. This is form of "vendor prefixing" to avoid
+ * `X3P0\Namespace\Framework`. This is a form of "vendor prefixing" to avoid
  * conflicts where the packages are used in multiple themes/plugins.
  */
-final class PackagePrefixer
+final class Prelude
 {
 	/**
 	 * Namespace to search for and replace.
@@ -59,65 +61,60 @@ final class PackagePrefixer
 	/**
 	 * Main entry point for Composer scripts.
 	 */
-	public static function prefix(): void
+	public static function compose(Event $event): void
 	{
-		(new self(rootDir: getcwd()))->run();
+		(new self(event: $event))->run();
 	}
 
 	/**
-	 * Set up directories.
+	 * Sets up the initial object state.
 	 */
-	private function __construct(private readonly string $rootDir)
+	private function __construct(Event $event)
 	{
-		$this->loadConfiguration();
-		$this->vendorDir = $this->rootDir . '/vendor';
-		$this->outputDir = $this->rootDir . '/' . $this->outputPath;
+		$this->loadConfiguration($event->getComposer());
+
+		$this->vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
+		$this->outputDir = dirname(Factory::getComposerFile()) . '/' . $this->outputPath;
 	}
 
 	/**
 	 * Load configuration from composer.json.
 	 */
-	private function loadConfiguration(): void
+	private function loadConfiguration(Composer $composer): void
 	{
-		$composerFile = $this->rootDir . '/composer.json';
-
-		if (! file_exists($composerFile)) {
-			throw new RuntimeException("composer.json not found at: {$composerFile}");
-		}
-
-		$composerData = json_decode(file_get_contents($composerFile), true);
+		$extra = $composer->getPackage()->getExtra();
 
 		// Get custom configuration from `extra.package-prefixer`
 		// property in `composer.json`.
-		if (! isset($composerData['extra']['package-prefixer'])) {
+		if (! isset($extra['x3p0']) || ! isset($extra['x3p0']['prelude'])) {
 			throw new RuntimeException(
-				"Missing 'extra.package-prefixer' configuration in composer.json"
+				"Missing 'extra.x3p0.prelude' configuration in composer.json"
 			);
 		}
 
-		$config = $composerData['extra']['package-prefixer'];
+		$config = $extra['x3p0']['prelude'];
 
 		if (! isset($config['vendor-path'])) {
 			throw new RuntimeException(
-				"Missing 'extra.package-prefixer.vendor-path' in composer.json"
+				"Missing 'extra.x3p0.prelude.vendor-path' in composer.json"
 			);
 		}
 
 		if (! isset($config['output-path'])) {
 			throw new RuntimeException(
-				"Missing 'extra.package-prefixer.output-path' in composer.json"
+				"Missing 'extra.x3p0.prelude.output-path' in composer.json"
 			);
 		}
 
 		if (! isset($config['search-namespace'])) {
 			throw new RuntimeException(
-				"Missing 'extra.package-prefixer.search-namespace' in composer.json"
+				"Missing 'extra.x3p0.prelude.search-namespace' in composer.json"
 			);
 		}
 
 		if (! isset($config['replace-namespace'])) {
 			throw new RuntimeException(
-				"Missing 'extra.package-prefixer.replace-namespace' in composer.json"
+				"Missing 'extra.x3p0.prelude.replace-namespace' in composer.json"
 			);
 		}
 
@@ -196,7 +193,7 @@ final class PackagePrefixer
 	{
 		$contents = file_get_contents($filePath);
 
-		// Replace search namespace with replace namespace
+		// Replace search namespace with replace namespace.
 		$pattern     = '/\b' . preg_quote($this->searchNamespace, '/') . '\\\\/';
 		$replacement = $this->replaceNamespace . '\\';
 		$contents    = preg_replace($pattern, $replacement, $contents);
@@ -207,23 +204,23 @@ final class PackagePrefixer
 	/**
 	 * Copy a directory recursively.
 	 */
-	private function copyDirectory(string $src, string $dst): void
+	private function copyDirectory(string $fromDir, string $toDir): void
 	{
-		$dir = opendir($src);
-		@mkdir($dst, 0755, true);
+		$dir = opendir($fromDir);
+		@mkdir($toDir, 0755, true);
 
 		while (($file = readdir($dir)) !== false) {
 			if ($file === '.' || $file === '..') {
 				continue;
 			}
 
-			$srcPath = $src . '/' . $file;
-			$dstPath = $dst . '/' . $file;
+			$from = $fromDir . '/' . $file;
+			$to   = $toDir . '/' . $file;
 
-			if (is_dir($srcPath)) {
-				$this->copyDirectory($srcPath, $dstPath);
+			if (is_dir($from)) {
+				$this->copyDirectory($from, $to);
 			} else {
-				copy($srcPath, $dstPath);
+				copy($from, $to);
 			}
 		}
 

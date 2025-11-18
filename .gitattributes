@@ -30,6 +30,7 @@ bin/ export-ignore
 dev/ export-ignore
 docs/ export-ignore
 node_modules/ export-ignore
+resources/ export-ignore
 scripts/ export-ignore
 tests/ export-ignore
 
@@ -42,9 +43,6 @@ phpstan.neon export-ignore
 webpack.config.js export-ignore
 *.map export-ignore
 *.zip export-ignore
-
-# Don't export source folders that are copied into `/public`.
-/resources export-ignore
 
 # Ignore everything that begins with a dot.
 .* export-ignore

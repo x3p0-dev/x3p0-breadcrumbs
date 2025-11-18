@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4db67e7a2f23607ac26f2b14410d5532",
+    "content-hash": "c501c8b7d43fd71e91df3b92b0648fae",
     "packages": [
         {
             "name": "x3p0-dev/x3p0-framework",

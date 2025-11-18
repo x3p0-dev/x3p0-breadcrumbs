@@ -5,7 +5,7 @@
 	<arg name="extensions" value="php"/>
 
 	<!-- Exclude files and folders. -->
-	<exclude-pattern>*/(.ideas|.notes|node_modules|public|vendor)/*</exclude-pattern>
+	<exclude-pattern>*/(.ideas|.notes|node_modules|public|scripts|vendor)/*</exclude-pattern>
 
 	<!--
 	########################################################################

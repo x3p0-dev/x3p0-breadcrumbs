@@ -13,7 +13,7 @@
 			"@prefix",
 			"composer dump-autoload"
 		],
-		"prefix": "php scripts/prefix-dependencies.php",
+		"prefix": "X3P0\\Breadcrumbs\\Scripts\\Composer\\PackagePrefixer::prefix",
 		"post-install-cmd": ["@prefix"],
 		"post-update-cmd": ["@prefix"],
 		"zip": "composer archive --file=x3p0-breadcrumbs",
@@ -22,7 +22,8 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"X3P0\\Breadcrumbs\\": "src/"
+			"X3P0\\Breadcrumbs\\": "src/",
+			"X3P0\\Breadcrumbs\\Scripts\\": "scripts/"
 		},
 		"files" : [
 			"src/functions-helpers.php"
@@ -31,6 +32,7 @@
 			"packages/"
 		],
 		"exclude-from-classmap": [
+			"scripts/",
 			"vendor/"
 		]
 	},
@@ -51,6 +53,14 @@
 		"archive-format": "zip",
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	},
+	"extra": {
+		"package-prefixer": {
+			"vendor-path": "x3p0-dev",
+			"output-path": "packages",
+			"search-namespace": "X3P0",
+			"replace-namespace": "X3P0\\Breadcrumbs"
 		}
 	},
 	"archive": {

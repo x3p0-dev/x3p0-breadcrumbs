@@ -29,7 +29,11 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(BlockRegistrar::class);
+		$this->container->singleton(
+			BlockRegistrar::class,
+			fn($container) => new BlockRegistrar(self::BLOCKS_PATH)
+		);
+
 		$this->container->transient(Breadcrumbs::class);
 	}
 
@@ -38,8 +42,6 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function boot(): void
 	{
-		$this->container->get(BlockRegistrar::class, [
-			'path' => self::BLOCKS_PATH,
-		])->boot();
+		$this->container->get(BlockRegistrar::class)->boot();
 	}
 }

@@ -31,6 +31,6 @@ final class BreadcrumbsFactory
 	 */
 	public function make(array $params = []): Breadcrumbs
 	{
-		return $this->container->get(Breadcrumbs::class, $params);
+		return $this->container->resolve(Breadcrumbs::class, $params);
 	}
 }

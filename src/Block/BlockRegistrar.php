@@ -15,6 +15,9 @@ namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
+/**
+ * Registers the plugin's block types with WordPress.
+ */
 final class BlockRegistrar implements Bootable
 {
 	/**
@@ -37,7 +40,7 @@ final class BlockRegistrar implements Bootable
 	/**
 	 * Registers the block with WordPress.
 	 */
-	public function register(): void
+	private function register(): void
 	{
 		wp_register_block_types_from_metadata_collection(
 			$this->path,
@@ -50,7 +53,7 @@ final class BlockRegistrar implements Bootable
 	 * (rewrite tag) in their slug to have mapping enabled by default. This
 	 * happens at the time of block registration.
 	 */
-	public function setMetadata(array $metadata): array
+	private function setMetadata(array $metadata): array
 	{
 		if ('x3p0/breadcrumbs' !== $metadata['name']) {
 			return $metadata;

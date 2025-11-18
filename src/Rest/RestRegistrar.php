@@ -39,7 +39,7 @@ final class RestRegistrar implements Bootable
 	/**
 	 * Registers custom REST fields for use in the editor.
 	 */
-	public function register(): void
+	private function register(): void
 	{
 		register_rest_field('type', self::REWRITE_ATTRIBUTE, [
 			'get_callback' => $this->getPostTypeRewrite(...),
@@ -56,7 +56,7 @@ final class RestRegistrar implements Bootable
 	 * Returns rewrite data for `GET` responses. The `$data['slug']`
 	 * property is expected to be a post type slug.
 	 */
-	public function getPostTypeRewrite(array $data): ?array
+	private function getPostTypeRewrite(array $data): ?array
 	{
 		// The WordPress `post` post type's rewrite rules are defined in
 		// the database and not as part of the post type registration.

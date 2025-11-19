@@ -46,9 +46,7 @@ final class BreadcrumbsService
 			$markupConfig = MarkupConfig::fromArray($markupConfig);
 		}
 
-		$breadcrumbs = $this->breadcrumbsFactory->make([
-			'config' => $breadcrumbsConfig
-		]);
+		$breadcrumbs = $this->breadcrumbsFactory->make($breadcrumbsConfig);
 
 		$markup = $this->markupFactory->make($markupType, [
 			'crumbs' => $breadcrumbs->generate(),

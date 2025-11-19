@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Framework\Container\Container;
+use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
+use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Query\QueryFactory;
 
 /**
  * Factory class for making breadcrumbs objects.
@@ -23,14 +25,22 @@ final class BreadcrumbsFactory
 	/**
 	 * Sets up the initial factory state.
 	 */
-	public function __construct(private readonly Container $container)
-	{}
+	public function __construct(
+		private readonly QueryFactory     $queryFactory,
+		private readonly AssemblerFactory $assemblerFactory,
+		private readonly CrumbFactory     $crumbFactory,
+	) {}
 
 	/**
 	 * Makes a breadcrumbs object.
 	 */
-	public function make(array $params = []): Breadcrumbs
+	public function make(BreadcrumbsConfig $config): Breadcrumbs
 	{
-		return $this->container->make(Breadcrumbs::class, $params);
+		return new Breadcrumbs(
+			queryFactory:     $this->queryFactory,
+			assemblerFactory: $this->assemblerFactory,
+			crumbFactory:     $this->crumbFactory,
+			config:           $config
+		);
 	}
 }

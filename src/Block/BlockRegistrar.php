@@ -21,6 +21,11 @@ use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 final class BlockRegistrar implements Bootable
 {
 	/**
+	 * Filename of the blocks manifest.
+	 */
+	private const MANIFEST_FILENAME = 'blocks-manifest.php';
+
+	/**
 	 * Sets the path where the built blocks are stored.
 	 */
 	public function __construct(protected readonly string $path)
@@ -44,7 +49,7 @@ final class BlockRegistrar implements Bootable
 	{
 		wp_register_block_types_from_metadata_collection(
 			$this->path,
-			"{$this->path}/blocks-manifest.php"
+			"{$this->path}/" . self::MANIFEST_FILENAME
 		);
 	}
 

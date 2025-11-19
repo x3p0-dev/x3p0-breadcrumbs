@@ -44,7 +44,7 @@ final class BlockRegistrar implements Bootable
 	{
 		wp_register_block_types_from_metadata_collection(
 			$this->path,
-			"{$this->path}/manifest.php"
+			"{$this->path}/blocks-manifest.php"
 		);
 	}
 

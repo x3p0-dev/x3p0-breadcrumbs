@@ -24,7 +24,7 @@ final class Second extends AbstractCrumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected ?WP_Post $post = null
+		public readonly ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);
 	}

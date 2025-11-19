@@ -24,7 +24,7 @@ final class PostType extends AbstractCrumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_Post_Type $postType
+		public readonly WP_Post_Type $postType
 	) {
 		parent::__construct(context: $context);
 	}

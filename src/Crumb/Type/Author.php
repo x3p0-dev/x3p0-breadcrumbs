@@ -24,7 +24,7 @@ final class Author extends AbstractCrumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_User $user
+		public readonly WP_User $user
 	) {
 		parent::__construct(context: $context);
 	}

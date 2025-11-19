@@ -24,7 +24,7 @@ final class Term extends AbstractCrumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_Term $term
+		public readonly WP_Term $term
 	) {
 		parent::__construct(context: $context);
 	}

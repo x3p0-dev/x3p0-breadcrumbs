@@ -171,6 +171,34 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
+	 * Check if any crumb of the given type has a property value that
+	 * satisfies the callback.
+	 *
+	 * Iterates through all crumbs matching the specified type and tests
+	 * each one's property value against the provided callback. Returns true
+	 * on the first match found.
+	 *
+	 * Note: Only public/accessible properties are checked. Private/protected
+	 * properties and null values are skipped automatically.
+	 */
+	public function hasWhere(string $key, string $property, callable $callback): bool
+	{
+		if (! $this->has($key)) {
+			return false;
+		}
+
+		foreach (array_keys($this->types, $key, true) as $index) {
+			$crumb = $this->crumbs[$index];
+
+			if (isset($crumb->$property) && $callback($crumb->$property)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function offsetExists(mixed $offset): bool

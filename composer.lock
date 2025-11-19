@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "4161955606c144cd142c4a5e7cf70925304d778c"
+                "reference": "06b7c961c6251568ddee0c33e41b79db8562699e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/4161955606c144cd142c4a5e7cf70925304d778c",
-                "reference": "4161955606c144cd142c4a5e7cf70925304d778c",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/06b7c961c6251568ddee0c33e41b79db8562699e",
+                "reference": "06b7c961c6251568ddee0c33e41b79db8562699e",
                 "shasum": ""
             },
             "require": {
@@ -26,7 +26,6 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
                 "phpcompatibility/phpcompatibility-wp": "*",
-                "symfony/var-dumper": "^7.1",
                 "wp-coding-standards/wpcs": "^3.0"
             },
             "default-branch": true,
@@ -50,7 +49,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework/tree/master"
             },
-            "time": "2025-11-18T21:09:08+00:00"
+            "time": "2025-11-19T07:45:17+00:00"
         }
     ],
     "packages-dev": [

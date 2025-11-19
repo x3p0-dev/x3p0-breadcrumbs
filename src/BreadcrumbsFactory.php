@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Framework\Core\Container;
+use X3P0\Breadcrumbs\Framework\Container\Container;
 
 /**
  * Factory class for making breadcrumbs objects.

@@ -69,9 +69,9 @@ final class BlockRegistrar implements Bootable
 			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
 		);
 
-		$metadata['attributes']['mapRewriteTags'] = [
-			'type'    => 'object',
-			'default' => ['post' => true] + array_fill_keys(array_keys($types), true)
+		$metadata['attributes']['mapRewriteTags']['default'] = [
+			...array_fill_keys(array_keys($types), true),
+			...$metadata['attributes']['mapRewriteTags']['default']
 		];
 
 		return $metadata;

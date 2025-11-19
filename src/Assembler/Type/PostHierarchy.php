@@ -53,6 +53,18 @@ final class PostHierarchy extends AbstractAssembler
 			// Add $wp_rewrite->front to the trail.
 			$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 
+			// Assemble the post type crumb. In this case, it will
+			// end up being a page if 'posts' are set to a custom
+			// page. Otherwise, posts don't have an archive.
+			//
+			// Note: there are scenarios where both rewrite front
+			// and the posts page appears, and this might be weird.
+			// But I've left both here for consistency with CPTs
+			// (see below) until a better resolution is found.
+			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+				'postType' => $postType
+			]);
+
 			// Map the rewrite tags.
 			$this->context->assemble(AssemblerRegistrar::POST_REWRITE_TAGS, [
 				'post' => $this->post,
@@ -66,7 +78,7 @@ final class PostHierarchy extends AbstractAssembler
 
 		// If the post type has rewrite rules.
 		if ($rewrite) {
-			// Assembler the rewrite front crumbs.
+			// Assemble the rewrite front crumbs.
 			if ($rewrite['with_front']) {
 				$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
 			}

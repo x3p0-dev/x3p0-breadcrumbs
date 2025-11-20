@@ -27,11 +27,13 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 {
 	/**
 	 * Stores the crumb instances with sequential keys.
+	 * @var Crumb[]
 	 */
 	protected array $crumbs = [];
 
 	/**
 	 * Stores the crumb types with sequential keys.
+	 * @var string[]
 	 */
 	protected array $types = [];
 
@@ -52,7 +54,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	 * Returns the current key (crumb type in this case) of the current
 	 * crumb. Use when iterating.
 	 */
-	public function key(): mixed
+	public function key(): ?string
 	{
 		return $this->types[$this->index] ?? null;
 	}

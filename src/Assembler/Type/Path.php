@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use WP_Post;
 use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
@@ -40,54 +38,71 @@ final class Path extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
-		if (! $path = trim($this->path, '/')) {
-			return;
-		}
+		$path = trim($this->path, '/');
 
-		// If the path is a post, run the parent crumbs and bail early.
-		if ($post = get_page_by_path($path)) {
-			$this->context->assemble(AssemblerRegistrar::POST_ANCESTORS, [
-				'post' => $post
-			]);
-
-			$this->context->addCrumb(CrumbRegistrar::POST, [
-				'post' => $post
-			]);
-
-			return;
-		}
-
-		// Split the $path into segments.
-		$segments = explode('/', $path);
-
-		// Reverse the array of matches to search for posts in the
-		// proper order and Loop through each of the path matches.
-		foreach (array_reverse($segments) as $slug) {
-			// Get the parent post by the given path.
-			$post = get_page_by_path($slug);
-
-			// If a parent post is found, assemble the crumbs via
-			// post ancestor.
-			if ($post instanceof WP_Post) {
-				$this->context->assemble(AssemblerRegistrar::POST_ANCESTORS, [
-					'post' => $post
-				]);
-
-				$this->context->addCrumb(CrumbRegistrar::POST, [
-					'post' => $post
-				]);
-
-				break;
-
-			// If the slug matches a post type, let's assemble that
-			// by post type and break out of the loop.
-			} elseif ($types = Helpers::getPostTypesBySlug($slug)) {
-				$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
-					'postType' => $types[0]
-				]);
-
-				break;
+		// Iterates through the path, attempting to find an object that
+		// uses it for a slug. Each iteration removes a segment from the
+		// path before checking again.
+		while ($path) {
+			if ($this->tryAssemblePath($path)) {
+				return;
 			}
+
+			$path = $this->removeLastSegment($path);
 		}
+	}
+
+	/**
+	 * Removes the last segment from a path.
+	 */
+	private function removeLastSegment(string $path): string
+	{
+		$lastSlash = strrpos($path, '/');
+
+		return $lastSlash !== false ? substr($path, 0, $lastSlash) : '';
+	}
+
+	/**
+	 * Attempts to assemble breadcrumbs for a given path. Tries both post
+	 * and post type assembly.
+	 */
+	private function tryAssemblePath(string $path): bool
+	{
+		return $this->tryAssemblePost($path)
+			|| $this->tryAssemblePostType($path);
+	}
+
+	/**
+	 * Attempts to assemble breadcrumbs for a post by path.
+	 */
+	private function tryAssemblePost(string $path): bool
+	{
+		if (! $post = get_page_by_path($path)) {
+			return false;
+		}
+
+		$this->context->assemble(AssemblerRegistrar::POST, [
+			'post' => $post
+		]);
+
+		return true;
+	}
+
+	/**
+	 * Attempts to assemble breadcrumbs for a post type by path.
+	 */
+	private function tryAssemblePostType(string $path): bool
+	{
+		$types = Helpers::getPostTypesBySlug($path);
+
+		if (empty($types)) {
+			return false;
+		}
+
+		$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+			'postType' => $types[0]
+		]);
+
+		return true;
 	}
 }

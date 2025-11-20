@@ -38,8 +38,23 @@ final class Term extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
+		// Bail early if the term exists in the crumb collection.
+		if ($this->termCrumbExists()) {
+			return;
+		}
+
 		$taxonomy = get_taxonomy($this->term->taxonomy);
 		$rewrite  = $taxonomy->rewrite; // false|array
+
+		// If the taxonomy has a single post type, add its crumb since
+		// the taxonomy is a part of the larger content type.
+		if (1 === count($taxonomy->object_type)) {
+			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+				'postType' => get_post_type_object(
+					$taxonomy->object_type[0]
+				)
+			]);
+		}
 
 		// Assemble rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
@@ -56,20 +71,6 @@ final class Term extends AbstractAssembler
 			]);
 		}
 
-		// If there's not already a post type crumb and the taxonomy has
-		// a single post type, add its crumb since the taxonomy should
-		// be considered a part of the larger content type.
-		if (
-			! $this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)
-			&& 1 === count($taxonomy->object_type)
-		) {
-			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
-				'postType' => get_post_type_object(
-					$taxonomy->object_type[0]
-				)
-			]);
-		}
-
 		// If the term has a parent, get its ancestors.
 		if (0 < $this->term->parent) {
 			$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
@@ -81,5 +82,17 @@ final class Term extends AbstractAssembler
 		$this->context->addCrumb(CrumbRegistrar::TERM, [
 			'term' => $this->term
 		]);
+	}
+
+	/**
+	 * Checks if the current term already exists in the crumb collection.
+	 */
+	private function termCrumbExists(): bool
+	{
+		return $this->context->crumbs()->hasWhere(
+			key:      CrumbRegistrar::TERM,
+			property: 'term',
+			callback: fn(WP_Term $term) => $term->term_id === $this->term->term_id
+		);
 	}
 }

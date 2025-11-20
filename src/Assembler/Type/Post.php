@@ -39,6 +39,11 @@ final class Post extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
+		// Bail early if the post exists in the crumb collection.
+		if ($this->postCrumbExists()) {
+			return;
+		}
+
 		// If the post has a parent, follow the parent trail.
 		if (0 < $this->post->post_parent) {
 			$this->context->assemble(AssemblerRegistrar::POST_ANCESTORS, [
@@ -64,5 +69,17 @@ final class Post extends AbstractAssembler
 		$this->context->addCrumb(CrumbRegistrar::POST, [
 			'post' => $this->post
 		]);
+	}
+
+	/**
+	 * Checks if the current post already exists in the crumb collection.
+	 */
+	private function postCrumbExists(): bool
+	{
+		return $this->context->crumbs()->hasWhere(
+			key:      CrumbRegistrar::POST,
+			property: 'post',
+			callback: fn(WP_Post $post) => $post->ID === $this->post->ID
+		);
 	}
 }

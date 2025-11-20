@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -41,27 +42,22 @@ final class PostType extends AbstractAssembler
 	 */
 	public function assemble(): void
 	{
-		if (! $this->postType) {
+		// Bail early if there is no post type or if the post type
+		// already exists in the crumb collection.
+		if (! $this->postType || $this->postTypeCrumbExists()) {
 			return;
 		}
 
 		// If this the post type is `post`, add the posts page and bail.
 		if ('post' === $this->postType->name) {
 			$show_on_front = get_option('show_on_front');
-			$post_id       = get_option('page_for_posts');
+			$post_id       = absint(get_option('page_for_posts'));
 
 			// Add post crumb if we have a posts page.
 			if ('posts' !== $show_on_front && 0 < $post_id) {
-				$post = get_post($post_id);
-
-				// If the posts page is the same as the rewrite
-				// front path, we should've already handled that
-				// scenario at this point.
-				if (trim($GLOBALS['wp_rewrite']->front, '/') !== $post->post_name) {
-					$this->context->addCrumb(CrumbRegistrar::POST, [
-						'post' => $post
-					]);
-				}
+				$this->context->assemble(AssemblerRegistrar::POST, [
+					'post' => get_post($post_id)
+				]);
 			}
 
 			return;
@@ -71,5 +67,17 @@ final class PostType extends AbstractAssembler
 		$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
 			'postType' => $this->postType
 		]);
+	}
+
+	/**
+	 * Checks if the current post type already exists in the crumb collection.
+	 */
+	private function postTypeCrumbExists(): bool
+	{
+		return $this->context->crumbs()->hasWhere(
+			key:      CrumbRegistrar::POST_TYPE,
+			property: 'postType',
+			callback: fn(WP_Post_Type $postType) => $postType->name === $this->postType->name
+		);
 	}
 }

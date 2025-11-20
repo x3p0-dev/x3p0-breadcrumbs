@@ -41,27 +41,9 @@ final class PostTypeArchive extends AbstractQuery
 		$type = $this->postType ?: get_post_type_object(get_query_var('post_type'));
 
 		$this->context->assemble(AssemblerRegistrar::HOME);
-
-		if (false !== $type->rewrite) {
-			// Build rewrite front crumbs if post type uses it.
-			if ($type->rewrite['with_front']) {
-				$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
-			}
-
-			// If there's a rewrite slug, check for parents.
-			if (! empty($type->rewrite['slug'])) {
-				$this->context->assemble(AssemblerRegistrar::PATH, [
-					'path' => $type->rewrite['slug']
-				]);
-			}
-		}
-
-		// Add post type crumb if not already in the crumbs collection.
-		if (! $this->context->crumbs()->has(CrumbRegistrar::POST_TYPE)) {
-			$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
-				'postType' => $type
-			]);
-		}
+		$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+			'postType' => $type,
+		]);
 
 		// If viewing a post type archive by author, add author crumb.
 		// This handles URLs like `/{type}?=author={author}`.

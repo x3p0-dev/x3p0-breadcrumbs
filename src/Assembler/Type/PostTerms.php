@@ -45,20 +45,8 @@ final class PostTerms extends AbstractAssembler
 
 		// Check that terms were returned.
 		if ($terms && ! is_wp_error($terms)) {
-			// Get the first term object.
-			$term = $terms[0];
-
-			// If the term has a parent, add its ancestor crumbs to
-			// the breadcrumb trail.
-			if (0 < $term->parent) {
-				$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
-					'term' => $term
-				]);
-			}
-
-			// Add term crumb.
-			$this->context->addCrumb(CrumbRegistrar::TERM, [
-				'term' => $term
+			$this->context->assemble(AssemblerRegistrar::TERM, [
+				'term' => $terms[0]
 			]);
 		}
 	}

@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-02-23
+
+### Added
+
+- Moved framework code to `packages` folder that is developed separately.
+- New `Prelude` class for development. It's used to bundle in-house dependencies.
+- New `CrumbCollection::hasWhere()` method for checking if a crumb of a given type satisfies a callback condition.
+- `Post::postCrumbExists()` to determine if a specific post has been added to the collection.
+- `PostType::postTypeCrumbExists()` to determine if a specific post type crumb has been added to the collection.
+- `Term::termCrumbExists()` to determine if a specific term crumb has been added to the collection.
+- More robust `Path` assembler. This version checks the path with a segment removed during the loop rather than splitting into parts, which is more accurate when given a full path.
+
+### Changed
+
+- The `Block` interface now follows a standardized method of passing parameters into its `render()` method. This ensures that there's a single class instance that can be used multiple times without creating a new class.
+- Hook callbacks are now private class methods and use PHP's first-class callable syntax.
+- Now using the default `blocks-manifest.json` instead of `manifest.json` because custom naming doesn't have full support in development.
+- `Crumb` classes' properties are now set to public for accessing them outside the class (used for checks if a particular crumb is in a collection).
+- General code updates, including better type hinting and other cleanup.
+
+### Fixed
+
+- The default `mapRewriteTags` attribute has cleaner handling by only overwriting the default attribute value and merging with what's already set in `block.json`.
+
 ## [4.0.0] - 2025-11-08
 
 ### Added

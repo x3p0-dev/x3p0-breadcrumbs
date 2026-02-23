@@ -1,4 +1,4 @@
-=== Breadcrumbs Block – Navigation Trail ===
+=== X3P0: Breadcrumbs ===
 
 Contributors: greenshady
 Donate link: http://a.co/02ggsr2
@@ -14,7 +14,7 @@ Add breadcrumb navigation to any site. Works with block and classic themes. Auto
 
 == Description ==
 
-X3P0: Breadcrumbs is the most robust breadcrumb navigation system for WordPress. Built on 15+ years of development, it automatically detects your permalink structure and displays accurate breadcrumbs for every page on your site.
+X3P0: Breadcrumbs is the most robust breadcrumb navigation system for WordPress. Built on 17+ years of development, it automatically detects your permalink structure and displays accurate breadcrumbs for every page on your site.
 
 Perfect for improving site navigation and SEO, this breadcrumbs plugin works seamlessly with both block themes and classic themes. Simply insert the Breadcrumbs block via the WordPress Site Editor or add it to your theme templates.
 

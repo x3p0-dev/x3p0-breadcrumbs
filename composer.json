@@ -25,6 +25,7 @@
 	"autoload": {
 		"psr-4": {
 			"X3P0\\Breadcrumbs\\": "src/",
+			"X3P0\\Breadcrumbs\\Framework\\": "packages/x3p0-dev/x3p0-framework/src/",
 			"X3P0\\Breadcrumbs\\Scripts\\": "scripts/"
 		},
 		"files" : [

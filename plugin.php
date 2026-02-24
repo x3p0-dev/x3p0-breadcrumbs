@@ -21,6 +21,9 @@ namespace X3P0\Breadcrumbs;
 # Prevent direct access.
 defined('ABSPATH') || exit;
 
+# Define the plugin constants.
+const PLUGIN_PATH  = __DIR__;
+
 # Load the autoloader.
 if (! class_exists(Plugin::class) && is_file(__DIR__ . '/vendor/autoload.php')) {
 	require_once __DIR__ . '/vendor/autoload.php';

@@ -20,20 +20,11 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
 	/**
-	 * Stores the path to the plugins blocks directory.
-	 */
-	private const BLOCKS_PATH = __DIR__ . '/../../public/blocks';
-
-	/**
 	 * @inheritDoc
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(
-			BlockRegistrar::class,
-			fn($container) => new BlockRegistrar(self::BLOCKS_PATH)
-		);
-
+		$this->container->singleton(BlockRegistrar::class);
 		$this->container->singleton(Breadcrumbs::class);
 	}
 

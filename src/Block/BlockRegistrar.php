@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+use const X3P0\Breadcrumbs\PLUGIN_PATH;
 
 /**
  * Registers the plugin's block types with WordPress.
@@ -21,15 +22,14 @@ use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 final class BlockRegistrar implements Bootable
 {
 	/**
-	 * Filename of the blocks manifest.
+	 * Path to the blocks folder for the plugin.
 	 */
-	private const MANIFEST_FILENAME = 'blocks-manifest.php';
+	private const BLOCKS_PATH = PLUGIN_PATH . '/public/blocks';
 
 	/**
-	 * Sets the path where the built blocks are stored.
+	 * Filename of the blocks manifest.
 	 */
-	public function __construct(protected readonly string $path)
-	{}
+	private const MANIFEST_FILE = 'blocks-manifest.php';
 
 	/**
 	 * @inheritDoc
@@ -48,8 +48,8 @@ final class BlockRegistrar implements Bootable
 	private function register(): void
 	{
 		wp_register_block_types_from_metadata_collection(
-			$this->path,
-			"{$this->path}/" . self::MANIFEST_FILENAME
+			self::BLOCKS_PATH,
+			self::BLOCKS_PATH . '/' . self::MANIFEST_FILE
 		);
 	}
 

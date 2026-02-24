@@ -13,20 +13,17 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Framework\Core\Application;
 use X3P0\Breadcrumbs\Framework\Container\{Container, ServiceContainer};
 
 /**
  * Returns the plugin application, which is stored as a single instance in the
  * static `$plugin` variable.
  */
-function plugin(): Application
+function plugin(): Plugin
 {
-	static $plugin;
+	static $plugin = null;
 
-	if (! $plugin instanceof Plugin) {
-		$plugin = new Plugin(new ServiceContainer());
-	}
+	$plugin ??= new Plugin(new ServiceContainer());
 
 	return $plugin;
 }

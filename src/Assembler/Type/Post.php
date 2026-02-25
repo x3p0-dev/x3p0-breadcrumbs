@@ -65,7 +65,7 @@ final class Post extends AbstractAssembler
 			]);
 		}
 
-		// Assembler the post crumb.
+		// Assemble the post crumb.
 		$this->context->addCrumb(CrumbRegistrar::POST, [
 			'post' => $this->post
 		]);

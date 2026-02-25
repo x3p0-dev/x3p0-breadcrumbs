@@ -30,7 +30,7 @@ if (! class_exists(Plugin::class) && is_file(PLUGIN_PATH . '/vendor/autoload.php
 }
 
 # Initialize the plugin.
-add_action('plugins_loaded', plugin(...), 9999);
+add_action('plugins_loaded', plugin(...), 999);
 
 # Boot registered services.
-add_action('plugins_loaded', fn() => plugin()->boot(), PHP_INT_MAX);
+add_action('plugins_loaded', fn() => plugin()->boot(), 999999);

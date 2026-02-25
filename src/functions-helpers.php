@@ -23,9 +23,7 @@ function plugin(): Plugin
 {
 	static $plugin = null;
 
-	$plugin ??= new Plugin(new ServiceContainer());
-
-	return $plugin;
+	return $plugin ??= new Plugin(new ServiceContainer());
 }
 
 /**

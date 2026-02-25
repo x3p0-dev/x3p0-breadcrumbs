@@ -22,11 +22,11 @@ namespace X3P0\Breadcrumbs;
 defined('ABSPATH') || exit;
 
 # Define the plugin constants.
-const PLUGIN_PATH  = __DIR__;
+const PLUGIN_DIR  = __DIR__;
 
 # Load the autoloader.
-if (! class_exists(Plugin::class) && is_file(PLUGIN_PATH . '/vendor/autoload.php')) {
-	require_once PLUGIN_PATH . '/vendor/autoload.php';
+if (! class_exists(Plugin::class) && is_file(PLUGIN_DIR . '/vendor/autoload.php')) {
+	require_once PLUGIN_DIR . '/vendor/autoload.php';
 }
 
 # Initialize the plugin.

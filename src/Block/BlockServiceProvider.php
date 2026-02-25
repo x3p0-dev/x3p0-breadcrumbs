@@ -24,7 +24,6 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 	 */
 	public function register(): void
 	{
-		$this->container->singleton(BlockRegistrar::class);
 		$this->container->singleton(Breadcrumbs::class);
 	}
 

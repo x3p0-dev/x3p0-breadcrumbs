@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Markup\AbstractMarkup;
+use X3P0\Breadcrumbs\Markup\Markup;
 
 /**
  * Creates a plain HTML representation of the breadcrumbs as an ordered list.
  */
-class Html extends AbstractMarkup
+class Html extends Markup
 {
 	/**
 	 * @inheritDoc

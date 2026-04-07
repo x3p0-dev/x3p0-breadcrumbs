@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup\Type;
 
-use X3P0\Breadcrumbs\Markup\AbstractMarkup;
+use X3P0\Breadcrumbs\Markup\Markup;
 
 /**
  * Creates a JSON-LD script tag for output in the document head.
  */
-class JsonLinkedData extends AbstractMarkup
+class JsonLinkedData extends Markup
 {
 	/**
 	 * @inheritDoc

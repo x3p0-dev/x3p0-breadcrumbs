@@ -25,9 +25,11 @@ import { InspectorControls } from '@wordpress/block-editor';
  */
 const BlockInspector = (props) => (
 	<>
+		<InspectorControls group="content">
+			<LabelsPanel {...props}/>
+		</InspectorControls>
 		<InspectorControls group="settings">
 			<SettingsPanel {...props}/>
-			<LabelsPanel {...props}/>
 			<RewriteTagsPanel {...props}/>
 			<PostTaxonomyPanel {...props}/>
 		</InspectorControls>

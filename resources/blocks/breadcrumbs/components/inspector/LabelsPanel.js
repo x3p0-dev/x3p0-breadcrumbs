@@ -74,6 +74,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 					hasValue={() => !!labels[item.name]}
 					onDeselect={resetPanelItem(item.name)}
 					panelId={panelId}
+					isShownByDefault
 				>
 					<TextControl
 						__next40pxDefaultSize

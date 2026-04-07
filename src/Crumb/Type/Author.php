@@ -15,9 +15,9 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_User;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 
-final class Author extends AbstractCrumb
+final class Author extends Crumb
 {
 	/**
 	 * @inheritDoc

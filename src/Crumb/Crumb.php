@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Crumb interface.
+ * Crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -13,21 +13,29 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsContext;
+
 /**
- * `Crumb` classes represent the final result of an individual breadcrumb item
- * that has been generated either by `Query` or `Assembler` implementations. It
- * should house all the information for outputting the breadcrumb item on the
- * front end.
+ * Creates a custom crumb object.
  */
-interface Crumb
+abstract class Crumb
 {
+	/**
+	 * Creates a new crumb object.
+	 */
+	public function __construct(protected BreadcrumbsContext $context)
+	{}
+
 	/**
 	 * Returns an internationalized text label for the crumb.
 	 */
-	public function getLabel(): string;
+	abstract public function getLabel(): string;
 
 	/**
 	 * Returns a URL for the crumb.
 	 */
-	public function getUrl(): string;
+	public function getUrl(): string
+	{
+		return '';
+	}
 }

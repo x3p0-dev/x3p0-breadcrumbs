@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\Crumb\AbstractCrumb;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 
-final class Home extends AbstractCrumb
+final class Home extends Crumb
 {
 	/**
 	 * @inheritDoc

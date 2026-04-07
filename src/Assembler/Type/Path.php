@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Tools\Helpers;
  * Assembles breadcrumbs based on a given path by attempting to find a post
  * object within that path.
  */
-final class Path extends AbstractAssembler
+final class Path extends Assembler
 {
 	/**
 	 * @inheritDoc

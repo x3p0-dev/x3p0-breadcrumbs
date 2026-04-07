@@ -15,9 +15,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
-use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\Query;
 
-final class Date extends AbstractQuery
+final class Date extends Query
 {
 	/**
 	 * @inheritDoc

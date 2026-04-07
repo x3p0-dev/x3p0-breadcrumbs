@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
-use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\Query;
 
-final class Paged extends AbstractQuery
+final class Paged extends Query
 {
 	/**
 	 * @inheritDoc

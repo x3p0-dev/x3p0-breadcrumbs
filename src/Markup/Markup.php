@@ -18,8 +18,9 @@ use X3P0\Breadcrumbs\Framework\Contracts\Renderable;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Implements a markup object as an abstract class, providing base properties
- * and methods for subclasses to use to create custom markup implementations.
+ * Markup classes are responsible for rendering the final HTML for a breadcrumb
+ * trail using an implementation of the `Breadcrumbs` interface. Provides base
+ * properties and methods for subclasses to create custom implementations.
  */
 abstract class Markup implements Renderable
 {

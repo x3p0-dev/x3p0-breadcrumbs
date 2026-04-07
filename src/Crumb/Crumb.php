@@ -16,7 +16,10 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * Creates a custom crumb object.
+ * `Crumb` classes represent the final result of an individual breadcrumb item
+ * that has been generated either by `Query` or `Assembler` implementations. It
+ * should house all the information for outputting the breadcrumb item on the
+ * front end.
  */
 abstract class Crumb
 {

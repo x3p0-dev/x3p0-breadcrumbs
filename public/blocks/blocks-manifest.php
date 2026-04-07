@@ -84,6 +84,12 @@ return array(
 			'separatorIcon' => array(
 				'type' => 'string',
 				'default' => 'svg-chevron'
+			),
+			'separatorColor' => array(
+				'type' => 'string'
+			),
+			'customSeparatorColor' => array(
+				'type' => 'string'
 			)
 		),
 		'supports' => array(

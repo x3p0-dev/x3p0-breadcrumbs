@@ -77,6 +77,12 @@
     "separatorIcon": {
       "type": "string",
       "default": "svg-chevron"
+    },
+    "separatorColor": {
+      "type": "string"
+    },
+    "customSeparatorColor": {
+      "type": "string"
     }
   },
   "supports": {

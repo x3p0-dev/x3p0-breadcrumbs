@@ -12,6 +12,7 @@ import LabelsPanel       from './LabelsPanel';
 import PostTaxonomyPanel from './PostTaxonomyPanel';
 import RewriteTagsPanel  from './RewriteTagsPanel';
 import SettingsPanel     from './SettingsPanel';
+import ColorControls     from './ColorControls';
 
 // WordPress dependencies.
 import { InspectorControls } from '@wordpress/block-editor';
@@ -23,12 +24,17 @@ import { InspectorControls } from '@wordpress/block-editor';
  * @returns {JSX.Element}
  */
 const BlockInspector = (props) => (
-	<InspectorControls group="settings">
-		<SettingsPanel {...props}/>
-		<LabelsPanel {...props}/>
-		<RewriteTagsPanel {...props}/>
-		<PostTaxonomyPanel {...props}/>
-	</InspectorControls>
+	<>
+		<InspectorControls group="settings">
+			<SettingsPanel {...props}/>
+			<LabelsPanel {...props}/>
+			<RewriteTagsPanel {...props}/>
+			<PostTaxonomyPanel {...props}/>
+		</InspectorControls>
+		<InspectorControls group="color">
+			<ColorControls {...props}/>
+		</InspectorControls>
+	</>
 );
 
 export default BlockInspector;

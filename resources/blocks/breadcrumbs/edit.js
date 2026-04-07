@@ -10,16 +10,19 @@
 import BlockToolbar   from './components/toolbar/BlockToolbar';
 import BlockInspector from './components/inspector/BlockInspector';
 import BlockContent   from './components/content/BlockContent';
+import {withColors}   from '@wordpress/block-editor';
 
 /**
  * Renders the block edit component.
  * @param props
  * @returns {JSX.Element}
  */
-export default (props) => (
+export default withColors({
+	separatorColor: 'separator-color'
+})((props) => (
 	<>
 		<BlockToolbar {...props}/>
 		<BlockInspector {...props}/>
 		<BlockContent {...props}/>
 	</>
-);
+));

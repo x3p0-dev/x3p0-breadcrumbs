@@ -41,6 +41,7 @@ const CrumbLink = ({ children }) => (
  */
 const BlockContent = ({
 	attributes: {
+		customSeparatorColor,
 		labels = {},
 		homeIcon,
 		justifyContent,
@@ -50,6 +51,9 @@ const BlockContent = ({
 		showTrailStart,
 		separatorIcon
 	},
+	separatorColor,
+	setSeparatorColor,
+	style,
 	setAttributes,
 	isSelected
 }) => {
@@ -59,7 +63,13 @@ const BlockContent = ({
 			['hide-home-label'] : showTrailStart && ! showHomeLabel,
 			[`has-sep-${separatorIcon}`] : separatorIcon,
 			[`is-content-justification-${justifyContent}`] : justifyContent
-		})
+		}),
+		style: {
+			...style,
+			'--x3p0-breadcrumbs--color--separator': separatorColor.slug && separatorColor.color
+				? `var(--wp--preset--color--${separatorColor.slug}, ${separatorColor.color})`
+				: customSeparatorColor
+		}
 	});
 
 	// We must use inner blocks props for layout styles to work properly in

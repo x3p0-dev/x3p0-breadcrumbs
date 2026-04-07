@@ -104,7 +104,31 @@ final class Breadcrumbs implements Block
 		// original attributes array.
 		$attr['class'] = implode(' ', $classes);
 
+		// Add the separator color CSS custom property if defined.
+		if ($separatorColor = $this->getSeparatorColor($attributes)) {
+			$attr['style'] = ($attr['style'] ?? '') . sprintf(
+				'--x3p0-breadcrumbs--color--separator: %s;',
+				$separatorColor
+			);
+		}
+
 		return $attr;
+	}
+
+	/**
+	 * Returns the separator color value for use in a CSS custom property,
+	 * or an empty string if no color is defined.
+	 */
+	private function getSeparatorColor(array $attributes): string
+	{
+		if (! empty($attributes['separatorColor'])) {
+			return sprintf(
+				'var(--wp--preset--color--%s)',
+				$attributes['separatorColor']
+			);
+		}
+
+		return $attributes['customSeparatorColor'] ?? '';
 	}
 
 	/**

@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\{AbstractAssembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -25,7 +25,7 @@ use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
  * core WP `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`,
  * and `%author` tags. It will also map any taxonomy tags.
  */
-final class PostRewriteTags extends AbstractAssembler
+final class PostRewriteTags extends Assembler
 {
 	/**
 	 * @inheritDoc

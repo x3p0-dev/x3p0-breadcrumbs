@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post_Type;
 use WP_Rewrite;
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
@@ -23,7 +23,7 @@ use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 /**
  * Assembles breadcrumbs for the given post type.
  */
-final class PostType extends AbstractAssembler
+final class PostType extends Assembler
 {
 	/**
 	 * @inheritDoc

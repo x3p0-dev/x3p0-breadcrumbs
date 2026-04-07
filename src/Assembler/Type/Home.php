@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use X3P0\Breadcrumbs\Assembler\AbstractAssembler;
+use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles the blog homepage crumb(s). For multisite, this may include showing
  * both the network and homepage of the sub-site crumb.
  */
-final class Home extends AbstractAssembler
+final class Home extends Assembler
 {
 	/**
 	 * @inheritDoc

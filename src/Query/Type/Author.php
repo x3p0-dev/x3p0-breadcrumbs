@@ -18,10 +18,10 @@ use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
-use X3P0\Breadcrumbs\Query\AbstractQuery;
+use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryRegistrar;
 
-final class Author extends AbstractQuery
+final class Author extends Query
 {
 	/**
 	 * @inheritDoc

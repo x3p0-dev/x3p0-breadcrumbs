@@ -203,7 +203,7 @@ echo breadcrumbs()->render(
 
 #### Markup Types
 
-The plugin comes with three classes for rending the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` interface. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
+The plugin comes with three classes for rending the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
 
 The `markupType` parameter of `breadcrumbs()->render()` can be one of three values:
 

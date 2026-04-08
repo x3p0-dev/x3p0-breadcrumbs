@@ -67,7 +67,7 @@ final class MarkupRegistry implements ClassRegistry
 	 */
 	public function isRegistered(string $key): bool
 	{
-		return isset($this->markups[$key]);
+		return array_key_exists($key, $this->markups);
 	}
 
 	/**

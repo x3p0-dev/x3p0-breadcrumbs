@@ -67,7 +67,7 @@ final class AssemblerRegistry implements ClassRegistry
 	 */
 	public function isRegistered(string $key): bool
 	{
-		return isset($this->assemblers[$key]);
+		return array_key_exists($key, $this->assemblers);
 	}
 
 	/**

@@ -67,7 +67,7 @@ final class CrumbRegistry implements ClassRegistry
 	 */
 	public function isRegistered(string $key): bool
 	{
-		return isset($this->crumbs[$key]);
+		return array_key_exists($key, $this->crumbs);
 	}
 
 	/**

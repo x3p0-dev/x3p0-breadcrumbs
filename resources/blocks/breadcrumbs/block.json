@@ -124,7 +124,8 @@
 			"margin": true,
 			"padding": true,
 			"__experimentalDefaultControls": {
-				"padding": true
+				"padding": true,
+				"margin": false
 			}
 		},
 		"typography": {

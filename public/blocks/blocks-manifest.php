@@ -143,7 +143,8 @@ return array(
 				'margin' => true,
 				'padding' => true,
 				'__experimentalDefaultControls' => array(
-					'padding' => true
+					'padding' => true,
+					'margin' => false
 				)
 			),
 			'typography' => array(

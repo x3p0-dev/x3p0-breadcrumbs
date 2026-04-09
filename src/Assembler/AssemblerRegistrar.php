@@ -18,6 +18,7 @@ namespace X3P0\Breadcrumbs\Assembler;
  */
 final class AssemblerRegistrar
 {
+	public const DATE              = 'date';
 	public const HOME              = 'home';
 	public const PAGED             = 'paged';
 	public const PATH              = 'path';
@@ -38,6 +39,7 @@ final class AssemblerRegistrar
 	private static function getAssemblers(): array
 	{
 		return [
+			self::DATE              => Type\Date::class,
 			self::HOME              => Type\Home::class,
 			self::PAGED             => Type\Paged::class,
 			self::PATH              => Type\Path::class,

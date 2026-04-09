@@ -46,7 +46,7 @@ final class PostTypeArchive extends Query
 		]);
 
 		// If viewing a post type archive by author, add author crumb.
-		// This handles URLs like `/{type}?=author={author}`.
+		// This handles URLs like `/?post_type={type}&author={author}`.
 		if (is_author()) {
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
@@ -54,6 +54,12 @@ final class PostTypeArchive extends Query
 			$this->context->addCrumb(CrumbRegistrar::AUTHOR, [
 				'user' => $user
 			]);
+		}
+
+		// If viewing a date-filtered post type archive, add date crumbs.
+		// This handles URLs like `/?post_type={type}&year={year}`.
+		if (is_date()) {
+			$this->context->assemble(AssemblerRegistrar::DATE);
 		}
 
 		// If viewing a post type search, add the search crumb. This

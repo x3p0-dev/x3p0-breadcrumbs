@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
-use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\{Query, QueryRegistrar};
 
 final class Date extends Query
 {
@@ -24,86 +23,16 @@ final class Date extends Query
 	 */
 	public function query(): void
 	{
+		// If this is also a post type archive, forward to the post type
+		// archive query, which will handle post type + date queries.
+		if (is_post_type_archive()) {
+			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			return;
+		}
+
 		$this->context->assemble(AssemblerRegistrar::HOME);
 		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
-
-		[
-			'year'   => $year,
-			'month'  => $month,
-			'day'    => $day,
-			'hour'   => $hour,
-			'minute' => $minute,
-			'second' => $second
-		] = $this->getQueryStringVars();
-
-		if (is_year() || get_query_var('year') || $year) {
-			$this->context->addCrumb(CrumbRegistrar::YEAR);
-		}
-
-		if (is_month() || get_query_var('monthnum') || $month) {
-			$this->context->addCrumb(CrumbRegistrar::MONTH);
-		}
-
-		if (get_query_var('w')) {
-			$this->context->addCrumb(CrumbRegistrar::WEEK);
-		}
-
-		if (is_day() || get_query_var('day') || $day) {
-			$this->context->addCrumb(CrumbRegistrar::DAY);
-		}
-
-		if (get_query_var('hour') || $hour) {
-			$this->context->addCrumb(CrumbRegistrar::HOUR);
-		}
-
-		if (get_query_var('minute') || $minute) {
-			$this->context->addCrumb(CrumbRegistrar::MINUTE);
-		}
-
-		if (get_query_var('second') || $second) {
-			$this->context->addCrumb(CrumbRegistrar::SECOND);
-		}
-
+		$this->context->assemble(AssemblerRegistrar::DATE);
 		$this->context->assemble(AssemblerRegistrar::PAGED);
-	}
-
-	/**
-	 * Helper function for parsing date URLs when using plain permalinks
-	 * like: `?m=YYYYMMDDHHMMSS` This function splits the query string into
-	 * its individual substrings and maps them to the year, month, day,
-	 * hour, minute, and second variables.
-	 */
-	private function getQueryStringVars(): array
-	{
-		// Define mapping of substring lengths and positions.
-		$parts = [
-			'year'   => [0, 4],
-			'month'  => [4, 2],
-			'day'    => [6, 2],
-			'hour'   => [8, 2],
-			'minute' => [10, 2],
-			'second' => [12, 2]
-		];
-
-		// If the site uses pretty permalinks, or we're not viewing a
-		// date archive with the `?m` query string, bail early and
-		// return `false` for each array item.
-		if (get_option('permalink_structure') || ! get_query_var('m')) {
-			return array_fill_keys(array_keys($parts), false);
-		}
-
-		// Get from query var and remove non-numeric characters.
-		$dateString = preg_replace('/[^0-9]/', '', get_query_var('m'));
-
-		$vars   = [];
-		$length = strlen($dateString);
-
-		foreach ($parts as $key => [$start, $len]) {
-			$vars[$key] = ($start + $len <= $length)
-				? substr($dateString, $start, $len)
-				: false;
-		}
-
-		return $vars;
 	}
 }

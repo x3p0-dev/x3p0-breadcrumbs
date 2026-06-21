@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d67bfd03e2e690a95b8020382b1ecd2e",
+    "content-hash": "381fc22fa6363b7280a75292fd5468fa",
     "packages": [
         {
             "name": "x3p0-dev/x3p0-framework",
@@ -924,12 +924,93 @@
                 }
             ],
             "time": "2025-11-25T12:08:04+00:00"
+        },
+        {
+            "name": "x3p0-dev/x3p0-prelude",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-prelude.git",
+                "reference": "1464d0f1f034459531735fe97841c9d9967511f4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-prelude/zipball/1464d0f1f034459531735fe97841c9d9967511f4",
+                "reference": "1464d0f1f034459531735fe97841c9d9967511f4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "composer/composer": "^2.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\Prelude\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Tadlock",
+                    "email": "justintadlock@gmail.com"
+                }
+            ],
+            "description": "Composer package prefixer — copies vendor packages and applies namespace prefixing to avoid conflicts across multiple projects.",
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-prelude/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-prelude/tree/master"
+            },
+            "time": "2026-06-15T15:36:17+00:00"
+        },
+        {
+            "name": "x3p0-dev/x3p0-skills",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-skills.git",
+                "reference": "ea99d0e9e76ac9abaf6b19009ae229f78b38dbf6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-skills/zipball/ea99d0e9e76ac9abaf6b19009ae229f78b38dbf6",
+                "reference": "ea99d0e9e76ac9abaf6b19009ae229f78b38dbf6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "default-branch": true,
+            "type": "claude-skill",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\Skills\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0-or-later"
+            ],
+            "description": "Shared AI skills for WordPress themes and plugins.",
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-skills/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-skills/tree/master"
+            },
+            "time": "2026-06-11T16:08:55+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "x3p0-dev/x3p0-framework": 20
+        "x3p0-dev/x3p0-framework": 20,
+        "x3p0-dev/x3p0-prelude": 20,
+        "x3p0-dev/x3p0-skills": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

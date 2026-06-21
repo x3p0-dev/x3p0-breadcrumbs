@@ -11,16 +11,16 @@
 			"composer update",
 			"composer dump-autoload"
 		],
-		"prelude": "X3P0\\Breadcrumbs\\Scripts\\Prelude::compose",
 		"post-install-cmd": [
-			"@prelude"
+			"@x3p0-dev-scripts"
 		],
 		"post-update-cmd": [
-			"@prelude"
+			"@x3p0-dev-scripts"
 		],
 		"zip": "composer archive --file=x3p0-breadcrumbs",
 		"lint:php": "./vendor/bin/phpcs -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
-		"fix:php": "./vendor/bin/phpcbf -d error_reporting=E_ALL^E_DEPRECATED -s --colors ."
+		"fix:php": "./vendor/bin/phpcbf -d error_reporting=E_ALL^E_DEPRECATED -s --colors .",
+		"x3p0-dev-scripts": "X3P0\\Breadcrumbs\\Scripts\\ComposerScripts::devScripts"
 	},
 	"autoload": {
 		"psr-4": {
@@ -47,7 +47,9 @@
 		"wp-coding-standards/wpcs": "^3.0",
 		"phpcompatibility/phpcompatibility-wp": "*",
 		"symfony/var-dumper": "^7.1",
-		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"x3p0-dev/x3p0-prelude": "dev-master",
+		"x3p0-dev/x3p0-skills": "dev-master"
 	},
 	"minimum-stability": "stable",
 	"prefer-stable": true,
@@ -61,10 +63,16 @@
 	"extra": {
 		"x3p0": {
 			"prelude": {
-				"vendor-path": "x3p0-dev",
+				"prefix": "X3P0\\Breadcrumbs",
 				"output-path": "packages",
-				"search-namespace": "X3P0",
-				"replace-namespace": "X3P0\\Breadcrumbs"
+				"packages": {
+					"x3p0-dev/x3p0-framework": {
+						"replace": "X3P0\\"
+					}
+				}
+			},
+			"skills": {
+				"path": ".claude/skills"
 			}
 		}
 	},

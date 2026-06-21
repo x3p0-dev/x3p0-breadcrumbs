@@ -1,8 +1,8 @@
 /.idea
-/.idea
 /node_modules
 /packages
 /vendor
 *.map
 *.zip
 .DS_Store
+.claude/skills/x3p0-*

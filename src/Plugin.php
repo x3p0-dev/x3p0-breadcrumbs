@@ -28,11 +28,6 @@ use X3P0\Breadcrumbs\Rest\RestServiceProvider;
 final class Plugin extends Application
 {
 	/**
-	 * Defines the plugin's namespace, which is used as a hook prefix.
-	 */
-	protected const NAMESPACE = 'x3p0/breadcrumbs';
-
-	/**
 	 * Defines the plugin's default service providers.
 	 */
 	protected const PROVIDERS = [

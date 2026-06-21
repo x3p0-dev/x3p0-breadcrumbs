@@ -19,19 +19,11 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(Breadcrumbs::class);
-	}
+	protected const SINGLETONS = [
+		Breadcrumbs::class
+	];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		$this->container->get(BlockRegistrar::class)->boot();
-	}
+	protected const BOOTABLE = [
+		BlockRegistrar::class
+	];
 }

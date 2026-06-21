@@ -18,14 +18,10 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class MarkupServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(MarkupFactory::class);
-		$this->container->singleton(MarkupRegistry::class);
-	}
+	protected const SINGLETONS = [
+		MarkupFactory::class,
+		MarkupRegistry::class
+	];
 
 	/**
 	 * @inheritDoc
@@ -33,5 +29,7 @@ final class MarkupServiceProvider extends ServiceProvider implements Bootable
 	public function boot(): void
 	{
 		MarkupRegistrar::register($this->container->get(MarkupRegistry::class));
+
+		parent::boot();
 	}
 }

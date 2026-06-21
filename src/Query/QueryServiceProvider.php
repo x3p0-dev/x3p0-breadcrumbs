@@ -18,14 +18,10 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class QueryServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(QueryFactory::class);
-		$this->container->singleton(QueryRegistry::class);
-	}
+	protected const SINGLETONS = [
+		QueryFactory::class,
+		QueryRegistry::class
+	];
 
 	/**
 	 * @inheritDoc
@@ -33,5 +29,7 @@ final class QueryServiceProvider extends ServiceProvider implements Bootable
 	public function boot(): void
 	{
 		QueryRegistrar::register($this->container->get(QueryRegistry::class));
+
+		parent::boot();
 	}
 }

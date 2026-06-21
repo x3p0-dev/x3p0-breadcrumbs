@@ -18,14 +18,10 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class CrumbServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(CrumbFactory::class);
-		$this->container->singleton(CrumbRegistry::class);
-	}
+	protected const SINGLETONS = [
+		CrumbFactory::class,
+		CrumbRegistry::class
+	];
 
 	/**
 	 * @inheritDoc
@@ -33,5 +29,7 @@ final class CrumbServiceProvider extends ServiceProvider implements Bootable
 	public function boot(): void
 	{
 		CrumbRegistrar::register($this->container->get(CrumbRegistry::class));
+
+		parent::boot();
 	}
 }

@@ -17,12 +17,8 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(BreadcrumbsFactory::class);
-		$this->container->singleton(BreadcrumbsService::class);
-	}
+	protected const SINGLETONS = [
+		BreadcrumbsFactory::class,
+		BreadcrumbsService::class
+	];
 }

@@ -18,11 +18,7 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 class RestServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		$this->container->get(RestRegistrar::class)->boot();
-	}
+	protected const BOOTABLE = [
+		RestRegistrar::class
+	];
 }

@@ -18,14 +18,10 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 {
-	/**
-	 * @inheritDoc
-	 */
-	public function register(): void
-	{
-		$this->container->singleton(AssemblerFactory::class);
-		$this->container->singleton(AssemblerRegistry::class);
-	}
+	protected const SINGLETONS = [
+		AssemblerFactory::class,
+		AssemblerRegistry::class
+	];
 
 	/**
 	 * @inheritDoc
@@ -33,5 +29,7 @@ final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 	public function boot(): void
 	{
 		AssemblerRegistrar::register($this->container->get(AssemblerRegistry::class));
+
+		parent::boot();
 	}
 }

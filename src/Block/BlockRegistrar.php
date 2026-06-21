@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+
 use const X3P0\Breadcrumbs\PLUGIN_DIR;
 
 /**

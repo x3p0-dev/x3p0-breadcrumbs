@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Markup\{MarkupConfig, MarkupFactory, MarkupType};
+use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\MarkupFactory;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
  * Support class for more quickly rendering a breadcrumb trail. It hides away

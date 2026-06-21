@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
+use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Tools\Helpers;
 

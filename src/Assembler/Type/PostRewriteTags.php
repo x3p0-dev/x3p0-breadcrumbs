@@ -15,7 +15,8 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
+use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 

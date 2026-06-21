@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Assembler\{AssemblerFactory, AssemblerType};
-use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory, CrumbType};
-use X3P0\Breadcrumbs\Query\{QueryFactory, QueryType};
+use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
+use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Query\QueryFactory;
+use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
  * Provides a simple API to pass into query, assembler, and crumb classes so

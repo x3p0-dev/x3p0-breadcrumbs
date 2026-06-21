@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use TypeError;
 use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
+use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
  * Registry class for storing query classes.
@@ -44,11 +44,7 @@ final class QueryRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Query::class)) {
-			throw new TypeError(esc_html(sprintf(
-				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Query::class
-			)));
+			throw InvalidTypeException::notSubclassOf($className, Query::class);
 		}
 
 		$this->queries[$key] = $className;

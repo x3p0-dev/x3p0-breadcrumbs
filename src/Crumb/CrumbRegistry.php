@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use TypeError;
 use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
+use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
  * Registry for storing crumb classes.
@@ -44,11 +44,7 @@ final class CrumbRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Crumb::class)) {
-			throw new TypeError(esc_html(sprintf(
-				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Crumb::class
-			)));
+			throw InvalidTypeException::notSubclassOf($className, Crumb::class);
 		}
 
 		$this->crumbs[$key] = $className;

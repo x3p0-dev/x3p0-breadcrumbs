@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use TypeError;
 use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
+use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
  * Stores the markup classes that can later be instantiated as objects.
@@ -44,11 +44,7 @@ final class MarkupRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Markup::class)) {
-			throw new TypeError(esc_html(sprintf(
-				// Translators: %s is a PHP class name.
-				__('Only %s classes can be registered', 'x3p0-breadcrumbs'),
-				Markup::class
-			)));
+			throw InvalidTypeException::notSubclassOf($className, Markup::class);
 		}
 
 		$this->markups[$key] = $className;

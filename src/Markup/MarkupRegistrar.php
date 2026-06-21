@@ -13,38 +13,28 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+
 /**
- * Registers markup classes with the registry.
+ * Registers the default markup types with the registry.
  */
-final class MarkupRegistrar
+final class MarkupRegistrar implements Bootable
 {
-	public const HTML      = 'html';
-	public const MICRODATA = 'microdata';
-	public const RDFA      = 'rdfa';
-	public const JSON_LD   = 'json-ld';
+	/**
+	 * Sets up the object state.
+	 */
+	public function __construct(
+		protected readonly MarkupRegistry $registry
+	) {}
 
 	/**
-	 * An array of markup keys and their associated classes, to be stored
-	 * in the markup registry.
+	 * @inheritDoc
 	 */
-	private static function getMarkups(): array
+	public function boot(): void
 	{
-		return [
-			self::HTML      => Type\Html::class,
-			self::MICRODATA => Type\Microdata::class,
-			self::RDFA      => Type\Rdfa::class,
-			self::JSON_LD   => Type\JsonLinkedData::class,
-		];
-	}
-
-	/**
-	 * Registers default markups with the registry.
-	 */
-	public static function register(MarkupRegistry $markupRegistry): void
-	{
-		foreach (self::getMarkups() as $key => $markupClass) {
-			if (! $markupRegistry->isRegistered($key)) {
-				$markupRegistry->register($key, $markupClass);
+		foreach (MarkupType::cases() as $type) {
+			if (! $this->registry->isRegistered($type->value)) {
+				$this->registry->register($type->value, $type->className());
 			}
 		}
 	}

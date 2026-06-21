@@ -17,7 +17,7 @@ use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
 use X3P0\Breadcrumbs\BreadcrumbsService;
-use X3P0\Breadcrumbs\Markup\MarkupRegistrar;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
  * Renders the Breadcrumbs block on the front end.
@@ -51,7 +51,7 @@ final class Breadcrumbs implements Block
 				'showLastCrumb'  => $attributes['showTrailEnd']   ?? true,
 				'linkLastCrumb'  => $attributes['linkTrailEnd']   ?? false
 			],
-			markupType: $attributes['markup'] ?? MarkupRegistrar::RDFA
+			markupType: $attributes['markup'] ?? MarkupType::Rdfa
 		);
 	}
 

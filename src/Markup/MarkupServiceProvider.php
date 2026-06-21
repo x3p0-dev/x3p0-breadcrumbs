@@ -23,13 +23,7 @@ final class MarkupServiceProvider extends ServiceProvider implements Bootable
 		MarkupRegistry::class
 	];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		MarkupRegistrar::register($this->container->get(MarkupRegistry::class));
-
-		parent::boot();
-	}
+	protected const BOOTABLE = [
+		MarkupRegistrar::class
+	];
 }

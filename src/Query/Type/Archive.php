@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Query\{Query, QueryRegistrar};
+use X3P0\Breadcrumbs\Query\{Query, QueryType};
 
 final class Archive extends Query
 {
@@ -29,13 +29,13 @@ final class Archive extends Query
 	public function query(): void
 	{
 		if (is_post_type_archive()) {
-			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			$this->context->query(QueryType::PostTypeArchive);
 		} elseif (is_category() || is_tag() || is_tax()) {
-			$this->context->query(QueryRegistrar::TAXONOMY);
+			$this->context->query(QueryType::Taxonomy);
 		} elseif (is_author()) {
-			$this->context->query(QueryRegistrar::AUTHOR);
+			$this->context->query(QueryType::Author);
 		} elseif (is_date()) {
-			$this->context->query(QueryRegistrar::DATE);
+			$this->context->query(QueryType::Date);
 		} else {
 			$this->context->assemble(AssemblerType::Home);
 			$this->context->addCrumb(CrumbType::Archive);

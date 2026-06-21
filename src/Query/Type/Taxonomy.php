@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\Query;
 
-final class Tax extends Query
+final class Taxonomy extends Query
 {
 	/**
 	 * @inheritDoc

@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
-use X3P0\Breadcrumbs\Query\QueryRegistrar;
+use X3P0\Breadcrumbs\Query\QueryType;
 
 final class Author extends Query
 {
@@ -43,7 +43,7 @@ final class Author extends Query
 		// If this is also a post type archive, forward to the post type
 		// archive query, which will handle post type + author queries.
 		if (is_post_type_archive()) {
-			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			$this->context->query(QueryType::PostTypeArchive);
 			return;
 		}
 

@@ -23,13 +23,7 @@ final class QueryServiceProvider extends ServiceProvider implements Bootable
 		QueryRegistry::class
 	];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		QueryRegistrar::register($this->container->get(QueryRegistry::class));
-
-		parent::boot();
-	}
+	protected const BOOTABLE = [
+		QueryRegistrar::class
+	];
 }

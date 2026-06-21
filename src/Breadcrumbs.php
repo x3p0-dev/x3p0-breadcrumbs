@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
-use X3P0\Breadcrumbs\Query\{QueryFactory, QueryRegistrar};
+use X3P0\Breadcrumbs\Query\{QueryFactory, QueryType};
 
 /**
  * A wrapper around the query, assembler, and crumb classes that takes a config
@@ -27,12 +27,12 @@ final class Breadcrumbs
 	 * Maps WordPress conditionals to default `Query` classes.
 	 */
 	protected const QUERY_CONDITIONALS = [
-		'is_404'        => QueryRegistrar::ERROR_404,
-		'is_front_page' => QueryRegistrar::FRONT_PAGE,
-		'is_home'       => QueryRegistrar::HOME,
-		'is_singular'   => QueryRegistrar::SINGULAR,
-		'is_archive'    => QueryRegistrar::ARCHIVE,
-		'is_search'     => QueryRegistrar::SEARCH
+		'is_404'        => QueryType::Error404,
+		'is_front_page' => QueryType::FrontPage,
+		'is_home'       => QueryType::Home,
+		'is_singular'   => QueryType::Singular,
+		'is_archive'    => QueryType::Archive,
+		'is_search'     => QueryType::Search
 	];
 
 	/**
@@ -63,7 +63,7 @@ final class Breadcrumbs
 		// query class to call.
 		$queryType = apply_filters(
 			'x3p0/breadcrumbs/resolve/query-type',
-			$this->resolveQueryType()
+			$this->resolveQueryType()?->value
 		);
 
 		if ($queryType) {
@@ -76,7 +76,7 @@ final class Breadcrumbs
 	/**
 	 * Loop through the query conditionals and call the mapped query class.
 	 */
-	private function resolveQueryType(): ?string
+	private function resolveQueryType(): ?QueryType
 	{
 		foreach (self::QUERY_CONDITIONALS as $tag => $type) {
 			if (call_user_func($tag)) {

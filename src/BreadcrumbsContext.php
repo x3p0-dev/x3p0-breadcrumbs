@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\{AssemblerFactory, AssemblerType};
 use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory, CrumbType};
-use X3P0\Breadcrumbs\Query\QueryFactory;
+use X3P0\Breadcrumbs\Query\{QueryFactory, QueryType};
 
 /**
  * Provides a simple API to pass into query, assembler, and crumb classes so
@@ -37,10 +37,13 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Run a query by key.
+	 * Run a query by type. Accepts a `QueryType` for built-in queries or a
+	 * string key for custom ones registered by third parties.
 	 */
-	public function query(string $key, array $params = []): void
+	public function query(QueryType|string $type, array $params = []): void
 	{
+		$key = $type instanceof QueryType ? $type->value : $type;
+
 		$query = $this->queryFactory->make($key, [
 			'context' => $this,
 			...$params

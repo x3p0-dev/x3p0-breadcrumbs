@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Error query class.
+ * Error 404 query class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 
-final class Error extends Query
+final class Error404 extends Query
 {
 	/**
 	 * @inheritDoc

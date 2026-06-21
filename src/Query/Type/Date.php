@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Query\{Query, QueryRegistrar};
+use X3P0\Breadcrumbs\Query\{Query, QueryType};
 
 final class Date extends Query
 {
@@ -26,7 +26,7 @@ final class Date extends Query
 		// If this is also a post type archive, forward to the post type
 		// archive query, which will handle post type + date queries.
 		if (is_post_type_archive()) {
-			$this->context->query(QueryRegistrar::POST_TYPE_ARCHIVE);
+			$this->context->query(QueryType::PostTypeArchive);
 			return;
 		}
 

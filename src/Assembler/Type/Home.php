@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * Assembles the blog homepage crumb(s). For multisite, this may include showing
@@ -32,10 +32,10 @@ final class Home extends Assembler
 			&& $this->context->config()->showNetwork()
 			&& ! is_main_site()
 		) {
-			$this->context->addCrumb(CrumbRegistrar::NETWORK);
-			$this->context->addCrumb(CrumbRegistrar::NETWORK_SITE);
+			$this->context->addCrumb(CrumbType::Network);
+			$this->context->addCrumb(CrumbType::NetworkSite);
 		} else {
-			$this->context->addCrumb(CrumbRegistrar::HOME);
+			$this->context->addCrumb(CrumbType::Home);
 		}
 	}
 }

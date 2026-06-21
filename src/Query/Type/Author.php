@@ -17,7 +17,7 @@ use WP_Rewrite;
 use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryRegistrar;
 
@@ -59,12 +59,12 @@ final class Author extends Query
 			]);
 		}
 
-		$this->context->addCrumb(CrumbRegistrar::AUTHOR, [ 'user' => $user ]);
+		$this->context->addCrumb(CrumbType::Author, [ 'user' => $user ]);
 
 		// If viewing an author search, add the search crumb. This
 		// handles URLs like `/?s={search}&author_name={name}`.
 		if (is_search()) {
-			$this->context->addCrumb(CrumbRegistrar::SEARCH);
+			$this->context->addCrumb(CrumbType::Search);
 		}
 
 		$this->context->assemble(AssemblerType::Paged);

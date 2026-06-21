@@ -16,7 +16,6 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs primarily based on the post type rewrite settings of

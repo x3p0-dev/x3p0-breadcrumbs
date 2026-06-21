@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * This is a wrapper to determine a more specific post-related Assembler class to
@@ -66,7 +66,7 @@ final class Post extends Assembler
 		}
 
 		// Assemble the post crumb.
-		$this->context->addCrumb(CrumbRegistrar::POST, [
+		$this->context->addCrumb(CrumbType::Post, [
 			'post' => $this->post
 		]);
 	}
@@ -77,7 +77,7 @@ final class Post extends Assembler
 	private function postCrumbExists(): bool
 	{
 		return $this->context->crumbs()->hasWhere(
-			key:      CrumbRegistrar::POST,
+			key:      CrumbType::Post->value,
 			property: 'post',
 			callback: fn(WP_Post $post) => $post->ID === $this->post->ID
 		);

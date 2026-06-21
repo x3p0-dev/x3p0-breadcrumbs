@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * Assembles breadcrumbs based on the given term object.
@@ -79,7 +79,7 @@ final class Term extends Assembler
 		}
 
 		// Add the term crumb.
-		$this->context->addCrumb(CrumbRegistrar::TERM, [
+		$this->context->addCrumb(CrumbType::Term, [
 			'term' => $this->term
 		]);
 	}
@@ -90,7 +90,7 @@ final class Term extends Assembler
 	private function termCrumbExists(): bool
 	{
 		return $this->context->crumbs()->hasWhere(
-			key:      CrumbRegistrar::TERM,
+			key:      CrumbType::Term->value,
 			property: 'term',
 			callback: fn(WP_Term $term) => $term->term_id === $this->term->term_id
 		);

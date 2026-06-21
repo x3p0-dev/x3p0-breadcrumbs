@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * Assembles breadcrumbs for date/time archives based on the current query.
@@ -38,31 +38,31 @@ final class Date extends Assembler
 		] = $this->getQueryStringVars();
 
 		if (is_year() || get_query_var('year') || $year) {
-			$this->context->addCrumb(CrumbRegistrar::YEAR);
+			$this->context->addCrumb(CrumbType::Year);
 		}
 
 		if (is_month() || get_query_var('monthnum') || $month) {
-			$this->context->addCrumb(CrumbRegistrar::MONTH);
+			$this->context->addCrumb(CrumbType::Month);
 		}
 
 		if (get_query_var('w')) {
-			$this->context->addCrumb(CrumbRegistrar::WEEK);
+			$this->context->addCrumb(CrumbType::Week);
 		}
 
 		if (is_day() || get_query_var('day') || $day) {
-			$this->context->addCrumb(CrumbRegistrar::DAY);
+			$this->context->addCrumb(CrumbType::Day);
 		}
 
 		if (get_query_var('hour') || $hour) {
-			$this->context->addCrumb(CrumbRegistrar::HOUR);
+			$this->context->addCrumb(CrumbType::Hour);
 		}
 
 		if (get_query_var('minute') || $minute) {
-			$this->context->addCrumb(CrumbRegistrar::MINUTE);
+			$this->context->addCrumb(CrumbType::Minute);
 		}
 
 		if (get_query_var('second') || $second) {
-			$this->context->addCrumb(CrumbRegistrar::SECOND);
+			$this->context->addCrumb(CrumbType::Second);
 		}
 	}
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\{Query, QueryRegistrar};
 
 final class Archive extends Query
@@ -38,7 +38,7 @@ final class Archive extends Query
 			$this->context->query(QueryRegistrar::DATE);
 		} else {
 			$this->context->assemble(AssemblerType::Home);
-			$this->context->addCrumb(CrumbRegistrar::ARCHIVE);
+			$this->context->addCrumb(CrumbType::Archive);
 			$this->context->assemble(AssemblerType::Paged);
 		}
 	}

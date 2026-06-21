@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\{AssemblerFactory, AssemblerType};
-use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
+use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory, CrumbType};
 use X3P0\Breadcrumbs\Query\QueryFactory;
 
 /**
@@ -66,10 +66,13 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Add a crumb by key.
+	 * Add a crumb by type. Accepts a `CrumbType` for built-in crumbs or a
+	 * string key for custom ones registered by third parties.
 	 */
-	public function addCrumb(string $key, array $params = []): void
+	public function addCrumb(CrumbType|string $type, array $params = []): void
 	{
+		$key = $type instanceof CrumbType ? $type->value : $type;
+
 		$crumb = $this->crumbFactory->make($key, [
 			'context' => $this,
 			...$params

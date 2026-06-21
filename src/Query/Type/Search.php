@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\{Query, QueryRegistrar};
 
 final class Search extends Query
@@ -33,7 +33,7 @@ final class Search extends Query
 
 		$this->context->assemble(AssemblerType::Home);
 		$this->context->assemble(AssemblerType::RewriteFront);
-		$this->context->addCrumb(CrumbRegistrar::SEARCH);
+		$this->context->addCrumb(CrumbType::Search);
 		$this->context->assemble(AssemblerType::Paged);
 	}
 }

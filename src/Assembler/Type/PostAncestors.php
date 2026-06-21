@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * Assembles breadcrumbs based on whether a post has a parent post. It loops
@@ -91,7 +91,7 @@ final class PostAncestors extends Assembler
 
 		// Reverse the parents and add their crumbs.
 		foreach (array_reverse($parents) as $parent) {
-			$this->context->addCrumb(CrumbRegistrar::POST, [
+			$this->context->addCrumb(CrumbType::Post, [
 				'post' => $parent
 			]);
 		}

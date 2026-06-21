@@ -23,13 +23,7 @@ final class CrumbServiceProvider extends ServiceProvider implements Bootable
 		CrumbRegistry::class
 	];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		CrumbRegistrar::register($this->container->get(CrumbRegistry::class));
-
-		parent::boot();
-	}
+	protected const BOOTABLE = [
+		CrumbRegistrar::class
+	];
 }

@@ -18,7 +18,7 @@ use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
  * Assembles breadcrumbs for the given post type.
@@ -64,7 +64,7 @@ final class PostType extends Assembler
 		}
 
 		// Add post type crumb.
-		$this->context->addCrumb(CrumbRegistrar::POST_TYPE, [
+		$this->context->addCrumb(CrumbType::PostType, [
 			'postType' => $this->postType
 		]);
 	}
@@ -75,7 +75,7 @@ final class PostType extends Assembler
 	private function postTypeCrumbExists(): bool
 	{
 		return $this->context->crumbs()->hasWhere(
-			key:      CrumbRegistrar::POST_TYPE,
+			key:      CrumbType::PostType->value,
 			property: 'postType',
 			callback: fn(WP_Post_Type $postType) => $postType->name === $this->postType->name
 		);

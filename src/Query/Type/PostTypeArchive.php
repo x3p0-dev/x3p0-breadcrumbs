@@ -17,7 +17,7 @@ use WP_Post_Type;
 use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 
 final class PostTypeArchive extends Query
@@ -51,7 +51,7 @@ final class PostTypeArchive extends Query
 			$user = $this->user ?: new WP_User(get_query_var('author'));
 
 			// Add author crumb.
-			$this->context->addCrumb(CrumbRegistrar::AUTHOR, [
+			$this->context->addCrumb(CrumbType::Author, [
 				'user' => $user
 			]);
 		}
@@ -65,7 +65,7 @@ final class PostTypeArchive extends Query
 		// If viewing a post type search, add the search crumb. This
 		// handles URLs like `/?s={search}&post_type={type}`.
 		if (is_search()) {
-			$this->context->addCrumb(CrumbRegistrar::SEARCH);
+			$this->context->addCrumb(CrumbType::Search);
 		}
 
 		$this->context->assemble(AssemblerType::Paged);

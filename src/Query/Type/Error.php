@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 
 final class Error extends Query
@@ -25,6 +25,6 @@ final class Error extends Query
 	public function query(): void
 	{
 		$this->context->assemble(AssemblerType::Home);
-		$this->context->addCrumb(CrumbRegistrar::ERROR_404);
+		$this->context->addCrumb(CrumbType::Error404);
 	}
 }

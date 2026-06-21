@@ -53,7 +53,7 @@ enum AssemblerType: string
 			self::PostType        => Type\PostType::class,
 			self::RewriteFront    => Type\RewriteFront::class,
 			self::Term            => Type\Term::class,
-			self::TermAncestors   => Type\TermAncestors::class,
+			self::TermAncestors   => Type\TermAncestors::class
 		};
 	}
 }

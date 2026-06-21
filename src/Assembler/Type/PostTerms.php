@@ -17,7 +17,6 @@ use WP_Post;
 use WP_Taxonomy;
 use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
 /**
  * Assembles breadcrumbs based on the given taxonomy for the post.

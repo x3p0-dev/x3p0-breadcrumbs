@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Query\Query;
 
 final class FrontPage extends Query
@@ -23,7 +23,7 @@ final class FrontPage extends Query
 	 */
 	public function query(): void
 	{
-		$this->context->assemble(AssemblerRegistrar::HOME);
-		$this->context->assemble(AssemblerRegistrar::PAGED);
+		$this->context->assemble(AssemblerType::Home);
+		$this->context->assemble(AssemblerType::Paged);
 	}
 }

@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Rewrite;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\Query;
@@ -49,12 +49,12 @@ final class Author extends Query
 
 		$user = $this->user ?: new WP_User(get_query_var('author'));
 
-		$this->context->assemble(AssemblerRegistrar::HOME);
-		$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
+		$this->context->assemble(AssemblerType::Home);
+		$this->context->assemble(AssemblerType::RewriteFront);
 
 		// If author base exists, check for parent pages.
 		if ($base = $GLOBALS['wp_rewrite']->author_base) {
-			$this->context->assemble(AssemblerRegistrar::PATH, [
+			$this->context->assemble(AssemblerType::Path, [
 				'path' => $base
 			]);
 		}
@@ -67,6 +67,6 @@ final class Author extends Query
 			$this->context->addCrumb(CrumbRegistrar::SEARCH);
 		}
 
-		$this->context->assemble(AssemblerRegistrar::PAGED);
+		$this->context->assemble(AssemblerType::Paged);
 	}
 }

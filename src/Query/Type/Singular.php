@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\Query;
 
@@ -37,8 +37,8 @@ final class Singular extends Query
 	{
 		$post = $this->post ?: get_queried_object();
 
-		$this->context->assemble(AssemblerRegistrar::HOME);
-		$this->context->assemble(AssemblerRegistrar::POST, [ 'post' => $post ]);
-		$this->context->assemble(AssemblerRegistrar::PAGED);
+		$this->context->assemble(AssemblerType::Home);
+		$this->context->assemble(AssemblerType::Post, [ 'post' => $post ]);
+		$this->context->assemble(AssemblerType::Paged);
 	}
 }

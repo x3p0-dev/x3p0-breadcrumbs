@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_Taxonomy;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -45,7 +45,7 @@ final class PostTerms extends Assembler
 
 		// Check that terms were returned.
 		if ($terms && ! is_wp_error($terms)) {
-			$this->context->assemble(AssemblerRegistrar::TERM, [
+			$this->context->assemble(AssemblerType::Term, [
 				'term' => $terms[0]
 			]);
 		}

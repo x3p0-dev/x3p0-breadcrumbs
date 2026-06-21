@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\Query;
 
@@ -37,8 +37,8 @@ final class Tax extends Query
 	{
 		$term = $this->term ?: get_queried_object();
 
-		$this->context->assemble(AssemblerRegistrar::HOME);
-		$this->context->assemble(AssemblerRegistrar::TERM, [ 'term' => $term ]);
-		$this->context->assemble(AssemblerRegistrar::PAGED);
+		$this->context->assemble(AssemblerType::Home);
+		$this->context->assemble(AssemblerType::Term, [ 'term' => $term ]);
+		$this->context->assemble(AssemblerType::Paged);
 	}
 }

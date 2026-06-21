@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
+use X3P0\Breadcrumbs\Assembler\{AssemblerFactory, AssemblerType};
 use X3P0\Breadcrumbs\Crumb\{CrumbCollection, CrumbFactory};
 use X3P0\Breadcrumbs\Query\QueryFactory;
 
@@ -50,10 +50,13 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Run an assembler by key.
+	 * Run an assembler by type. Accepts an `AssemblerType` for built-in
+	 * assemblers or a string key for custom ones registered by third parties.
 	 */
-	public function assemble(string $key, array $params = []): void
+	public function assemble(AssemblerType|string $type, array $params = []): void
 	{
+		$key = $type instanceof AssemblerType ? $type->value : $type;
+
 		$assembler = $this->assemblerFactory->make($key, [
 			'context' => $this,
 			...$params

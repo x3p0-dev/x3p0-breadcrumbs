@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -77,13 +77,13 @@ final class PostAncestors extends Assembler
 		}
 
 		// Get the post hierarchy based off the final parent post.
-		$this->context->assemble(AssemblerRegistrar::POST_HIERARCHY, [
+		$this->context->assemble(AssemblerType::PostHierarchy, [
 			'post' => $post
 		]);
 
 		// Display terms for specific post type taxonomy if requested.
 		if ($taxonomy = $this->context->config()->getPostTaxonomy($post->post_type)) {
-			$this->context->assemble(AssemblerRegistrar::POST_TERMS, [
+			$this->context->assemble(AssemblerType::PostTerms, [
 				'post'     => $post,
 				'taxonomy' => get_taxonomy($taxonomy)
 			]);

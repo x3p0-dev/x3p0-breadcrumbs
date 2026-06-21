@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Rewrite;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 
 /**
  * Adds the rewrite front path crumbs if a rewrite front is set. The rewrite
@@ -33,7 +33,7 @@ final class RewriteFront extends Assembler
 	public function assemble(): void
 	{
 		if ($GLOBALS['wp_rewrite']->front) {
-			$this->context->assemble(AssemblerRegistrar::PATH, [
+			$this->context->assemble(AssemblerType::Path, [
 				'path' => $GLOBALS['wp_rewrite']->front
 			]);
 		}

@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use WP_Post_Type;
 use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\Assembler;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -55,7 +55,7 @@ final class PostType extends Assembler
 
 			// Add post crumb if we have a posts page.
 			if ('posts' !== $show_on_front && 0 < $post_id) {
-				$this->context->assemble(AssemblerRegistrar::POST, [
+				$this->context->assemble(AssemblerType::Post, [
 					'post' => get_post($post_id)
 				]);
 			}

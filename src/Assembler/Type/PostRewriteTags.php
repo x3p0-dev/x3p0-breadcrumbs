@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Post;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -83,7 +83,7 @@ final class PostRewriteTags extends Assembler
 				'user' => new WP_User($this->post->post_author)
 			]),
 			$this->useTaxonomy($tag) => $this->context->assemble(
-				AssemblerRegistrar::POST_TERMS,
+				AssemblerType::PostTerms,
 				[
 					'post'     => $this->post,
 					'taxonomy' => get_taxonomy(trim($tag, '%'))

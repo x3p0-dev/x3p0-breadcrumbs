@@ -23,13 +23,7 @@ final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 		AssemblerRegistry::class
 	];
 
-	/**
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		AssemblerRegistrar::register($this->container->get(AssemblerRegistry::class));
-
-		parent::boot();
-	}
+	protected const BOOTABLE = [
+		AssemblerRegistrar::class
+	];
 }

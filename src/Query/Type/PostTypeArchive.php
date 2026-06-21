@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Query\Type;
 
 use WP_Post_Type;
 use WP_User;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistrar;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 use X3P0\Breadcrumbs\Query\Query;
@@ -40,8 +40,8 @@ final class PostTypeArchive extends Query
 	{
 		$type = $this->postType ?: get_post_type_object(get_query_var('post_type'));
 
-		$this->context->assemble(AssemblerRegistrar::HOME);
-		$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+		$this->context->assemble(AssemblerType::Home);
+		$this->context->assemble(AssemblerType::PostType, [
 			'postType' => $type,
 		]);
 
@@ -59,7 +59,7 @@ final class PostTypeArchive extends Query
 		// If viewing a date-filtered post type archive, add date crumbs.
 		// This handles URLs like `/?post_type={type}&year={year}`.
 		if (is_date()) {
-			$this->context->assemble(AssemblerRegistrar::DATE);
+			$this->context->assemble(AssemblerType::Date);
 		}
 
 		// If viewing a post type search, add the search crumb. This
@@ -68,6 +68,6 @@ final class PostTypeArchive extends Query
 			$this->context->addCrumb(CrumbRegistrar::SEARCH);
 		}
 
-		$this->context->assemble(AssemblerRegistrar::PAGED);
+		$this->context->assemble(AssemblerType::Paged);
 	}
 }

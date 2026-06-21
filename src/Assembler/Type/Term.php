@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use WP_Term;
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistrar;
 
@@ -49,7 +49,7 @@ final class Term extends Assembler
 		// If the taxonomy has a single post type, add its crumb since
 		// the taxonomy is a part of the larger content type.
 		if (1 === count($taxonomy->object_type)) {
-			$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+			$this->context->assemble(AssemblerType::PostType, [
 				'postType' => get_post_type_object(
 					$taxonomy->object_type[0]
 				)
@@ -58,7 +58,7 @@ final class Term extends Assembler
 
 		// Assemble rewrite front crumbs if taxonomy uses it.
 		if ($rewrite && $rewrite['with_front']) {
-			$this->context->assemble(AssemblerRegistrar::REWRITE_FRONT);
+			$this->context->assemble(AssemblerType::RewriteFront);
 		}
 
 		// Assemble crumbs based on the rewrite slug.
@@ -66,14 +66,14 @@ final class Term extends Assembler
 			$path = trim($rewrite['slug'], '/');
 
 			// Assemble path crumbs.
-			$this->context->assemble(AssemblerRegistrar::PATH, [
+			$this->context->assemble(AssemblerType::Path, [
 				'path' => $path
 			]);
 		}
 
 		// If the term has a parent, get its ancestors.
 		if (0 < $this->term->parent) {
-			$this->context->assemble(AssemblerRegistrar::TERM_ANCESTORS, [
+			$this->context->assemble(AssemblerType::TermAncestors, [
 				'term' => $this->term
 			]);
 		}

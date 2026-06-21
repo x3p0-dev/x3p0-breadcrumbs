@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
-use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerRegistrar};
+use X3P0\Breadcrumbs\Assembler\{Assembler, AssemblerType};
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
@@ -81,7 +81,7 @@ final class Path extends Assembler
 			return false;
 		}
 
-		$this->context->assemble(AssemblerRegistrar::POST, [
+		$this->context->assemble(AssemblerType::Post, [
 			'post' => $post
 		]);
 
@@ -99,7 +99,7 @@ final class Path extends Assembler
 			return false;
 		}
 
-		$this->context->assemble(AssemblerRegistrar::POST_TYPE, [
+		$this->context->assemble(AssemblerType::PostType, [
 			'postType' => $types[0]
 		]);
 

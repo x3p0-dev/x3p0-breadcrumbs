@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 {
-	protected const SINGLETONS = [
+	protected const SINGLETONS_IF = [
 		AssemblerFactory::class,
 		AssemblerRegistry::class
 	];

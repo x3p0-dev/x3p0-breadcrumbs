@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class CrumbServiceProvider extends ServiceProvider implements Bootable
 {
-	protected const SINGLETONS = [
+	protected const SINGLETONS_IF = [
 		CrumbFactory::class,
 		CrumbRegistry::class
 	];

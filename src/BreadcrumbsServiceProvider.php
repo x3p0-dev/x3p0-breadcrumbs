@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {
-	protected const SINGLETONS = [
+	protected const SINGLETONS_IF = [
 		BreadcrumbsFactory::class,
 		BreadcrumbsService::class
 	];

@@ -62,7 +62,7 @@ When a pipeline of collaborating objects (e.g., Query → Assembler → Item) ne
 
 - All output is escaped at the point of output: `esc_html()`, `esc_attr()`, `esc_url()`, etc.
 - Hook names use a slash-separated vendor/plugin prefix (e.g., `vendor/plugin/hook-name`).
-- Expose `register` and `booted` actions so third-party code can hook into the plugin lifecycle and access the container.
+- Expose a `register` action so third-party code can hook into the plugin lifecycle and access the container to register its own services.
 - Global helper functions (`plugin()`, `container()`) provide access to the plugin and DI container without relying on static classes or globals directly.
 
 ### Block Editor

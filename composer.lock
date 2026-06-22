@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "cc933d3832b98fee6d402d6f9e7b68e83644c6d9"
+                "reference": "55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/cc933d3832b98fee6d402d6f9e7b68e83644c6d9",
-                "reference": "cc933d3832b98fee6d402d6f9e7b68e83644c6d9",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759",
+                "reference": "55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759",
                 "shasum": ""
             },
             "require": {
@@ -26,6 +26,8 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
                 "phpcompatibility/phpcompatibility-wp": "*",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^10.5",
                 "wp-coding-standards/wpcs": "^3.0"
             },
             "default-branch": true,
@@ -45,11 +47,22 @@
                     "email": "justintadlock@gmail.com"
                 }
             ],
+            "description": "A lightweight, modern dependency injection framework for WordPress plugins and themes.",
+            "homepage": "https://github.com/x3p0-dev/x3p0-framework",
+            "keywords": [
+                "Autowiring",
+                "container",
+                "dependency-injection",
+                "di",
+                "framework",
+                "service-provider",
+                "wordpress"
+            ],
             "support": {
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
-                "source": "https://github.com/x3p0-dev/x3p0-framework/tree/master"
+                "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-06-20T22:25:20+00:00"
+            "time": "2026-06-21T18:36:31+00:00"
         }
     ],
     "packages-dev": [

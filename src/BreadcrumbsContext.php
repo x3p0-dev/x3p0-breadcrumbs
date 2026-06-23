@@ -22,15 +22,24 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
 use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
- * Provides a simple API to pass into query, assembler, and crumb classes so
- * that they can build the crumb collection. Wraps the factories and collection
- * with helper methods to hide complexity.
+ * A facade over the query, assembler, and crumb factories, bundled with the
+ * shared crumb collection and config, and passed through the build pipeline as
+ * a context object. Each participant (query, assembler, or crumb) receives this
+ * so it can dispatch the next step and read or append shared state — without
+ * depending on the factories or on one another directly.
+ *
+ * The `query()`, `assemble()`, and `addCrumb()` methods are the facade: they
+ * hide the repeated dance of normalizing a type to its string key, building the
+ * object through its factory (injecting this context), and invoking it. The
+ * crumb collection is mutable and accumulated into as the pipeline runs; the
+ * config is read-only.
  */
 final class BreadcrumbsContext
 {
 	/**
-	 * Collects the various instances needed for building breadcrumbs as
-	 * class properties.
+	 * Bundles the shared instances needed to build a single breadcrumb trail.
+	 * The crumb collection is the mutable accumulator that the pipeline appends
+	 * to; the factories and config are shared, read-only collaborators.
 	 */
 	public function __construct(
 		private readonly CrumbCollection   $crumbs,
@@ -41,8 +50,9 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Run a query by type. Accepts a `QueryType` for built-in queries or a
-	 * string key for custom ones registered by third parties.
+	 * Dispatches a query by type, injecting this context so the query can add
+	 * to the trail. Accepts a `QueryType` for built-in queries or a string key
+	 * for custom ones registered by third parties.
 	 */
 	public function query(QueryType|string $type, array $params = []): void
 	{
@@ -57,8 +67,9 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Run an assembler by type. Accepts an `AssemblerType` for built-in
-	 * assemblers or a string key for custom ones registered by third parties.
+	 * Dispatches an assembler by type, injecting this context so the assembler
+	 * can add to the trail. Accepts an `AssemblerType` for built-in assemblers
+	 * or a string key for custom ones registered by third parties.
 	 */
 	public function assemble(AssemblerType|string $type, array $params = []): void
 	{
@@ -73,8 +84,9 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Add a crumb by type. Accepts a `CrumbType` for built-in crumbs or a
-	 * string key for custom ones registered by third parties.
+	 * Builds a crumb by type and appends it to the shared collection, keyed
+	 * by its type. Accepts a `CrumbType` for built-in crumbs or a string
+	 * key for custom ones registered by third parties.
 	 */
 	public function addCrumb(CrumbType|string $type, array $params = []): void
 	{
@@ -91,7 +103,7 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Access the configuration.
+	 * Returns the shared, read-only config for this build.
 	 */
 	public function config(): BreadcrumbsConfig
 	{
@@ -99,7 +111,7 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Access the crumb collection.
+	 * Returns the crumb collection accumulated so far.
 	 */
 	public function crumbs(): CrumbCollection
 	{

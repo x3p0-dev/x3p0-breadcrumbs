@@ -18,12 +18,15 @@ use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Query\QueryFactory;
 
 /**
- * Factory class for making breadcrumbs objects.
+ * Builds `Breadcrumbs` instances, handing each one the factories it needs to
+ * create the participants in the build pipeline (query, assembler, and crumb
+ * objects) along with the config that controls how the trail is built.
  */
 final class BreadcrumbsFactory
 {
 	/**
-	 * Sets up the initial factory state.
+	 * Stores the factories used to create the pipeline participants for the
+	 * breadcrumbs objects this factory builds.
 	 */
 	public function __construct(
 		private readonly QueryFactory     $queryFactory,
@@ -32,7 +35,8 @@ final class BreadcrumbsFactory
 	) {}
 
 	/**
-	 * Makes a breadcrumbs object.
+	 * Returns a new `Breadcrumbs` object wired with the pipeline factories
+	 * and the given config.
 	 */
 	public function make(BreadcrumbsConfig $config): Breadcrumbs
 	{

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Post type crumb class.
+ * Crumb representing a post type archive. Its label is the post type's archive
+ * title and its URL is the archive link for that post type.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

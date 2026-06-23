@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Paged crumb class.
+ * Crumb for a paginated archive page. Labels with the current page number and
+ * links to that page's URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

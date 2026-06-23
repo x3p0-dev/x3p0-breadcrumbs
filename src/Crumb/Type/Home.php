@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Home crumb class.
+ * Crumb for the site home. Outputs the configured home label and links to the
+ * front-page URL; typically the first crumb in the trail.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

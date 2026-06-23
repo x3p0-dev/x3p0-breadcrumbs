@@ -20,8 +20,11 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * This is a wrapper to determine a more specific post-related Assembler class to
- * call based on the given post.
+ * Builds the trail leading up to a single post and adds the post's own crumb.
+ * It delegates the ancestor/hierarchy portion to `PostAncestors` (when the post
+ * has a parent) or `PostHierarchy` (when it does not), optionally inserts a
+ * representative term crumb via `PostTerms`, and finally appends the post crumb.
+ * Bails if the post is already in the collection.
  */
 final class Post extends Assembler
 {

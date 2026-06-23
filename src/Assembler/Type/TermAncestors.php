@@ -19,8 +19,9 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * Assembles breadcrumbs based on whether a term has a parent post. It loops
- * through each term until a parent term is no longer found.
+ * Walks a term's parent chain to the top of its hierarchy and adds a crumb for
+ * each ancestor, ordered from the topmost ancestor down to the term's immediate
+ * parent. The term itself is not added here.
  */
 final class TermAncestors extends Assembler
 {

@@ -19,8 +19,10 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Assembles breadcrumbs based on a given path by attempting to find a post
- * object within that path.
+ * Resolves a URL path to a post or post type, then delegates crumb assembly to
+ * the matching assembler. It walks the path from longest to shortest, dropping
+ * one trailing segment at a time, and stops at the first segment that resolves
+ * to a page (via `Post`) or a post type archive slug (via `PostType`).
  */
 final class Path extends Assembler
 {
@@ -64,8 +66,8 @@ final class Path extends Assembler
 	}
 
 	/**
-	 * Attempts to assemble breadcrumbs for a given path. Tries both post
-	 * and post type assembly.
+	 * Attempts to resolve the path to a post first, then to a post type.
+	 * Returns `true` as soon as either succeeds.
 	 */
 	private function tryAssemblePath(string $path): bool
 	{

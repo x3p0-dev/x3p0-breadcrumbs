@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Error crumb class.
+ * Crumb for a 404 (not found) page. Outputs the configured error label and has
+ * no URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

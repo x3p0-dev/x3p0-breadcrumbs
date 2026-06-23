@@ -16,26 +16,29 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * `Crumb` classes represent the final result of an individual breadcrumb item
- * that has been generated either by `Query` or `Assembler` implementations. It
- * should house all the information for outputting the breadcrumb item on the
- * front end.
+ * Abstract base for a single item in the breadcrumb trail. A crumb is created
+ * by a `Query` or `Assembler` and exposes everything needed to output the item:
+ * a text label and, optionally, a URL. Concrete crumbs live under `Type` and
+ * read shared config and factories from the supplied context. This class is the
+ * contract that the rest of the system typehints against; subclasses override
+ * `getLabel()` (and `getUrl()` where the crumb links somewhere).
  */
 abstract class Crumb
 {
 	/**
-	 * Creates a new crumb object.
+	 * Stores the shared breadcrumbs context, the entry point to config and
+	 * the collection being built.
 	 */
 	public function __construct(protected BreadcrumbsContext $context)
 	{}
 
 	/**
-	 * Returns an internationalized text label for the crumb.
+	 * Returns the internationalized text label shown for the crumb.
 	 */
 	abstract public function getLabel(): string;
 
 	/**
-	 * Returns a URL for the crumb.
+	 * Returns the crumb URL, or an empty string when the crumb is not a link.
 	 */
 	public function getUrl(): string
 	{

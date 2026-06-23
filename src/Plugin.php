@@ -22,13 +22,14 @@ use X3P0\Breadcrumbs\Query\QueryServiceProvider;
 use X3P0\Breadcrumbs\Rest\RestServiceProvider;
 
 /**
- * The Plugin class is an implementation of the Application contract. It's used
- * to register the default service providers, bootstrapping the plugin.
+ * The plugin application. Extends the framework `Application` and bootstraps the
+ * plugin by registering the service provider for each subsystem; each provider
+ * wires its own bindings into the container and boots them as needed.
  */
 final class Plugin extends Application
 {
 	/**
-	 * Defines the plugin's default service providers.
+	 * The service providers registered on boot, one per subsystem.
 	 */
 	protected const PROVIDERS = [
 		AssemblerServiceProvider::class,

@@ -17,6 +17,11 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
+/**
+ * Builds the trail for a date-based archive (year, month, or day). Adds the
+ * home, rewrite-front, date, and paged steps. Forwards to the post type
+ * archive query first when the request is also a post type archive.
+ */
 final class Date extends Query
 {
 	/**

@@ -18,14 +18,18 @@ use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
+/**
+ * Dispatcher for archive requests. It inspects the request and forwards to the
+ * more specific post type, taxonomy, author, or date query. When none of those
+ * apply, it builds a generic archive trail directly.
+ */
 final class Archive extends Query
 {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * Runs through multiple conditionals to determine which type of archive
-	 * breadcrumbs to build by calling more specific query implementations,
-	 * with a fallback to a generic set of archives crumbs.
+	 * Forwards to the matching specialized query, or, as a fallback, adds the
+	 * home, a generic archive crumb, and paged steps.
 	 */
 	public function query(): void
 	{

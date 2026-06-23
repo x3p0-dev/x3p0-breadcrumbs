@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Week crumb class.
+ * Crumb representing a weekly time archive. Its label is the configured
+ * "archive_week" string filled with the week number, and its URL is the
+ * week archive built from the year and week query args.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

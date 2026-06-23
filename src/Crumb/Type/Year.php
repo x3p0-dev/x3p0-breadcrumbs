@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Year crumb class.
+ * Crumb representing a yearly time archive. Its label is the configured
+ * "archive_year" string filled with the year, and its URL is the year
+ * archive link.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

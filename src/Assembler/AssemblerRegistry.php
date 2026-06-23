@@ -17,17 +17,22 @@ use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
- * Registry class for storing assembler classes.
+ * Stores the `string key => assembler class name` mappings that the factory
+ * resolves against. Registration is validated so that only subclasses of the
+ * abstract `Assembler` can be stored.
  */
 final class AssemblerRegistry implements ClassRegistry
 {
 	/**
-	 * Stores the array of assembler classes.
+	 * Maps each registered key to its assembler class name.
+	 *
+	 * @var array<string, class-string<Assembler>>
 	 */
 	protected array $assemblers = [];
 
 	/**
-	 * Allows registering a default set of assembler classes.
+	 * Registers any key/class-name pairs passed in, allowing the registry
+	 * to be seeded with a default set of assemblers at construction.
 	 */
 	public function __construct(array $assemblers = [])
 	{
@@ -37,7 +42,8 @@ final class AssemblerRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Registers an assembler class.
+	 * Maps a key to an assembler class name. Throws if the class is not a
+	 * subclass of `Assembler`.
 	 *
 	 * @param class-string<Assembler> $className
 	 */
@@ -51,7 +57,7 @@ final class AssemblerRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Unregisters an assembler class.
+	 * Removes the assembler mapping for the given key, if any.
 	 */
 	public function unregister(string $key): void
 	{
@@ -59,7 +65,7 @@ final class AssemblerRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Checks if an assembler is registered.
+	 * Returns whether an assembler is registered under the given key.
 	 */
 	public function isRegistered(string $key): bool
 	{
@@ -67,7 +73,8 @@ final class AssemblerRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Returns an assembler class or `null`.
+	 * Returns the assembler class name registered under the key, or `null`
+	 * if none is registered.
 	 *
 	 * @return null|class-string<Assembler>
 	 */

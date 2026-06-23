@@ -16,12 +16,14 @@ namespace X3P0\Breadcrumbs\Markup;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
- * Registers the default markup types with the registry.
+ * Seeds the registry with the built-in markup types on boot, mapping each
+ * `MarkupType` enum case to its concrete class. Pre-existing registrations for
+ * a key are left untouched so third-party overrides win.
  */
 final class MarkupRegistrar implements Bootable
 {
 	/**
-	 * Sets up the object state.
+	 * Stores the registry the built-in types are seeded into.
 	 */
 	public function __construct(
 		protected readonly MarkupRegistry $registry

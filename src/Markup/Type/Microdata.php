@@ -16,7 +16,9 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
- * Creates an ordered list of the breadcrumbs with Schema.org microdata.
+ * Extends the plain HTML list with Schema.org microdata (`itemscope`,
+ * `itemtype`, `itemprop`) so the visible trail also exposes a `BreadcrumbList`
+ * to search engines.
  */
 final class Microdata extends Html
 {
@@ -38,7 +40,8 @@ final class Microdata extends Html
 	}
 
 	/**
-	 * Renders the markup for an individual crumb item.
+	 * Renders a crumb as a `ListItem`-typed list item, adding the microdata
+	 * properties and a `position` meta tag.
 	 */
 	protected function renderCrumb(Crumb $crumb): string
 	{
@@ -62,7 +65,9 @@ final class Microdata extends Html
 	}
 
 	/**
-	 * Renders the markup for an individual crumb's content.
+	 * Renders the crumb's content with microdata annotations: a `name`-labelled
+	 * span, output as an `item` link when linkable or as a `WebPage`-typed span
+	 * otherwise.
 	 */
 	private function renderCrumbContent(Crumb $crumb): string
 	{

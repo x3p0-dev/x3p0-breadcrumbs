@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Author crumb class.
+ * Crumb for an author archive. Labels with the user's display name and links
+ * to their posts archive URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

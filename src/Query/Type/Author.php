@@ -21,10 +21,18 @@ use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
+/**
+ * Builds the trail for an author archive. Adds the home, rewrite-front, and
+ * (when an author base is configured) author-base path steps, then the author
+ * crumb, plus a search crumb when the request also carries a search query.
+ */
 final class Author extends Query
 {
 	/**
 	 * @inheritDoc
+	 *
+	 * @param WP_User $user Optional author to build for; falls back to the
+	 *                      `author` query var when omitted.
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
@@ -52,7 +60,8 @@ final class Author extends Query
 		$this->context->assemble(AssemblerType::Home);
 		$this->context->assemble(AssemblerType::RewriteFront);
 
-		// If author base exists, check for parent pages.
+		// If an author base is set in the permalink structure, add path
+		// crumbs for it (it may itself resolve to one or more pages).
 		if ($base = $GLOBALS['wp_rewrite']->author_base) {
 			$this->context->assemble(AssemblerType::Path, [
 				'path' => $base

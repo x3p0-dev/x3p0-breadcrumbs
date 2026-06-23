@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Paged comments crumb class.
+ * Crumb for a paginated comments page on a singular post. Labels with the
+ * current comment page number and links to that page (with the #comments
+ * fragment stripped).
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

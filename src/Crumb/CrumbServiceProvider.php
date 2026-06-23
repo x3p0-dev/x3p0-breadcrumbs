@@ -16,6 +16,10 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
+/**
+ * Wires the crumb subsystem into the container: binds the registry and factory
+ * as shared singletons and boots the registrar that seeds the built-in types.
+ */
 final class CrumbServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS_IF = [

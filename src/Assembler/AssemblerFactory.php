@@ -14,19 +14,22 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 /**
- * Factory class used for creating new assembler instances from a registry of
- * assembler types.
+ * Resolves an assembler key against the registry and instantiates the matching
+ * class. This is the single entry point for creating assemblers so that callers
+ * never reference concrete `Type\*` classes directly.
  */
 final class AssemblerFactory
 {
 	/**
-	 * Sets up the initial object state.
+	 * Stores the registry that maps assembler keys to their class names.
 	 */
 	public function __construct(private readonly AssemblerRegistry $assemblerRegistry)
 	{}
 
 	/**
-	 * Creates an instance of an assembler object.
+	 * Looks up the class registered for the given key and returns a new
+	 * instance built from `$params`. Returns `null` when no assembler is
+	 * registered under the key.
 	 */
 	public function make(string $key, array $params = []): ?Assembler
 	{

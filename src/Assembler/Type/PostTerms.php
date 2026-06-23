@@ -20,7 +20,9 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * Assembles breadcrumbs based on the given taxonomy for the post.
+ * Picks the first term assigned to the post in the given taxonomy and delegates
+ * to the `Term` assembler so that term's full trail is built. Adds nothing when
+ * the post has no terms in the taxonomy.
  */
 final class PostTerms extends Assembler
 {

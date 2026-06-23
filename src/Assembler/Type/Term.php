@@ -20,7 +20,11 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * Assembles breadcrumbs based on the given term object.
+ * Builds the trail leading up to a term and adds the term's own crumb. It
+ * optionally prepends the owning post type archive (when the taxonomy applies to
+ * a single type), the rewrite front, the rewrite slug path, and the term's
+ * ancestors via `TermAncestors`, before appending the term crumb. Bails if the
+ * term is already in the collection.
  */
 final class Term extends Assembler
 {

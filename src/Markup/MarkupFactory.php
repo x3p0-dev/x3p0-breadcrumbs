@@ -14,18 +14,20 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Factory class for making markup objects.
+ * Resolves a markup key to its registered class via the registry and
+ * instantiates it. Returns `null` when the key is not registered.
  */
 final class MarkupFactory
 {
 	/**
-	 * Sets up the initial object state.
+	 * Stores the registry used to look up markup classes by key.
 	 */
 	public function __construct(private readonly MarkupRegistry $markupRegistry)
 	{}
 
 	/**
-	 * Creates an instance of a markup object.
+	 * Instantiates the markup class registered for a given key, passing the
+	 * supplied params to its constructor. Returns `null` for an unknown key.
 	 */
 	public function make(string $key, array $params = []): ?Markup
 	{

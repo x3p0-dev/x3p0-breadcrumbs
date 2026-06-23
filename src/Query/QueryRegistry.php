@@ -17,17 +17,21 @@ use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
- * Registry class for storing query classes.
+ * Stores the `string key => Query class name` mappings that the factory
+ * resolves against. Registration rejects any class that is not a `Query`
+ * subclass, so every stored value is guaranteed instantiable as a query.
  */
 final class QueryRegistry implements ClassRegistry
 {
 	/**
-	 * Stores the array of query classes.
+	 * Maps each registered query key to its class name.
+	 *
+	 * @var array<string, class-string<Query>>
 	 */
 	protected array $queries = [];
 
 	/**
-	 * Allows registering a default set of query classes.
+	 * Registers an optional initial set of query classes, keyed by query key.
 	 */
 	public function __construct(array $queries = [])
 	{
@@ -37,7 +41,8 @@ final class QueryRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Registers a query class.
+	 * Maps `$key` to `$className`, overwriting any existing mapping. Throws
+	 * if `$className` is not a subclass of `Query`.
 	 *
 	 * @param class-string<Query> $className
 	 */
@@ -51,7 +56,7 @@ final class QueryRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Unregisters a query class.
+	 * Removes the mapping for `$key`, if any.
 	 */
 	public function unregister(string $key): void
 	{
@@ -59,7 +64,7 @@ final class QueryRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Checks if a query class is registered.
+	 * Returns whether a query class is registered under `$key`.
 	 */
 	public function isRegistered(string $key): bool
 	{
@@ -67,7 +72,7 @@ final class QueryRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Returns a query class string or `null`.
+	 * Returns the query class registered under `$key`, or `null` if none.
 	 *
 	 * @return null|class-string<Query>
 	 */

@@ -16,6 +16,11 @@ namespace X3P0\Breadcrumbs\Markup;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
+/**
+ * Wires the markup subsystem into the container: registers the factory and
+ * registry as shared (singleton) services and boots the registrar that seeds
+ * the built-in markup types.
+ */
 final class MarkupServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS_IF = [

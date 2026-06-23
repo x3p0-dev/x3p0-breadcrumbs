@@ -15,6 +15,13 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
+/**
+ * Wires the top-level breadcrumbs services into the container: the renderer
+ * (the public entry point for building and rendering a trail) and the factory
+ * it builds trails with, plus the deprecated `BreadcrumbsService` alias. All
+ * are bound as shared singletons, and only if not already bound, so extensions
+ * may replace them.
+ */
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {
 	protected const SINGLETONS_IF = [

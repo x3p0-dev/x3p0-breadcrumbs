@@ -18,6 +18,11 @@ use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
+/**
+ * Builds the trail for a search results request: the home, rewrite-front,
+ * search crumb, and paged steps. Forwards to the post type archive query first
+ * when the search is scoped to a post type archive.
+ */
 final class Search extends Query
 {
 	/**

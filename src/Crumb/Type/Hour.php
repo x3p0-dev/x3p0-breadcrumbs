@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Hour crumb class.
- *
- * Creates the minute + hour archive crumb.
+ * Crumb for an hourly archive. Labels with the hour and builds an hour archive
+ * URL from the date permastruct, since WordPress has no hour link function.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

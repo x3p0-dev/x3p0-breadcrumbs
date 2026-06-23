@@ -20,8 +20,11 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * Assembles breadcrumbs based on whether a post has a parent post. It loops
- * through each post until a parent post is no longer found.
+ * Walks a post's parent chain to its topmost ancestor, then builds the trail
+ * above that ancestor via `PostHierarchy` (and optional `PostTerms`) before
+ * adding a crumb for each parent, ordered from the topmost ancestor down to the
+ * post's immediate parent. The post itself is not added here. The walk stops if
+ * it reaches the front page or a parent whose post type is no longer registered.
  */
 final class PostAncestors extends Assembler
 {

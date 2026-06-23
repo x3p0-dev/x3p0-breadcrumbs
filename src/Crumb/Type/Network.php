@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Network crumb class.
+ * Crumb for the multisite network home. Uses the configured home label and
+ * links to the network home URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

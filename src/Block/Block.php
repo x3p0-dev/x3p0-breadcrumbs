@@ -16,12 +16,14 @@ namespace X3P0\Breadcrumbs\Block;
 use WP_Block;
 
 /**
- * The block class renders the block type on the front end.
+ * Contract for server-rendered block types. Implementations receive the
+ * block's saved attributes, inner content, and `WP_Block` instance and
+ * return the final front-end markup.
  */
 interface Block
 {
 	/**
-	 * Block render callback.
+	 * Renders the block and returns its HTML for output on the front end.
 	 */
 	public function render(array $attributes, string $content, WP_Block $block): string;
 }

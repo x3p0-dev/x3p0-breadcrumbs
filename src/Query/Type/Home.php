@@ -16,6 +16,11 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
+/**
+ * Dispatcher for the blog posts index ("home"). Forwards to the front page
+ * query when the posts index is the site's front page, otherwise to the
+ * singular query (the posts index is a static page in that case).
+ */
 final class Home extends Query
 {
 	/**

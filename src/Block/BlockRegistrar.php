@@ -18,17 +18,19 @@ use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 use const X3P0\Breadcrumbs\PLUGIN_DIR;
 
 /**
- * Registers the plugin's block types with WordPress.
+ * Registers the plugin's block types with WordPress from their built metadata
+ * and adjusts that metadata at registration time so that rewrite-tag post
+ * types map by default. Wired into WordPress on boot.
  */
 final class BlockRegistrar implements Bootable
 {
 	/**
-	 * Path to the blocks folder for the plugin.
+	 * Absolute path to the folder holding the plugin's built block metadata.
 	 */
 	private const BLOCKS_DIR = PLUGIN_DIR . '/public/blocks';
 
 	/**
-	 * Filename of the blocks manifest.
+	 * Filename of the generated blocks metadata manifest.
 	 */
 	private const MANIFEST_FILENAME = 'blocks-manifest.php';
 
@@ -44,7 +46,7 @@ final class BlockRegistrar implements Bootable
 	}
 
 	/**
-	 * Registers the block with WordPress.
+	 * Registers the plugin's block types from their metadata collection.
 	 */
 	private function register(): void
 	{

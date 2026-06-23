@@ -20,12 +20,15 @@ use X3P0\Breadcrumbs\BreadcrumbsRenderer;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
- * Renders the Breadcrumbs block on the front end.
+ * Server-renders the Breadcrumbs block. Translates the block's saved
+ * attributes (remapping any deprecated ones) into breadcrumb and markup
+ * configuration, then delegates building the trail markup to the injected
+ * breadcrumbs renderer.
  */
 final class Breadcrumbs implements Block
 {
 	/**
-	 * Sets the block attributes.
+	 * Injects the renderer used to build the breadcrumb trail markup.
 	 */
 	public function __construct(protected readonly BreadcrumbsRenderer $breadcrumbsRenderer)
 	{}

@@ -17,6 +17,10 @@ use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
+/**
+ * Wires up the Block subsystem: binds the Breadcrumbs block type as a
+ * singleton and boots the registrar that registers the block with WordPress.
+ */
 final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS = [

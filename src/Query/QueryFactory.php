@@ -5,7 +5,7 @@
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock
- * @link      https://github.com/x3p0-dev/x3p0-breadquerys
+ * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  * @license   https://www.gnu.org/licenses/gpl-3.0.html GPL-3.0-or-later
  */
 
@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 /**
- * Factory class used for creating new query instances from a registry of
- * query types.
+ * Resolves a query key to its registered class and instantiates it. Returns
+ * `null` when the key is not registered, so callers can dispatch optimistically
+ * without first checking the registry.
  */
 final class QueryFactory
 {
 	/**
-	 * Sets up the initial object state.
+	 * Stores the registry that maps query keys to their class names.
 	 */
 	public function __construct(private readonly QueryRegistry $queryRegistry)
 	{}
 
 	/**
-	 * Creates an instance of a query object.
+	 * Instantiates the query registered under `$key`, spreading `$params` as
+	 * named constructor arguments. Returns `null` if the key is not registered.
 	 */
 	public function make(string $key, array $params = []): ?Query
 	{

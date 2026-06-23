@@ -1,7 +1,10 @@
 <?php
 
 /**
- * Second crumb class.
+ * Crumb representing a by-the-second time archive. Its label is the configured
+ * "archive_second" string filled with the second, and its URL is built from
+ * the date permastruct (extended with hour/minute/second), falling back to a
+ * query-string archive URL when pretty permalinks are off.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

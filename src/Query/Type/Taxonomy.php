@@ -18,10 +18,18 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Query\Query;
 
+/**
+ * Builds the trail for a taxonomy term archive (category, tag, or custom
+ * taxonomy): the home step, the term step (which expands the term's ancestry),
+ * and the paged step.
+ */
 final class Taxonomy extends Query
 {
 	/**
 	 * @inheritDoc
+	 *
+	 * @param WP_Term $term Optional term to build for; falls back to the
+	 *                      queried object when omitted.
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,

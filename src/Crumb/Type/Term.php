@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Term crumb class.
+ * Crumb representing a single taxonomy term (category, tag, or custom
+ * taxonomy term). Its label is the term name and its URL is the term archive
+ * link.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

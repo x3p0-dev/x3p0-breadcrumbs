@@ -17,17 +17,20 @@ use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
- * Stores the markup classes that can later be instantiated as objects.
+ * Stores `string key => markup class name` mappings that the factory later
+ * resolves and instantiates. Registration is guarded so only `Markup`
+ * subclasses can be stored.
  */
 final class MarkupRegistry implements ClassRegistry
 {
 	/**
-	 * Stores the array of markup classes.
+	 * Maps each registered key to its markup class name.
 	 */
 	protected array $markups = [];
 
 	/**
-	 * Allows registering a default set of markup classes.
+	 * Optionally seeds the registry with an initial set of key => class
+	 * mappings.
 	 */
 	public function __construct(array $markups = [])
 	{
@@ -37,7 +40,8 @@ final class MarkupRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Registers a markup class.
+	 * Registers a markup class under a key, replacing any existing entry. Throws
+	 * if the class is not a subclass of `Markup`.
 	 *
 	 * @param class-string<Markup> $className
 	 */
@@ -67,7 +71,8 @@ final class MarkupRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Returns a markup class string or `null`.
+	 * Returns the markup class name registered under the key, or `null` if none
+	 * is registered.
 	 *
 	 * @return null|class-string<Markup>
 	 */

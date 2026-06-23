@@ -16,12 +16,14 @@ namespace X3P0\Breadcrumbs\Rest;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
- * Registers fields with the REST API needed for the block in the editor.
+ * Adds a read-only `rewrite` field to the REST `type` (post type) endpoint so
+ * that the block editor can read each post type's rewrite configuration.
+ * Wired into WordPress on boot.
  */
 final class RestRegistrar implements Bootable
 {
 	/**
-	 * Defines the rewrite REST field attribute name.
+	 * Field name for the rewrite data added to the REST `type` endpoint.
 	 *
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.

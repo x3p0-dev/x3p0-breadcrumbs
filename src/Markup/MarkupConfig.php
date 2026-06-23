@@ -14,13 +14,16 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Creates a config for passing into markup objects, which is used to determine
- * how to display the breadcrumb trail.
+ * Immutable configuration object passed into markup objects to control how the
+ * breadcrumb trail is displayed: the class namespace, container attributes, and
+ * the flags governing the first/last crumb and front-page visibility.
  */
 final class MarkupConfig
 {
 	/**
-	 * Sets up the initial config state.
+	 * Sets up the config state, sanitizing the namespace and merging the
+	 * given container attributes over the defaults (class, navigation role,
+	 * ARIA label, and Interactivity API bindings).
 	 */
 	public function __construct(
 		private string        $namespace      = 'breadcrumbs',
@@ -42,7 +45,8 @@ final class MarkupConfig
 	}
 
 	/**
-	 * Static helper function for creating the config from an array.
+	 * Builds a config from an associative array, ignoring any keys that do
+	 * not map to a known constructor parameter.
 	 */
 	public static function fromArray(array $options): self
 	{
@@ -89,7 +93,7 @@ final class MarkupConfig
 	}
 
 	/**
-	 * Determines whether to show the last breadcrumb in the  trail.
+	 * Determines whether to show the last breadcrumb in the trail.
 	 */
 	public function showLastCrumb(): bool
 	{

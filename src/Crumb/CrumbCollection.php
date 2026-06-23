@@ -18,10 +18,12 @@ use Countable;
 use Iterator;
 
 /**
- * Returns an iterable collection of crumb instances. Supports array access, but
- * it will result in a type error if string keys are not provided. This class is
- * particularly useful when looping through the crumbs. Before looping, be sure
- * to `rewind()` to reset the internal index.
+ * Ordered, iterable collection of the crumbs that make up a breadcrumb trail.
+ * Each crumb is stored alongside its type key, and the class tracks position so
+ * callers can ask whether the current crumb is first or last while iterating.
+ * It implements array access keyed by type string (passing a non-string offset
+ * yields a type error). Call `rewind()` to reset the internal index before
+ * looping.
  */
 final class CrumbCollection implements ArrayAccess, Iterator, Countable
 {
@@ -51,8 +53,8 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Returns the current key (crumb type in this case) of the current
-	 * crumb. Use when iterating.
+	 * Returns the key of the current crumb, which is its type. Use when
+	 * iterating.
 	 */
 	public function key(): ?string
 	{
@@ -68,7 +70,8 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Returns the current registered crumb type.
+	 * Returns the type key of the current crumb without advancing the
+	 * iterator.
 	 */
 	public function currentType(): ?string
 	{
@@ -132,7 +135,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Sets a crumb instance in the collection.
+	 * Appends a crumb to the end of the collection under the given type key.
 	 */
 	public function set(string $key, Crumb $crumb): void
 	{
@@ -141,7 +144,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Removes a crumb instance from the collection.
+	 * Removes every crumb stored under the given type key, then re-indexes.
 	 */
 	public function remove(string $key): void
 	{
@@ -164,7 +167,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Gets a crumb instance from the collection.
+	 * Returns the first crumb stored under the given type key, or null.
 	 */
 	public function get(string $key): ?Crumb
 	{

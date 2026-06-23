@@ -21,10 +21,11 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * This class accepts a permalink structure and attempts to map any rewrite tags
- * like `%tag%` to a breadcrumb. This is used with any post type.  It maps the
- * core WP `%year%`, `%monthnum%`, `%day%`, `%hour%`, `%minute%`, `%second%`,
- * and `%author` tags. It will also map any taxonomy tags.
+ * Maps the rewrite tags in a permalink structure to crumbs for a post. Walks the
+ * path one segment at a time, translating the core WP `%year%`, `%monthnum%`,
+ * `%day%`, `%hour%`, `%minute%`, `%second%`, and `%author%` tags into date and
+ * author crumbs, and any taxonomy tag into a `PostTerms` delegation. Works for
+ * any post type and does nothing when rewrite-tag mapping is disabled in config.
  */
 final class PostRewriteTags extends Assembler
 {

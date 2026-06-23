@@ -16,6 +16,11 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Query\Query;
 
+/**
+ * Builds the trail for the site's front page: the home step plus the paged step
+ * (for paginated front-page content). The home step typically renders the only
+ * visible crumb here.
+ */
 final class FrontPage extends Query
 {
 	/**

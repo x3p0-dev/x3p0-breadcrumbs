@@ -18,9 +18,10 @@ use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Assembles out breadcrumbs based on whether we're currently viewing a "paged"
- * page. This handles archive-type pagination, single-post pagination via
- * `<!--nextpage-->`, and comments pagination.
+ * Adds a single pagination crumb when the current view is paged. It handles, in
+ * priority order, archive-type pagination, single-post pagination via
+ * `<!--nextpage-->`, paged comments, and paged Query Loop blocks. At most one
+ * crumb is added.
  */
 final class Paged extends Assembler
 {

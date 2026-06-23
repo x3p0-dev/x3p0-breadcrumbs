@@ -16,18 +16,22 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
- * Registers the default crumb types with the registry.
+ * Seeds the registry with the plugin's built-in crumb types on boot. Each
+ * `CrumbType` case maps to its concrete class, and existing registrations are
+ * left untouched so third-party overrides take precedence.
  */
 final class CrumbRegistrar implements Bootable
 {
 	/**
-	 * Sets up the object state.
+	 * Stores the registry that the built-in crumb types are seeded into.
 	 */
 	public function __construct(
 		protected readonly CrumbRegistry $registry
 	) {}
 
 	/**
+	 * Registers each `CrumbType` case that has not already been registered.
+	 *
 	 * @inheritDoc
 	 */
 	public function boot(): void

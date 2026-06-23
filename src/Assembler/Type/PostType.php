@@ -21,7 +21,10 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * Assembles breadcrumbs for the given post type.
+ * Adds the archive crumb for a post type. For the built-in `post` type it
+ * instead delegates to the `Post` assembler for the configured posts page (when
+ * one is set), since posts have no dedicated archive. Bails when no post type is
+ * given or its crumb is already in the collection.
  */
 final class PostType extends Assembler
 {

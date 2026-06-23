@@ -16,12 +16,14 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
- * Registers the default query types with the registry.
+ * Seeds the registry with the built-in query types on boot. Iterates the
+ * `QueryType` enum, mapping each case's string key to its concrete class, and
+ * skips any key a third party has already registered so custom overrides win.
  */
 final class QueryRegistrar implements Bootable
 {
 	/**
-	 * Sets up the object state.
+	 * Stores the registry to be seeded with the built-in query types.
 	 */
 	public function __construct(
 		protected readonly QueryRegistry $registry

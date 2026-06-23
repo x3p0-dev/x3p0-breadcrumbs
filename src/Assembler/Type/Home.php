@@ -17,8 +17,9 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 
 /**
- * Assembles the blog homepage crumb(s). For multisite, this may include showing
- * both the network and homepage of the sub-site crumb.
+ * Adds the home crumb. On a multisite sub-site, when the network crumb is
+ * enabled in config, it adds both a network crumb and a crumb for the sub-site's
+ * home instead of a single home crumb.
  */
 final class Home extends Assembler
 {

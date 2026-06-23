@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Paged Query Block crumb class.
+ * Crumb representing the current page of a paginated Query Loop block. Its
+ * label is the configured "paged" string filled with the block's page number,
+ * and its URL points back to the current request.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

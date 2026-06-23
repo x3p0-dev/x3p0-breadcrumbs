@@ -19,15 +19,20 @@ use X3P0\Breadcrumbs\Framework\Contracts\Renderable;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**
- * Markup classes are responsible for rendering the final HTML for a breadcrumb
- * trail using an implementation of the `Breadcrumbs` interface. Provides base
- * properties and methods for subclasses to create custom implementations.
+ * Base class for rendering a finished breadcrumb trail to a string in a specific
+ * format (e.g., HTML, RDFa, Microdata, JSON-LD). It is constructed with the
+ * `CrumbCollection` to render and a `MarkupConfig` describing how to display it,
+ * and implements the `Renderable` contract. Concrete formats extend this class
+ * and supply the actual `render()` output; the shared helpers here handle the
+ * common decisions of what is renderable, what is linkable, and how classes are
+ * namespaced.
  */
 abstract class Markup implements Renderable
 {
 	/**
-	 * Creates an array of allowed HTML within crumb labels, which should be
-	 * used with a function like `wp_kses()`.
+	 * Whitelist of inline HTML elements (and their permitted attributes) that
+	 * are allowed within a crumb label. Pass this to `wp_kses()` to strip any
+	 * other markup from a label before output.
 	 *
 	 * @var  array
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -52,9 +57,8 @@ abstract class Markup implements Renderable
 	];
 
 	/**
-	 * Creates a new markup object. The constructor requires a `Breadcrumbs`
-	 * implementation and an optional array of arguments for configuring the
-	 * generated markup.
+	 * Stores the crumb collection to render and the config that governs how the
+	 * trail is displayed.
 	 */
 	public function __construct(
 		protected CrumbCollection $crumbs,
@@ -62,7 +66,8 @@ abstract class Markup implements Renderable
 	) {}
 
 	/**
-	 * Returns a string-based version of the container attributes.
+	 * Flattens the configured container attributes into an escaped, space-
+	 * separated `name="value"` string for inclusion in the container tag.
 	 */
 	protected function containerAttr(): string
 	{
@@ -74,8 +79,10 @@ abstract class Markup implements Renderable
 	}
 
 	/**
-	 * Determines whether the markup is renderable by checking whether there
-	 * are crumbs or conditions in which the HTML shouldn't show.
+	 * Determines whether the trail as a whole should be rendered. Returns
+	 * `false` when there are no crumbs, when on a non-paged front page that
+	 * is configured to hide breadcrumbs, or when hiding the first/last
+	 * crumb would leave nothing visible.
 	 */
 	protected function isRenderable(): bool
 	{
@@ -99,10 +106,9 @@ abstract class Markup implements Renderable
 	}
 
 	/**
-	 * Determines whether a given crumb is renderable primarily be ensuring
-	 * that it has a valid label. Otherwise, we determine whether the crumb
-	 * is the first or last item and whether they should be displayed based
-	 * on options passed into the class.
+	 * Determines whether a given crumb should be rendered, primarily by
+	 * ensuring that it has a valid label. It is also hidden when it is the
+	 * first or last item and the config is set to suppress that position.
 	 */
 	protected function isCrumbRenderable(Crumb $crumb): bool
 	{
@@ -117,8 +123,9 @@ abstract class Markup implements Renderable
 	}
 
 	/**
-	 * Helper function for determining whether the breadcrumb has a URL and
-	 * whether it should be linked based on options passed into the class.
+	 * Determines whether a crumb should be output as a link. It must have a
+	 * URL, and the last crumb is only linked when the config opts in via
+	 * `linkLastCrumb()`.
 	 */
 	protected function isCrumbLinkable(Crumb $crumb): bool
 	{
@@ -132,7 +139,9 @@ abstract class Markup implements Renderable
 	}
 
 	/**
-	 * Helper method for prefixing classes with the namespace.
+	 * Prefixes one or more class names with the configured namespace in BEM
+	 * fashion (`{namespace}__{class}`) and returns them as a single space-
+	 * separated string.
 	 */
 	protected function scopeClass(string|array $class): string
 	{

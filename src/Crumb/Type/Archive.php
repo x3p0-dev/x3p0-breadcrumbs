@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Archive crumb class.
+ * Crumb for a generic "Archives" label. Carries no URL; it acts as a
+ * non-linking parent for the various archive views.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

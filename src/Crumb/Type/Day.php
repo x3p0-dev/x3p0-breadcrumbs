@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Day crumb class.
+ * Crumb for a daily archive. Labels with the day of the month and links to the
+ * day archive URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

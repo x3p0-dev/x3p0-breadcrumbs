@@ -16,12 +16,14 @@ namespace X3P0\Breadcrumbs\Assembler;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 
 /**
- * Registers the default assembler types with the registry.
+ * Seeds the registry with the plugin's built-in assembler types on boot. Each
+ * case of the `AssemblerType` enum is mapped to its corresponding concrete
+ * class so the factory can resolve them by key.
  */
 final class AssemblerRegistrar implements Bootable
 {
 	/**
-	 * Sets up the object state.
+	 * Stores the registry that the built-in assembler types are seeded into.
 	 */
 	public function __construct(
 		protected readonly AssemblerRegistry $registry
@@ -29,6 +31,10 @@ final class AssemblerRegistrar implements Bootable
 
 	/**
 	 * @inheritDoc
+	 *
+	 * Registers each `AssemblerType` case against its class name, skipping
+	 * any key that has already been registered (e.g. overridden by a third
+	 * party) so existing mappings are preserved.
 	 */
 	public function boot(): void
 	{

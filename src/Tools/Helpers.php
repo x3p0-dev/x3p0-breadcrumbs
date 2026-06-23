@@ -16,8 +16,10 @@ namespace X3P0\Breadcrumbs\Tools;
 use WP_Post_Type;
 
 /**
- * A static class with helper functions for performing some actions needed in
- * the library.
+ * A collection of stateless helper methods for request and post-type checks
+ * that WordPress does not expose directly — chiefly detecting paginated views
+ * (including paginated Query Loop blocks) and resolving post types by archive
+ * slug.
  */
 class Helpers
 {

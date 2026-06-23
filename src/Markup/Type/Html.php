@@ -17,7 +17,9 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Markup\Markup;
 
 /**
- * Creates a plain HTML representation of the breadcrumbs as an ordered list.
+ * Renders the trail as a plain, semantic ordered list wrapped in a `<nav>`
+ * element, with no structured-data vocabulary. Serves as the base for the
+ * Microdata and RDFa formats, which extend it to add their own annotations.
  */
 class Html extends Markup
 {
@@ -39,7 +41,8 @@ class Html extends Markup
 	}
 
 	/**
-	 * Renders the breadcrumbs items.
+	 * Iterates the collection and concatenates the markup for each crumb into
+	 * the list's inner HTML.
 	 */
 	protected function renderCrumbs(): string
 	{
@@ -55,7 +58,9 @@ class Html extends Markup
 	}
 
 	/**
-	 * Renders the markup for an individual crumb item.
+	 * Renders a single crumb as a list item, marking the last one with
+	 * `aria-current="page"`. Returns an empty string for crumbs that should not
+	 * be rendered.
 	 */
 	protected function renderCrumb(Crumb $crumb): string
 	{
@@ -75,7 +80,9 @@ class Html extends Markup
 	}
 
 	/**
-	 * Renders the markup for an individual crumb's content.
+	 * Renders the inner content of a crumb: the (kses-filtered) label wrapped in
+	 * a span, output as a link when the crumb is linkable and as a plain span
+	 * otherwise.
 	 */
 	private function renderCrumbContent(Crumb $crumb): string
 	{

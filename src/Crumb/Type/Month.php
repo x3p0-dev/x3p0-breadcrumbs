@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Monthy crumb class.
+ * Crumb for a monthly archive. Labels with the month name and links to the
+ * month archive URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

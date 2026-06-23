@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 /**
- * Factory class used for creating new crumb instances from a registry of
- * crumb types.
+ * Resolves a crumb type key against the registry and instantiates the mapped
+ * class. This is the single entry point for creating crumbs, keeping callers
+ * decoupled from concrete `Type` class names.
  */
 final class CrumbFactory
 {
 	/**
-	 * Sets up the initial object state.
+	 * Stores the registry used to look up crumb classes by key.
 	 */
 	public function __construct(private readonly CrumbRegistry $crumbRegistry)
 	{}
 
 	/**
-	 * Creates an instance of a crumb object.
+	 * Builds the crumb registered under the given key, forwarding `$params`
+	 * to its constructor. Returns null when the key is not registered.
 	 */
 	public function make(string $key, array $params = []): ?Crumb
 	{

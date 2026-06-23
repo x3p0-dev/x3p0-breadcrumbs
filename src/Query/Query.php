@@ -16,20 +16,25 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * `Query` classes are meant to be paired with the global WordPress queried URL,
- * such as the front page, single posts, archives, etc. Their purpose is to
- * call either `Assembler` or `Crumb` classes to generate breadcrumbs.
+ * Abstract base for the query classes, each paired with a WordPress request
+ * type (front page, singular, archive, etc.). A query's job is to translate
+ * the current request into a sequence of breadcrumb-building steps, dispatched
+ * through the `BreadcrumbsContext`: it may delegate to another query, run an
+ * assembler, or append a single crumb. This is the contract that concrete
+ * `Type\*` queries implement and that callers typehint against.
  */
 abstract class Query
 {
 	/**
-	 * Creates a new query object.
+	 * Stores the shared context object so subclasses can dispatch further
+	 * queries, assemblers, and crumbs into the trail being built.
 	 */
 	public function __construct(protected BreadcrumbsContext $context)
 	{}
 
 	/**
-	 * Runs the logic for generating breadcrumbs.
+	 * Dispatches the steps that build the breadcrumb trail for this request
+	 * type, appending to the context's shared crumb collection.
 	 */
 	abstract public function query(): void;
 }

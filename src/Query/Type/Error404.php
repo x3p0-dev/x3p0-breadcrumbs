@@ -17,6 +17,10 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 
+/**
+ * Builds the trail for a 404 (not found) request: the home step followed by a
+ * single error crumb.
+ */
 final class Error404 extends Query
 {
 	/**

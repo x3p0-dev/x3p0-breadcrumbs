@@ -17,17 +17,21 @@ use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 use X3P0\Breadcrumbs\InvalidTypeException;
 
 /**
- * Registry for storing crumb classes.
+ * Stores the `key => class name` mappings for crumb types. New types are added
+ * by registering a `Crumb` subclass against a string key, making the crumb
+ * subsystem open for extension without touching core files.
  */
 final class CrumbRegistry implements ClassRegistry
 {
 	/**
-	 * Stores the array of crumb classes.
+	 * Maps each crumb type key to its registered class name.
+	 *
+	 * @var array<string, class-string<Crumb>>
 	 */
 	protected array $crumbs = [];
 
 	/**
-	 * Allows registering a default set of crumb classes.
+	 * Optionally seeds the registry with an initial `key => class` map.
 	 */
 	public function __construct(array $crumbs = [])
 	{
@@ -37,7 +41,8 @@ final class CrumbRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Add a crumb class.
+	 * Maps a crumb class to a key. Throws when the class is not a `Crumb`
+	 * subclass.
 	 *
 	 * @param class-string<Crumb> $className
 	 */
@@ -67,7 +72,7 @@ final class CrumbRegistry implements ClassRegistry
 	}
 
 	/**
-	 * Returns a crumb type.
+	 * Returns the class name registered under the key, or null if none.
 	 *
 	 * @return null|class-string<Crumb>
 	 */

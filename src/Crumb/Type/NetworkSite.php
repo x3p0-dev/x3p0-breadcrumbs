@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Home crumb class.
+ * Crumb for an individual site within a multisite network. Labels with the
+ * site name and links to the site's home URL.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

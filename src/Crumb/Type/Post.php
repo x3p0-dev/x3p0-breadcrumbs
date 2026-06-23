@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Post crumb class.
+ * Crumb representing a single post (of any post type). Its label is the post
+ * title, falling back to the configured "untitled" string, and its URL is the
+ * post permalink.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2025 Justin Tadlock

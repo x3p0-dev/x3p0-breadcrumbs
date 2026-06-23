@@ -20,10 +20,22 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\Query;
 
+/**
+ * Builds the trail for a post type archive. Adds the home and post-type steps,
+ * then conditionally layers on author, date, and/or search crumbs when the
+ * archive is further filtered by those query vars, and finishes with the paged
+ * step. This is the convergence point that the author, date, and search queries
+ * forward to when a request is also a post type archive.
+ */
 final class PostTypeArchive extends Query
 {
 	/**
 	 * @inheritDoc
+	 *
+	 * @param WP_Post_Type $postType Optional post type to build for; falls back
+	 *                               to the `post_type` query var when omitted.
+	 * @param WP_User      $user     Optional author for an author-filtered
+	 *                               archive; falls back to the `author` query var.
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,

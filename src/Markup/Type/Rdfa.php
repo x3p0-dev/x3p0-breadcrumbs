@@ -16,7 +16,9 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
- * Creates an ordered list of the breadcrumbs with RDFa.
+ * Extends the plain HTML list with RDFa attributes (`vocab`, `typeof`,
+ * `property`) expressing the same Schema.org `BreadcrumbList` as the microdata
+ * format, using the RDFa vocabulary instead.
  */
 final class Rdfa extends Html
 {
@@ -38,7 +40,8 @@ final class Rdfa extends Html
 	}
 
 	/**
-	 * Renders the markup for an individual crumb.
+	 * Renders a crumb as a `ListItem`-typed list item, adding the RDFa
+	 * properties and a `position` meta tag.
 	 */
 	protected function renderCrumb(Crumb $crumb): string
 	{
@@ -62,7 +65,9 @@ final class Rdfa extends Html
 	}
 
 	/**
-	 * Renders the markup for an individual crumb's content.
+	 * Renders the crumb's content with RDFa annotations: a `name`-labelled span,
+	 * output as a `WebPage`-typed `item` link when linkable or as a plain span
+	 * otherwise.
 	 */
 	private function renderCrumbContent(Crumb $crumb): string
 	{

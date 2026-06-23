@@ -16,6 +16,11 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
 
+/**
+ * Wires the query subsystem into the container: binds the registry and factory
+ * as shared singletons (only if not already bound) and boots the registrar that
+ * seeds the built-in query types.
+ */
 final class QueryServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS_IF = [

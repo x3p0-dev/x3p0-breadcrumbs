@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Enumerates the canonical markup keys.
+ * Canonical keys for the built-in markup formats. The backed string value is
+ * the key used in the registry, and the case name maps to the concrete class
+ * under the `Type` sub-namespace.
  */
 enum MarkupType: string
 {

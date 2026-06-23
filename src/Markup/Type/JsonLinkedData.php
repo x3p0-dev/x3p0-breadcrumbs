@@ -16,7 +16,9 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Markup\Markup;
 
 /**
- * Creates a JSON-LD script tag for output in the document head.
+ * Renders the trail as a Schema.org `BreadcrumbList` encoded in a JSON-LD
+ * `<script>` tag rather than visible HTML, intended for the document head so
+ * search engines can read the structured data.
  */
 class JsonLinkedData extends Markup
 {

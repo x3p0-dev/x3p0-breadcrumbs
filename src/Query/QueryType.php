@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 /**
- * Enumerates the canonical query keys.
+ * The canonical string keys for the built-in query types, one per WordPress
+ * request type. The registrar uses these to seed the registry, and the values
+ * double as the keys callers pass to `BreadcrumbsContext::query()`.
  */
 enum QueryType: string
 {

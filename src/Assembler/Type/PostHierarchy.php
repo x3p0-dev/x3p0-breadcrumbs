@@ -19,8 +19,12 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 
 /**
- * Assembles breadcrumbs primarily based on the post type rewrite settings of
- * the given post.
+ * Builds the structural trail above a post from its post type's rewrite
+ * settings. For the built-in `post` type it adds the rewrite front, the posts
+ * page (if one is set), and any rewrite-tag crumbs. For other post types it adds
+ * the rewrite front (when `with_front` is on), resolves any rewrite slug path,
+ * the post type archive crumb (when the type has one), and rewrite-tag crumbs
+ * when the slug contains a `%tag%`.
  */
 final class PostHierarchy extends Assembler
 {

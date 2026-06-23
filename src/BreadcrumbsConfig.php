@@ -14,13 +14,18 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 /**
- * Creates a config for passing into breadcrumbs objects that determines how
- * the crumbs collection is generated.
+ * Immutable configuration object passed through the breadcrumbs pipeline. It
+ * controls how the trail is built: the labels used for generated crumbs, which
+ * taxonomy represents a given post type, whether a post type's permalink
+ * rewrite tags are mapped into crumbs, and whether the network (multisite)
+ * crumb is shown.
  */
 final class BreadcrumbsConfig
 {
 	/**
-	 * Sets up the initial config state.
+	 * Stores the config values, merging the given labels and rewrite-tag
+	 * settings on top of the built-in defaults so callers only need to
+	 * override what differs.
 	 */
 	public function __construct(
 		private array          $mapRewriteTags = [],
@@ -33,7 +38,8 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Static helper function for creating the config from an array.
+	 * Builds a config from an associative array, ignoring any keys that do
+	 * not map to a constructor parameter.
 	 */
 	public static function fromArray(array $options = []): self
 	{
@@ -46,7 +52,8 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Gets a label.
+	 * Returns the label registered under the given key, or an empty string
+	 * if none is set.
 	 */
 	public function getLabel(string $key): string
 	{
@@ -54,7 +61,8 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Gets the taxonomy assigned to the post type.
+	 * Returns the taxonomy mapped to the given post type for building its
+	 * crumbs, or an empty string if none is mapped.
 	 */
 	public function getPostTaxonomy(string $postType): string
 	{
@@ -62,7 +70,9 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Determines whether to map rewrite tags for a post type.
+	 * Determines whether the given post type's permalink rewrite tags should
+	 * be mapped into crumbs. Defaults to `true` for post types without an
+	 * explicit setting.
 	 */
 	public function mapRewriteTags(string $postType): bool
 	{
@@ -78,7 +88,8 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Returns an array of default labels.
+	 * Returns the built-in, translated labels used for generated crumbs,
+	 * keyed by label slug. Caller-supplied labels are merged on top of these.
 	 */
 	protected function defaultLabels(): array
 	{

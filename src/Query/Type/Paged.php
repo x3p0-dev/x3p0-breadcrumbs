@@ -16,6 +16,10 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Query\Query;
 
+/**
+ * Builds a minimal trail for generic paged/subsidiary requests that have no
+ * more specific query: the home, rewrite-front, and paged steps.
+ */
 final class Paged extends Query
 {
 	/**

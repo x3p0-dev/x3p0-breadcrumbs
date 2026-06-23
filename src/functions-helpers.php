@@ -38,10 +38,10 @@ function container(): Container
 }
 
 /**
- * Helper function for quickly accessing the breadcrumbs service class and
- * rendering breadcrumbs.
+ * Helper function for quickly accessing the breadcrumbs renderer and rendering
+ * breadcrumbs.
  */
-function breadcrumbs(): BreadcrumbsService
+function breadcrumbs(): BreadcrumbsRenderer
 {
-	return container()->get(BreadcrumbsService::class);
+	return container()->get(BreadcrumbsRenderer::class);
 }

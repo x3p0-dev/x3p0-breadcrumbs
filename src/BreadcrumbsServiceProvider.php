@@ -19,6 +19,9 @@ final class BreadcrumbsServiceProvider extends ServiceProvider
 {
 	protected const SINGLETONS_IF = [
 		BreadcrumbsFactory::class,
+		BreadcrumbsRenderer::class,
+		// Deprecated alias of `BreadcrumbsRenderer`, kept resolvable for
+		// backward compatibility.
 		BreadcrumbsService::class
 	];
 }

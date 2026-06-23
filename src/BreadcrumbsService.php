@@ -13,50 +13,28 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupFactory;
-use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
- * Support class for more quickly rendering a breadcrumb trail. It hides away
- * some of the complexity in favor of a simpler API.
+ * Deprecated alias of `BreadcrumbsRenderer`, retained so existing code that
+ * type-hints or resolves `BreadcrumbsService` keeps working. New code should
+ * use `BreadcrumbsRenderer` directly.
+ *
+ * @deprecated 5.0.0 Use {@see BreadcrumbsRenderer} instead.
  */
-final class BreadcrumbsService
+final class BreadcrumbsService extends BreadcrumbsRenderer
 {
 	/**
-	 * Sets up the initial service state.
+	 * Emits a deprecation notice, then forwards to the parent renderer.
+	 *
+	 * @inheritDoc
 	 */
 	public function __construct(
-		protected readonly BreadcrumbsFactory $breadcrumbsFactory,
-		protected readonly MarkupFactory      $markupFactory
-	) {}
+		BreadcrumbsFactory $breadcrumbsFactory,
+		MarkupFactory      $markupFactory
+	) {
+		_deprecated_class(self::class, '5.0.0', BreadcrumbsRenderer::class);
 
-	/**
-	 * Renders the breadcrumbs with by passing in a breadcrumbs config,
-	 * markup config, and markup type.
-	 */
-	public function render(
-		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
-		MarkupConfig|array      $markupConfig      = new MarkupConfig(),
-		MarkupType|string       $markupType        = MarkupType::Html
-	): string {
-		if (is_array($breadcrumbsConfig)) {
-			$breadcrumbsConfig = BreadcrumbsConfig::fromArray($breadcrumbsConfig);
-		}
-
-		if (is_array($markupConfig)) {
-			$markupConfig = MarkupConfig::fromArray($markupConfig);
-		}
-
-		$key = $markupType instanceof MarkupType ? $markupType->value : $markupType;
-
-		$breadcrumbs = $this->breadcrumbsFactory->make($breadcrumbsConfig);
-
-		$markup = $this->markupFactory->make($key, [
-			'crumbs' => $breadcrumbs->generate(),
-			'config' => $markupConfig
-		]);
-
-		return $markup?->render() ?? '';
+		parent::__construct($breadcrumbsFactory, $markupFactory);
 	}
 }

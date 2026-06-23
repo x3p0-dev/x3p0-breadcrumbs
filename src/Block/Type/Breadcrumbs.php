@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Block\Type;
 use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\Block;
-use X3P0\Breadcrumbs\BreadcrumbsService;
+use X3P0\Breadcrumbs\BreadcrumbsRenderer;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
@@ -27,7 +27,7 @@ final class Breadcrumbs implements Block
 	/**
 	 * Sets the block attributes.
 	 */
-	public function __construct(protected readonly BreadcrumbsService $breadcrumbsService)
+	public function __construct(protected readonly BreadcrumbsRenderer $breadcrumbsRenderer)
 	{}
 
 	/**
@@ -37,7 +37,7 @@ final class Breadcrumbs implements Block
 	{
 		$attributes = $this->mapDeprecatedAttributes($attributes);
 
-		return $this->breadcrumbsService->render(
+		return $this->breadcrumbsRenderer->render(
 			breadcrumbsConfig: [
 				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
 				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],

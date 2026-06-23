@@ -41,35 +41,14 @@ enum CrumbType: string
 	case Year            = 'year';
 
 	/**
-	 * Returns the crumb class associated with the type.
+	 * Returns the crumb class associated with the type. Each case name matches
+	 * a concrete class under the `Type` sub-namespace.
 	 *
 	 * @return class-string<Crumb>
 	 */
 	public function className(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return match ($this) {
-			self::Archive         => Type\Archive::class,
-			self::Author          => Type\Author::class,
-			self::Day             => Type\Day::class,
-			self::Error404        => Type\Error404::class,
-			self::Home            => Type\Home::class,
-			self::Hour            => Type\Hour::class,
-			self::Minute          => Type\Minute::class,
-			self::Month           => Type\Month::class,
-			self::Network         => Type\Network::class,
-			self::NetworkSite     => Type\NetworkSite::class,
-			self::Paged           => Type\Paged::class,
-			self::PagedComments   => Type\PagedComments::class,
-			self::PagedQueryBlock => Type\PagedQueryBlock::class,
-			self::PagedSingular   => Type\PagedSingular::class,
-			self::Post            => Type\Post::class,
-			self::PostType        => Type\PostType::class,
-			self::Search          => Type\Search::class,
-			self::Second          => Type\Second::class,
-			self::Term            => Type\Term::class,
-			self::Week            => Type\Week::class,
-			self::Year            => Type\Year::class
-		};
+		return __NAMESPACE__ . '\\Type\\' . $this->name;
 	}
 }

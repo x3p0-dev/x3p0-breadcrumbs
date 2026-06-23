@@ -33,27 +33,14 @@ enum AssemblerType: string
 	case TermAncestors   = 'term-ancestors';
 
 	/**
-	 * Returns the assembler class associated with the type.
+	 * Returns the assembler class associated with the type. Each case name
+	 * matches a concrete class under the `Type` sub-namespace.
 	 *
 	 * @return class-string<Assembler>
 	 */
 	public function className(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return match ($this) {
-			self::Date            => Type\Date::class,
-			self::Home            => Type\Home::class,
-			self::Paged           => Type\Paged::class,
-			self::Path            => Type\Path::class,
-			self::Post            => Type\Post::class,
-			self::PostAncestors   => Type\PostAncestors::class,
-			self::PostHierarchy   => Type\PostHierarchy::class,
-			self::PostRewriteTags => Type\PostRewriteTags::class,
-			self::PostTerms       => Type\PostTerms::class,
-			self::PostType        => Type\PostType::class,
-			self::RewriteFront    => Type\RewriteFront::class,
-			self::Term            => Type\Term::class,
-			self::TermAncestors   => Type\TermAncestors::class
-		};
+		return __NAMESPACE__ . '\\Type\\' . $this->name;
 	}
 }

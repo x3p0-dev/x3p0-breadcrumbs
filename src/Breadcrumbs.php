@@ -20,15 +20,20 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
 use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
- * A wrapper around the query, assembler, and crumb classes that takes a config
- * and generates a crumbs collection.
+ * Builds a breadcrumb trail for the current request. It detects which query
+ * matches the current WordPress request, hands off to the query/assembler/crumb
+ * pipeline (via a `BreadcrumbsContext`), and returns the accumulated crumb
+ * collection. This is the build half of the breadcrumbs flow; rendering the
+ * collection to markup is handled separately by `BreadcrumbsRenderer`.
  */
 final class Breadcrumbs
 {
 	/**
-	 * Maps WordPress conditionals to default `Query` classes.
+	 * Maps WordPress conditional tags to the `QueryType` used when that
+	 * conditional matches the current request. Evaluated in order; the first
+	 * match wins.
 	 */
-	protected const QUERY_CONDITIONALS = [
+	private const QUERY_CONDITIONALS = [
 		'is_404'        => QueryType::Error404,
 		'is_front_page' => QueryType::FrontPage,
 		'is_home'       => QueryType::Home,
@@ -38,7 +43,8 @@ final class Breadcrumbs
 	];
 
 	/**
-	 * Sets up initial object state.
+	 * Sets up the build with the factories used to create the pipeline
+	 * participants and the config that controls how the trail is built.
 	 */
 	public function __construct(
 		private readonly QueryFactory      $queryFactory,
@@ -48,11 +54,15 @@ final class Breadcrumbs
 	) {}
 
 	/**
-	 * Generates a crumb collection.
+	 * Builds and returns the crumb collection for the current request.
+	 * Creates the shared context, resolves the matching query type
+	 * (filterable so third parties can override it), runs that query to
+	 * populate the trail, and returns the result.
 	 */
 	public function generate(): CrumbCollection
 	{
-		// Create the context that will be passed to queries/assemblers
+		// Create the shared context passed through the query, assembler,
+		// and crumb pipeline.
 		$context = new BreadcrumbsContext(
 			crumbs:           new CrumbCollection(),
 			queryFactory:     $this->queryFactory,
@@ -76,7 +86,8 @@ final class Breadcrumbs
 	}
 
 	/**
-	 * Loop through the query conditionals and call the mapped query class.
+	 * Returns the `QueryType` mapped to the first matching WordPress
+	 * conditional, or null if none match.
 	 */
 	private function resolveQueryType(): ?QueryType
 	{

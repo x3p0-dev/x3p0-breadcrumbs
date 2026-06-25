@@ -120,13 +120,13 @@ Here is an example of disabling post rewrite tags and enabling the category taxo
 ```php
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$breadcrumbs_config = [
+$breadcrumbsConfig = [
 	'mapRewriteTags' => ['post' => false],
 	'postTaxonomy'   => ['post' => 'category']
 ];
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: $breadcrumbs_config,
+	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],    // Optional: MarkupConfig or array
 	markupType:        'html' // Optional: html, microdata, or rdfa
 );
@@ -138,13 +138,13 @@ If you prefer to work with the `BreadcrumbsConfig` class directly, use this:
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$breadcrumbs_config = new BreadcrumbsConfig(
+$breadcrumbsConfig = new BreadcrumbsConfig(
 	mapRewriteTags: ['post' => false],
 	postTaxonomy:   ['post' => 'category']
 );
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: $breadcrumbs_config,
+	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],    // Optional: MarkupConfig or array
 	markupType:        'html' // Optional: html, microdata, or rdfa
 );
@@ -171,14 +171,14 @@ Here is an example of using array-style formatting to disable the first breadcru
 ```php
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$markup_config = [
+$markupConfig = [
 	'showFirstCrumb' => false,
 	'linkLastCrumb'  => true
 ];
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
-	markupConfig:      $markup_config,
+	markupConfig:      $markupConfig,
 	markupType:        'html' // Optional: html, microdata, or rdfa
 );
 ```
@@ -189,14 +189,14 @@ Or if you prefer to work directly with the `MarkupConfig` class, use this method
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$markup_config = new MarkupConfig(
+$markupConfig = new MarkupConfig(
 	showFirstCrumb: false,
 	linkLastCrumb:  true
 );
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
-	markupConfig:      $markup_config,
+	markupConfig:      $markupConfig,
 	markupType:        'html' // Optional: html, microdata, or rdfa
 );
 ```
@@ -306,7 +306,7 @@ For example, if you've registered a custom `Query` class (see below), you might 
 ```php
 add_filter(
 	'x3p0/breadcrumbs/resolve/query-type',
-	fn($queryType) => $your_condition ? 'custom-query' : $queryType
+	fn($queryType) => $yourCondition ? 'custom-query' : $queryType
 );
 ```
 

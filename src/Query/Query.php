@@ -29,7 +29,7 @@ abstract class Query
 	 * Stores the shared context object so subclasses can dispatch further
 	 * queries, assemblers, and crumbs into the trail being built.
 	 */
-	public function __construct(protected BreadcrumbsContext $context)
+	public function __construct(protected readonly BreadcrumbsContext $context)
 	{}
 
 	/**

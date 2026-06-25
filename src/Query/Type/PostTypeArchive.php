@@ -39,8 +39,8 @@ final class PostTypeArchive extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private ?WP_Post_Type $postType = null,
-		private ?WP_User $user = null
+		private readonly ?WP_Post_Type $postType = null,
+		private readonly ?WP_User $user = null
 	) {
 		parent::__construct(context: $context);
 	}

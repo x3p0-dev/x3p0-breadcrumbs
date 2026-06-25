@@ -31,8 +31,8 @@ final class PostTerms extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private WP_Post $post,
-		private WP_Taxonomy $taxonomy
+		private readonly WP_Post $post,
+		private readonly WP_Taxonomy $taxonomy
 	) {
 		parent::__construct(context: $context);
 	}

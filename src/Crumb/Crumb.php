@@ -29,7 +29,7 @@ abstract class Crumb
 	 * Stores the shared breadcrumbs context, the entry point to config and
 	 * the collection being built.
 	 */
-	public function __construct(protected BreadcrumbsContext $context)
+	public function __construct(protected readonly BreadcrumbsContext $context)
 	{}
 
 	/**

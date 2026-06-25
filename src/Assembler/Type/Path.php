@@ -31,7 +31,7 @@ final class Path extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private string $path = ''
+		private readonly string $path = ''
 	) {
 		parent::__construct(context: $context);
 	}

@@ -33,7 +33,7 @@ final class Term extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private WP_Term $term
+		private readonly WP_Term $term
 	) {
 		parent::__construct(context: $context);
 	}

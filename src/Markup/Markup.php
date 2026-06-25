@@ -61,8 +61,8 @@ abstract class Markup implements Renderable
 	 * trail is displayed.
 	 */
 	public function __construct(
-		protected CrumbCollection $crumbs,
-		protected MarkupConfig $config
+		protected readonly CrumbCollection $crumbs,
+		protected readonly MarkupConfig $config
 	) {}
 
 	/**

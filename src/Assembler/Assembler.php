@@ -30,7 +30,7 @@ abstract class Assembler
 	 * Stores the shared context facade that assemblers use to add crumbs and
 	 * delegate to other assemblers.
 	 */
-	public function __construct(protected BreadcrumbsContext $context)
+	public function __construct(protected readonly BreadcrumbsContext $context)
 	{}
 
 	/**

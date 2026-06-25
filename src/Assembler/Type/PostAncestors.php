@@ -33,7 +33,7 @@ final class PostAncestors extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private WP_Post $post
+		private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

@@ -21,19 +21,32 @@ namespace X3P0\Breadcrumbs\Markup;
 final class MarkupConfig
 {
 	/**
+	 * The sanitized namespace used for class prefixes.
+	 */
+	private readonly string $namespace;
+
+	/**
+	 * The container HTML attributes, with caller values merged over the
+	 * defaults (class, navigation role, ARIA label, Interactivity bindings).
+	 *
+	 * @var array<string, string>
+	 */
+	private readonly array $containerAttr;
+
+	/**
 	 * Sets up the config state, sanitizing the namespace and merging the
 	 * given container attributes over the defaults (class, navigation role,
 	 * ARIA label, and Interactivity API bindings).
 	 */
 	public function __construct(
-		private string        $namespace      = 'breadcrumbs',
-		private array         $containerAttr  = [],
+		string                $namespace      = 'breadcrumbs',
+		array                 $containerAttr  = [],
 		private readonly bool $showOnFront    = false,
 		private readonly bool $showFirstCrumb = true,
 		private readonly bool $showLastCrumb  = true,
 		private readonly bool $linkLastCrumb  = false
 	) {
-		$this->namespace = sanitize_html_class($this->namespace, 'breadcrumbs');
+		$this->namespace = sanitize_html_class($namespace, 'breadcrumbs');
 
 		$this->containerAttr = array_merge([
 			'class'                 => $this->namespace,
@@ -41,7 +54,7 @@ final class MarkupConfig
 			'aria-label'            => __('Breadcrumbs', 'x3p0-breadcrumbs'),
 			'data-wp-interactive'   => 'x3p0/breadcrumbs',
 			'data-wp-router-region' => 'breadcrumbs'
-		], $this->containerAttr);
+		], $containerAttr);
 	}
 
 	/**

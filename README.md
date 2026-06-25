@@ -96,8 +96,6 @@ echo breadcrumbs()->render(
 
 The `BreadcrumbsConfig` class accepts multiple parameters:
 
-- **`mapRewriteTags:`** An array of post types and whether to generate breadcrumbs based on each post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, this is set to `true` for any post type rewrite slug that has `%` character in it.
-- **`postTaxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 - **`labels`:** An array of internationalized crumb labels that can be customized:
 	- **`home`:** `Home`
 	- **`error_404`:** `404 Not Found`
@@ -113,6 +111,8 @@ The `BreadcrumbsConfig` class accepts multiple parameters:
 	- **`archive_day`:** `%s`
 	- **`archive_month`:** `%s`
 	- **`archive_year`:** `%s`
+- **`mapRewriteTags:`** An array of post types and whether to generate breadcrumbs based on each post type's rewrite tags (e.g., `%year%`, `%monthnum%`, etc.). By default, this is set to `true` for any post type rewrite slug that has `%` character in it.
+- **`postTaxonomy`:** An array of post types and which taxonomy to use in the breadcrumb trail for single posts. The array key must be valid post type names (e.g., `post`, `book`), and the array values must be valid taxonomy names (e.g., `category`, `genre`). By default, this is an empty array.
 - **`network`:** Whether to show the network as part of the breadcrumb trail on multisite installations. Defaults to `false`.
 
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:

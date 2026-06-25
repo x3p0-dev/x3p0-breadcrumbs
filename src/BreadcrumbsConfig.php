@@ -23,18 +23,34 @@ namespace X3P0\Breadcrumbs;
 final class BreadcrumbsConfig
 {
 	/**
+	 * Translated labels for generated crumbs, keyed by label slug. Caller
+	 * values are merged over the built-in defaults.
+	 *
+	 * @var array<string, string>
+	 */
+	private readonly array $labels;
+
+	/**
+	 * Whether each post type's permalink rewrite tags map into crumbs, keyed
+	 * by post type. Caller values are merged over the built-in defaults.
+	 *
+	 * @var array<string, bool>
+	 */
+	private readonly array $mapRewriteTags;
+
+	/**
 	 * Stores the config values, merging the given labels and rewrite-tag
 	 * settings on top of the built-in defaults so callers only need to
 	 * override what differs.
 	 */
 	public function __construct(
-		private array          $mapRewriteTags = [],
+		array                  $labels         = [],
+		array                  $mapRewriteTags = [],
 		private readonly array $postTaxonomy   = [],
-		private array          $labels         = [],
 		private readonly bool  $network        = false
 	) {
-		$this->labels = array_merge($this->defaultLabels(), $this->labels);
-		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $this->mapRewriteTags);
+		$this->labels         = array_merge($this->defaultLabels(), $labels);
+		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $mapRewriteTags);
 	}
 
 	/**
@@ -44,10 +60,10 @@ final class BreadcrumbsConfig
 	public static function fromArray(array $options = []): self
 	{
 		return new self(...array_intersect_key($options, array_flip([
+			'labels',
 			'mapRewriteTags',
 			'postTaxonomy',
-			'labels',
-			'network',
+			'network'
 		])));
 	}
 

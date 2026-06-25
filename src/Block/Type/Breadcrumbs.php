@@ -42,9 +42,9 @@ final class Breadcrumbs implements Block
 
 		return $this->breadcrumbsRenderer->render(
 			breadcrumbsConfig: [
+				'labels'         => $attributes['labels']         ?? [],
 				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
-				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],
-				'labels'         => $attributes['labels']         ?? []
+				'postTaxonomy'   => $attributes['postTaxonomy']   ?? []
 			],
 			markupConfig: [
 				'namespace'      => 'wp-block-x3p0-breadcrumbs',

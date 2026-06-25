@@ -30,7 +30,7 @@ final class Breadcrumbs implements Block
 	/**
 	 * Injects the renderer used to build the breadcrumb trail markup.
 	 */
-	public function __construct(protected readonly BreadcrumbsRenderer $breadcrumbsRenderer)
+	public function __construct(private readonly BreadcrumbsRenderer $breadcrumbsRenderer)
 	{}
 
 	/**

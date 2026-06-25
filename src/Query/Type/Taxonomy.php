@@ -33,7 +33,7 @@ final class Taxonomy extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected ?WP_Term $term = null
+		private ?WP_Term $term = null
 	) {
 		parent::__construct(context: $context);
 	}

@@ -26,7 +26,7 @@ final class QueryRegistrar implements Bootable
 	 * Stores the registry to be seeded with the built-in query types.
 	 */
 	public function __construct(
-		protected readonly QueryRegistry $registry
+		private readonly QueryRegistry $registry
 	) {}
 
 	/**

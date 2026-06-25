@@ -31,18 +31,18 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	 * Stores the crumb instances with sequential keys.
 	 * @var Crumb[]
 	 */
-	protected array $crumbs = [];
+	private array $crumbs = [];
 
 	/**
 	 * Stores the crumb types with sequential keys.
 	 * @var string[]
 	 */
-	protected array $types = [];
+	private array $types = [];
 
 	/**
 	 * Stores the current index of the iterator.
 	 */
-	protected int $index = 0;
+	private int $index = 0;
 
 	/**
 	 * Checks if the current index is valid. Use when iterating.
@@ -238,7 +238,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	/**
 	 * Re-indexes arrays to maintain sequential keys.
 	 */
-	protected function reindex(): void
+	private function reindex(): void
 	{
 		$this->crumbs = array_values($this->crumbs);
 		$this->types  = array_values($this->types);

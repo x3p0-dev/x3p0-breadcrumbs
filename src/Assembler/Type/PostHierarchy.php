@@ -33,7 +33,7 @@ final class PostHierarchy extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_Post $post
+		private WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

@@ -28,7 +28,7 @@ final class CrumbRegistry implements ClassRegistry
 	 *
 	 * @var array<string, class-string<Crumb>>
 	 */
-	protected array $crumbs = [];
+	private array $crumbs = [];
 
 	/**
 	 * Optionally seeds the registry with an initial `key => class` map.

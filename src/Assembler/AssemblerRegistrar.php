@@ -26,7 +26,7 @@ final class AssemblerRegistrar implements Bootable
 	 * Stores the registry that the built-in assembler types are seeded into.
 	 */
 	public function __construct(
-		protected readonly AssemblerRegistry $registry
+		private readonly AssemblerRegistry $registry
 	) {}
 
 	/**

@@ -34,8 +34,8 @@ final class PostRewriteTags extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_Post $post,
-		protected string $path = ''
+		private WP_Post $post,
+		private string $path = ''
 	) {
 		parent::__construct(context: $context);
 	}

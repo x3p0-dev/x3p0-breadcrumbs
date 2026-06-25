@@ -91,7 +91,7 @@ final class BreadcrumbsConfig
 	 * Returns the built-in, translated labels used for generated crumbs,
 	 * keyed by label slug. Caller-supplied labels are merged on top of these.
 	 */
-	protected function defaultLabels(): array
+	private function defaultLabels(): array
 	{
 		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
 		return [
@@ -128,7 +128,7 @@ final class BreadcrumbsConfig
 	 * the rewrite tags should be mapped for the permalink structure as
 	 * breadcrumbs.
 	 */
-	protected function defaultRewriteTags(): array
+	private function defaultRewriteTags(): array
 	{
 		$types = array_filter(
 			get_post_types(['publicly_queryable' => true], 'objects'),

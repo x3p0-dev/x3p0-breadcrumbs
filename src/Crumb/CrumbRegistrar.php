@@ -26,7 +26,7 @@ final class CrumbRegistrar implements Bootable
 	 * Stores the registry that the built-in crumb types are seeded into.
 	 */
 	public function __construct(
-		protected readonly CrumbRegistry $registry
+		private readonly CrumbRegistry $registry
 	) {}
 
 	/**

@@ -26,7 +26,7 @@ final class MarkupRegistry implements ClassRegistry
 	/**
 	 * Maps each registered key to its markup class name.
 	 */
-	protected array $markups = [];
+	private array $markups = [];
 
 	/**
 	 * Optionally seeds the registry with an initial set of key => class

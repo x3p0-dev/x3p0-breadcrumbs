@@ -28,7 +28,7 @@ final class QueryRegistry implements ClassRegistry
 	 *
 	 * @var array<string, class-string<Query>>
 	 */
-	protected array $queries = [];
+	private array $queries = [];
 
 	/**
 	 * Registers an optional initial set of query classes, keyed by query key.

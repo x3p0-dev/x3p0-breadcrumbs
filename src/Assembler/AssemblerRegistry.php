@@ -28,7 +28,7 @@ final class AssemblerRegistry implements ClassRegistry
 	 *
 	 * @var array<string, class-string<Assembler>>
 	 */
-	protected array $assemblers = [];
+	private array $assemblers = [];
 
 	/**
 	 * Registers any key/class-name pairs passed in, allowing the registry

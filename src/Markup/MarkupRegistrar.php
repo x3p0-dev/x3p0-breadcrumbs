@@ -26,7 +26,7 @@ final class MarkupRegistrar implements Bootable
 	 * Stores the registry the built-in types are seeded into.
 	 */
 	public function __construct(
-		protected readonly MarkupRegistry $registry
+		private readonly MarkupRegistry $registry
 	) {}
 
 	/**

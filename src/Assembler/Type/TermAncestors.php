@@ -30,7 +30,7 @@ final class TermAncestors extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected WP_Term $term
+		private WP_Term $term
 	) {
 		parent::__construct(context: $context);
 	}

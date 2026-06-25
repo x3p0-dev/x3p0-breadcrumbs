@@ -33,7 +33,7 @@ final class Singular extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected ?WP_Post $post = null
+		private ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);
 	}

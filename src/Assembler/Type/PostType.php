@@ -33,7 +33,7 @@ final class PostType extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected ?WP_Post_Type $postType = null
+		private ?WP_Post_Type $postType = null
 	) {
 		parent::__construct(context: $context);
 	}

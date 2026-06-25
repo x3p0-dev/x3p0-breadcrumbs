@@ -36,7 +36,7 @@ final class Author extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		protected ?WP_User $user = null
+		private ?WP_User $user = null
 	) {
 		parent::__construct(context: $context);
 	}

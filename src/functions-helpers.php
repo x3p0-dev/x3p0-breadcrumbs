@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Framework\Container\Container;
-use X3P0\Breadcrumbs\Framework\Container\ServiceContainer;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
+use X3P0\Breadcrumbs\Packages\Framework\Container\ServiceContainer;
 
 /**
  * Returns the plugin application, which is stored as a single instance in the

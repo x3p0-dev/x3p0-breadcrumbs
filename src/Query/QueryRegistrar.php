@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
  * Seeds the registry with the built-in query types on boot. Iterates the

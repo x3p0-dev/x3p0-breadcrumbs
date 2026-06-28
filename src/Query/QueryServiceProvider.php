@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
-use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the query subsystem into the container: binds the registry and factory
- * as shared singletons (only if not already bound) and boots the registrar that
- * seeds the built-in query types.
+ * Wires the query subsystem into the container: binds the registry, factory,
+ * and resolver as shared singletons (only if not already bound) and boots the
+ * registrar that seeds the built-in query types.
  */
 final class QueryServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS_IF = [
 		QueryFactory::class,
-		QueryRegistry::class
+		QueryRegistry::class,
+		QueryResolver::class
 	];
 
 	protected const BOOTABLE = [

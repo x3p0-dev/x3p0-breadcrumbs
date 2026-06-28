@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Rest;
 
-use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
  * Adds a read-only `rewrite` field to the REST `type` (post type) endpoint so

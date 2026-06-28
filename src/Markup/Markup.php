@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Framework\Contracts\Renderable;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\Renderable;
 use X3P0\Breadcrumbs\Tools\Helpers;
 
 /**

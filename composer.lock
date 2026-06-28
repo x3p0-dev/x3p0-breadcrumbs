@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "381fc22fa6363b7280a75292fd5468fa",
+    "content-hash": "f513d3165ce5fa157e23d7200aaa8089",
     "packages": [
         {
             "name": "x3p0-dev/x3p0-framework",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759"
+                "reference": "1a65cfd802c52cc799cf8a44a2d0ee46d10705dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759",
-                "reference": "55b4ae2b5b8495b80f55ef6c57d7d75f1c6f7759",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/1a65cfd802c52cc799cf8a44a2d0ee46d10705dd",
+                "reference": "1a65cfd802c52cc799cf8a44a2d0ee46d10705dd",
                 "shasum": ""
             },
             "require": {
@@ -62,7 +62,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-06-21T18:36:31+00:00"
+            "time": "2026-06-23T16:03:32+00:00"
         }
     ],
     "packages-dev": [
@@ -631,16 +631,16 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.7.0",
+            "version": "v3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "50f59d1f3ca46d41ac911f97a78626b6756af35b"
+                "reference": "f3202fa1b5097b0af062dc978b32ecf63404e31d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/50f59d1f3ca46d41ac911f97a78626b6756af35b",
-                "reference": "50f59d1f3ca46d41ac911f97a78626b6756af35b",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/f3202fa1b5097b0af062dc978b32ecf63404e31d",
+                "reference": "f3202fa1b5097b0af062dc978b32ecf63404e31d",
                 "shasum": ""
             },
             "require": {
@@ -678,7 +678,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.7.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.7.1"
             },
             "funding": [
                 {
@@ -698,7 +698,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-13T15:52:40+00:00"
+            "time": "2026-06-05T06:23:12+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -787,16 +787,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v7.4.8",
+            "version": "v7.4.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "9510c3966f749a1d1ff0059e1eabef6cc621e7fd"
+                "reference": "9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/9510c3966f749a1d1ff0059e1eabef6cc621e7fd",
-                "reference": "9510c3966f749a1d1ff0059e1eabef6cc621e7fd",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358",
+                "reference": "9a3a56a4a1e65a5cb4f8d13801fe8ab0a170e358",
                 "shasum": ""
             },
             "require": {
@@ -850,7 +850,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v7.4.8"
+                "source": "https://github.com/symfony/var-dumper/tree/v7.4.14"
             },
             "funding": [
                 {
@@ -870,7 +870,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-30T13:44:50+00:00"
+            "time": "2026-06-08T20:24:16+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -937,6 +937,61 @@
                 }
             ],
             "time": "2025-11-25T12:08:04+00:00"
+        },
+        {
+            "name": "x3p0-dev/x3p0-event",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-event.git",
+                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-event/zipball/0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
+                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "wp-coding-standards/wpcs": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\Event\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Tadlock",
+                    "email": "justintadlock@gmail.com"
+                }
+            ],
+            "description": "A dependency-free event system for WordPress plugins and themes.",
+            "homepage": "https://github.com/x3p0-dev/x3p0-event",
+            "keywords": [
+                "actions",
+                "dispatcher",
+                "events",
+                "filters",
+                "hooks",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-event/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-event"
+            },
+            "time": "2026-06-28T22:49:12+00:00"
         },
         {
             "name": "x3p0-dev/x3p0-prelude",
@@ -1021,6 +1076,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "x3p0-dev/x3p0-event": 20,
         "x3p0-dev/x3p0-framework": 20,
         "x3p0-dev/x3p0-prelude": 20,
         "x3p0-dev/x3p0-skills": 20

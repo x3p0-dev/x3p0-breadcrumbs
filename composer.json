@@ -25,7 +25,8 @@
 	"autoload": {
 		"psr-4": {
 			"X3P0\\Breadcrumbs\\": "src/",
-			"X3P0\\Breadcrumbs\\Framework\\": "packages/x3p0-dev/x3p0-framework/src/",
+			"X3P0\\Breadcrumbs\\Packages\\Event\\": "packages/x3p0-dev/x3p0-event/src/",
+			"X3P0\\Breadcrumbs\\Packages\\Framework\\": "packages/x3p0-dev/x3p0-framework/src/",
 			"X3P0\\Breadcrumbs\\Scripts\\": "scripts/"
 		},
 		"files" : [
@@ -48,6 +49,7 @@
 		"phpcompatibility/phpcompatibility-wp": "*",
 		"symfony/var-dumper": "^7.1",
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"x3p0-dev/x3p0-event": "dev-master",
 		"x3p0-dev/x3p0-prelude": "dev-master",
 		"x3p0-dev/x3p0-skills": "dev-master"
 	},
@@ -63,9 +65,12 @@
 	"extra": {
 		"x3p0": {
 			"prelude": {
-				"prefix": "X3P0\\Breadcrumbs",
+				"prefix": "X3P0\\Breadcrumbs\\Packages",
 				"output-path": "packages",
 				"packages": {
+					"x3p0-dev/x3p0-event": {
+						"replace": "X3P0\\"
+					},
 					"x3p0-dev/x3p0-framework": {
 						"replace": "X3P0\\"
 					}

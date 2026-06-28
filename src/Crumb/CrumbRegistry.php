@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Framework\Contracts\ClassRegistry;
 use X3P0\Breadcrumbs\InvalidTypeException;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\ClassRegistry;
 
 /**
  * Stores the `key => class name` mappings for crumb types. New types are added

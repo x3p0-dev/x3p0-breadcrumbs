@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Framework\Contracts\Bootable;
-use X3P0\Breadcrumbs\Framework\Core\ServiceProvider;
+use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the crumb subsystem into the container: binds the registry and factory

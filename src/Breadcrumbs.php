@@ -17,36 +17,25 @@ use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Query\QueryFactory;
-use X3P0\Breadcrumbs\Query\QueryType;
+use X3P0\Breadcrumbs\Query\QueryResolver;
 
 /**
- * Builds a breadcrumb trail for the current request. It detects which query
- * matches the current WordPress request, hands off to the query/assembler/crumb
- * pipeline (via a `BreadcrumbsContext`), and returns the accumulated crumb
- * collection. This is the build half of the breadcrumbs flow; rendering the
- * collection to markup is handled separately by `BreadcrumbsRenderer`.
+ * Builds a breadcrumb trail for the current request. It delegates to the
+ * `QueryResolver` to detect which query matches the current WordPress request,
+ * hands off to the query/assembler/crumb pipeline (via a `BreadcrumbsContext`),
+ * and returns the accumulated crumb collection. This is the build half of the
+ * breadcrumbs flow; rendering the collection to markup is handled separately by
+ * `BreadcrumbsRenderer`.
  */
 final class Breadcrumbs
 {
 	/**
-	 * Maps WordPress conditional tags to the `QueryType` used when that
-	 * conditional matches the current request. Evaluated in order; the first
-	 * match wins.
-	 */
-	private const QUERY_CONDITIONALS = [
-		'is_404'        => QueryType::Error404,
-		'is_front_page' => QueryType::FrontPage,
-		'is_home'       => QueryType::Home,
-		'is_singular'   => QueryType::Singular,
-		'is_archive'    => QueryType::Archive,
-		'is_search'     => QueryType::Search
-	];
-
-	/**
-	 * Sets up the build with the factories used to create the pipeline
-	 * participants and the config that controls how the trail is built.
+	 * Sets up the build with the query resolver, the factories used to create
+	 * the pipeline participants, and the config that controls how the trail is
+	 * built.
 	 */
 	public function __construct(
+		private readonly QueryResolver     $queryResolver,
 		private readonly QueryFactory      $queryFactory,
 		private readonly AssemblerFactory  $assemblerFactory,
 		private readonly CrumbFactory      $crumbFactory,
@@ -55,9 +44,9 @@ final class Breadcrumbs
 
 	/**
 	 * Builds and returns the crumb collection for the current request.
-	 * Creates the shared context, resolves the matching query type
-	 * (filterable so third parties can override it), runs that query to
-	 * populate the trail, and returns the result.
+	 * Creates the shared context, resolves the matching query type (which
+	 * third parties can override), runs that query to populate the trail, and
+	 * returns the result.
 	 */
 	public function generate(): CrumbCollection
 	{
@@ -71,32 +60,15 @@ final class Breadcrumbs
 			config:           $this->config
 		);
 
-		// Allow plugin developers to hook in and filter the type of
-		// query class to call.
-		$queryType = apply_filters(
-			'x3p0/breadcrumbs/resolve/query-type',
-			$this->resolveQueryType()?->value
-		);
+		// Resolve the query type for the request, then run it to build the
+		// trail. Resolution is overridable via the `QueryTypeResolving` event
+		// and the legacy filter.
+		$queryType = $this->queryResolver->resolve($context);
 
 		if ($queryType) {
 			$context->query($queryType);
 		}
 
 		return $context->crumbs();
-	}
-
-	/**
-	 * Returns the `QueryType` mapped to the first matching WordPress
-	 * conditional, or null if none match.
-	 */
-	private function resolveQueryType(): ?QueryType
-	{
-		foreach (self::QUERY_CONDITIONALS as $tag => $type) {
-			if (call_user_func($tag)) {
-				return $type;
-			}
-		}
-
-		return null;
 	}
 }

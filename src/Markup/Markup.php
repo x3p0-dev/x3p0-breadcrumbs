@@ -71,11 +71,13 @@ abstract class Markup implements Renderable
 	 */
 	protected function containerAttr(): string
 	{
-		$attrs    = array_keys($this->config->getContainerAttr());
-		$values   = array_values($this->config->getContainerAttr());
-		$callback = fn($attr, $value) => sprintf('%s="%s"', esc_attr($attr), esc_attr($value));
+		$attr = $this->config->getContainerAttr();
 
-		return implode(' ', array_map($callback, $attrs, $values));
+		return implode(' ', array_map(
+			fn($name, $value) => sprintf('%s="%s"', esc_attr($name), esc_attr($value)),
+			array_keys($attr),
+			$attr
+		));
 	}
 
 	/**

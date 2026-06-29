@@ -47,11 +47,9 @@ class Html extends Markup
 	protected function renderCrumbs(): string
 	{
 		$html = '';
-		$this->crumbs->rewind();
 
-		while ($this->crumbs->valid()) {
-			$html .= $this->renderCrumb($this->crumbs->current());
-			$this->crumbs->next();
+		foreach ($this->crumbs as $crumb) {
+			$html .= $this->renderCrumb($crumb);
 		}
 
 		return $html;

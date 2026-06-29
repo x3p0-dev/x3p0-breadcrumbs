@@ -33,22 +33,18 @@ class JsonLinkedData extends Markup
 
 		$breadcrumbs = [];
 
-		$this->crumbs->rewind();
-
-		while ($this->crumbs->valid()) {
-			$crumb = [
+		foreach ($this->crumbs as $crumb) {
+			$item = [
 				'@type'    => 'ListItem',
 				'position' => absint($this->crumbs->position()),
-				'name'     => wp_strip_all_tags($this->crumbs->current()->getLabel()),
+				'name'     => wp_strip_all_tags($crumb->getLabel()),
 			];
 
-			if ($this->isCrumbLinkable($this->crumbs->current())) {
-				$crumb['item'] = esc_url_raw($this->crumbs->current()->getUrl());
+			if ($this->isCrumbLinkable($crumb)) {
+				$item['item'] = esc_url_raw($crumb->getUrl());
 			}
 
-			$breadcrumbs[] = $crumb;
-
-			$this->crumbs->next();
+			$breadcrumbs[] = $item;
 		}
 
 		return sprintf(

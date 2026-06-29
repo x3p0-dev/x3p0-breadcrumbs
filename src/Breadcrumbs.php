@@ -16,6 +16,8 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Query\QueryFactory;
 use X3P0\Breadcrumbs\Query\QueryResolver;
 
@@ -30,11 +32,12 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
 final class Breadcrumbs
 {
 	/**
-	 * Sets up the build with the query resolver, the factories used to create
-	 * the pipeline participants, and the config that controls how the trail is
-	 * built.
+	 * Sets up the build with the dispatcher, the query resolver, the factories
+	 * used to create the pipeline participants, and the config that controls how
+	 * the trail is built.
 	 */
 	public function __construct(
+		private readonly Dispatcher        $events,
 		private readonly QueryResolver     $queryResolver,
 		private readonly QueryFactory      $queryFactory,
 		private readonly AssemblerFactory  $assemblerFactory,
@@ -63,11 +66,12 @@ final class Breadcrumbs
 		// Resolve the query type for the request, then run it to build the
 		// trail. Resolution is overridable via the `QueryTypeResolving` event
 		// and the legacy filter.
-		$queryType = $this->queryResolver->resolve($context);
-
-		if ($queryType) {
+		if ($queryType = $this->queryResolver->resolve($context)) {
 			$context->query($queryType);
 		}
+
+		// Let listeners adjust the finished crumbs before they are returned.
+		$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()));
 
 		return $context->crumbs();
 	}

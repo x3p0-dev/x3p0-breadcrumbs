@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
+use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Query\QueryFactory;
 use X3P0\Breadcrumbs\Query\QueryResolver;
 
@@ -31,6 +32,7 @@ final class BreadcrumbsFactory
 	 * participants for the breadcrumbs objects this factory builds.
 	 */
 	public function __construct(
+		private readonly Dispatcher       $events,
 		private readonly QueryResolver    $queryResolver,
 		private readonly QueryFactory     $queryFactory,
 		private readonly AssemblerFactory $assemblerFactory,
@@ -44,6 +46,7 @@ final class BreadcrumbsFactory
 	public function make(BreadcrumbsConfig $config): Breadcrumbs
 	{
 		return new Breadcrumbs(
+			events:           $this->events,
 			queryResolver:    $this->queryResolver,
 			queryFactory:     $this->queryFactory,
 			assemblerFactory: $this->assemblerFactory,

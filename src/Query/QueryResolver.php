@@ -78,7 +78,7 @@ final class QueryResolver
 	private function detect(): ?QueryType
 	{
 		foreach (self::CONDITIONALS as $tag => $type) {
-			if (call_user_func($tag)) {
+			if ($tag()) {
 				return $type;
 			}
 		}

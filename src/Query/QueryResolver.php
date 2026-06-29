@@ -53,18 +53,22 @@ final class QueryResolver
 	 */
 	public function resolve(BreadcrumbsContext $context): ?string
 	{
-		// Let listeners inspect the context and change the detected type.
+		// Let listeners inspect the context and change the detected type. The
+		// event accepts a `QueryType` case or a string key.
 		$event = $this->events->dispatch(new QueryTypeResolving(
 			context:   $context,
-			queryType: $this->detect()?->value
+			queryType: $this->detect()
 		));
+
+		// Normalize the event's value to a string key for the legacy filter
+		// and the return type.
+		$queryType = $event->getQueryType();
+		$key = $queryType instanceof QueryType ? $queryType->value : $queryType;
 
 		// Apply the legacy filter last so existing callbacks keep the final
 		// say, preserving backward compatibility.
-		return apply_filters(
-			'x3p0/breadcrumbs/resolve/query-type',
-			$event->getQueryType()
-		);
+		// @deprecated 5.0.0
+		return apply_filters('x3p0/breadcrumbs/resolve/query-type', $key);
 	}
 
 	/**

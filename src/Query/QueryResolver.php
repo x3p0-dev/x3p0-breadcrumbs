@@ -66,9 +66,15 @@ final class QueryResolver
 		$key = $queryType instanceof QueryType ? $queryType->value : $queryType;
 
 		// Apply the legacy filter last so existing callbacks keep the
-		// final say, preserving backward compatibility.
+		// final say, preserving backward compatibility. The deprecation
+		// notice steers integrators toward the `QueryTypeResolving` event.
 		// @deprecated 5.0.0
-		return apply_filters('x3p0/breadcrumbs/resolve/query-type', $key);
+		return apply_filters_deprecated(
+			'x3p0/breadcrumbs/resolve/query-type',
+			[ $key ],
+			'5.0.0',
+			QueryTypeResolving::class
+		);
 	}
 
 	/**

@@ -4,8 +4,63 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f513d3165ce5fa157e23d7200aaa8089",
+    "content-hash": "cc3ec1b417f671559e26afb896ad24be",
     "packages": [
+        {
+            "name": "x3p0-dev/x3p0-event",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-event.git",
+                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-event/zipball/0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
+                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "wp-coding-standards/wpcs": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\Event\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Tadlock",
+                    "email": "justintadlock@gmail.com"
+                }
+            ],
+            "description": "A dependency-free event system for WordPress plugins and themes.",
+            "homepage": "https://github.com/x3p0-dev/x3p0-event",
+            "keywords": [
+                "actions",
+                "dispatcher",
+                "events",
+                "filters",
+                "hooks",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-event/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-event"
+            },
+            "time": "2026-06-28T22:49:12+00:00"
+        },
         {
             "name": "x3p0-dev/x3p0-framework",
             "version": "dev-master",
@@ -937,61 +992,6 @@
                 }
             ],
             "time": "2025-11-25T12:08:04+00:00"
-        },
-        {
-            "name": "x3p0-dev/x3p0-event",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/x3p0-dev/x3p0-event.git",
-                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-event/zipball/0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
-                "reference": "0a47c8653bcc6b4e6b15c301889d56605f89ea7c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-                "phpcompatibility/phpcompatibility-wp": "*",
-                "wp-coding-standards/wpcs": "^3.0"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "X3P0\\Event\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Justin Tadlock",
-                    "email": "justintadlock@gmail.com"
-                }
-            ],
-            "description": "A dependency-free event system for WordPress plugins and themes.",
-            "homepage": "https://github.com/x3p0-dev/x3p0-event",
-            "keywords": [
-                "actions",
-                "dispatcher",
-                "events",
-                "filters",
-                "hooks",
-                "wordpress"
-            ],
-            "support": {
-                "issues": "https://github.com/x3p0-dev/x3p0-event/issues",
-                "source": "https://github.com/x3p0-dev/x3p0-event"
-            },
-            "time": "2026-06-28T22:49:12+00:00"
         },
         {
             "name": "x3p0-dev/x3p0-prelude",

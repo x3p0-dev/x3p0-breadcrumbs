@@ -21,7 +21,7 @@ use WP_Post_Type;
  * (including paginated Query Loop blocks) and resolving post types by archive
  * slug.
  */
-class Helpers
+final class Helpers
 {
 	/**
 	 * Determines whether we're viewing a paginated page.
@@ -31,7 +31,7 @@ class Helpers
 		return is_paged()
 			|| 1 < absint(get_query_var('page'))
 			|| 1 < absint(get_query_var('cpage'))
-			|| static::isPagedQueryBlock();
+			|| self::isPagedQueryBlock();
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Helpers
 	 */
 	public static function isPagedQueryBlock(): bool
 	{
-		return static::getQueryBlockPage() > 1;
+		return self::getQueryBlockPage() > 1;
 	}
 
 	/**

@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Assembler\AssemblerServiceProvider;
 use X3P0\Breadcrumbs\Block\BlockServiceProvider;
 use X3P0\Breadcrumbs\Crumb\CrumbServiceProvider;
+use X3P0\Breadcrumbs\Event\EventServiceProvider;
 use X3P0\Breadcrumbs\Markup\MarkupServiceProvider;
 use X3P0\Breadcrumbs\Packages\Framework\Core\Application;
 use X3P0\Breadcrumbs\Query\QueryServiceProvider;

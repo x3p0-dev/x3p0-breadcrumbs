@@ -11,12 +11,14 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Event;
+namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Packages\Event\EventDispatcher;
-use X3P0\Breadcrumbs\Packages\Event\ListenerProvider;
-use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
+use X3P0\Breadcrumbs\Packages\Event\Listener\ListenerProvider;
+use X3P0\Breadcrumbs\Packages\Event\Listener\ListenerRegistry;
+use X3P0\Breadcrumbs\Packages\Event\Listener\Registry\PriorityRegistry;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -50,12 +52,25 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class EventServiceProvider extends ServiceProvider
 {
 	protected const SINGLETONS_IF = [
-		Dispatcher::class       => EventDispatcher::class,
-		ListenerProvider::class => BreadcrumbsListenerRegistry::class
+		Dispatcher::class => EventDispatcher::class
 	];
 
 	protected const ALIASES = [
-		'events'                => Dispatcher::class,
 		ListenerRegistry::class => ListenerProvider::class
 	];
+
+	/**
+	 * @inheritDoc
+	 */
+	public function register(): void
+	{
+		parent::register();
+
+		$this->container->singletonIf(
+			ListenerProvider::class,
+			static fn (Container $container) => new PriorityRegistry(
+				static fn (string $class): object => $container->get($class)
+			)
+		);
+	}
 }

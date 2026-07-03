@@ -27,12 +27,15 @@ final class AssemblerFactory
 	{}
 
 	/**
-	 * Looks up the class registered for the given key and returns a new
-	 * instance built from `$params`. Returns `null` when no assembler is
-	 * registered under the key.
+	 * Looks up the class registered for the given type and returns a new
+	 * instance built from `$params`. Accepts an `AssemblerType` for built-in
+	 * assemblers or a string key for custom ones. Returns `null` when no
+	 * assembler is registered under the key.
 	 */
-	public function make(string $key, array $params = []): ?Assembler
+	public function make(AssemblerType|string $type, array $params = []): ?Assembler
 	{
+		$key = $type instanceof AssemblerType ? $type->value : $type;
+
 		if ($assembler = $this->assemblerRegistry->get($key)) {
 			return new $assembler(...$params);
 		}

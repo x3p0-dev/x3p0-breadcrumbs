@@ -27,11 +27,14 @@ final class CrumbFactory
 	{}
 
 	/**
-	 * Builds the crumb registered under the given key, forwarding `$params`
-	 * to its constructor. Returns null when the key is not registered.
+	 * Builds the crumb registered under the given type, forwarding `$params`
+	 * to its constructor. Accepts a `CrumbType` for built-in crumbs or a string
+	 * key for custom ones. Returns null when the key is not registered.
 	 */
-	public function make(string $key, array $params = []): ?Crumb
+	public function make(CrumbType|string $type, array $params = []): ?Crumb
 	{
+		$key = $type instanceof CrumbType ? $type->value : $type;
+
 		if ($crumb = $this->crumbRegistry->get($key)) {
 			return new $crumb(...$params);
 		}

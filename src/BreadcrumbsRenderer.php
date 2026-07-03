@@ -70,11 +70,9 @@ class BreadcrumbsRenderer
 			$markupConfig = MarkupConfig::fromArray($markupConfig);
 		}
 
-		$key = $markupType instanceof MarkupType ? $markupType->value : $markupType;
-
 		$breadcrumbs = $this->breadcrumbsFactory->make($breadcrumbsConfig);
 
-		$markup = $this->markupFactory->make($key, [
+		$markup = $this->markupFactory->make($markupType, [
 			'crumbs' => $breadcrumbs->generate(),
 			'config' => $markupConfig
 		]);

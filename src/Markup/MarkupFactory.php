@@ -26,11 +26,14 @@ final class MarkupFactory
 	{}
 
 	/**
-	 * Instantiates the markup class registered for a given key, passing the
-	 * supplied params to its constructor. Returns `null` for an unknown key.
+	 * Instantiates the markup class registered for a given type, passing the
+	 * supplied params to its constructor. Accepts a `MarkupType` for built-in
+	 * markup or a string key for custom ones. Returns `null` for an unknown key.
 	 */
-	public function make(string $key, array $params = []): ?Markup
+	public function make(MarkupType|string $type, array $params = []): ?Markup
 	{
+		$key = $type instanceof MarkupType ? $type->value : $type;
+
 		if ($markup = $this->markupRegistry->get($key)) {
 			return new $markup(...$params);
 		}

@@ -27,11 +27,14 @@ final class QueryFactory
 	{}
 
 	/**
-	 * Instantiates the query registered under `$key`, spreading `$params` as
-	 * named constructor arguments. Returns `null` if the key is not registered.
+	 * Instantiates the query registered under `$type`, spreading `$params` as
+	 * named constructor arguments. Accepts a `QueryType` for built-in queries or
+	 * a string key for custom ones. Returns `null` if the key is not registered.
 	 */
-	public function make(string $key, array $params = []): ?Query
+	public function make(QueryType|string $type, array $params = []): ?Query
 	{
+		$key = $type instanceof QueryType ? $type->value : $type;
+
 		if ($query = $this->queryRegistry->get($key)) {
 			return new $query(...$params);
 		}

@@ -56,9 +56,7 @@ final class BreadcrumbsContext
 	 */
 	public function query(QueryType|string $type, array $params = []): void
 	{
-		$key = $type instanceof QueryType ? $type->value : $type;
-
-		$query = $this->queryFactory->make($key, [
+		$query = $this->queryFactory->make($type, [
 			'context' => $this,
 			...$params
 		]);
@@ -73,9 +71,7 @@ final class BreadcrumbsContext
 	 */
 	public function assemble(AssemblerType|string $type, array $params = []): void
 	{
-		$key = $type instanceof AssemblerType ? $type->value : $type;
-
-		$assembler = $this->assemblerFactory->make($key, [
+		$assembler = $this->assemblerFactory->make($type, [
 			'context' => $this,
 			...$params
 		]);
@@ -92,7 +88,7 @@ final class BreadcrumbsContext
 	{
 		$key = $type instanceof CrumbType ? $type->value : $type;
 
-		$crumb = $this->crumbFactory->make($key, [
+		$crumb = $this->crumbFactory->make($type, [
 			'context' => $this,
 			...$params
 		]);

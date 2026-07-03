@@ -26,7 +26,7 @@ final class MarkupRegistry implements ClassRegistry
 	/**
 	 * Maps each registered key to its markup class name.
 	 */
-	private array $markups = [];
+	private array $markupTypes = [];
 
 	/**
 	 * Optionally seeds the registry with an initial set of key => class
@@ -51,7 +51,7 @@ final class MarkupRegistry implements ClassRegistry
 			throw InvalidTypeException::notSubclassOf(esc_html($className), Markup::class);
 		}
 
-		$this->markups[$key] = $className;
+		$this->markupTypes[$key] = $className;
 	}
 
 	/**
@@ -59,7 +59,7 @@ final class MarkupRegistry implements ClassRegistry
 	 */
 	public function unregister(string $key): void
 	{
-		unset($this->markups[$key]);
+		unset($this->markupTypes[$key]);
 	}
 
 	/**
@@ -67,7 +67,7 @@ final class MarkupRegistry implements ClassRegistry
 	 */
 	public function isRegistered(string $key): bool
 	{
-		return array_key_exists($key, $this->markups);
+		return array_key_exists($key, $this->markupTypes);
 	}
 
 	/**
@@ -78,7 +78,7 @@ final class MarkupRegistry implements ClassRegistry
 	 */
 	public function get(string $key): ?string
 	{
-		return $this->isRegistered($key) ? $this->markups[$key] : null;
+		return $this->isRegistered($key) ? $this->markupTypes[$key] : null;
 	}
 
 	/**
@@ -90,6 +90,6 @@ final class MarkupRegistry implements ClassRegistry
 	 */
 	public function all(): array
 	{
-		return $this->markups;
+		return $this->markupTypes;
 	}
 }

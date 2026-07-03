@@ -68,12 +68,12 @@ final class Rdfa extends Html
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
-			esc_attr($this->crumbs->position())
+			esc_attr((string)$this->crumbs->position())
 		);
 	}
 
 	/**
-	 * Renders the crumb's content with RDFa annotations: a `name`-labelled span,
+	 * Renders the crumb's content with RDFa annotations: a `name`-labeled span,
 	 * output as a `WebPage`-typed `item` link when linkable or as a plain span
 	 * otherwise.
 	 */

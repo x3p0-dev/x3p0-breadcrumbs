@@ -68,12 +68,12 @@ final class Microdata extends Html
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
-			esc_attr($this->crumbs->position())
+			esc_attr((string)$this->crumbs->position())
 		);
 	}
 
 	/**
-	 * Renders the crumb's content with microdata annotations: a `name`-labelled
+	 * Renders the crumb's content with microdata annotations: a `name`-labeled
 	 * span, output as an `item` link when linkable or as a `WebPage`-typed span
 	 * otherwise.
 	 */

@@ -25,6 +25,7 @@ final class MarkupServiceProvider extends ServiceProvider implements Bootable
 {
 	protected const SINGLETONS_IF = [
 		MarkupFactory::class,
+		MarkupOptions::class,
 		MarkupRegistry::class
 	];
 

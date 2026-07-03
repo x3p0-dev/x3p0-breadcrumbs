@@ -20,5 +20,12 @@ import edit       from './edit';
 import icon       from './icon';
 import deprecated from './deprecated';
 
+// Keep the accepted markup values in sync with the server-defined list
+// (`MarkupType`), passed in on the `x3p0Breadcrumbs` global.
+//
+// noinspection JSUnresolvedVariable
+metadata.attributes.markup.enum =
+	(window.x3p0Breadcrumbs?.markupTypes ?? []).map(({key}) => key);
+
 // Register the block type.
 registerBlockType(metadata, { edit, icon, deprecated });

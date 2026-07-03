@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
+use X3P0\Breadcrumbs\Markup\MarkupOptions;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 use const X3P0\Breadcrumbs\PLUGIN_DIR;
@@ -33,6 +34,13 @@ final class BlockRegistrar implements Bootable
 	 * Filename of the generated blocks metadata manifest.
 	 */
 	private const MANIFEST_FILENAME = 'blocks-manifest.php';
+
+	/**
+	 * Stores the markup options used to seed the block's `markup` attribute.
+	 */
+	public function __construct(
+		private readonly MarkupOptions $markupOptions
+	) {}
 
 	/**
 	 * @inheritDoc
@@ -57,9 +65,10 @@ final class BlockRegistrar implements Bootable
 	}
 
 	/**
-	 * Dynamically sets all publicly queryable post types with a `%tagname%`
-	 * (rewrite tag) in their slug to have mapping enabled by default. This
-	 * happens at the time of block registration.
+	 * Adjusts the block metadata at registration time. It enables mapping
+	 * by default for all publicly queryable post types with a `%tagname%`
+	 * (rewrite tag) in their slug, and derives the accepted `markup` values
+	 * from the registered block options so they never drift from the registry.
 	 */
 	private function setMetadata(array $metadata): array
 	{
@@ -76,6 +85,14 @@ final class BlockRegistrar implements Bootable
 			...array_fill_keys(array_keys($types), true),
 			...$metadata['attributes']['mapRewriteTags']['default']
 		];
+
+		// Keep the accepted markup values in sync with the registered types
+		// offered as block options so the attribute enum, the editor options,
+		// and the markup registry never drift apart.
+		$metadata['attributes']['markup']['enum'] = array_column(
+			$this->markupOptions->forBlock(),
+			'key'
+		);
 
 		return $metadata;
 	}

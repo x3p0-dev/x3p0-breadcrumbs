@@ -25,6 +25,14 @@ final class Microdata extends Html
 	/**
 	 * @inheritDoc
 	 */
+	public static function label(): string
+	{
+		return __('Microdata (Schema.org)', 'x3p0-breadcrumbs');
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function render(): string
 	{
 		if (! $this->isRenderable()) {

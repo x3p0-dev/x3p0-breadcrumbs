@@ -28,6 +28,7 @@ final class BlockServiceProvider extends ServiceProvider implements Bootable
 	];
 
 	protected const BOOTABLE = [
-		BlockRegistrar::class
+		BlockRegistrar::class,
+		BlockAssets::class
 	];
 }

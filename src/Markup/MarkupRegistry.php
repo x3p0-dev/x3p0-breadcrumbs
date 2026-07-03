@@ -80,4 +80,16 @@ final class MarkupRegistry implements ClassRegistry
 	{
 		return $this->isRegistered($key) ? $this->markups[$key] : null;
 	}
+
+	/**
+	 * Returns all registered keys mapped to their markup class names. This
+	 * is the authoritative list of available markup types, including any
+	 * registered by third-party code.
+	 *
+	 * @return array<string, class-string<Markup>>
+	 */
+	public function all(): array
+	{
+		return $this->markups;
+	}
 }

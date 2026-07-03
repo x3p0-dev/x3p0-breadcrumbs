@@ -18,21 +18,12 @@ import {
 	ToggleControl
 } from '@wordpress/components';
 
-// Define the content options.
-const MARKUP_OPTIONS = [
-	{
-		key: 'html',
-		name: __('Plain HTML', 'x3p0-breadcrumbs')
-	},
-	{
-		key: 'microdata',
-		name: __('Microdata (Schema.org)', 'x3p0-breadcrumbs')
-	},
-	{
-		key: 'rdfa',
-		name: __('RDFa (Schema.org)', 'x3p0-breadcrumbs')
-	}
-];
+// Markup options are defined once in PHP via `MarkupType` and passed in on the
+// `x3p0Breadcrumbs` global, so the editor never recreates the list. Labels
+// arrive pre-translated from the server.
+//
+// noinspection JSUnresolvedVariable
+const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
 
 /**
  * Renders a `<ToolsPanel>` component with the block's primary setting controls.

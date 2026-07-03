@@ -15,14 +15,23 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Markup\Markup;
+use X3P0\Breadcrumbs\Markup\MarkupOption;
 
 /**
  * Renders the trail as a plain, semantic ordered list wrapped in a `<nav>`
  * element, with no structured-data vocabulary. Serves as the base for the
  * Microdata and RDFa formats, which extend it to add their own annotations.
  */
-class Html extends Markup
+class Html extends Markup implements MarkupOption
 {
+	/**
+	 * @inheritDoc
+	 */
+	public static function label(): string
+	{
+		return __('Plain HTML', 'x3p0-breadcrumbs');
+	}
+
 	/**
 	 * @inheritDoc
 	 */

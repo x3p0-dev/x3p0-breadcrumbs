@@ -55,7 +55,6 @@
 		},
 		"markup": {
 			"type": "string",
-			"enum": [ "html", "microdata", "rdfa" ],
 			"default": "rdfa"
 		},
 		"postTaxonomy": {

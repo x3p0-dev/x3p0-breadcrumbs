@@ -67,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "1a65cfd802c52cc799cf8a44a2d0ee46d10705dd"
+                "reference": "d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/1a65cfd802c52cc799cf8a44a2d0ee46d10705dd",
-                "reference": "1a65cfd802c52cc799cf8a44a2d0ee46d10705dd",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e",
+                "reference": "d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e",
                 "shasum": ""
             },
             "require": {
@@ -81,7 +81,6 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
                 "phpcompatibility/phpcompatibility-wp": "*",
-                "phpstan/phpstan": "^2.0",
                 "phpunit/phpunit": "^10.5",
                 "wp-coding-standards/wpcs": "^3.0"
             },
@@ -117,7 +116,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-06-23T16:03:32+00:00"
+            "time": "2026-07-03T19:56:56+00:00"
         }
     ],
     "packages-dev": [

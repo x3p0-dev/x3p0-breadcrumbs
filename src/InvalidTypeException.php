@@ -31,11 +31,11 @@ class InvalidTypeException extends LogicException
 	 */
 	public static function notSubclassOf(string $given, string $expected): self
 	{
-		return new self(sprintf(
+		return new self(esc_html(sprintf(
 			// Translators: 1: given class name, 2: expected base class name.
 			__('Cannot register %1$s; only %2$s subclasses are allowed.', 'x3p0-breadcrumbs'),
-			esc_html($given),
-			esc_html($expected)
-		));
+			$given,
+			$expected
+		)));
 	}
 }

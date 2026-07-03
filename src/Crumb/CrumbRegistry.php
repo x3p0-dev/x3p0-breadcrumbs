@@ -49,7 +49,7 @@ final class CrumbRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Crumb::class)) {
-			throw InvalidTypeException::notSubclassOf($className, Crumb::class);
+			throw InvalidTypeException::notSubclassOf(esc_html($className), Crumb::class);
 		}
 
 		$this->crumbs[$key] = $className;

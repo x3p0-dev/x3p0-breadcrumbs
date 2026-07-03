@@ -49,7 +49,7 @@ final class QueryRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Query::class)) {
-			throw InvalidTypeException::notSubclassOf($className, Query::class);
+			throw InvalidTypeException::notSubclassOf(esc_html($className), Query::class);
 		}
 
 		$this->queries[$key] = $className;

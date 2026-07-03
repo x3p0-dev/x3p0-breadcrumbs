@@ -5,7 +5,7 @@
 	<arg name="extensions" value="php"/>
 
 	<!-- Exclude files and folders. -->
-	<exclude-pattern>*/(.ideas|.notes|node_modules|public|scripts|vendor)/*</exclude-pattern>
+	<exclude-pattern>*/(.ideas|.notes|node_modules|packages|public|scripts|vendor)/*</exclude-pattern>
 
 	<!--
 	########################################################################
@@ -21,6 +21,8 @@
 	<!-- No need to check Yoda conditions. -->
 	<rule ref="WordPress.PHP">
 		<exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
+		<!-- Deprecated in WPCS 3.3; PHPCompatibility covers cross-version checks. -->
+		<exclude name="WordPress.PHP.POSIXFunctions"/>
 	</rule>
 
 	<!-- This always recommends `wp_remote_get()` when it shouldn't be used. -->

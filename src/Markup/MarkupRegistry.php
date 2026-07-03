@@ -48,7 +48,7 @@ final class MarkupRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Markup::class)) {
-			throw InvalidTypeException::notSubclassOf($className, Markup::class);
+			throw InvalidTypeException::notSubclassOf(esc_html($className), Markup::class);
 		}
 
 		$this->markups[$key] = $className;

@@ -50,7 +50,7 @@ final class AssemblerRegistry implements ClassRegistry
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, Assembler::class)) {
-			throw InvalidTypeException::notSubclassOf($className, Assembler::class);
+			throw InvalidTypeException::notSubclassOf(esc_html($className), Assembler::class);
 		}
 
 		$this->assemblers[$key] = $className;

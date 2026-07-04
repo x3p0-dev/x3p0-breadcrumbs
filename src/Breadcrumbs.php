@@ -70,8 +70,13 @@ final class Breadcrumbs
 			$context->query($queryType);
 		}
 
-		// Let listeners adjust the finished crumbs before they are returned.
-		$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()));
+		// Let listeners adjust the finished crumbs before they are returned,
+		// then bridge the same event to WordPress so `add_action()`
+		// callbacks can adjust them too.
+		do_action(
+			'x3p0/breadcrumbs/crumbs-built',
+			$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()))
+		);
 
 		return $context->crumbs();
 	}

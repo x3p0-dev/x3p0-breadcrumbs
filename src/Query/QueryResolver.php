@@ -20,10 +20,14 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 /**
  * Decides which query type matches the current WordPress request. It detects a
  * default type from an ordered map of conditional tags, then lets third parties
- * override it: first by dispatching a `QueryTypeResolving` event, then through
- * the legacy `x3p0/breadcrumbs/resolve/query-type` filter, which keeps the final
- * say for backward compatibility. The result is a query key string (a built-in
- * `QueryType` value or a custom one) or null when nothing matched.
+ * override it in turn: first by dispatching a `QueryTypeResolving` event, then by
+ * firing the `x3p0/breadcrumbs/query-type-resolving` action so `add_action()`
+ * callbacks can change the same event, and finally through the legacy
+ * `x3p0/breadcrumbs/resolve/query-type` filter, which keeps the final say for
+ * backward compatibility. A listener that stops the event's propagation claims
+ * the final say early, skipping the action and the legacy filter. The result is
+ * a query key string (a built-in `QueryType` value or a custom one) or null when
+ * nothing matched.
  */
 final class QueryResolver
 {
@@ -60,13 +64,21 @@ final class QueryResolver
 			queryType: $this->detect()
 		));
 
+		// Bridge the event to WordPress unless a listener already claimed
+		// the final say by stopping propagation, so `add_action()`
+		// callbacks can change the type alongside the typed listeners.
+		if (! $event->isPropagationStopped()) {
+			do_action('x3p0/breadcrumbs/query-type-resolving', $event);
+		}
+
 		// Normalize the event's value to a string key for the legacy
 		// filter and the return type.
 		$queryType = $event->getQueryType();
 		$key = $queryType instanceof QueryType ? $queryType->value : $queryType;
 
-		// A listener that stopped propagation has claimed the final say,
-		// so skip the legacy filter and return its decision as-is.
+		// A listener that stopped propagation — typed or through the hook —
+		// has claimed the final say, so skip the legacy filter and return
+		// its decision as-is.
 		if ($event->isPropagationStopped()) {
 			return $key;
 		}

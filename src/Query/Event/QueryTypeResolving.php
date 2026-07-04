@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Event\Stoppable;
+use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
 use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
@@ -25,8 +27,10 @@ use X3P0\Breadcrumbs\Query\QueryType;
  * `setQueryType()`. The dispatcher returns this same instance and the resolver
  * reads the final value back from it.
  */
-final class QueryTypeResolving
+final class QueryTypeResolving implements StoppableEvent
 {
+	use Stoppable;
+
 	/**
 	 * Stores the shared context and the query type resolved so far. The
 	 * query type is mutable so listeners can override it; pass a `QueryType`

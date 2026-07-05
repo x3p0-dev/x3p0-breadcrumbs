@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Block\Type;
+namespace X3P0\Breadcrumbs\Block\Renderer;
 
 use WP_Block;
 use WP_Block_Supports;
-use X3P0\Breadcrumbs\Block\Block;
+use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
@@ -25,7 +25,7 @@ use X3P0\Breadcrumbs\Markup\MarkupType;
  * configuration, then delegates building the trail markup to the injected
  * breadcrumbs renderer.
  */
-final class Breadcrumbs implements Block
+final class Breadcrumbs implements BlockRenderer
 {
 	/**
 	 * Injects the renderer used to build the breadcrumb trail markup.

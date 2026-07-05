@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Block interface.
+ * Block renderer interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -20,7 +20,7 @@ use WP_Block;
  * block's saved attributes, inner content, and `WP_Block` instance and
  * return the final front-end markup.
  */
-interface Block
+interface BlockRenderer
 {
 	/**
 	 * Renders the block and returns its HTML for output on the front end.

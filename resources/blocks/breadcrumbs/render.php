@@ -17,7 +17,7 @@ namespace X3P0\Breadcrumbs;
 defined('ABSPATH') || exit;
 
 use WP_Block;
-use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
+use X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs;
 
 /**
  * @var array    $attributes Block attributes.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\Block\Type\Breadcrumbs;
+use X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 

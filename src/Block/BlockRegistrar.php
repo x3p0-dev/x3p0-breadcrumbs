@@ -27,11 +27,17 @@ final class BlockRegistrar implements Bootable
 {
 	/**
 	 * Absolute path to the folder holding the plugin's built block metadata.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const BLOCKS_DIR = PLUGIN_DIR . '/public/blocks';
 
 	/**
 	 * Filename of the generated blocks metadata manifest.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const MANIFEST_FILENAME = 'blocks-manifest.php';
 

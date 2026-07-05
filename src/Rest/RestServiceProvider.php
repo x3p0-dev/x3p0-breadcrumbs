@@ -22,6 +22,12 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  */
 class RestServiceProvider extends ServiceProvider implements Bootable
 {
+	/**
+	 * The registrar booted on startup to add the plugin's custom REST fields.
+	 *
+	 * @var  array<string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const BOOTABLE = [
 		RestRegistrar::class
 	];

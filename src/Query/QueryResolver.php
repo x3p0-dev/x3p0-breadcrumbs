@@ -35,6 +35,9 @@ final class QueryResolver
 	 * Maps WordPress conditional tags to the `QueryType` used when that
 	 * conditional matches the current request. Evaluated in order; the
 	 * first match wins.
+	 *
+	 * @var  array<string, QueryType>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const CONDITIONALS = [
 		'is_404'        => QueryType::Error404,

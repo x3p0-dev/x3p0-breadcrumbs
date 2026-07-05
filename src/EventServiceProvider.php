@@ -22,32 +22,20 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the event library into the plugin's container. Two shared instances
- * back the subsystem: an `EventDispatcher` that fires events (bound as the
- * overridable `Dispatcher` default) and a single listener registry that both
- * holds the listeners (write) and supplies them at dispatch time (read).
+ * Wires the framework-agnostic event library into the plugin's container. Two
+ * shared instances back the subsystem: an `EventDispatcher` (bound as the
+ * overridable `Dispatcher` default) and one listener registry that both stores
+ * listeners (the `ListenerRegistry` write contract) and supplies them at
+ * dispatch (the `ListenerProvider` read contract, bound to delegate to the
+ * write contract). Because both contracts share the one instance, the dispatcher
+ * reads exactly the listeners that were registered.
  *
- * Everything is wired against the library's contracts; the concrete
- * `PriorityListenerRegistry` is named in exactly one place — the factory in
- * `register()` that constructs it. That factory (rather than a plain class-name
- * mapping) is needed because the registry takes an optional `?Closure` resolver
- * the container cannot autowire; the factory supplies a resolver backed by the
- * container, so a listener registered by its class name is built through the
- * container — receiving its own dependencies — instead of the library's
- * `new $class()` fallback.
- *
- * The factory is bound under the `ListenerRegistry` write contract (the
- * registry's fuller role — it both stores and provides), and the
- * `ListenerProvider` read contract is bound to delegate to it. Both are shared,
- * so resolving either contract yields the one registry instance: the listeners
- * registered through the write contract are exactly the ones the dispatcher
- * reads through the read contract. `singletonIf` throughout lets an extension
- * swap any binding — the dispatcher, or either contract — by binding its own
- * first; a custom read provider bound ahead of this provider survives, since the
- * read binding is a conditional delegation rather than an unconditional alias.
- *
- * This is the plugin's integration glue for the framework-agnostic event
- * library; the library itself ships no service provider.
+ * The concrete `PriorityListenerRegistry` is named only in the `register()`
+ * factory, which exists because the registry takes an optional `?Closure`
+ * resolver the container cannot autowire; the factory supplies a
+ * container-backed resolver so listeners registered by class name are built
+ * through the container. `singletonIf` throughout lets an extension swap any
+ * binding by binding its own first.
  */
 final class EventServiceProvider extends ServiceProvider
 {
@@ -57,6 +45,9 @@ final class EventServiceProvider extends ServiceProvider
 	 * `ListenerProvider` read contract delegates to the `ListenerRegistry`
 	 * write contract, which the container resolves to the shared registry
 	 * bound in `register()`.
+	 *
+	 * @var  array<int|string, string>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
 		Dispatcher::class       => EventDispatcher::class,

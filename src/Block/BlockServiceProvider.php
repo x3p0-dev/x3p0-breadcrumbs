@@ -23,10 +23,22 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  */
 final class BlockServiceProvider extends ServiceProvider implements Bootable
 {
+	/**
+	 * The Breadcrumbs block renderer, bound as a shared singleton.
+	 *
+	 * @var  array<int|string, string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const SINGLETONS = [
 		Breadcrumbs::class
 	];
 
+	/**
+	 * Services booted on startup: the block registrar and editor assets.
+	 *
+	 * @var  array<string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const BOOTABLE = [
 		BlockRegistrar::class,
 		BlockAssets::class

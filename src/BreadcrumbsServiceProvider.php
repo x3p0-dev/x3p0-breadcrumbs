@@ -24,6 +24,13 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  */
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {
+	/**
+	 * The factory, renderer, and deprecated service alias, bound as shared
+	 * singletons only if not already bound so extensions may replace them.
+	 *
+	 * @var  array<int|string, string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const SINGLETONS_IF = [
 		BreadcrumbsFactory::class,
 		BreadcrumbsRenderer::class,

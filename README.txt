@@ -3,8 +3,8 @@
 Contributors: greenshady
 Donate link: http://a.co/02ggsr2
 Tags: breadcrumbs, navigation, block, seo, trail
-Requires at least: 6.8
-Tested up to: 6.8
+Requires at least: 7.0
+Tested up to: 7.0
 Requires PHP: 8.1
 Stable tag: 4.1.0
 License: GPL-3.0-or-later

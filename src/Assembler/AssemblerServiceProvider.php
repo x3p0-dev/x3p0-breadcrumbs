@@ -23,11 +23,24 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  */
 final class AssemblerServiceProvider extends ServiceProvider implements Bootable
 {
+	/**
+	 * The assembler factory and registry, bound as shared services only if
+	 * not already bound so extensions may replace them.
+	 *
+	 * @var  array<int|string, string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const SINGLETONS_IF = [
 		AssemblerFactory::class,
 		AssemblerRegistry::class
 	];
 
+	/**
+	 * The registrar booted on startup to seed the built-in assembler types.
+	 *
+	 * @var  array<string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
 	protected const BOOTABLE = [
 		AssemblerRegistrar::class
 	];

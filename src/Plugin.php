@@ -30,6 +30,9 @@ final class Plugin extends Application
 {
 	/**
 	 * The service providers registered on boot, one per subsystem.
+	 *
+	 * @var  array<string>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const PROVIDERS = [
 		AssemblerServiceProvider::class,

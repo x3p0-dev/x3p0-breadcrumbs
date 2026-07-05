@@ -26,6 +26,7 @@ final class BlockAssets implements Bootable
 	/**
 	 * Name of the block whose editor script receives the inline data.
 	 *
+	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const BLOCK_NAME = 'x3p0/breadcrumbs';
@@ -33,6 +34,7 @@ final class BlockAssets implements Bootable
 	/**
 	 * JavaScript global that the editor data is assigned to.
 	 *
+	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const SCRIPT_GLOBAL = 'x3p0Breadcrumbs';

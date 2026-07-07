@@ -24,6 +24,15 @@ use WP_Post_Type;
 final class Helpers
 {
 	/**
+	 * Lazily built map of archive slug to the post type objects registered
+	 * under it, cached for the duration of the request. Remains `null`
+	 * until first built by `getPostTypesBySlug()`.
+	 *
+	 * @var null|array<string, WP_Post_Type[]>
+	 */
+	private static ?array $postTypesBySlug = null;
+
+	/**
 	 * Determines whether we're viewing a paginated page.
 	 */
 	public static function isPagedView(): bool
@@ -73,24 +82,46 @@ final class Helpers
 	 * function doesn't exactly match the `has_archive` argument when it's
 	 * set as a string instead of a boolean.
 	 *
+	 * The archive-slug lookup is built once and cached, so repeated
+	 * resolutions (e.g. walking a URL path segment by segment) don't rescan
+	 * the post type registry each time.
+	 *
 	 * @return WP_Post_Type[]
 	 */
 	public static function getPostTypesBySlug(string $slug): array
 	{
-		$types = [];
+		return self::archiveSlugMap()[$slug] ?? [];
+	}
+
+	/**
+	 * Builds (once) and returns the map of archive slug to the post type
+	 * objects registered under it. A string `has_archive` is itself the
+	 * archive slug; a boolean-true `has_archive` falls back to the rewrite
+	 * slug. A `false` `has_archive` (or a disabled rewrite) contributes no
+	 * entry.
+	 *
+	 * @return array<string, WP_Post_Type[]>
+	 */
+	private static function archiveSlugMap(): array
+	{
+		if (null !== self::$postTypesBySlug) {
+			return self::$postTypesBySlug;
+		}
+
+		self::$postTypesBySlug = [];
 
 		foreach (get_post_types([], 'objects') as $type) {
-			if (
-				$slug === $type->has_archive
-				|| (
-					true === $type->has_archive
-					&& $slug === $type->rewrite['slug']
-				)
+			if (is_string($type->has_archive)) {
+				self::$postTypesBySlug[$type->has_archive][] = $type;
+			} elseif (
+				true === $type->has_archive
+				&& is_array($type->rewrite)
+				&& isset($type->rewrite['slug'])
 			) {
-				$types[] = $type;
+				self::$postTypesBySlug[$type->rewrite['slug']][] = $type;
 			}
 		}
 
-		return $types;
+		return self::$postTypesBySlug;
 	}
 }

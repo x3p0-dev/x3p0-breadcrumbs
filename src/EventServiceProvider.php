@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\Packages\Event\EventDispatcher;
 use X3P0\Breadcrumbs\Packages\Event\ListenerProvider;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
 use X3P0\Breadcrumbs\Packages\Event\PriorityListenerRegistry;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
+use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -73,8 +73,8 @@ final class EventServiceProvider extends ServiceProvider
 		// registered by class name is built through the container.
 		$this->container->singletonIf(
 			ListenerRegistry::class,
-			static fn (Container $container) => new PriorityListenerRegistry(
-				static fn (string $class): object => $container->get($class)
+			static fn (InstanceResolver $resolver) => new PriorityListenerRegistry(
+				static fn (string $class): object => $resolver->make($class)
 			)
 		);
 	}

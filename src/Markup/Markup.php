@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Markup;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Renderable;
-use X3P0\Breadcrumbs\Tools\Helpers;
+use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
  * Base class for rendering a finished breadcrumb trail to a string in a specific
@@ -62,7 +62,8 @@ abstract class Markup implements Renderable
 	 */
 	public function __construct(
 		protected readonly CrumbCollection $crumbs,
-		protected readonly MarkupConfig $config
+		protected readonly MarkupConfig $config,
+		protected readonly Pagination $pagination
 	) {}
 
 	/**
@@ -95,7 +96,7 @@ abstract class Markup implements Renderable
 		if (
 			is_front_page()
 			&& ! $this->config->showOnFront()
-			&& ! Helpers::isPagedView()
+			&& ! $this->pagination->isPagedView()
 		) {
 			return false;
 		}

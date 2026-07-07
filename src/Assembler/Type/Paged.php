@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Tools\Helpers;
+use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
  * Adds a single pagination crumb when the current view is paged. It handles, in
@@ -25,6 +26,16 @@ use X3P0\Breadcrumbs\Tools\Helpers;
  */
 final class Paged extends Assembler
 {
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct(
+		BreadcrumbsContext $context,
+		private readonly Pagination $pagination
+	) {
+		parent::__construct(context: $context);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -43,7 +54,7 @@ final class Paged extends Assembler
 			$this->context->addCrumb(CrumbType::PagedComments);
 
 		// If viewing a paged Query Loop block view.
-		} elseif (Helpers::isPagedQueryBlock()) {
+		} elseif ($this->pagination->isPagedQueryBlock()) {
 			$this->context->addCrumb(CrumbType::PagedQueryBlock);
 		}
 	}

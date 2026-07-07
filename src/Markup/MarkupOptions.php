@@ -40,7 +40,7 @@ final class MarkupOptions
 	{
 		$options = [];
 
-		foreach ($this->registry->all() as $key => $className) {
+		foreach ($this->registry as $key => $className) {
 			if (is_subclass_of($className, MarkupOption::class)) {
 				$options[] = [
 					'key'  => $key,

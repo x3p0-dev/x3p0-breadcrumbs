@@ -55,8 +55,12 @@ final class PostAncestors extends Assembler
 				break;
 			}
 
-			// Get the parent post.
-			$parent = get_post($post_id);
+			// Get the parent post. Bail if it no longer exists, e.g.
+			// the parent was deleted but the child's `post_parent`
+			// still points at its ID.
+			if (! $parent = get_post($post_id)) {
+				break;
+			}
 
 			// Don't add the post unless the post type still exists.
 			// This can happen when a post has a parent with a post

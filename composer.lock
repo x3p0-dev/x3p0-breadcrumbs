@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-event.git",
-                "reference": "810b1c27dd75b762f6c2fc9a9ce9c89df3c1ddf8"
+                "reference": "6a49e0a9c242374f72bb11f75cd16396d8ec98a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-event/zipball/810b1c27dd75b762f6c2fc9a9ce9c89df3c1ddf8",
-                "reference": "810b1c27dd75b762f6c2fc9a9ce9c89df3c1ddf8",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-event/zipball/6a49e0a9c242374f72bb11f75cd16396d8ec98a2",
+                "reference": "6a49e0a9c242374f72bb11f75cd16396d8ec98a2",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +59,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-event/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-event"
             },
-            "time": "2026-07-04T18:45:12+00:00"
+            "time": "2026-07-05T22:29:42+00:00"
         },
         {
             "name": "x3p0-dev/x3p0-framework",
@@ -67,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e"
+                "reference": "6d8cb99302e4298965970926a71ce6ec6c0781ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e",
-                "reference": "d59a2dcd5b682edee2581d4ca3a8b9a8eaba5a6e",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/6d8cb99302e4298965970926a71ce6ec6c0781ef",
+                "reference": "6d8cb99302e4298965970926a71ce6ec6c0781ef",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +116,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-07-03T19:56:56+00:00"
+            "time": "2026-07-07T19:02:40+00:00"
         }
     ],
     "packages-dev": [

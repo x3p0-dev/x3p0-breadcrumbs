@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
+
 /**
  * Resolves an assembler key against the registry and instantiates the matching
  * class. This is the single entry point for creating assemblers so that callers
@@ -21,23 +23,28 @@ namespace X3P0\Breadcrumbs\Assembler;
 final class AssemblerFactory
 {
 	/**
-	 * Stores the registry that maps assembler keys to their class names.
+	 * Stores the registry that maps assembler keys to their class names and
+	 * the resolver that builds the mapped class through the container.
 	 */
-	public function __construct(private readonly AssemblerRegistry $assemblerRegistry)
-	{}
+	public function __construct(
+		private readonly AssemblerRegistry $assemblerRegistry,
+		private readonly InstanceResolver  $resolver
+	) {}
 
 	/**
-	 * Looks up the class registered for the given type and returns a new
-	 * instance built from `$params`. Accepts an `AssemblerType` for built-in
-	 * assemblers or a string key for custom ones. Returns `null` when no
-	 * assembler is registered under the key.
+	 * Looks up the class registered for the given type and resolves a new
+	 * instance from the container, forwarding `$params` as named constructor
+	 * arguments. Accepts an `AssemblerType` for built-in assemblers or a string
+	 * key for custom ones. Returns `null` when no assembler is registered under
+	 * the key.
 	 */
 	public function make(AssemblerType|string $type, array $params = []): ?Assembler
 	{
 		$key = $type instanceof AssemblerType ? $type->value : $type;
 
+		/** @var null|class-string<Assembler> $assembler */
 		if ($assembler = $this->assemblerRegistry->get($key)) {
-			return new $assembler(...$params);
+			return $this->resolver->make($assembler, $params);
 		}
 
 		return null;

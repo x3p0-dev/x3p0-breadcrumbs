@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
+
 /**
  * Resolves a markup key to its registered class via the registry and
  * instantiates it. Returns `null` when the key is not registered.
@@ -20,22 +22,27 @@ namespace X3P0\Breadcrumbs\Markup;
 final class MarkupFactory
 {
 	/**
-	 * Stores the registry used to look up markup classes by key.
+	 * Stores the registry used to look up markup classes by key and the
+	 * resolver that builds the mapped class through the container.
 	 */
-	public function __construct(private readonly MarkupRegistry $markupRegistry)
-	{}
+	public function __construct(
+		private readonly MarkupRegistry   $markupRegistry,
+		private readonly InstanceResolver $resolver
+	) {}
 
 	/**
-	 * Instantiates the markup class registered for a given type, passing the
-	 * supplied params to its constructor. Accepts a `MarkupType` for built-in
-	 * markup or a string key for custom ones. Returns `null` for an unknown key.
+	 * Resolves the markup class registered for a given type from the container,
+	 * forwarding `$params` as named constructor arguments. Accepts a
+	 * `MarkupType` for built-in markup or a string key for custom ones. Returns
+	 * `null` for an unknown key.
 	 */
 	public function make(MarkupType|string $type, array $params = []): ?Markup
 	{
 		$key = $type instanceof MarkupType ? $type->value : $type;
 
+		/** @var null|class-string<Markup> $markup */
 		if ($markup = $this->markupRegistry->get($key)) {
-			return new $markup(...$params);
+			return $this->resolver->make($markup, $params);
 		}
 
 		return null;

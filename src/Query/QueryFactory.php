@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
+
 /**
  * Resolves a query key to its registered class and instantiates it. Returns
  * `null` when the key is not registered, so callers can dispatch optimistically
@@ -21,22 +23,27 @@ namespace X3P0\Breadcrumbs\Query;
 final class QueryFactory
 {
 	/**
-	 * Stores the registry that maps query keys to their class names.
+	 * Stores the registry that maps query keys to their class names and the
+	 * resolver that builds the mapped class through the container.
 	 */
-	public function __construct(private readonly QueryRegistry $queryRegistry)
-	{}
+	public function __construct(
+		private readonly QueryRegistry    $queryRegistry,
+		private readonly InstanceResolver $resolver
+	) {}
 
 	/**
-	 * Instantiates the query registered under `$type`, spreading `$params` as
-	 * named constructor arguments. Accepts a `QueryType` for built-in queries or
-	 * a string key for custom ones. Returns `null` if the key is not registered.
+	 * Resolves the query registered under `$type` from the container, forwarding
+	 * `$params` as named constructor arguments. Accepts a `QueryType` for
+	 * built-in queries or a string key for custom ones. Returns `null` if the
+	 * key is not registered.
 	 */
 	public function make(QueryType|string $type, array $params = []): ?Query
 	{
 		$key = $type instanceof QueryType ? $type->value : $type;
 
+		/** @var null|class-string<Query> $query */
 		if ($query = $this->queryRegistry->get($key)) {
-			return new $query(...$params);
+			return $this->resolver->make($query, $params);
 		}
 
 		return null;

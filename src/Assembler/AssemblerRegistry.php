@@ -13,73 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\InvalidTypeException;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\ClassRegistry;
+use X3P0\Breadcrumbs\ClassRegistry;
 
 /**
  * Stores the `string key => assembler class name` mappings that the factory
  * resolves against. Registration is validated so that only subclasses of the
  * abstract `Assembler` can be stored.
+ *
+ * @extends ClassRegistry<Assembler>
  */
-final class AssemblerRegistry implements ClassRegistry
+final class AssemblerRegistry extends ClassRegistry
 {
 	/**
-	 * Maps each registered key to its assembler class name.
-	 *
-	 * @var array<string, class-string<Assembler>>
+	 * @inheritDoc
 	 */
-	private array $assemblers = [];
-
-	/**
-	 * Registers any key/class-name pairs passed in, allowing the registry
-	 * to be seeded with a default set of assemblers at construction.
-	 */
-	public function __construct(array $assemblers = [])
+	protected function type(): string
 	{
-		foreach ($assemblers as $key => $className) {
-			$this->register($key, $className);
-		}
-	}
-
-	/**
-	 * Maps a key to an assembler class name. Throws if the class is not a
-	 * subclass of `Assembler`.
-	 *
-	 * @param class-string<Assembler> $className
-	 */
-	public function register(string $key, string $className): void
-	{
-		if (! is_subclass_of($className, Assembler::class)) {
-			throw InvalidTypeException::notSubclassOf(esc_html($className), Assembler::class);
-		}
-
-		$this->assemblers[$key] = $className;
-	}
-
-	/**
-	 * Removes the assembler mapping for the given key, if any.
-	 */
-	public function unregister(string $key): void
-	{
-		unset($this->assemblers[$key]);
-	}
-
-	/**
-	 * Returns whether an assembler is registered under the given key.
-	 */
-	public function isRegistered(string $key): bool
-	{
-		return array_key_exists($key, $this->assemblers);
-	}
-
-	/**
-	 * Returns the assembler class name registered under the key, or `null`
-	 * if none is registered.
-	 *
-	 * @return null|class-string<Assembler>
-	 */
-	public function get(string $key): ?string
-	{
-		return $this->isRegistered($key) ? $this->assemblers[$key] : null;
+		return Assembler::class;
 	}
 }

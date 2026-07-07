@@ -33,6 +33,13 @@ final class Helpers
 	private static ?array $postTypesBySlug = null;
 
 	/**
+	 * Cached Query Loop block page number for the current request. Remains
+	 * `null` until first resolved by `getQueryBlockPage()`; `0` is a valid
+	 * resolved value meaning the view is not a paginated Query Loop block.
+	 */
+	private static ?int $queryBlockPage = null;
+
+	/**
 	 * Determines whether we're viewing a paginated page.
 	 */
 	public static function isPagedView(): bool
@@ -59,6 +66,12 @@ final class Helpers
 	 */
 	public static function getQueryBlockPage(): int
 	{
+		// Return the resolved page number if it's already been computed;
+		// the URL doesn't change over the course of a request.
+		if (null !== self::$queryBlockPage) {
+			return self::$queryBlockPage;
+		}
+
 		// Get the URL query for the requested URI.
 		$query = wp_parse_url(esc_url_raw(add_query_arg([])), PHP_URL_QUERY);
 
@@ -68,13 +81,13 @@ final class Helpers
 			|| ! str_contains($query, 'query-')
 			|| ! str_contains($query, 'page=')
 		) {
-			return 0;
+			return self::$queryBlockPage = 0;
 		}
 
 		// Checks for `?query-page={x}` and `query-{x}-page={y}`.
 		preg_match('#query-(\d+-)?page=(\d+)#', $query, $matches);
 
-		return isset($matches[2]) ? absint($matches[2]) : 0;
+		return self::$queryBlockPage = isset($matches[2]) ? absint($matches[2]) : 0;
 	}
 
 	/**

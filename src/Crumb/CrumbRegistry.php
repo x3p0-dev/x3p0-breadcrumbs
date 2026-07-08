@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\ClassRegistry;
+use X3P0\Breadcrumbs\Packages\ClassRegistry\Registry;
 
 /**
  * Stores the `key => class name` mappings for crumb types. New types are added
  * by registering a `Crumb` subclass against a string key, making the crumb
  * subsystem open for extension without touching core files.
  *
- * @extends ClassRegistry<Crumb>
+ * @extends Registry<Crumb>
  */
-final class CrumbRegistry extends ClassRegistry
+final class CrumbRegistry extends Registry
 {
 	/**
-	 * @inheritDoc
+	 * The base type every registered crumb must be a subclass of.
+	 *
+	 * @var  class-string<Crumb>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected function contract(): string
-	{
-		return Crumb::class;
-	}
+	protected const CONTRACT = Crumb::class;
 }

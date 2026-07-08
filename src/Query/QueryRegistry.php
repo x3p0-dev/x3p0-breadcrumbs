@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\ClassRegistry;
+use X3P0\Breadcrumbs\Packages\ClassRegistry\Registry;
 
 /**
  * Stores the `string key => Query class name` mappings that the factory resolves
  * against. Registration rejects any class that is not a `Query` subclass, so
  * every stored value is guaranteed instantiable as a query.
  *
- * @extends ClassRegistry<Query>
+ * @extends Registry<Query>
  */
-final class QueryRegistry extends ClassRegistry
+final class QueryRegistry extends Registry
 {
 	/**
-	 * @inheritDoc
+	 * The base type every registered query must be a subclass of.
+	 *
+	 * @var  class-string<Query>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected function contract(): string
-	{
-		return Query::class;
-	}
+	protected const CONTRACT = Query::class;
 }

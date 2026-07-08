@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\ClassRegistry;
+use X3P0\Breadcrumbs\Packages\ClassRegistry\Registry;
 
 /**
  * Stores the `string key => assembler class name` mappings that the factory
  * resolves against. Registration is validated so that only subclasses of the
  * abstract `Assembler` can be stored.
  *
- * @extends ClassRegistry<Assembler>
+ * @extends Registry<Assembler>
  */
-final class AssemblerRegistry extends ClassRegistry
+final class AssemblerRegistry extends Registry
 {
 	/**
-	 * @inheritDoc
+	 * The base type every registered assembler must be a subclass of.
+	 *
+	 * @var  class-string<Assembler>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected function contract(): string
-	{
-		return Assembler::class;
-	}
+	protected const CONTRACT = Assembler::class;
 }

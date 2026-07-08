@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc3ec1b417f671559e26afb896ad24be",
+    "content-hash": "c0efbb3163eac928ad52fa419c8fa488",
     "packages": [
+        {
+            "name": "x3p0-dev/x3p0-class-registry",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-class-registry.git",
+                "reference": "2157217db44c698874fce8d7249e43fc74aff261"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-class-registry/zipball/2157217db44c698874fce8d7249e43fc74aff261",
+                "reference": "2157217db44c698874fce8d7249e43fc74aff261",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "wp-coding-standards/wpcs": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\ClassRegistry\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Tadlock",
+                    "email": "justintadlock@gmail.com"
+                }
+            ],
+            "description": "A tiny, type-safe registry of class names for building extensible subsystems in WordPress plugins and themes.",
+            "homepage": "https://github.com/x3p0-dev/x3p0-class-registry",
+            "keywords": [
+                "class-map",
+                "extensibility",
+                "factory",
+                "registry",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-class-registry/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-class-registry"
+            },
+            "time": "2026-07-08T19:42:17+00:00"
+        },
         {
             "name": "x3p0-dev/x3p0-event",
             "version": "dev-master",
@@ -67,12 +121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "6d8cb99302e4298965970926a71ce6ec6c0781ef"
+                "reference": "6e494b467e509e429bd73f836f23b536f76e4f7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/6d8cb99302e4298965970926a71ce6ec6c0781ef",
-                "reference": "6d8cb99302e4298965970926a71ce6ec6c0781ef",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/6e494b467e509e429bd73f836f23b536f76e4f7a",
+                "reference": "6e494b467e509e429bd73f836f23b536f76e4f7a",
                 "shasum": ""
             },
             "require": {
@@ -116,7 +170,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-07-07T19:02:40+00:00"
+            "time": "2026-07-08T19:47:29+00:00"
         }
     ],
     "packages-dev": [
@@ -1075,6 +1129,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "x3p0-dev/x3p0-class-registry": 20,
         "x3p0-dev/x3p0-event": 20,
         "x3p0-dev/x3p0-framework": 20,
         "x3p0-dev/x3p0-prelude": 20,

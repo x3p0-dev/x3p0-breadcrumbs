@@ -13,23 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\ClassRegistry;
+use X3P0\Breadcrumbs\Packages\ClassRegistry\Registry;
 
 /**
  * Stores `string key => markup class name` mappings that the factory later
  * resolves and instantiates. Registration is guarded so only `Markup`
- * subclasses can be stored. The inherited `all()` supplies the authoritative
- * list of available markup types, including any registered by third parties.
+ * subclasses can be stored.
  *
- * @extends ClassRegistry<Markup>
+ * @extends Registry<Markup>
  */
-final class MarkupRegistry extends ClassRegistry
+final class MarkupRegistry extends Registry
 {
 	/**
-	 * @inheritDoc
+	 * The base type every registered markup class must be a subclass of.
+	 *
+	 * @var  class-string<Markup>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected function contract(): string
-	{
-		return Markup::class;
-	}
+	protected const CONTRACT = Markup::class;
 }

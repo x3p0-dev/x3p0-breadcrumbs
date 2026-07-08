@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler\Type;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Support\PostTypeArchives;
+use X3P0\Breadcrumbs\Support\PostTypes;
 
 /**
  * Resolves a URL path to a post or post type, then delegates crumb assembly to
@@ -30,9 +30,9 @@ final class Path extends Assembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext                $context,
-		private readonly PostTypeArchives $postTypeArchives,
-		private readonly string           $path = ''
+		BreadcrumbsContext         $context,
+		private readonly PostTypes $postTypes,
+		private readonly string    $path        = ''
 	) {
 		parent::__construct(context: $context);
 	}
@@ -97,7 +97,7 @@ final class Path extends Assembler
 	 */
 	private function tryAssemblePostType(string $path): bool
 	{
-		$types = $this->postTypeArchives->bySlug($path);
+		$types = $this->postTypes->withArchiveSlug($path);
 
 		if (empty($types)) {
 			return false;

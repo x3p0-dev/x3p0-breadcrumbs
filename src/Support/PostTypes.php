@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Post type archives support class.
+ * Post types support class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -17,27 +17,26 @@ use WP_Post_Type;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Singleton;
 
 /**
- * Resolves post types by their archive slug, which `get_post_types()` cannot do
- * directly when `has_archive` is set as a string rather than a boolean. Marked
- * `#[Singleton]` so the container shares one instance per request and the
- * archive-slug map is built only once.
+ * Queries the registered post types. Marked `#[Singleton]` so the container
+ * shares one instance per request and any lazily built lookups are constructed
+ * only once.
  */
 #[Singleton]
-final class PostTypeArchives
+final class PostTypes
 {
 	/**
 	 * Lazily built map of archive slug to the post type objects registered
-	 * under it, cached for the duration of the request. Remains `null` until
-	 * first built by `archiveSlugMap()`.
+	 * under it, cached for the duration of the request. Remains `null`
+	 * until first built by `archiveSlugMap()`.
 	 *
 	 * @var null|array<string, WP_Post_Type[]>
 	 */
-	private ?array $postTypesBySlug = null;
+	private ?array $byArchiveSlug = null;
 
 	/**
-	 * Gets post types by slug. This is needed because the `get_post_types()`
-	 * function doesn't exactly match the `has_archive` argument when it's
-	 * set as a string instead of a boolean.
+	 * Returns the post types registered with the given archive slug. This
+	 * is needed because `get_post_types()` doesn't match the `has_archive`
+	 * argument when it's set as a string instead of a boolean.
 	 *
 	 * The archive-slug lookup is built once and cached, so repeated
 	 * resolutions (e.g. walking a URL path segment by segment) don't rescan
@@ -45,7 +44,7 @@ final class PostTypeArchives
 	 *
 	 * @return WP_Post_Type[]
 	 */
-	public function bySlug(string $slug): array
+	public function withArchiveSlug(string $slug): array
 	{
 		return $this->archiveSlugMap()[$slug] ?? [];
 	}
@@ -61,24 +60,24 @@ final class PostTypeArchives
 	 */
 	private function archiveSlugMap(): array
 	{
-		if (null !== $this->postTypesBySlug) {
-			return $this->postTypesBySlug;
+		if (null !== $this->byArchiveSlug) {
+			return $this->byArchiveSlug;
 		}
 
-		$this->postTypesBySlug = [];
+		$this->byArchiveSlug = [];
 
 		foreach (get_post_types([], 'objects') as $type) {
 			if (is_string($type->has_archive)) {
-				$this->postTypesBySlug[$type->has_archive][] = $type;
+				$this->byArchiveSlug[$type->has_archive][] = $type;
 			} elseif (
 				true === $type->has_archive
 				&& is_array($type->rewrite)
 				&& isset($type->rewrite['slug'])
 			) {
-				$this->postTypesBySlug[$type->rewrite['slug']][] = $type;
+				$this->byArchiveSlug[$type->rewrite['slug']][] = $type;
 			}
 		}
 
-		return $this->postTypesBySlug;
+		return $this->byArchiveSlug;
 	}
 }

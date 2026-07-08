@@ -16,6 +16,8 @@ namespace X3P0\Breadcrumbs;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Base class for the plugin's type registries. Stores `string key => class name`
@@ -53,7 +55,8 @@ abstract class ClassRegistry implements IteratorAggregate, Countable
 	/**
 	 * Optionally seeds the registry with an initial `key => class` map.
 	 *
-	 * @param array<string, class-string<T>> $classes
+	 * @param  array<string, class-string<T>> $classes
+	 * @throws ReflectionException
 	 */
 	public function __construct(array $classes = [])
 	{
@@ -64,16 +67,25 @@ abstract class ClassRegistry implements IteratorAggregate, Countable
 
 	/**
 	 * Maps `$key` to `$className`, overwriting any existing mapping. Throws
-	 * if `$className` is not a subclass of the registry's base type.
+	 * if `$className` is not a subclass of the registry's base type or is not
+	 * instantiable (e.g. an abstract class or one with a non-public
+	 * constructor), so the factory can always build what is stored.
 	 *
-	 * @param class-string<T> $className
+	 * @param  class-string<T> $className
+	 * @throws ReflectionException
 	 */
 	public function register(string $key, string $className): void
 	{
 		if (! is_subclass_of($className, $this->contract())) {
-			throw InvalidTypeException::notSubclassOf(
+			throw RegistrationException::notSubclassOf(
 				esc_html($className),
 				esc_html($this->contract())
+			);
+		}
+
+		if (! (new ReflectionClass($className))->isInstantiable()) {
+			throw RegistrationException::notInstantiable(
+				esc_html($className)
 			);
 		}
 

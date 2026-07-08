@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use ReflectionException;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
@@ -31,6 +32,7 @@ final class QueryRegistrar implements Bootable
 
 	/**
 	 * @inheritDoc
+	 * @throws ReflectionException
 	 */
 	public function boot(): void
 	{

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use ReflectionException;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
@@ -35,6 +36,8 @@ final class AssemblerRegistrar implements Bootable
 	 * Registers each `AssemblerType` case against its class name, skipping
 	 * any key that has already been registered (e.g. overridden by a third
 	 * party) so existing mappings are preserved.
+	 *
+	 * @throws ReflectionException
 	 */
 	public function boot(): void
 	{

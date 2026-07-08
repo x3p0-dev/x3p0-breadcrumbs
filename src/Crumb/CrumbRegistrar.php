@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use ReflectionException;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
@@ -33,6 +34,7 @@ final class CrumbRegistrar implements Bootable
 	 * Registers each `CrumbType` case that has not already been registered.
 	 *
 	 * @inheritDoc
+	 * @throws ReflectionException
 	 */
 	public function boot(): void
 	{

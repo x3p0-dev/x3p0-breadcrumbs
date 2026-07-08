@@ -13,33 +13,29 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Support\EnumRegistrar;
 
 /**
  * Seeds the registry with the built-in query types on boot. Iterates the
  * `QueryType` enum, mapping each case's string key to its concrete class, and
  * skips any key a third party has already registered so custom overrides win.
  */
-final class QueryRegistrar implements Bootable
+final class QueryRegistrar extends EnumRegistrar
 {
 	/**
-	 * Stores the registry to be seeded with the built-in query types.
+	 * The enum whose cases seed the query registry.
+	 *
+	 * @var  class-string<QueryType>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public function __construct(
-		private readonly QueryRegistry $registry
-	) {}
+	protected const ENUM = QueryType::class;
 
 	/**
-	 * @inheritDoc
-	 * @throws ReflectionException
+	 * Type-hints the query registry so the container injects it, then hands
+	 * it to the base registrar.
 	 */
-	public function boot(): void
+	public function __construct(QueryRegistry $registry)
 	{
-		foreach (QueryType::cases() as $type) {
-			if (! $this->registry->isRegistered($type->value)) {
-				$this->registry->register($type->value, $type->className());
-			}
-		}
+		parent::__construct($registry);
 	}
 }

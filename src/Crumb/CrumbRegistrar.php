@@ -13,35 +13,29 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Support\EnumRegistrar;
 
 /**
  * Seeds the registry with the plugin's built-in crumb types on boot. Each
  * `CrumbType` case maps to its concrete class, and existing registrations are
  * left untouched so third-party overrides take precedence.
  */
-final class CrumbRegistrar implements Bootable
+final class CrumbRegistrar extends EnumRegistrar
 {
 	/**
-	 * Stores the registry that the built-in crumb types are seeded into.
+	 * The enum whose cases seed the crumb registry.
+	 *
+	 * @var  class-string<CrumbType>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public function __construct(
-		private readonly CrumbRegistry $registry
-	) {}
+	protected const ENUM = CrumbType::class;
 
 	/**
-	 * Registers each `CrumbType` case that has not already been registered.
-	 *
-	 * @inheritDoc
-	 * @throws ReflectionException
+	 * Type-hints the crumb registry so the container injects it, then hands
+	 * it to the base registrar.
 	 */
-	public function boot(): void
+	public function __construct(CrumbRegistry $registry)
 	{
-		foreach (CrumbType::cases() as $type) {
-			if (! $this->registry->isRegistered($type->value)) {
-				$this->registry->register($type->value, $type->className());
-			}
-		}
+		parent::__construct($registry);
 	}
 }

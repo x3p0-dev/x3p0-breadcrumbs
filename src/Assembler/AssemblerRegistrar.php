@@ -13,38 +13,29 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Support\EnumRegistrar;
 
 /**
  * Seeds the registry with the plugin's built-in assembler types on boot. Each
  * case of the `AssemblerType` enum is mapped to its corresponding concrete
  * class so the factory can resolve them by key.
  */
-final class AssemblerRegistrar implements Bootable
+final class AssemblerRegistrar extends EnumRegistrar
 {
 	/**
-	 * Stores the registry that the built-in assembler types are seeded into.
+	 * The enum whose cases seed the assembler registry.
+	 *
+	 * @var  class-string<AssemblerType>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public function __construct(
-		private readonly AssemblerRegistry $registry
-	) {}
+	protected const ENUM = AssemblerType::class;
 
 	/**
-	 * @inheritDoc
-	 *
-	 * Registers each `AssemblerType` case against its class name, skipping
-	 * any key that has already been registered (e.g. overridden by a third
-	 * party) so existing mappings are preserved.
-	 *
-	 * @throws ReflectionException
+	 * Type-hints the assembler registry so the container injects it, then
+	 * hands it to the base registrar.
 	 */
-	public function boot(): void
+	public function __construct(AssemblerRegistry $registry)
 	{
-		foreach (AssemblerType::cases() as $type) {
-			if (! $this->registry->isRegistered($type->value)) {
-				$this->registry->register($type->value, $type->className());
-			}
-		}
+		parent::__construct($registry);
 	}
 }

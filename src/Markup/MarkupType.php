@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Support\ClassEnum;
+
 /**
  * Canonical keys for the built-in markup formats. The backed string value is
  * the key used in the registry, and the case name maps to the concrete class
  * under the `Type` sub-namespace.
  */
-enum MarkupType: string
+enum MarkupType: string implements ClassEnum
 {
 	case Html           = 'html';
 	case Microdata      = 'microdata';

@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use X3P0\Breadcrumbs\Support\ClassEnum;
+
 /**
  * Canonical string keys for the built-in crumb types. Each case value is the
  * key used in the registry, and each case name matches a concrete class under
  * the `Type` sub-namespace (see `className()`), so the registrar can map every
  * case to its class automatically.
  */
-enum CrumbType: string
+enum CrumbType: string implements ClassEnum
 {
 	case Archive         = 'archive';
 	case Author          = 'author';

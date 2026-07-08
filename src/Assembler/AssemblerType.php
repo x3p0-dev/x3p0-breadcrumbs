@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use X3P0\Breadcrumbs\Support\ClassEnum;
+
 /**
  * Defines the canonical string keys for the plugin's built-in assemblers. The
  * registrar uses these cases to seed the registry, and the values are the keys
  * that callers pass to the factory and to `BreadcrumbsContext::assemble()`.
  */
-enum AssemblerType: string
+enum AssemblerType: string implements ClassEnum
 {
 	case Date            = 'date';
 	case Home            = 'home';

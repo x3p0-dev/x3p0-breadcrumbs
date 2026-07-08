@@ -13,33 +13,29 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
+use X3P0\Breadcrumbs\Support\EnumRegistrar;
 
 /**
  * Seeds the registry with the built-in markup types on boot, mapping each
  * `MarkupType` enum case to its concrete class. Pre-existing registrations for
  * a key are left untouched so third-party overrides win.
  */
-final class MarkupRegistrar implements Bootable
+final class MarkupRegistrar extends EnumRegistrar
 {
 	/**
-	 * Stores the registry the built-in types are seeded into.
+	 * The enum whose cases seed the markup registry.
+	 *
+	 * @var  class-string<MarkupType>
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public function __construct(
-		private readonly MarkupRegistry $registry
-	) {}
+	protected const ENUM = MarkupType::class;
 
 	/**
-	 * @inheritDoc
-	 * @throws ReflectionException
+	 * Type-hints the markup registry so the container injects it, then hands
+	 * it to the base registrar.
 	 */
-	public function boot(): void
+	public function __construct(MarkupRegistry $registry)
 	{
-		foreach (MarkupType::cases() as $type) {
-			if (! $this->registry->isRegistered($type->value)) {
-				$this->registry->register($type->value, $type->className());
-			}
-		}
+		parent::__construct($registry);
 	}
 }

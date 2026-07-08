@@ -27,7 +27,7 @@ final class QueryRegistry extends ClassRegistry
 	/**
 	 * @inheritDoc
 	 */
-	protected function type(): string
+	protected function contract(): string
 	{
 		return Query::class;
 	}

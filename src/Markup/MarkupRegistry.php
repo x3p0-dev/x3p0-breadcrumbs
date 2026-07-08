@@ -28,7 +28,7 @@ final class MarkupRegistry extends ClassRegistry
 	/**
 	 * @inheritDoc
 	 */
-	protected function type(): string
+	protected function contract(): string
 	{
 		return Markup::class;
 	}

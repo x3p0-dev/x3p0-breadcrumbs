@@ -22,15 +22,15 @@ use IteratorAggregate;
  * mappings that a factory later resolves against, and guards registration so
  * only subclasses of the registry's base type can be stored — guaranteeing every
  * stored value is instantiable as that type. Subclasses declare the base type by
- * returning it from `type()`. Registries are iterable (`key => class-string`) and
- * countable.
+ * returning it from `contract()`. Registries are iterable (`key => class-string`)
+ * and countable.
  *
  * @internal This is an internal implementation detail of the plugin, not part
  *           of its public API. Its signature may change or it may be removed at
  *           any time without notice; third-party code should not extend or
  *           type-hint against it directly.
  *
- * @template T of object
+ * @template   T of object
  * @implements IteratorAggregate<string, class-string<T>>
  */
 abstract class ClassRegistry implements IteratorAggregate, Countable
@@ -48,7 +48,7 @@ abstract class ClassRegistry implements IteratorAggregate, Countable
 	 *
 	 * @return class-string<T>
 	 */
-	abstract protected function type(): string;
+	abstract protected function contract(): string;
 
 	/**
 	 * Optionally seeds the registry with an initial `key => class` map.
@@ -70,10 +70,10 @@ abstract class ClassRegistry implements IteratorAggregate, Countable
 	 */
 	public function register(string $key, string $className): void
 	{
-		if (! is_subclass_of($className, $this->type())) {
+		if (! is_subclass_of($className, $this->contract())) {
 			throw InvalidTypeException::notSubclassOf(
 				esc_html($className),
-				esc_html($this->type())
+				esc_html($this->contract())
 			);
 		}
 

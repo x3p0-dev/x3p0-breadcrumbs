@@ -27,7 +27,7 @@ final class CrumbRegistry extends ClassRegistry
 	/**
 	 * @inheritDoc
 	 */
-	protected function type(): string
+	protected function contract(): string
 	{
 		return Crumb::class;
 	}

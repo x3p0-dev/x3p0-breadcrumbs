@@ -32,26 +32,25 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
 final class Breadcrumbs
 {
 	/**
-	 * Sets up the build with the dispatcher, the query resolver, the factories
-	 * used to create the pipeline participants, and the config that controls how
-	 * the trail is built.
+	 * Sets up the build with the dispatcher, the query resolver, and the
+	 * factories used to create the pipeline participants. The config that
+	 * controls how the trail is built is supplied per call to `generate()`.
 	 */
 	public function __construct(
-		private readonly Dispatcher        $events,
-		private readonly QueryResolver     $queryResolver,
-		private readonly QueryFactory      $queryFactory,
-		private readonly AssemblerFactory  $assemblerFactory,
-		private readonly CrumbFactory      $crumbFactory,
-		private readonly BreadcrumbsConfig $config
+		private readonly Dispatcher       $events,
+		private readonly QueryResolver    $queryResolver,
+		private readonly QueryFactory     $queryFactory,
+		private readonly AssemblerFactory $assemblerFactory,
+		private readonly CrumbFactory     $crumbFactory
 	) {}
 
 	/**
-	 * Builds and returns the crumb collection for the current request.
-	 * Creates the shared context, resolves the matching query type (which
-	 * third parties can override), runs that query to populate the trail, and
-	 * returns the result.
+	 * Builds and returns the crumb collection for the current request,
+	 * built according to the given config. Creates the shared context,
+	 * resolves the matching query type (which third parties can override),
+	 * runs that query to populate the trail, and returns the result.
 	 */
-	public function generate(): CrumbCollection
+	public function generate(BreadcrumbsConfig $config): CrumbCollection
 	{
 		// Create the shared context passed through the query, assembler,
 		// and crumb pipeline.
@@ -60,12 +59,12 @@ final class Breadcrumbs
 			queryFactory:     $this->queryFactory,
 			assemblerFactory: $this->assemblerFactory,
 			crumbFactory:     $this->crumbFactory,
-			config:           $this->config
+			config:           $config
 		);
 
-		// Resolve the query type for the request, then run it to build the
-		// trail. Resolution is overridable via the `QueryTypeResolving` event
-		// and the legacy filter.
+		// Resolve the query type for the request, then run it to build
+		// the trail. Resolution is overridable via the `QueryTypeResolving`
+		// event and the legacy filter.
 		if ($queryType = $this->queryResolver->resolve($context)) {
 			$context->query($queryType);
 		}

@@ -30,11 +30,11 @@ final class BreadcrumbsService extends BreadcrumbsRenderer
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsFactory $breadcrumbsFactory,
-		MarkupFactory      $markupFactory
+		Breadcrumbs   $breadcrumbs,
+		MarkupFactory $markupFactory
 	) {
 		_deprecated_class(self::class, '5.0.0', BreadcrumbsRenderer::class);
 
-		parent::__construct($breadcrumbsFactory, $markupFactory);
+		parent::__construct($breadcrumbs, $markupFactory);
 	}
 }

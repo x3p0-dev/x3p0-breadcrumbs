@@ -37,12 +37,12 @@ use X3P0\Breadcrumbs\Markup\MarkupType;
 class BreadcrumbsRenderer
 {
 	/**
-	 * Sets up the initial renderer state with the factories used to build and
-	 * render a breadcrumb trail.
+	 * Sets up the initial renderer state with the breadcrumbs builder and
+	 * the markup factory used to build and render a breadcrumb trail.
 	 */
 	public function __construct(
-		private readonly BreadcrumbsFactory $breadcrumbsFactory,
-		private readonly MarkupFactory      $markupFactory
+		private readonly Breadcrumbs   $breadcrumbs,
+		private readonly MarkupFactory $markupFactory
 	) {}
 
 	/**
@@ -70,10 +70,8 @@ class BreadcrumbsRenderer
 			$markupConfig = MarkupConfig::fromArray($markupConfig);
 		}
 
-		$breadcrumbs = $this->breadcrumbsFactory->make($breadcrumbsConfig);
-
 		$markup = $this->markupFactory->make($markupType, [
-			'crumbs' => $breadcrumbs->generate(),
+			'crumbs' => $this->breadcrumbs->generate($breadcrumbsConfig),
 			'config' => $markupConfig
 		]);
 

@@ -52,23 +52,19 @@ class BreadcrumbsRenderer
 	 * built from: the configs may be passed as arrays (coerced via their
 	 * `fromArray()` factories), and the markup type may be passed as a string
 	 * key. Returns an empty string if the markup type is not registered.
-	 *
-	 * @param BreadcrumbsConfig|array $breadcrumbsConfig Config controlling how the trail is built.
-	 * @param MarkupConfig|array      $markupConfig      Config controlling how the trail is rendered.
-	 * @param MarkupType|string       $markupType        The markup format to render, e.g. HTML or RDFa.
 	 */
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
 		MarkupConfig|array      $markupConfig      = new MarkupConfig(),
 		MarkupType|string       $markupType        = MarkupType::Html
 	): string {
-		if (is_array($breadcrumbsConfig)) {
-			$breadcrumbsConfig = BreadcrumbsConfig::fromArray($breadcrumbsConfig);
-		}
+		$breadcrumbsConfig = is_array($breadcrumbsConfig)
+			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)
+			: $breadcrumbsConfig;
 
-		if (is_array($markupConfig)) {
-			$markupConfig = MarkupConfig::fromArray($markupConfig);
-		}
+		$markupConfig = is_array($markupConfig)
+			? MarkupConfig::fromArray($markupConfig)
+			: $markupConfig;
 
 		$markup = $this->markupFactory->make($markupType, [
 			'crumbs' => $this->breadcrumbs->generate($breadcrumbsConfig),

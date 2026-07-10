@@ -24,13 +24,14 @@ There is no test suite.
 
 The plugin bootstraps via a central `Plugin` class that registers service providers. Each subsystem has its own service provider responsible for wiring up its dependencies into the container. Nothing is instantiated until it is needed.
 
-### Registry + Factory + Registrar
+### Type Enum + Registry + Factory + Registrar
 
-Extensible subsystems follow this three-part pattern:
+Extensible subsystems follow this pattern:
 
-- **Registry** — stores `string key → class name` mappings.
-- **Factory** — resolves a key from the registry and instantiates the class via the DI container.
-- **Registrar** — a static class whose constants are the canonical string keys and whose `register()` method seeds the registry with the built-in types.
+- **Type enum** — a backed `enum` (implementing `Support\ClassEnum`) whose cases are the canonical string keys. Its `className()` maps each case to its concrete class under `Type\`; the case name matches the class name.
+- **Registry** — stores `string key → class name` mappings. Extends the `x3p0-class-registry` package base and sets a `CONTRACT` constant naming the abstract type that entries must extend.
+- **Factory** — resolves a key (the enum case or its raw string) from the registry and instantiates the class via the DI container.
+- **Registrar** — a `final` class extending `Support\EnumRegistrar`. It declares the `ENUM` constant; the inherited `boot()` seeds the registry from the enum's cases, skipping any key already registered so extensions can override the built-ins.
 
 New types are added by registering a class name against a key; the factory handles instantiation. This makes every subsystem open for extension without modifying core files.
 
@@ -44,17 +45,17 @@ Configuration is passed around as typed objects, not associative arrays. Config 
 
 ### Context Object as Internal API
 
-When a pipeline of collaborating objects (e.g., Query → Assembler → Item) needs shared access to factories, the collection being built, and config, a single **context object** is created at the start and passed through the pipeline. This avoids threading many individual dependencies through every class.
+When a pipeline of collaborating objects (e.g., Query → Assembler → Crumb) needs shared access to factories, the collection being built, and config, a single **context object** is created at the start and passed through the pipeline. This avoids threading many individual dependencies through every class.
 
 ## Coding Conventions
 
 ### PHP
 
 - `declare(strict_types=1);` at the top of every file.
-- `defined('ABSPATH') || exit;` to block direct access.
+- `defined('ABSPATH') || exit;` on directly-loaded files (the `plugin.php` bootstrap and block `render.php` templates) to block direct access; autoloaded class files under `src/` omit it.
 - Namespaces follow `Vendor\Plugin\{Subsystem}\{ClassName}`; concrete types are nested under `Type\`.
 - Concrete classes are `final`. Abstract classes define the subsystem contract and are the typehint used everywhere.
-- Constructor parameters are assigned to `protected readonly` properties — no setters.
+- Constructor parameters are assigned to `readonly` properties — `protected` on abstract bases, `private` on `final` classes — no setters.
 - Tabs for indentation (not spaces), per `.phpcs.xml`.
 - File-level docblocks include `@author`, `@copyright`, `@license`, `@link`. Method overrides use `@inheritDoc`.
 

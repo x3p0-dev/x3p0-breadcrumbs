@@ -81,7 +81,7 @@
 
 	// Text-based icon.
 	&[class*=has-home-text-] &__crumb--home &__crumb-content::before {
-		content: var(--breadcrumbs-home, '');
+		content: var(--breadcrumbs-home, '') / "";
 	}
 
 	&.has-home-text-🏠 { --breadcrumbs-home: "\1f3e0"; }
@@ -139,7 +139,7 @@
 
 	// Text-based icon.
 	&[class*=has-sep-text-] &__crumb::after {
-		content: var(--breadcrumbs-sep, '');
+		content: var(--breadcrumbs-sep, '') / "";
 	}
 
 	&.has-sep-text-slash        { --breadcrumbs-sep: "\002F"; }

@@ -95,6 +95,10 @@ final class Breadcrumbs implements BlockRenderer
 			);
 		}
 
+		if ($attributes['showTrailingSeparator']) {
+			$classes[] = 'show-trailing-separator';
+		}
+
 		// If there's a selected content justification, add a class.
 		if (! empty($attributes['justifyContent'])) {
 			$classes[] = sprintf(

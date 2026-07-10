@@ -36,7 +36,8 @@ const SettingsPanel = ({
 		markup,
 		showOnHomepage,
 		showTrailStart,
-		showTrailEnd
+		showTrailEnd,
+		showTrailingSeparator
 	},
 	setAttributes
 }) => {
@@ -50,7 +51,8 @@ const SettingsPanel = ({
 				showOnHomepage: false,
 				showTrailStart: false,
 				showTrailEnd: false,
-				linkTrailEnd: false
+				linkTrailEnd: false,
+				showTrailingSeparator: false
 			})}
 			panelId={panelId}
 		>
@@ -140,6 +142,23 @@ const SettingsPanel = ({
 					/>
 				</ToolsPanelItem>
 			)}
+			<ToolsPanelItem
+				label={__('Show trailing separator', 'x3p0-breadcrumbs')}
+				hasValue={() => !! showTrailingSeparator}
+				onDeselect={() => setAttributes({
+					showTrailingSeparator: false
+				})}
+				panelId={panelId}
+			>
+				<ToggleControl
+					label={__('Show trailing separator', 'x3p0-breadcrumbs')}
+					checked={showTrailingSeparator}
+					onChange={() => setAttributes({
+						showTrailingSeparator: ! showTrailingSeparator
+					})}
+					__nextHasNoMarginBottom={true}
+				/>
+			</ToolsPanelItem>
 		</ToolsPanel>
 	);
 };

@@ -49,6 +49,7 @@ const BlockContent = ({
 		showHomeLabel,
 		showTrailEnd,
 		showTrailStart,
+		showTrailingSeparator,
 		separatorIcon
 	},
 	separatorColor,
@@ -60,8 +61,9 @@ const BlockContent = ({
 	const blockProps = useBlockProps({
 		className: clsx({
 			[`has-home-${homeIcon}`] : showTrailStart && homeIcon,
-			['hide-home-label'] : showTrailStart && ! showHomeLabel,
+			'hide-home-label' : showTrailStart && ! showHomeLabel,
 			[`has-sep-${separatorIcon}`] : separatorIcon,
+			'show-trailing-separator' : showTrailingSeparator,
 			[`is-content-justification-${justifyContent}`] : justifyContent
 		}),
 		style: {

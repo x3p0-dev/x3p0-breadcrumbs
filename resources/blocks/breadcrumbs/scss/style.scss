@@ -70,7 +70,7 @@
 
 	// Defaults for both SVG and text icons.
 	&[class*=has-home-] &__crumb--home &__crumb-content::before,
-	&[class*=has-sep-] &__crumb:where(:not(:first-child))::before {
+	&[class*=has-sep-] &__crumb::after {
 		content: '';
 		display: inline-block;
 	}
@@ -117,7 +117,7 @@
 	// ---------------------------------------------------------------------
 
 	// Handles the separator element.
-	&__crumb:where(:not(:first-child))::before {
+	&__crumb::after {
 		width: 1em;
 		text-align: center;
 
@@ -129,8 +129,16 @@
 		));
 	}
 
+	// The trailing separator (after the last crumb) is opt-in. By default it
+	// is suppressed; the `show-trailing-separator` toggle re-enables it. Using
+	// `content: none` prevents the pseudo-element from generating at all, and
+	// the `:not()` gives this rule enough specificity to win outright.
+	&:not(.show-trailing-separator) &__crumb:last-child::after {
+		content: none;
+	}
+
 	// Text-based icon.
-	&[class*=has-sep-text-] &__crumb:where(:not(:first-child))::before {
+	&[class*=has-sep-text-] &__crumb::after {
 		content: var(--breadcrumbs-sep, '');
 	}
 
@@ -141,7 +149,7 @@
 	&.has-sep-text-white-circle { --breadcrumbs-sep: "\25cb"; }
 
 	// SVG-based icon.
-	&[class*=has-sep-svg-] &__crumb:where(:not(:first-child))::before {
+	&[class*=has-sep-svg-] &__crumb::after {
 		mask: no-repeat 50% 50% / cover var(--breadcrumbs-sep);
 		height: 1em;
 		background: currentColor;
@@ -169,6 +177,6 @@
 }
 
 // Flip icons for RTL.
-:where([dir=rtl], .rtl) .wp-block-x3p0-breadcrumbs__crumb:where(:not(:first-child))::before {
+:where([dir=rtl], .rtl) .wp-block-x3p0-breadcrumbs__crumb::after {
 	transform: scaleX(-1);
 }

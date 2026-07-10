@@ -40,6 +40,7 @@ final class BlockServiceProvider extends ServiceProvider
 	 */
 	protected const BOOTABLE = [
 		BlockRegistrar::class,
-		BlockAssets::class
+		BlockAssets::class,
+		BlockInserterFilter::class
 	];
 }

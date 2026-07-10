@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Markup\Markup;
  * `<script>` tag rather than visible HTML, intended for the document head so
  * search engines can read the structured data.
  */
-class JsonLinkedData extends Markup
+final class JsonLinkedData extends Markup
 {
 	/**
 	 * @inheritDoc

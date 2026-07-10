@@ -18,31 +18,30 @@ X3P0: Breadcrumbs is the most robust breadcrumb navigation system for WordPress.
 
 Perfect for improving site navigation and SEO, this breadcrumbs plugin works seamlessly with both block themes and classic themes. Simply insert the Breadcrumbs block via the WordPress Site Editor or add it to your theme templates.
 
-= Key Features =
+= Why Choose X3P0 Over the Built-in Breadcrumbs Block? =
 
-**Automatic Site Structure Detection**
+WordPress ships with its own Breadcrumbs block, and it's a perfectly good choice for a simple, plain-text trail. But it was built to cover the basics: a text separator, a few visibility toggles, and no structured data. The moment breadcrumbs become part of your SEO strategy—or your site relies on custom post types, custom taxonomies, or date-based archives—you run into its limits.
 
-The plugin automatically detects your permalink setup and builds breadcrumbs based on your site's hierarchy. No configuration needed–it just works out of the box. But you can also customize if you need to change it.
+X3P0: Breadcrumbs was built for exactly those sites. Here's what you get that the built-in block doesn't offer.
 
-**Custom Post Type Support**
+**Benefits for site owners and editors:**
 
-Automatically recognizes custom post types and custom taxonomies created by other plugins or your theme. Whether you're running an ecommerce solution, a portfolio site, or any custom setup, breadcrumbs will display correctly.
+- **Rich results for SEO** – Outputs Schema.org structured data as microdata, RDFa, or JSON-LD, so search engines can display rich breadcrumb snippets. The built-in block outputs no structured data at all.
+- **Icon separators** – Choose an SVG icon (slash, arrow, chevron, bullet, and more), plus an optional home icon, instead of a plain text character.
+- **Editable labels, no code** – Change the Home, Search, 404, and other labels right in the block settings, and edit the Home label directly on the canvas.
+- **Complete date and time archives** – Adds hour, minute, second, and week trails on top of the usual year, month, and day.
+- **Smarter post relationships** – Pick exactly which taxonomy appears in the trail for each post type, and map your permalink rewrite tags (`%category%`, `%author%`, date tags, and more) automatically.
+- **Multisite network crumb** – Optionally link back to the network home on multisite installs.
+- **Full control of the current page** – Show it, hide it, or link it.
 
-**Block Theme and Classic Theme Compatible**
+**Benefits for developers:**
 
-Insert breadcrumbs using the WordPress block editor in any template, template part, or pattern. For classic themes, easily add breadcrumbs using a simple PHP function call.
+- **A true extension platform** – A dependency-injection container, typed events, and registries let you plug in custom query, assembler, crumb, and markup classes—far beyond the built-in block's single filter.
+- **Multiple output formats from one call** – Render breadcrumbs as HTML, microdata, RDFa, or JSON-LD through the `breadcrumbs()` helper function.
+- **Classic theme and page builder friendly** – Output breadcrumbs anywhere with a one-line `do_blocks()` call.
+- **17+ years of refinement** – Mature and battle-tested, continuously developed since 2009.
 
-**Developer Customization**
-
-Built on a robust object-oriented PHP foundation with extensive hooks and filters. Developers can customize every aspect of breadcrumb generation and display.
-
-**Schema.org Structured Data Support**
-
-Choose from plain HTML, Schema.org microdata, or RDFa formats for optimal SEO and search engine visibility.
-
-**Flexible Display Options**
-
-Control which breadcrumb items display, customize separators, hide breadcrumbs on specific pages, and style breadcrumbs to match your theme.
+Both handle the everyday cases—page hierarchies, category trails, author and search pages, 404s, and custom post type archives—so if that's all you need, the built-in block is a fine option. X3P0 is for when you need to go further.
 
 = How to Add Breadcrumbs to Your Site =
 
@@ -122,117 +121,47 @@ The plugin automatically detects these settings and builds the most accurate bre
 
 For developers who want to customize breadcrumbs programmatically, the plugin provides extensive PHP classes and hooks. See the [GitHub repository](https://github.com/x3p0-dev/x3p0-breadcrumbs) for full developer documentation.
 
-= Why Choose X3P0: Breadcrumbs? =
-
-Unlike simpler breadcrumb plugins, X3P0: Breadcrumbs handles complex site structures automatically:
-
-- **Hierarchical pages** – Automatically shows parent → child relationships
-- **Category-based permalinks** – Shows category structure in URLs
-- **Date-based archives** – Displays year/month/day breadcrumb trails
-- **Custom post type archives** – Links back to custom post type archive pages
-- **Taxonomy hierarchies** – Displays parent/child category relationships
-- **Multisite networks** – Can include network home in breadcrumb trail
-
-The plugin has been refined since 2009, making it one of the most mature and reliable breadcrumb solutions for WordPress.
-
 == Frequently Asked Questions ==
 
-= How do I add breadcrumbs to my WordPress site? =
+= How do I add breadcrumbs to my site? =
 
-For block themes, open the Site Editor (**Appearance → Editor**), edit your Header template part, and insert the Breadcrumbs block.
+For block themes, open the Site Editor (**Appearance → Editor**), edit your Header template part (or any template), and insert the Breadcrumbs block. For classic themes, add `<?= do_blocks('<!-- wp:x3p0/breadcrumbs /-->') ?>` to a template file such as `header.php`. The block also works in any page builder that supports WordPress blocks, and you can place it in specific templates to control exactly where breadcrumbs appear.
 
-For classic themes, add `<?= do_blocks('<!-- wp:x3p0/breadcrumbs /-->') ?>` to your template files.
+= Does the plugin help with SEO? =
 
-= Do breadcrumbs help with SEO? =
+Yes. Breadcrumbs give search engines clear site-structure signals and add internal links, and they can appear in Google's search results for better click-through rates. The plugin can also output Schema.org structured data in microdata, RDFa, or JSON-LD format, which is what search engines read to display rich breadcrumb snippets.
 
-Yes. Breadcrumbs improve SEO by providing clear site structure to search engines, reducing bounce rates, and creating internal links. They also appear in Google search results when properly formatted, improving click-through rates.
+= Does it work with custom post types and date-based permalinks? =
 
-= Does this work with custom post types? =
+Yes. The plugin automatically detects your custom post types, taxonomies, and permalink structure—no configuration required. Date-based permalinks (e.g., `/2025/10/post-name/`) produce a Home → Year → Month → Day → Post trail, and custom post type archives are linked automatically.
 
-Yes. The plugin automatically detects all custom post types and taxonomies on your site and generates appropriate breadcrumbs for them without any configuration.
+= How do I show category (or other taxonomy) breadcrumbs for posts? =
 
-= Can I customize the breadcrumb separator? =
+In the block settings, open the **Post Taxonomies** panel and choose a taxonomy for the post type you want. This works for the built-in Post type and for any custom post type and taxonomy registered on your site.
 
-Yes. In the block settings panel, you can choose from several separator styles, including slash (/), arrow (→), bullet (•), chevron (›), and more.
+= How do I customize the separator, labels, and icons? =
 
-= How do I hide breadcrumbs on the homepage? =
+In the block settings, choose a separator or home icon (slash, arrow, chevron, bullet, and more), and open the **Labels** panel to change common labels such as Home, Search, and 404. The Home label can also be edited directly on the canvas.
 
-In the block settings panel, toggle off **Show on homepage**.
+= How do I control which breadcrumbs are shown? =
 
-= Can I show category breadcrumbs for blog posts? =
-
-Yes. In the block settings panel, select a taxonomy under the **Post Taxonomies** panel. You can choose the taxonomy for any post types registered on your site.
-
-= How do I add breadcrumbs to specific pages only? =
-
-Insert the Breadcrumbs block directly into individual page templates or use conditional logic in your theme templates to control where breadcrumbs appear.
-
-= Does the plugin support Schema.org markup? =
-
-Yes. The plugin includes three markup options: plain HTML, Schema.org microdata, and RDFa format. Developers can specify which format to use when implementing breadcrumbs via PHP.
-
-= How do I customize breadcrumb labels? =
-
-In the block settings panel, select the label you want to customize under the **Labels** panel. This provides a subset of common labels that you may want to modify.
-
-= Why don't my breadcrumbs show parent pages? =
-
-Make sure your pages are actually set as parent/child in the page editor. The plugin reads the page hierarchy from WordPress and displays it automatically.
-
-= Does this work with page builders? =
-
-Yes. You can insert the Breadcrumbs block into any page builder that supports WordPress blocks, including patterns and reusable blocks.
-
-= How do I add custom breadcrumbs for specific pages? =
-
-Developers can use the `x3p0/breadcrumbs/resolve/query-type` filter hook to implement custom breadcrumb logic for specific conditions.
-
-= Can I hide the current page from breadcrumbs? =
-
-Yes. In the block settings, toggle off **Show last breadcrumb**.
-
-= Is the plugin translation-ready? =
-
-Yes. The plugin is fully internationalized and has been translated into multiple languages. All labels and text can be translated using standard WordPress translation tools.
+The block settings let you show or hide breadcrumbs on the homepage, show or hide the first (home) crumb, show or hide the last (current page) crumb, and optionally turn the current page into a link.
 
 = Can I style the breadcrumbs with CSS? =
 
-Yes. The breadcrumbs output standard HTML with CSS classes you can target. You can customize it with the common design tools available in the Site Editor or manually via `theme.json`.
+Yes. The breadcrumbs output standard HTML with CSS classes you can target. You can also style them with the design tools in the Site Editor or manually via `theme.json`.
 
-= Does it work with date-based permalink structures? =
+= Is the plugin translation-ready? =
 
-Yes. If your site uses date-based permalinks (e.g., `/2025/10/post-name/`), the plugin automatically generates breadcrumbs showing Home → Year → Month → Day → Post.
+Yes. The plugin is fully internationalized and translated into multiple languages. All labels and text can be translated with standard WordPress translation tools.
 
-= How do I display taxonomy breadcrumbs for custom post types? =
+= My breadcrumbs aren't showing correctly. How do I fix it? =
 
-In the block settings panel, select a taxonomy under the **Post Taxonomies** panel. Choose your custom post type and its associated taxonomy.
+Check that the block is inserted in your template, that **Show on homepage** is enabled if you're testing on the homepage, and that your theme's CSS isn't hiding them. If parent pages are missing, confirm the pages are set as parent/child in the page editor—the plugin reads the hierarchy from WordPress. Finally, check your error log for PHP errors.
 
-= How do I troubleshoot breadcrumbs not appearing? =
+= Can developers customize breadcrumb output? =
 
-Check that:
-
-1. The block is inserted in your template
-2. **Show on homepage** is enabled if testing on homepage
-3. Your theme doesn't have CSS hiding breadcrumbs
-4. There are no PHP errors in your error log
-
-= How to use breadcrumbs  for better navigation? =
-
-**Step 1: Choose Your Template**
-
-Decide where breadcrumbs should appear. Most sites display them in the header, just below the site title and navigation menu, or at the top of the content area.
-
-**Step 2: Insert the Block**
-
-Navigate to **Appearance → Editor**, open your chosen template part, and insert the Breadcrumbs block using the block inserter.
-
-**Step 3: Configure Settings**
-
-Customize the block appearance using the settings panel. Choose your separator style, decide whether to show breadcrumbs on the homepage, and adjust visibility of the first and last items.
-
-**Step 4: Test Different Pages**
-
-Visit different page types (single posts, category archives, pages, search results) to see how breadcrumbs adapt to each context.
+Yes. The plugin is built on an object-oriented PHP foundation with a public API, hooks, and registries for custom query, assembler, crumb, and markup classes. See the [GitHub repository](https://github.com/x3p0-dev/x3p0-breadcrumbs) for full developer documentation.
 
 == Screenshots ==
 
@@ -241,6 +170,26 @@ Visit different page types (single posts, category archives, pages, search resul
 3. Separator icon picker.
 
 == Changelog ==
+
+= 4.1.0 =
+
+**Added**
+
+- New `CrumbCollection::hasWhere()` method, plus per-type "crumb exists" checks (`Post::postCrumbExists()`, `PostType::postTypeCrumbExists()`, and `Term::termCrumbExists()`) for developers extending the plugin.
+- More robust `Path` assembler that checks the path a segment at a time, which is more accurate when given a full path.
+
+**Changed**
+
+- Framework code moved to a separately-developed `packages` folder, bundled during development via a new `Prelude` class.
+- The block's `render()` method now uses a standardized way of passing parameters, so a single instance can be reused for multiple renders.
+- Hook callbacks are now private class methods using PHP's first-class callable syntax.
+- Now uses the default `blocks-manifest.json`.
+- `Crumb` class properties are now public so a collection can be checked for a particular crumb.
+- General code cleanup and improved type hinting.
+
+**Fixed**
+
+- Cleaner handling of the default `mapRewriteTags` attribute, now merging with the `block.json` value instead of overwriting it.
 
 = 4.0.0 =
 

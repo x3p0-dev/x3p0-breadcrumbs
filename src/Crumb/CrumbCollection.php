@@ -159,6 +159,23 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
+	 * Removes every crumb that satisfies the callback, then re-indexes. The
+	 * predicate counterpart to `remove()`, which matches by type key instead.
+	 *
+	 * @param callable(Crumb): bool $callback
+	 */
+	public function removeWhere(callable $callback): void
+	{
+		foreach ($this->crumbs as $index => $crumb) {
+			if ($callback($crumb)) {
+				unset($this->crumbs[$index], $this->types[$index]);
+			}
+		}
+
+		$this->reindex();
+	}
+
+	/**
 	 * Replaces a crumb in place with another, keeping its position and type
 	 * key. Does nothing when the crumb is not in the collection. Useful for
 	 * relabeling a crumb after the trail is built without disturbing order.
@@ -169,6 +186,22 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 
 		if (false !== $index) {
 			$this->crumbs[$index] = $replacement;
+		}
+	}
+
+	/**
+	 * Replaces every crumb that satisfies the callback with the crumb the
+	 * replacement callback returns for it, keeping each one's position and
+	 * type key. The replacement receives the matched crumb. Useful for
+	 * relabeling crumbs on the `CrumbsBuilt` event.
+	 *
+	 * @param callable(Crumb): bool  $callback
+	 * @param callable(Crumb): Crumb $replacement
+	 */
+	public function replaceWhere(callable $callback, callable $replacement): void
+	{
+		foreach ($this->filter($callback) as $crumb) {
+			$this->replace($crumb, $replacement($crumb));
 		}
 	}
 
@@ -215,6 +248,38 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns every crumb that satisfies the callback, in order. Complements
+	 * `hasWhere()` when the matching crumbs themselves are needed rather than
+	 * a boolean, and matches on the crumb itself so a check may use `instanceof`
+	 * or any property.
+	 *
+	 * @param  callable(Crumb): bool $callback
+	 * @return Crumb[]
+	 */
+	public function filter(callable $callback): array
+	{
+		return array_values(array_filter($this->crumbs, $callback));
+	}
+
+	/**
+	 * Returns the first crumb that satisfies the callback, or null when
+	 * none match. The predicate counterpart to `get()`, which matches by
+	 * type key.
+	 *
+	 * @param callable(Crumb): bool $callback
+	 */
+	public function firstWhere(callable $callback): ?Crumb
+	{
+		foreach ($this->crumbs as $crumb) {
+			if ($callback($crumb)) {
+				return $crumb;
+			}
+		}
+
+		return null;
 	}
 
 	/**

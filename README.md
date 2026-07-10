@@ -6,6 +6,27 @@ The X3P0: Breadcrumbs plugin is a breadcrumbs plugin reimagined for a modern, bl
 
 In 2009, I [launched the first version of this script](https://justintadlock.com/archives/2009/04/05/breadcrumb-trail-wordpress-plugin) as a WordPress plugin. And I've continually refined it ever since. Today, this plugin exists as a WordPress block, all built upon a solid OOP foundation that's more powerful than ever. The block is the easy-to-use version that regular, everyday WordPress users can simply plug into their site and go about their business. But the stuff under the hood gives developers an insane amount of control to customize breadcrumbs to suit their needs.
 
+## Table of Contents
+
+- [Usage](#usage)
+	- [From the Editor](#from-the-editor)
+	- [Block Themes](#block-themes)
+	- [Classic Themes](#classic-themes)
+- [Developers](#developers)
+	- [Outputting Breadcrumbs with PHP](#outputting-breadcrumbs-with-php)
+		- [Basic Breadcrumbs Implementation](#basic-breadcrumbs-implementation)
+		- [Defining Breadcrumbs Parameters](#defining-breadcrumbs-parameters)
+		- [Breadcrumbs Configuration](#breadcrumbs-configuration)
+		- [Markup Configuration](#markup-configuration)
+		- [Markup Types](#markup-types)
+		- [Putting It All Together](#putting-it-all-together)
+	- [Advanced Use Cases](#advanced-use-cases)
+		- [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld)
+		- [Modifying the Breadcrumb Trail with Events](#modifying-the-breadcrumb-trail-with-events)
+		- [Available Hooks](#available-hooks)
+		- [Registering Custom Queries, Assemblers, Crumbs, and Markup](#registering-custom-queries-assemblers-crumbs-and-markup)
+- [License](#license)
+
 ## Usage
 
 ### From the Editor
@@ -44,7 +65,7 @@ The plugin isn't just a simple block. Its foundation is actually a robust, objec
 
 #### Basic Breadcrumbs Implementation
 
-The most straightforward way of displaying breadcrumbs is via the `breadcrumbs()` helper function, which is a wrapper around the `BreadcrumbsService` class, and calling its `render()` method:
+The most straightforward way of displaying breadcrumbs is via the `breadcrumbs()` helper function, which returns the shared `BreadcrumbsRenderer` instance, and calling its `render()` method:
 
 ```php
 use function X3P0\Breadcrumbs\breadcrumbs;
@@ -98,16 +119,16 @@ The `BreadcrumbsConfig` class accepts multiple parameters:
 
 - **`labels`:** An array of internationalized crumb labels that can be customized:
 	- **`home`:** `Home`
-	- **`error_404`:** `404 Not Found`
+	- **`untitled`:** `Untitled`
+	- **`error_404`:** `Page not found`
 	- **`archives`:** `Archives`
 	- **`search`:** `Search results for: %s`
-	- **`untitled`:** `Untitled`
 	- **`paged`:** `Page %s`
 	- **`paged_comments`:** `Comment Page %s`
+	- **`archive_hour`:** `Hour %s`
 	- **`archive_minute`:** `Minute %s`
+	- **`archive_second`:** `Second %s`
 	- **`archive_week`:** `Week %s`
-	- **`archive_minute_hour`:** `%s`
-	- **`archive_hour`:** `%s`
 	- **`archive_day`:** `%s`
 	- **`archive_month`:** `%s`
 	- **`archive_year`:** `%s`
@@ -154,7 +175,7 @@ echo breadcrumbs()->render(
 
 The `MarkupConfig` class accepts several parameters:
 
-- **`namespace`:** Used as a prefix for classes in a BEM-style structure (e.g., `{namespace}__{element}--{modifier}`). Defaults to `breadcrumbs` (note: the Breadcrumbs block uses `wp-x3p0-block-breadcrumbs`).
+- **`namespace`:** Used as a prefix for classes in a BEM-style structure (e.g., `{namespace}__{element}--{modifier}`). Defaults to `breadcrumbs` (note: the Breadcrumbs block uses `wp-block-x3p0-breadcrumbs`).
 - **`containerAttr`:** An array of HTML attributes and values to apply to the container:
 	- **`class`:** `{namespace}`
 	- **`role`:** `navigation`
@@ -203,7 +224,7 @@ echo breadcrumbs()->render(
 
 #### Markup Types
 
-The plugin comes with three classes for rending the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
+The plugin comes with three classes for rendering the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
 
 The `markupType` parameter of `breadcrumbs()->render()` can be one of three values:
 
@@ -281,52 +302,82 @@ add_action('wp_head', function() {
 });
 ```
 
+#### Modifying the Breadcrumb Trail with Events
+
+The plugin dispatches typed events at the key moments while a trail is built. Listening to these events is the recommended way to change which breadcrumbs are shown or to adjust the finished trail. Each event is also bridged to a matching WordPress action, so you can use a plain `add_action()` callback.
+
+There are two events:
+
+- **`Query\Event\QueryTypeResolving`:** Dispatched while resolving which query type matches the current request, _before_ the query runs. This is what you hook into to change which breadcrumbs are shown for a given page.
+- **`Crumb\Event\CrumbsBuilt`:** Dispatched _after_ the trail has been built, before it is returned. This is what you hook into to append, remove, or relabel crumbs.
+
+##### Changing the Query Type
+
+The `QueryTypeResolving` event carries the type detected from the current request — a `QueryType` case for a built-in type, a string key for a custom one, or `null` when nothing matched. Call `setQueryType()` to override it, passing a `QueryType` case, a custom string key, or `null` to build no breadcrumbs.
+
+The simplest way to hook in is the bridged action, which passes the event object:
+
+```php
+use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
+
+add_action('x3p0/breadcrumbs/query-type-resolving', function (QueryTypeResolving $event) {
+	if ($yourCondition) {
+		$event->setQueryType('your-query');
+	}
+});
+```
+
+Alternatively, register a typed listener directly on the dispatcher. Do this on the `x3p0/breadcrumbs/register` action (documented below), where the plugin — and therefore the container — is available.
+
+##### Adjusting the Finished Crumbs
+
+The `CrumbsBuilt` event carries the finished `CrumbCollection` (the same mutable instance the caller receives) along with the build context. Modify `$event->crumbs` directly to remove or relabel crumbs, or call `$event->context->addCrumb()` to append a crumb built through the plugin's factory:
+
+```php
+use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+
+add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
+	// Remove a crumb by its key.
+	$event->crumbs->remove('home');
+
+	// Or append a custom crumb via the context's factory.
+	$event->context->addCrumb('your-crumb');
+});
+```
+
+As with the query event, you may register a typed listener for `CrumbsBuilt::class` on the dispatcher instead of using the action bridge.
+
 #### Available Hooks
 
-The plugin comes with a couple of hooks that you might find useful for advanced use cases.
+Beyond the event bridges above, the plugin fires one lifecycle action.
 
 ##### `x3p0/breadcrumbs/register`
 
-Fires immediately after the `X3P0\Breadcrumbs\Plugin` class registers its default bindings with the container and registers service providers. The plugin object is passed to actions attached to the hook.
+Fires immediately after the `X3P0\Breadcrumbs\Plugin` class registers its default bindings and service providers, but before they boot. The plugin object is passed to attached callbacks, giving you access to the container to register your own services, listeners, or custom types. This is the correct hook for any of the registration examples in this section.
 
 ```php
 do_action('x3p0/breadcrumbs/register', $plugin);
 ```
 
-##### `x3p0/breadcrumbs/resolve/query-type`
+#### Registering Custom Queries, Assemblers, Crumbs, and Markup
 
-This fires just after the resolution of the `Query` class to call when the breadcrumbs are just being collected. These are mapped to WordPress conditional tags to determine which page to show. Generally speaking, if you want to change which breadcrumbs are shown for a particular page, this is what you hook into and change the query type.
-
-```php
-apply_filters('x3p0/breadcrumbs/resolve/query-type', $queryType);
-```
-
-For example, if you've registered a custom `Query` class (see below), you might want it to execute when your particular plugin's page(s) are active:
-
-```php
-add_filter(
-	'x3p0/breadcrumbs/resolve/query-type',
-	fn($queryType) => $yourCondition ? 'custom-query' : $queryType
-);
-```
-
-#### Registering Custom Queries, Assemblers, and Crumbs
-
-There may be times when you need to register custom `Query`, `Assembler`, and `Crumb` classes for custom use cases. The following is a quick example of how to register these:
+There may be times when you need to register custom `Query`, `Assembler`, `Crumb`, or `Markup` classes for custom use cases. Each subsystem has its own registry, and registering a class is the same in every case: map a string key to a class name. The following is a quick example of registering one of each:
 
 ```php
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
+use X3P0\Breadcrumbs\Markup\MarkupRegistry;
 use X3P0\Breadcrumbs\Query\QueryRegistry;
 
-add_action('x3p0/breadcrumbs/boot', function($plugin) {
-	$plugin->container()->get(QueryRegistry::class)->register('your-query',YourQuery::class);
-	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler',YourAssembler::class);
-	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb',YourCrumb::class);
+add_action('x3p0/breadcrumbs/register', function ($plugin) {
+	$plugin->container()->get(QueryRegistry::class)->register('your-query', YourQuery::class);
+	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler', YourAssembler::class);
+	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb', YourCrumb::class);
+	$plugin->container()->get(MarkupRegistry::class)->register('your-markup', YourMarkup::class);
 });
 ```
 
-Please study the plugin's existing query, assembler, and crumb classes if you need to understand the conventions and, more precisely, the interfaces to use.
+Each registered class must extend its subsystem's abstract base — `Query`, `Assembler`, `Crumb`, or `Markup` respectively. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
 
 ## License
 

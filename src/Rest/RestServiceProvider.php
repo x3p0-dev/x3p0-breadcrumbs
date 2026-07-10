@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Rest;
 
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires up the REST subsystem by booting the registrar that adds the
  * plugin's custom REST fields for use in the block editor.
  */
-final class RestServiceProvider extends ServiceProvider implements Bootable
+final class RestServiceProvider extends ServiceProvider
 {
 	/**
 	 * The registrar booted on startup to add the plugin's custom REST fields.

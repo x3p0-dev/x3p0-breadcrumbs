@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires up the Block subsystem: binds the Breadcrumbs block type as a
  * singleton and boots the registrar that registers the block with WordPress.
  */
-final class BlockServiceProvider extends ServiceProvider implements Bootable
+final class BlockServiceProvider extends ServiceProvider
 {
 	/**
 	 * The Breadcrumbs block renderer, bound as a shared singleton.

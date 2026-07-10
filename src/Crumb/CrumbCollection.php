@@ -159,6 +159,20 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
+	 * Replaces a crumb in place with another, keeping its position and type
+	 * key. Does nothing when the crumb is not in the collection. Useful for
+	 * relabeling a crumb after the trail is built without disturbing order.
+	 */
+	public function replace(Crumb $existing, Crumb $replacement): void
+	{
+		$index = array_search($existing, $this->crumbs, true);
+
+		if (false !== $index) {
+			$this->crumbs[$index] = $replacement;
+		}
+	}
+
+	/**
 	 * Determines if a crumb type exists in the collection.
 	 */
 	public function has(string $key): bool

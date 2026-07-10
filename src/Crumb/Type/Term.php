@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing a single taxonomy term (category, tag, or custom
- * taxonomy term). Its label is the term name and its URL is the term archive
- * link.
+ * Term crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -19,6 +17,11 @@ use WP_Term;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a single taxonomy term (category, tag, or custom
+ * taxonomy term). Its label is the term name and its URL is the term archive
+ * link.
+ */
 final class Term extends Crumb
 {
 	/**

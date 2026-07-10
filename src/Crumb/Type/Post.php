@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing a single post (of any post type). Its label is the post
- * title, falling back to the configured "untitled" string, and its URL is the
- * post permalink.
+ * Post crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -19,6 +17,11 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a single post (of any post type). Its label is the post
+ * title, falling back to the configured "untitled" string, and its URL is the
+ * post permalink.
+ */
 final class Post extends Crumb
 {
 	/**

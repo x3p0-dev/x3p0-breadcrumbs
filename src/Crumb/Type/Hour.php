@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for an hourly archive. Labels with the hour and builds an hour archive
- * URL from the date permastruct, since WordPress has no hour link function.
+ * Hour crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -18,6 +17,10 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for an hourly archive. Labels with the hour and builds an hour archive
+ * URL from the date permastruct, since WordPress has no hour link function.
+ */
 final class Hour extends Crumb
 {
 	/**

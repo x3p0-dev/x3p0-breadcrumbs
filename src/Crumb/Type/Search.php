@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing a search results page. Its label is the configured
- * "search" string filled with the current query, and its URL is the search
- * results link.
+ * Search crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -17,6 +15,11 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a search results page. Its label is the configured
+ * "search" string filled with the current query, and its URL is the search
+ * results link.
+ */
 final class Search extends Crumb
 {
 	/**

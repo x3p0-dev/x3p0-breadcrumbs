@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for a paginated archive page. Labels with the current page number and
- * links to that page's URL.
+ * Paged crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -16,6 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for a paginated archive page. Labels with the current page number and
+ * links to that page's URL.
+ */
 final class Paged extends Crumb
 {
 	/**

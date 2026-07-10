@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb for a minute archive. Labels with the minute and builds a minute
- * archive URL from the date permastruct, since WordPress has no minute link
- * function.
+ * Minute crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -19,6 +17,11 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for a minute archive. Labels with the minute and builds a minute
+ * archive URL from the date permastruct, since WordPress has no minute link
+ * function.
+ */
 final class Minute extends Crumb
 {
 	/**

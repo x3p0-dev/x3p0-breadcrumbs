@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for an author archive. Labels with the user's display name and links
- * to their posts archive URL.
+ * Author crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -18,6 +17,10 @@ use WP_User;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for an author archive. Labels with the user's display name and links
+ * to their posts archive URL.
+ */
 final class Author extends Crumb
 {
 	/**

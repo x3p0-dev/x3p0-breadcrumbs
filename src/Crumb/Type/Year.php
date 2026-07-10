@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing a yearly time archive. Its label is the configured
- * "archive_year" string filled with the year, and its URL is the year
- * archive link.
+ * Year crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -19,6 +17,11 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a yearly time archive. Its label is the configured
+ * "archive_year" string filled with the year, and its URL is the year
+ * archive link.
+ */
 final class Year extends Crumb
 {
 	/**

@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for the site home. Outputs the configured home label and links to the
- * front-page URL; typically the first crumb in the trail.
+ * Home crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -16,6 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for the site home. Outputs the configured home label and links to the
+ * front-page URL; typically the first crumb in the trail.
+ */
 final class Home extends Crumb
 {
 	/**

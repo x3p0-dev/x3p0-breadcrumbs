@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb representing a post type archive. Its label is the post type's archive
- * title and its URL is the archive link for that post type.
+ * Post type crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -18,6 +17,10 @@ use WP_Post_Type;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a post type archive. Its label is the post type's archive
+ * title and its URL is the archive link for that post type.
+ */
 final class PostType extends Crumb
 {
 	/**

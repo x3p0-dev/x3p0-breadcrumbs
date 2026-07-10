@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing the current page of a paginated Query Loop block. Its
- * label is the configured "paged" string filled with the block's page number,
- * and its URL points back to the current request.
+ * Paged query block crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -19,6 +17,11 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Support\Pagination;
 
+/**
+ * Crumb representing the current page of a paginated Query Loop block. Its
+ * label is the configured "paged" string filled with the block's page number,
+ * and its URL points back to the current request.
+ */
 final class PagedQueryBlock extends Crumb
 {
 	/**

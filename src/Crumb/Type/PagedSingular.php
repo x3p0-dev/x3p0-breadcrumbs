@@ -1,9 +1,7 @@
 <?php
 
 /**
- * Crumb representing a sub-page of a multi-page singular post (split via the
- * `<!--nextpage-->` tag). Its label is the configured "paged" string filled
- * with the current page number, and its URL is the permalink to that page.
+ * Paged singular crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -17,6 +15,11 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a sub-page of a multi-page singular post (split via the
+ * `<!--nextpage-->` tag). Its label is the configured "paged" string filled
+ * with the current page number, and its URL is the permalink to that page.
+ */
 final class PagedSingular extends Crumb
 {
 	/**

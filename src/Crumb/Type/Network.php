@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for the multisite network home. Uses the configured home label and
- * links to the network home URL.
+ * Network crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -16,6 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for the multisite network home. Uses the configured home label and
+ * links to the network home URL.
+ */
 final class Network extends Crumb
 {
 	/**

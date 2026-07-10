@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for a monthly archive. Labels with the month name and links to the
- * month archive URL.
+ * Month crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -18,6 +17,10 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for a monthly archive. Labels with the month name and links to the
+ * month archive URL.
+ */
 final class Month extends Crumb
 {
 	/**

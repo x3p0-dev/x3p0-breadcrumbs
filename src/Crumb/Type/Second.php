@@ -1,10 +1,7 @@
 <?php
 
 /**
- * Crumb representing a by-the-second time archive. Its label is the configured
- * "archive_second" string filled with the second, and its URL is built from
- * the date permastruct (extended with hour/minute/second), falling back to a
- * query-string archive URL when pretty permalinks are off.
+ * Second crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -20,6 +17,12 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb representing a by-the-second time archive. Its label is the configured
+ * "archive_second" string filled with the second, and its URL is built from
+ * the date permastruct (extended with hour/minute/second), falling back to a
+ * query-string archive URL when pretty permalinks are off.
+ */
 final class Second extends Crumb
 {
 	/**

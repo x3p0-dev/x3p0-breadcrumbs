@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Crumb for a generic "Archives" label. Carries no URL; it acts as a
- * non-linking parent for the various archive views.
+ * Archive crumb class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -16,6 +15,10 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
+/**
+ * Crumb for a generic "Archives" label. Carries no URL; it acts as a
+ * non-linking parent for the various archive views.
+ */
 final class Archive extends Crumb
 {
 	/**

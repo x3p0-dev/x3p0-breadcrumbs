@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Markup\MarkupType;
 /**
  * The public, outside-in entry point for turning a request into a rendered
  * breadcrumb trail. Given a config, it builds the trail (via the breadcrumbs
- * factory) and renders it to a string in the requested markup format (via the
+ * generator) and renders it to a string in the requested markup format (via the
  * markup factory), hiding that two-step pipeline behind a single `render()`
  * call.
  *
@@ -37,12 +37,12 @@ use X3P0\Breadcrumbs\Markup\MarkupType;
 class BreadcrumbsRenderer
 {
 	/**
-	 * Sets up the initial renderer state with the breadcrumbs builder and
+	 * Sets up the initial renderer state with the breadcrumbs generator and
 	 * the markup factory used to build and render a breadcrumb trail.
 	 */
 	public function __construct(
-		private readonly Breadcrumbs   $breadcrumbs,
-		private readonly MarkupFactory $markupFactory
+		private readonly BreadcrumbsGenerator $generator,
+		private readonly MarkupFactory        $markupFactory
 	) {}
 
 	/**
@@ -67,7 +67,7 @@ class BreadcrumbsRenderer
 			: $markupConfig;
 
 		$markup = $this->markupFactory->make($markupType, [
-			'crumbs' => $this->breadcrumbs->generate($breadcrumbsConfig),
+			'crumbs' => $this->generator->generate($breadcrumbsConfig),
 			'config' => $markupConfig
 		]);
 

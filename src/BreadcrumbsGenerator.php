@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Breadcrumbs implementation.
+ * Breadcrumbs generator class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -29,7 +29,7 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
  * breadcrumbs flow; rendering the collection to markup is handled separately by
  * `BreadcrumbsRenderer`.
  */
-final class Breadcrumbs
+final class BreadcrumbsGenerator
 {
 	/**
 	 * Sets up the build with the dispatcher, the query resolver, and the

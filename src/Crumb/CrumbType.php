@@ -25,6 +25,7 @@ enum CrumbType: string implements ClassEnum
 {
 	case Archive         = 'archive';
 	case Author          = 'author';
+	case Custom          = 'custom';
 	case Day             = 'day';
 	case Error404        = 'error-404';
 	case Home            = 'home';

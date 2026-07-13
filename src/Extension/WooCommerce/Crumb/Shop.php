@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
@@ -20,10 +21,21 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
  * archive crumb wherever it appears — the shop page, single products, product
  * taxonomy archives, and as the root of the cart, checkout, and account trails.
  * Its label and URL come from the configured shop page, falling back to the
- * product archive title and link when no shop page is set.
+ * decorated crumb when no shop page is set.
  */
 final class Shop extends Crumb
 {
+	/**
+	 * Wraps the crumb this decorates so the label and URL can fall back to it
+	 * when no shop page is configured.
+	 */
+	public function __construct(
+		BreadcrumbsContext $context,
+		private readonly Crumb $decoratedCrumb
+	) {
+		parent::__construct(context: $context);
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -35,13 +47,7 @@ final class Shop extends Crumb
 			return $title;
 		}
 
-		if (! $postType = get_post_type_object('product')) {
-			return '';
-		}
-
-		return is_post_type_archive($postType->name)
-			? post_type_archive_title('', false)
-			: $postType->labels->archives;
+		return $this->decoratedCrumb->getLabel();
 	}
 
 	/**
@@ -55,6 +61,6 @@ final class Shop extends Crumb
 			return $url;
 		}
 
-		return (string) get_post_type_archive_link('product');
+		return $this->decoratedCrumb->getUrl();
 	}
 }

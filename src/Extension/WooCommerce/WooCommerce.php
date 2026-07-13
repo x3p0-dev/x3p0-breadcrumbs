@@ -63,9 +63,9 @@ final class WooCommerce extends Extension
 	 */
 	public function register(): void
 	{
-		$this->queries->register('woocommerce/cart',     CartQuery::class);
+		$this->queries->register('woocommerce/cart', CartQuery::class);
 		$this->queries->register('woocommerce/checkout', CheckoutQuery::class);
-		$this->queries->register('woocommerce/account',  AccountQuery::class);
+		$this->queries->register('woocommerce/account', AccountQuery::class);
 	}
 
 	/**
@@ -110,7 +110,7 @@ final class WooCommerce extends Extension
 	{
 		$event->crumbs->replaceWhere(
 			fn (Crumb $crumb) => $crumb instanceof PostTypeCrumb && 'product' === $crumb->postType->name,
-			fn () => new ShopCrumb($event->context)
+			fn (Crumb $crumb) => new ShopCrumb($event->context, $crumb)
 		);
 	}
 }

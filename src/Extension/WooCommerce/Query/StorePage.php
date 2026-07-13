@@ -76,9 +76,8 @@ abstract class StorePage extends Query
 	 */
 	protected function assembleEndpoint(string $endpoint): void
 	{
-		$this->context->addCrumb(CrumbType::Custom, [
-			'label' => WC()->query->get_endpoint_title($endpoint),
-			'url'   => wc_get_endpoint_url($endpoint)
+		$this->context->addCrumb('woocommerce/endpoint', [
+			'endpoint' => $endpoint
 		]);
 	}
 

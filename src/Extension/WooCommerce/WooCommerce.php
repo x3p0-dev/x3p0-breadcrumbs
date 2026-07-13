@@ -15,9 +15,11 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
 use ReflectionException;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint as EndpointCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Account as AccountQuery;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Cart as CartQuery;
@@ -43,10 +45,12 @@ use X3P0\Breadcrumbs\Query\QueryRegistry;
 final class WooCommerce extends Extension
 {
 	/**
-	 * Stores the query registry the extension seeds its custom queries into.
+	 * Stores the query and crumb registries the extension seeds its custom
+	 * types into.
 	 */
 	public function __construct(
-		private readonly QueryRegistry $queries
+		private readonly QueryRegistry $queries,
+		private readonly CrumbRegistry $crumbs
 	) {}
 
 	/**
@@ -63,9 +67,13 @@ final class WooCommerce extends Extension
 	 */
 	public function register(): void
 	{
+		// Register WooCommerce query types.
 		$this->queries->register('woocommerce/account', AccountQuery::class);
 		$this->queries->register('woocommerce/cart', CartQuery::class);
 		$this->queries->register('woocommerce/checkout', CheckoutQuery::class);
+
+		// Register WooCommerce crumb types.
+		$this->crumbs->register('woocommerce/endpoint', EndpointCrumb::class);
 	}
 
 	/**

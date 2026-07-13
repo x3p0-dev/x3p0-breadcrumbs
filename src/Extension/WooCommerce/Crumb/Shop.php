@@ -41,9 +41,9 @@ final class Shop extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		$shop_id = wc_get_page_id('shop');
+		$shopId = wc_get_page_id('shop');
 
-		if (0 < $shop_id && $title = get_the_title($shop_id)) {
+		if (0 < $shopId && $title = get_the_title($shopId)) {
 			return $title;
 		}
 
@@ -55,9 +55,9 @@ final class Shop extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		$shop_id = wc_get_page_id('shop');
+		$shopId = wc_get_page_id('shop');
 
-		if (0 < $shop_id && $url = get_permalink($shop_id)) {
+		if (0 < $shopId && $url = get_permalink($shopId)) {
 			return $url;
 		}
 

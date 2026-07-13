@@ -32,23 +32,6 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 final class QueryResolver
 {
 	/**
-	 * Maps WordPress conditional tags to the `QueryType` used when that
-	 * conditional matches the current request. Evaluated in order; the
-	 * first match wins.
-	 *
-	 * @var  array<string, QueryType>
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 */
-	private const CONDITIONALS = [
-		'is_404'        => QueryType::Error404,
-		'is_front_page' => QueryType::FrontPage,
-		'is_home'       => QueryType::Home,
-		'is_singular'   => QueryType::Singular,
-		'is_archive'    => QueryType::Archive,
-		'is_search'     => QueryType::Search
-	];
-
-	/**
 	 * Stores the dispatcher used to broadcast the resolution event.
 	 */
 	public function __construct(private readonly Dispatcher $events)
@@ -79,9 +62,9 @@ final class QueryResolver
 		$queryType = $event->getQueryType();
 		$key = $queryType instanceof QueryType ? $queryType->value : $queryType;
 
-		// A listener that stopped propagation — typed or through the hook —
-		// has claimed the final say, so skip the legacy filter and return
-		// its decision as-is.
+		// A listener that stopped propagation — typed or through the
+		// hook — has claimed the final say, so skip the legacy filter
+		// and return its decision as-is.
 		if ($event->isPropagationStopped()) {
 			return $key;
 		}
@@ -103,12 +86,14 @@ final class QueryResolver
 	 */
 	private function detect(): ?QueryType
 	{
-		foreach (self::CONDITIONALS as $tag => $type) {
-			if ($tag()) {
-				return $type;
-			}
-		}
-
-		return null;
+		return match (true) {
+			is_404()        => QueryType::Error404,
+			is_front_page() => QueryType::FrontPage,
+			is_home()       => QueryType::Home,
+			is_singular()   => QueryType::Singular,
+			is_archive()    => QueryType::Archive,
+			is_search()     => QueryType::Search,
+			default         => null
+		};
 	}
 }

@@ -151,7 +151,7 @@ abstract class Markup implements Renderable
 		$namespace = $this->config->namespace();
 
 		return implode(' ', array_map(
-			fn($className) => "{$namespace}__{$className}",
+			fn($className) => "{$namespace}__" . str_replace('/', '-', $className),
 			(array) $class
 		));
 	}

@@ -63,9 +63,9 @@ final class WooCommerce extends Extension
 	 */
 	public function register(): void
 	{
+		$this->queries->register('woocommerce/account', AccountQuery::class);
 		$this->queries->register('woocommerce/cart', CartQuery::class);
 		$this->queries->register('woocommerce/checkout', CheckoutQuery::class);
-		$this->queries->register('woocommerce/account', AccountQuery::class);
 	}
 
 	/**

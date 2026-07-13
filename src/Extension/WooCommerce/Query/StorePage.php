@@ -54,9 +54,7 @@ abstract class StorePage extends Query
 			]);
 		}
 
-		$page = get_post($this->pageId());
-
-		if ($page instanceof WP_Post) {
+		if ($page = get_post($this->pageId())) {
 			$this->context->assemble(AssemblerType::Post, [
 				'post' => $page
 			]);

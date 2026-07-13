@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Extension;
 
 use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Tagged;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -29,18 +30,8 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class ExtensionServiceProvider extends ServiceProvider
 {
 	/**
-	 * The built-in extensions, each resolved and offered a chance to boot.
-	 *
-	 * @var  array<class-string>
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 */
-	private const EXTENSIONS = [
-		WooCommerce::class
-	];
-
-	/**
-	 * The extensions bound as shared singletons only if not already bound,
-	 * so third parties may replace one with their own concrete.
+	 * The built-in extensions bound as shared singletons only if not already
+	 * bound, so third parties may replace one with their own concrete.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -50,22 +41,47 @@ final class ExtensionServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Boots each supported extension: seeds its custom types into their
-	 * registries and subscribes its listeners to the shared listener registry.
+	 * Tags the built-in extensions so they are collected and booted
+	 * alongside any third-party extensions tagged with `Extension::TAG`.
+	 *
+	 * @var  array<string, array<string>>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	protected const TAGS = [
+		Extension::TAG => [
+			WooCommerce::class
+		]
+	];
+
+	/**
+	 * Boots the tagged extensions by handing `bootExtensions()` to the
+	 * container's `call()`, which resolves that method's dependencies — the
+	 * listener registry and the tagged extensions — before invoking it.
 	 */
 	public function boot(): void
 	{
-		$listeners = $this->container->get(ListenerRegistry::class);
+		parent::boot();
+		$this->container->call($this->bootExtensions(...));
+	}
 
-		foreach (self::EXTENSIONS as $class) {
-			$extension = $this->container->get($class);
-
-			if (! $extension->isSupported()) {
-				continue;
+	/**
+	 * Boots each supported extension, letting it register its own query,
+	 * assembler, and crumb types and subscribing its event listeners. The
+	 * container injects the shared `ListenerRegistry` and, through the
+	 * `#[Tagged]` attribute, every service tagged with `Extension::TAG` as
+	 * the variadic `$extensions`, whose `Extension` type enforces that each
+	 * tagged service is an extension. An extension whose platform is
+	 * inactive (`isSupported()` is false) is skipped.
+	 */
+	private function bootExtensions(
+		ListenerRegistry $listeners,
+		#[Tagged(Extension::TAG)] Extension ...$extensions
+	): void {
+		foreach ($extensions as $extension) {
+			if ($extension->isSupported()) {
+				$extension->register();
+				$listeners->subscribe($extension);
 			}
-
-			$extension->register();
-			$listeners->subscribe($extension);
 		}
 	}
 }

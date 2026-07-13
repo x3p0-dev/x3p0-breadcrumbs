@@ -29,6 +29,16 @@ use X3P0\Breadcrumbs\Packages\Event\Subscriber;
 abstract class Extension implements Subscriber
 {
 	/**
+	 * The container tag under which extensions are collected. Tagging a
+	 * concrete with this (during the `x3p0/breadcrumbs/register` action)
+	 * opts it into the same boot lifecycle as the built-in extensions.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TAG = 'x3p0/breadcrumbs/extension';
+
+	/**
 	 * Whether the target platform is present for the current request. The
 	 * service provider skips an extension entirely when this returns false,
 	 * so guard on the platform's own API (e.g. a class or function it

@@ -121,12 +121,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/x3p0-dev/x3p0-framework.git",
-                "reference": "6e494b467e509e429bd73f836f23b536f76e4f7a"
+                "reference": "ce7c90ba2353d6328c090548084720edc719cc2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/6e494b467e509e429bd73f836f23b536f76e4f7a",
-                "reference": "6e494b467e509e429bd73f836f23b536f76e4f7a",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-framework/zipball/ce7c90ba2353d6328c090548084720edc719cc2b",
+                "reference": "ce7c90ba2353d6328c090548084720edc719cc2b",
                 "shasum": ""
             },
             "require": {
@@ -170,7 +170,7 @@
                 "issues": "https://github.com/x3p0-dev/x3p0-framework/issues",
                 "source": "https://github.com/x3p0-dev/x3p0-framework"
             },
-            "time": "2026-07-08T19:47:29+00:00"
+            "time": "2026-07-13T20:50:39+00:00"
         }
     ],
     "packages-dev": [

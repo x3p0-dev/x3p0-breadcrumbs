@@ -15,7 +15,6 @@ namespace X3P0\Breadcrumbs\Extension;
 
 use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -27,12 +26,12 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  * subsystems (query, crumb, event) they build on, letting an extension override
  * a built-in type by re-registering its key.
  */
-final class ExtensionServiceProvider extends ServiceProvider implements Bootable
+final class ExtensionServiceProvider extends ServiceProvider
 {
 	/**
 	 * The built-in extensions, each resolved and offered a chance to boot.
 	 *
-	 * @var  array<string>
+	 * @var  array<class-string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const EXTENSIONS = [
@@ -67,7 +66,6 @@ final class ExtensionServiceProvider extends ServiceProvider implements Bootable
 
 			$extension->register();
 			$listeners->subscribe($extension);
-			$extension->boot();
 		}
 	}
 }

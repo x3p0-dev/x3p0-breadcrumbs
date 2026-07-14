@@ -97,16 +97,14 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Builds a crumb by type and appends it to the shared collection, keyed
-	 * by its type. Accepts a `CrumbType` for built-in crumbs or a string
-	 * key for custom ones registered by third parties.
+	 * Builds a crumb by type and appends it to the shared collection.
+	 * Accepts a `CrumbType` for built-in crumbs or a string key for custom
+	 * ones registered by third parties.
 	 */
 	public function addCrumb(CrumbType|string $type, array $params = []): void
 	{
-		$key = $type instanceof CrumbType ? $type->value : $type;
-
 		if ($crumb = $this->makeCrumb($type, $params)) {
-			$this->crumbs->push($key, $crumb);
+			$this->crumbs->push($crumb);
 		}
 	}
 

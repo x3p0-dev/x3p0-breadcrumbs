@@ -32,18 +32,21 @@ final class CrumbFactory
 	) {}
 
 	/**
-	 * Builds the crumb registered under the given type by resolving it from the
-	 * container, forwarding `$params` as named constructor arguments. Accepts a
-	 * `CrumbType` for built-in crumbs or a string key for custom ones. Returns
-	 * null when the key is not registered.
+	 * Builds the crumb registered under the given type by resolving it from
+	 * the container, forwarding `$params` as named constructor arguments.
+	 * Accepts a `CrumbType` for built-in crumbs or a string key for custom
+	 * ones. Returns null when the key is not registered.
 	 */
 	public function make(CrumbType|string $type, array $params = []): ?Crumb
 	{
 		$key = $type instanceof CrumbType ? $type->value : $type;
 
-		/** @var null|class-string<Crumb> $crumb */
-		if ($crumb = $this->crumbRegistry->get($key)) {
-			return $this->resolver->make($crumb, $params);
+		/** @var null|class-string<Crumb> $class */
+		if ($class = $this->crumbRegistry->get($key)) {
+			$crumb = $this->resolver->make($class, $params);
+			$crumb->setType($key);
+
+			return $crumb;
 		}
 
 		return null;

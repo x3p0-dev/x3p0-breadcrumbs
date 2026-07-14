@@ -13,38 +13,30 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use ArrayAccess;
 use Countable;
 use Iterator;
 
 /**
  * Ordered, iterable collection of the crumbs that make up a breadcrumb trail.
- * Each crumb is stored alongside a type key, which need not be unique — several
- * crumbs may share a type. The public API has two retrieval axes: predicate
- * methods (`first()`, `contains()`, `filter()`, …) that match against the crumb
- * object, and type methods (`hasType()`, `firstOfType()`, …) that match against
- * the stored type key. Query methods leave the collection untouched; mutation
- * methods (`push()`, `removeType()`, `replace()`, …) act in place, since the
- * collection is the accumulator the build pipeline appends to.
+ * The collection stores only the crumbs themselves. The public API has two
+ * retrieval axes: predicate methods (`first()`, `contains()`, `filter()`, …)
+ * that match against the crumb object, and type methods (`hasType()`,
+ * `firstOfType()`, …) that match against the crumb's type slug. Query methods
+ * leave the collection untouched; mutation methods (`push()`, `removeType()`,
+ * `replace()`, …) act in place, since the collection is the accumulator the
+ * build pipeline appends to.
  *
  * The class also tracks an iteration cursor so callers rendering the trail can
  * ask whether the current crumb is first or last while looping. Call `rewind()`
- * to reset the cursor before iterating. Array access is keyed by type string
- * (passing a non-string offset yields a type error).
+ * to reset the cursor before iterating.
  */
-final class CrumbCollection implements ArrayAccess, Iterator, Countable
+final class CrumbCollection implements Iterator, Countable
 {
 	/**
 	 * Stores the crumb instances with sequential keys.
 	 * @var Crumb[]
 	 */
 	private array $crumbs = [];
-
-	/**
-	 * Stores the crumb types with sequential keys.
-	 * @var string[]
-	 */
-	private array $types = [];
 
 	/**
 	 * Stores the current index of the iterator.
@@ -56,16 +48,15 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	 */
 	public function valid(): bool
 	{
-		return isset($this->types[$this->index]);
+		return isset($this->crumbs[$this->index]);
 	}
 
 	/**
-	 * Returns the key of the current crumb, which is its type. Use when
-	 * iterating.
+	 * @inheritDoc
 	 */
-	public function key(): ?string
+	public function key(): int
 	{
-		return $this->types[$this->index] ?? null;
+		return $this->index;
 	}
 
 	/**
@@ -77,12 +68,15 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Returns the type key of the current crumb without advancing the
+	 * Returns the type slug of the current crumb without advancing the
 	 * iterator.
+	 *
+	 * @deprecated Read the type from the crumb directly via `Crumb::type()`.
 	 */
 	public function currentType(): ?string
 	{
-		return $this->key();
+		_deprecated_function(__METHOD__, '5.0.0', Crumb::class . '::getType()');
+		return $this->current()?->getType();
 	}
 
 	/**
@@ -213,8 +207,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Returns a new collection of the crumbs that satisfy the callback,
-	 * each keeping its type key.
+	 * Returns a new collection of the crumbs that satisfy the callback.
 	 *
 	 * @param callable(Crumb): bool $callback
 	 */
@@ -222,9 +215,9 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	{
 		$collection = new self();
 
-		foreach ($this->crumbs as $index => $crumb) {
+		foreach ($this->crumbs as $crumb) {
 			if ($callback($crumb)) {
-				$collection->push($this->types[$index], $crumb);
+				$collection->push($crumb);
 			}
 		}
 
@@ -233,7 +226,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 
 	/**
 	 * Returns a new collection of the crumbs that do not satisfy the
-	 * callback, each keeping its type key. The inverse of `filter()`.
+	 * callback. The inverse of `filter()`.
 	 *
 	 * @param callable(Crumb): bool $callback
 	 */
@@ -243,98 +236,85 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * Determines if a crumb of the given type exists in the collection.
+	 * Determines if a crumb of the given type slug exists in the collection.
 	 */
 	public function hasType(string $type): bool
 	{
-		return in_array($type, $this->types, true);
+		return $this->contains(static fn (Crumb $crumb) => $crumb->getType() === $type);
 	}
 
 	/**
-	 * Returns the first crumb stored under the given type, or null.
+	 * Returns the first crumb with the given type slug, or null.
 	 */
 	public function firstOfType(string $type): ?Crumb
 	{
-		$index = array_search($type, $this->types, true);
-
-		return false !== $index ? $this->crumbs[$index] : null;
+		return $this->first(static fn (Crumb $crumb) => $crumb->getType() === $type);
 	}
 
 	/**
-	 * Returns a new collection of every crumb stored under the given type,
-	 * each keeping its type key.
+	 * Returns the last crumb with the given type slug, or null.
+	 */
+	public function lastOfType(string $type): ?Crumb
+	{
+		return $this->last(static fn (Crumb $crumb) => $crumb->getType() === $type);
+	}
+
+	/**
+	 * Returns a new collection of every crumb with the given type slug.
 	 */
 	public function allOfType(string $type): self
 	{
-		$collection = new self();
-
-		foreach ($this->types as $index => $storedType) {
-			if ($storedType === $type) {
-				$collection->push($storedType, $this->crumbs[$index]);
-			}
-		}
-
-		return $collection;
+		return $this->filter(static fn (Crumb $crumb) => $crumb->getType() === $type);
 	}
 
 	/**
-	 * Appends a crumb to the end of the collection under the given type key.
+	 * Appends a crumb to the end of the collection.
 	 */
-	public function push(string $type, Crumb $crumb): void
+	public function push(Crumb $crumb): void
 	{
 		$this->crumbs[] = $crumb;
-		$this->types[]  = $type;
 	}
 
 	/**
-	 * Inserts a crumb at the front of the collection under the given type key.
+	 * Inserts a crumb at the front of the collection.
 	 */
-	public function prepend(string $type, Crumb $crumb): void
+	public function prepend(Crumb $crumb): void
 	{
-		array_splice($this->crumbs, 0, 0, [$crumb]);
-		array_splice($this->types, 0, 0, [$type]);
+		array_unshift($this->crumbs, $crumb);
 	}
 
 	/**
-	 * Inserts a crumb immediately before the target crumb, under the given
-	 * type key. Does nothing when the target is not in the collection.
+	 * Inserts a crumb immediately before the target crumb. Does nothing
+	 * when the target is not in the collection.
 	 */
-	public function insertBefore(Crumb $target, string $type, Crumb $crumb): void
+	public function insertBefore(Crumb $target, Crumb $crumb): void
 	{
 		$index = array_search($target, $this->crumbs, true);
 
 		if (false !== $index) {
 			array_splice($this->crumbs, $index, 0, [$crumb]);
-			array_splice($this->types, $index, 0, [$type]);
 		}
 	}
 
 	/**
-	 * Inserts a crumb immediately after the target crumb, under the given type
-	 * key. Does nothing when the target is not in the collection.
+	 * Inserts a crumb immediately after the target crumb. Does nothing when
+	 * the target is not in the collection.
 	 */
-	public function insertAfter(Crumb $target, string $type, Crumb $crumb): void
+	public function insertAfter(Crumb $target, Crumb $crumb): void
 	{
 		$index = array_search($target, $this->crumbs, true);
 
 		if (false !== $index) {
 			array_splice($this->crumbs, $index + 1, 0, [$crumb]);
-			array_splice($this->types, $index + 1, 0, [$type]);
 		}
 	}
 
 	/**
-	 * Removes every crumb stored under the given type, then re-indexes.
+	 * Removes every crumb with the given type slug, then re-indexes.
 	 */
 	public function removeType(string $type): void
 	{
-		foreach ($this->types as $index => $storedType) {
-			if ($storedType === $type) {
-				unset($this->crumbs[$index], $this->types[$index]);
-			}
-		}
-
-		$this->reindex();
+		$this->removeWhere(static fn (Crumb $crumb) => $crumb->getType() === $type);
 	}
 
 	/**
@@ -347,7 +327,7 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	{
 		foreach ($this->crumbs as $index => $crumb) {
 			if ($callback($crumb)) {
-				unset($this->crumbs[$index], $this->types[$index]);
+				unset($this->crumbs[$index]);
 			}
 		}
 
@@ -360,8 +340,6 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	 */
 	public function pop(): ?Crumb
 	{
-		array_pop($this->types);
-
 		return array_pop($this->crumbs);
 	}
 
@@ -371,15 +349,13 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	 */
 	public function shift(): ?Crumb
 	{
-		array_shift($this->types);
-
 		return array_shift($this->crumbs);
 	}
 
 	/**
-	 * Replaces a crumb in place with another, keeping its position and type
-	 * key. Does nothing when the crumb is not in the collection. Useful for
-	 * relabeling a crumb after the trail is built without disturbing order.
+	 * Replaces a crumb in place with another, keeping its position. Does
+	 * nothing when the crumb is not in the collection. Useful for relabeling
+	 * a crumb after the trail is built without disturbing order.
 	 */
 	public function replace(Crumb $existing, Crumb $replacement): void
 	{
@@ -392,9 +368,9 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 
 	/**
 	 * Replaces every crumb that satisfies the callback with the crumb the
-	 * replacement callback returns for it, keeping each one's position and
-	 * type key. The replacement receives the matched crumb. Useful for
-	 * relabeling crumbs on the `CrumbsBuilt` event.
+	 * replacement callback returns for it, keeping each one's position. The
+	 * replacement receives the matched crumb. Useful for relabeling crumbs
+	 * on the `CrumbsBuilt` event.
 	 *
 	 * @param callable(Crumb): bool  $callback
 	 * @param callable(Crumb): Crumb $replacement
@@ -441,43 +417,10 @@ final class CrumbCollection implements ArrayAccess, Iterator, Countable
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-	public function offsetExists(mixed $offset): bool
-	{
-		return $this->hasType($offset);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function offsetGet(mixed $offset): ?Crumb
-	{
-		return $this->firstOfType($offset);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function offsetSet(mixed $offset, mixed $value): void
-	{
-		$this->push($offset, $value);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function offsetUnset(mixed $offset): void
-	{
-		$this->removeType($offset);
-	}
-
-	/**
-	 * Re-indexes arrays to maintain sequential keys.
+	 * Re-indexes the crumbs to maintain sequential keys.
 	 */
 	private function reindex(): void
 	{
 		$this->crumbs = array_values($this->crumbs);
-		$this->types  = array_values($this->types);
 	}
 }

@@ -24,14 +24,6 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 final class BlockAssets implements Bootable
 {
 	/**
-	 * Name of the block whose editor script receives the inline data.
-	 *
-	 * @var  string
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 */
-	private const BLOCK_NAME = 'x3p0/breadcrumbs';
-
-	/**
 	 * JavaScript global that the editor data is assigned to.
 	 *
 	 * @var  string
@@ -63,7 +55,7 @@ final class BlockAssets implements Bootable
 	private function enqueue(): void
 	{
 		wp_add_inline_script(
-			generate_block_asset_handle(self::BLOCK_NAME, 'editorScript'),
+			generate_block_asset_handle(BlockRegistrar::BLOCK_NAME, 'editorScript'),
 			sprintf(
 				'window.%1$s = Object.assign(window.%1$s || {}, %2$s);',
 				self::SCRIPT_GLOBAL,

@@ -26,6 +26,15 @@ use const X3P0\Breadcrumbs\PLUGIN_DIR;
 final class BlockRegistrar implements Bootable
 {
 	/**
+	 * Name of the plugin's block type, matching the `name` in its
+	 * `block.json` metadata.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const BLOCK_NAME = 'x3p0/breadcrumbs';
+
+	/**
 	 * Absolute path to the folder holding the plugin's built block metadata.
 	 *
 	 * @var  string
@@ -78,7 +87,7 @@ final class BlockRegistrar implements Bootable
 	 */
 	private function setMetadata(array $metadata): array
 	{
-		if ('x3p0/breadcrumbs' !== $metadata['name']) {
+		if (self::BLOCK_NAME !== $metadata['name']) {
 			return $metadata;
 		}
 

@@ -17,7 +17,9 @@ use WP_Term;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Crumb\Type\Term as TermCrumb;
 
 /**
  * Builds the trail leading up to a term and adds the term's own crumb. It
@@ -94,10 +96,10 @@ final class Term extends Assembler
 	 */
 	private function termCrumbExists(): bool
 	{
-		return $this->context->crumbs()->hasWhere(
-			key:      CrumbType::Term->value,
-			property: 'term',
-			callback: fn(WP_Term $term) => $term->term_id === $this->term->term_id
+		return $this->context->crumbs()->contains(
+			fn (Crumb $crumb) =>
+				$crumb instanceof TermCrumb
+				&& $crumb->term->term_id === $this->term->term_id
 		);
 	}
 }

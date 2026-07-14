@@ -17,7 +17,9 @@ use WP_Post;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 
 /**
  * Builds the trail leading up to a single post and adds the post's own crumb.
@@ -80,10 +82,10 @@ final class Post extends Assembler
 	 */
 	private function postCrumbExists(): bool
 	{
-		return $this->context->crumbs()->hasWhere(
-			key:      CrumbType::Post->value,
-			property: 'post',
-			callback: fn(WP_Post $post) => $post->ID === $this->post->ID
+		return $this->context->crumbs()->contains(
+			fn (Crumb $crumb) =>
+				$crumb instanceof PostCrumb
+				&& $crumb->post->ID === $this->post->ID
 		);
 	}
 }

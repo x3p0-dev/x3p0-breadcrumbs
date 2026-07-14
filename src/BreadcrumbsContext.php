@@ -94,7 +94,7 @@ final class BreadcrumbsContext
 		]);
 
 		if ($crumb) {
-			$this->crumbs->set($key, $crumb);
+			$this->crumbs->push($key, $crumb);
 		}
 	}
 

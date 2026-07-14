@@ -18,7 +18,9 @@ use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 
 /**
  * Adds the archive crumb for a post type. For the built-in `post` type it
@@ -77,10 +79,10 @@ final class PostType extends Assembler
 	 */
 	private function postTypeCrumbExists(): bool
 	{
-		return $this->context->crumbs()->hasWhere(
-			key:      CrumbType::PostType->value,
-			property: 'postType',
-			callback: fn(WP_Post_Type $postType) => $postType->name === $this->postType->name
+		return $this->context->crumbs()->contains(
+			fn (Crumb $crumb) =>
+				$crumb instanceof PostTypeCrumb
+				&& $crumb->postType->name === $this->postType->name
 		);
 	}
 }

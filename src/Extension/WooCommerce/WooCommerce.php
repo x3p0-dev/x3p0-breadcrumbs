@@ -74,6 +74,7 @@ final class WooCommerce extends Extension
 
 		// Register WooCommerce crumb types.
 		$this->crumbs->register('woocommerce/endpoint', EndpointCrumb::class);
+		$this->crumbs->register('woocommerce/shop', ShopCrumb::class);
 	}
 
 	/**
@@ -118,7 +119,9 @@ final class WooCommerce extends Extension
 	{
 		$event->crumbs->replaceWhere(
 			fn (Crumb $crumb) => $crumb instanceof PostTypeCrumb && 'product' === $crumb->postType->name,
-			fn (Crumb $crumb) => new ShopCrumb($event->context, $crumb)
+			fn (Crumb $crumb) => $event->context->makeCrumb('woocommerce/shop', [
+				'decoratedCrumb' => $crumb
+			])
 		);
 	}
 }

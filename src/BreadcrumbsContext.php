@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
@@ -80,6 +81,22 @@ final class BreadcrumbsContext
 	}
 
 	/**
+	 * Builds a crumb by type and returns it without adding it to the
+	 * collection, injecting this context. Accepts a `CrumbType` for built-in
+	 * crumbs or a string key for custom ones registered by third parties.
+	 * Returns null when the type is not registered. Useful for extensions
+	 * that need a crumb instance to hand to the collection's insert or
+	 * replace methods on the `CrumbsBuilt` event.
+	 */
+	public function makeCrumb(CrumbType|string $type, array $params = []): ?Crumb
+	{
+		return $this->crumbFactory->make($type, [
+			'context' => $this,
+			...$params
+		]);
+	}
+
+	/**
 	 * Builds a crumb by type and appends it to the shared collection, keyed
 	 * by its type. Accepts a `CrumbType` for built-in crumbs or a string
 	 * key for custom ones registered by third parties.
@@ -88,12 +105,7 @@ final class BreadcrumbsContext
 	{
 		$key = $type instanceof CrumbType ? $type->value : $type;
 
-		$crumb = $this->crumbFactory->make($type, [
-			'context' => $this,
-			...$params
-		]);
-
-		if ($crumb) {
+		if ($crumb = $this->makeCrumb($type, $params)) {
 			$this->crumbs->push($key, $crumb);
 		}
 	}

@@ -54,7 +54,7 @@ final class QueryResolver
 		// the final say by stopping propagation, so `add_action()`
 		// callbacks can change the type alongside the typed listeners.
 		if (! $event->isPropagationStopped()) {
-			do_action('x3p0/breadcrumbs/query-type-resolving', $event);
+			do_action(QueryTypeResolving::HOOK_NAME, $event);
 		}
 
 		// Normalize the event's value to a string key for the legacy

@@ -32,6 +32,16 @@ final class QueryTypeResolving implements StoppableEvent
 	use Stoppable;
 
 	/**
+	 * The name of the WordPress action this event is bridged to after it
+	 * is dispatched, so `add_action()` callbacks can change the resolved
+	 * query type alongside the typed listeners.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const HOOK_NAME = 'x3p0/breadcrumbs/query-type-resolving';
+
+	/**
 	 * Stores the shared context and the query type resolved so far. The
 	 * query type is mutable so listeners can override it; pass a `QueryType`
 	 * case for a built-in type or a string key for a custom one. A null

@@ -27,6 +27,16 @@ use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 final class CrumbsBuilt
 {
 	/**
+	 * The name of the WordPress action this event is bridged to after it
+	 * is dispatched, so `add_action()` callbacks can adjust the finished
+	 * crumbs alongside the typed listeners.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const HOOK_NAME = 'x3p0/breadcrumbs/crumbs-built';
+
+	/**
 	 * Stores the shared build context and the finished, mutable crumb
 	 * collection (the same instance returned by `$context->crumbs()`).
 	 */

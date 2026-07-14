@@ -73,7 +73,7 @@ final class BreadcrumbsGenerator
 		// then bridge the same event to WordPress so `add_action()`
 		// callbacks can adjust them too.
 		do_action(
-			'x3p0/breadcrumbs/crumbs-built',
+			CrumbsBuilt::HOOK_NAME,
 			$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()))
 		);
 

@@ -25,6 +25,7 @@ In 2009, I [launched the first version of this script](https://justintadlock.com
 		- [Modifying the Breadcrumb Trail with Events](#modifying-the-breadcrumb-trail-with-events)
 		- [Available Hooks](#available-hooks)
 		- [Registering Custom Queries, Assemblers, Crumbs, and Markup](#registering-custom-queries-assemblers-crumbs-and-markup)
+		- [The Extension System](#the-extension-system)
 - [License](#license)
 
 ## Usage
@@ -331,21 +332,81 @@ Alternatively, register a typed listener directly on the dispatcher. Do this on 
 
 ##### Adjusting the Finished Crumbs
 
-The `CrumbsBuilt` event carries the finished `CrumbCollection` (the same mutable instance the caller receives) along with the build context. Modify `$event->crumbs` directly to remove or relabel crumbs, or call `$event->context->addCrumb()` to append a crumb built through the plugin's factory:
+The `CrumbsBuilt` event carries two things:
+
+- **`$event->crumbs`:** The finished `CrumbCollection` — the same mutable instance the caller receives, so changes you make here are what ultimately gets rendered.
+- **`$event->context`:** The build context, used to build new crumbs through the plugin's factory.
+
+Every crumb in the collection is a `Crumb` object exposing `getType()` (its type slug, e.g. `post`, used in the `crumb--{type}` CSS class), `getLabel()`, and `getUrl()`.
+
+**Finding crumbs.** The collection provides two ways to locate crumbs — by their type slug, or by a callback (which lets you match on the crumb's class or any property):
+
+_By type slug:_
+
+- **`hasType(string $type): bool`:** Whether a crumb of the type exists.
+- **`firstOfType(string $type): ?Crumb`:** The first crumb of the type, or `null`.
+- **`lastOfType(string $type): ?Crumb`:** The last crumb of the type, or `null`.
+- **`allOfType(string $type): CrumbCollection`:** A new collection of every crumb of the type.
+
+_By callback or class:_
+
+- **`first(?callable $callback = null): ?Crumb`:** The first crumb, or the first matching the callback.
+- **`last(?callable $callback = null): ?Crumb`:** The last crumb, or the last matching the callback.
+- **`contains(callable $callback): bool`:** Whether any crumb satisfies the callback.
+- **`every(callable $callback): bool`:** Whether every crumb satisfies the callback.
+- **`filter(callable $callback): CrumbCollection`:** A new collection of the crumbs that do satisfy the callback.
+- **`reject(callable $callback): CrumbCollection`:** A new collection of the crumbs that don't satisfy the callback.
+- **`whereInstanceOf(string $class): CrumbCollection`:** A new collection of the crumbs that are instances of the class or interface.
+
+Add `count()`, `isEmpty()`, `isNotEmpty()`, `all()`, `map()`, and `reduce()` for inspecting the collection as a whole.
+
+**Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a registered crumb type key and its constructor parameters. It returns the crumb *without* adding it to the trail:
 
 ```php
+$crumb = $event->context->makeCrumb('your-crumb', ['foo' => $bar]);
+```
+
+To build *and* append in a single step, use `$event->context->addCrumb()` instead.
+
+**Adding crumbs:**
+
+- **`push(Crumb $crumb): void`:** Append to the end of the trail.
+- **`prepend(Crumb $crumb): void`:** Insert at the front.
+- **`insertBefore(Crumb $target, Crumb $crumb): void`:** Insert before a crumb you found. Does nothing if the target isn't in the trail.
+- **`insertAfter(Crumb $target, Crumb $crumb): void`:** Insert after a crumb you found. Does nothing if the target isn't in the trail.
+
+**Removing crumbs:**
+
+- **`removeType(string $type): void`:** Remove every crumb of the type.
+- **`removeWhere(callable $callback): void`:** Remove every crumb that satisfies the callback.
+- **`pop(): ?Crumb`** / **`shift(): ?Crumb`:** Remove and return the last/first crumb.
+
+**Replacing crumbs:**
+
+- **`replace(Crumb $existing, Crumb $replacement): void`:** Swap a specific crumb in place, keeping its position.
+- **`replaceWhere(callable $callback, callable $replacement): void`:** Swap every matching crumb in place. The replacement callback receives the matched crumb, which is handy for wrapping or relabeling it.
+
+Here's a practical example that removes the home crumb, relabels the post type archive, and inserts a crumb after it:
+
+```php
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 
 add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
-	// Remove a crumb by its key.
-	$event->crumbs->remove('home');
+	// Remove the home crumb.
+	$event->crumbs->removeType('home');
 
-	// Or append a custom crumb via the context's factory.
-	$event->context->addCrumb('your-crumb');
+	// Insert a custom crumb right after the post type archive crumb.
+	if ($archive = $event->crumbs->firstOfType('post-type')) {
+		$event->crumbs->insertAfter(
+			$archive,
+			$event->context->makeCrumb('your-crumb')
+		);
+	}
 });
 ```
 
-As with the query event, you may register a typed listener for `CrumbsBuilt::class` on the dispatcher instead of using the action bridge.
+As with the query event, you may register a typed listener for `CrumbsBuilt::class` on the dispatcher instead of using the action bridge — see [The Extension System](#the-extension-system) below for the tidiest way to do that.
 
 #### Available Hooks
 
@@ -378,6 +439,82 @@ add_action('x3p0/breadcrumbs/register', function ($plugin) {
 ```
 
 Each registered class must extend its subsystem's abstract base — `Query`, `Assembler`, `Crumb`, or `Markup` respectively. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
+
+#### The Extension System
+
+The registration and event examples above are the raw seams. When you're integrating an entire platform or plugin — registering several custom types *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is exactly how the built-in WooCommerce integration works, and third parties use the same mechanism with no core edits.
+
+An extension extends `X3P0\Breadcrumbs\Extension\Extension` and can implement three methods:
+
+- **`isSupported(): bool`** _(required)_ — Whether the target platform is present for the current request. Guard on something the platform itself defines (a class or function); the extension is skipped entirely — never registered, never subscribed — when this returns `false`, so an inactive platform costs a single check and nothing more.
+- **`register(): void`** _(optional)_ — Register the extension's custom query, assembler, and crumb types. Called once, only for supported extensions. Registering an existing key overrides the built-in type for that key.
+- **`getSubscribedEvents(): array`** _(optional)_ — Map each event class to the name of the method that handles it. This is how you subscribe listeners to `QueryTypeResolving` and `CrumbsBuilt` without reaching for the global action bridges.
+
+Constructor dependencies are resolved from the container, so you can typehint the registries — or any other service — you need.
+
+Here's an extension that reroutes a page to a custom query and relabels a crumb:
+
+```php
+use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
+use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
+
+final class MyExtension extends Extension
+{
+	public function __construct(private CrumbRegistry $crumbs) {}
+
+	public function isSupported(): bool
+	{
+		return function_exists('my_platform');
+	}
+
+	public function register(): void
+	{
+		$this->crumbs->register('my-platform/thing', ThingCrumb::class);
+	}
+
+	public function getSubscribedEvents(): array
+	{
+		return [
+			QueryTypeResolving::class => 'resolveQueryType',
+			CrumbsBuilt::class        => 'adjustCrumbs'
+		];
+	}
+
+	public function resolveQueryType(QueryTypeResolving $event): void
+	{
+		if (my_platform_is_thing_page()) {
+			$event->setQueryType('my-query');
+			$event->stopPropagation();
+		}
+	}
+
+	public function adjustCrumbs(CrumbsBuilt $event): void
+	{
+		$event->crumbs->replaceWhere(
+			fn (Crumb $crumb) => 'post-type' === $crumb->getType(),
+			fn (Crumb $crumb) => $event->context->makeCrumb('my-platform/thing', [
+				'decoratedCrumb' => $crumb
+			])
+		);
+	}
+}
+```
+
+To activate it, bind it in the container and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are collected and booted automatically — the plugin calls `isSupported()`, then `register()`, then subscribes the listeners — right alongside the built-ins:
+
+```php
+use X3P0\Breadcrumbs\Extension\Extension;
+
+add_action('x3p0/breadcrumbs/register', function ($plugin) {
+	$plugin->container()->singleton(MyExtension::class);
+	$plugin->container()->tag(MyExtension::class, Extension::TAG);
+});
+```
+
+That's the whole lifecycle in one class: the platform guard, the type registrations, and the event listeners, all opted into the same boot sequence the plugin uses for its own integrations.
 
 ## License
 

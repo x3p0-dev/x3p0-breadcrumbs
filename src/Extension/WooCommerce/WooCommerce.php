@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
 use ReflectionException;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
@@ -117,9 +116,10 @@ final class WooCommerce extends Extension
 	 */
 	public function relabelShop(CrumbsBuilt $event): void
 	{
-		$event->crumbs->replaceWhere(
-			fn (Crumb $crumb) => $crumb instanceof PostTypeCrumb && 'product' === $crumb->postType->name,
-			fn (Crumb $crumb) => $event->context->makeCrumb('woocommerce/shop', [
+		$event->crumbs->replaceInstanceWhere(
+			PostTypeCrumb::class,
+			fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
+			fn (PostTypeCrumb $crumb) => $event->context->makeCrumb('woocommerce/shop', [
 				'decoratedCrumb' => $crumb
 			])
 		);

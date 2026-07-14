@@ -360,6 +360,8 @@ _By callback or class:_
 
 Add `count()`, `isEmpty()`, `isNotEmpty()`, `all()`, `map()`, and `reduce()` for inspecting the collection as a whole.
 
+**Which axis should you use?** Prefer the **class-based** methods (`whereInstanceOf`, an `instanceof` callback, or `replaceInstanceWhere` below) when you have the crumb class available — your editor gets full type hinting and you can safely read the crumb's typed properties. Reach for the **type-slug** methods (`hasType`, `firstOfType`, `removeType`, …) when you only know a crumb's registered key rather than its class, such as targeting another plugin's crumb or a built-in like `home`. The type slug is the stable, public identifier; the class is the type-safe one.
+
 **Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a registered crumb type key and its constructor parameters. It returns the crumb *without* adding it to the trail:
 
 ```php
@@ -385,6 +387,7 @@ To build *and* append in a single step, use `$event->context->addCrumb()` instea
 
 - **`replace(Crumb $existing, Crumb $replacement): void`:** Swap a specific crumb in place, keeping its position.
 - **`replaceWhere(callable $callback, callable $replacement): void`:** Swap every matching crumb in place. The replacement callback receives the matched crumb, which is handy for wrapping or relabeling it.
+- **`replaceInstanceWhere(string $class, callable $callback, callable $replacement): void`:** Swap every crumb that is an instance of `$class` and satisfies the callback. Both callbacks receive only crumbs of the class, so they may typehint it directly.
 
 Here's a practical example that removes the home crumb, relabels the post type archive, and inserts a crumb after it:
 

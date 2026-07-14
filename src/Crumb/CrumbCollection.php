@@ -396,6 +396,24 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
+	 * Replaces every crumb that is an instance of the given class and
+	 * satisfies the callback with the crumb the replacement callback
+	 * returns for it, keeping each one's position. Both callbacks receive
+	 * only crumbs of the class, so they may typehint it directly.
+	 *
+	 * @param class-string<Crumb>    $class
+	 * @param callable(Crumb): bool  $callback
+	 * @param callable(Crumb): Crumb $replacement
+	 */
+	public function replaceInstanceWhere(string $class, callable $callback, callable $replacement): void
+	{
+		$this->replaceWhere(
+			static fn (Crumb $crumb) => $crumb instanceof $class && $callback($crumb),
+			$replacement
+		);
+	}
+
+	/**
 	 * Maps each crumb through the callback and returns the results as a
 	 * plain array, since the mapped values may no longer be crumbs.
 	 *

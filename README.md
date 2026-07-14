@@ -323,7 +323,7 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 add_action('x3p0/breadcrumbs/query-type-resolving', function (QueryTypeResolving $event) {
 	if ($yourCondition) {
-		$event->setQueryType('your-query');
+		$event->setQueryType('my-plugin/query');
 	}
 });
 ```
@@ -363,7 +363,7 @@ Add `count()`, `isEmpty()`, `isNotEmpty()`, `all()`, `map()`, and `reduce()` for
 **Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a registered crumb type key and its constructor parameters. It returns the crumb *without* adding it to the trail:
 
 ```php
-$crumb = $event->context->makeCrumb('your-crumb', ['foo' => $bar]);
+$crumb = $event->context->makeCrumb('my-plugin/crumb', ['foo' => $bar]);
 ```
 
 To build *and* append in a single step, use `$event->context->addCrumb()` instead.
@@ -400,7 +400,7 @@ add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
 	if ($archive = $event->crumbs->firstOfType('post-type')) {
 		$event->crumbs->insertAfter(
 			$archive,
-			$event->context->makeCrumb('your-crumb')
+			$event->context->makeCrumb('my-plugin/crumb')
 		);
 	}
 });
@@ -422,7 +422,7 @@ do_action('x3p0/breadcrumbs/register', $plugin);
 
 #### Registering Custom Queries, Assemblers, Crumbs, and Markup
 
-There may be times when you need to register custom `Query`, `Assembler`, `Crumb`, or `Markup` classes for custom use cases. Each subsystem has its own registry, and registering a class is the same in every case: map a string key to a class name. The following is a quick example of registering one of each:
+There may be times when you need to register custom `Query`, `Assembler`, `Crumb`, or `Markup` classes for custom use cases. Each subsystem has its own registry, and registering a class is the same in every case: map a string key to a class name. Namespace your keys with a vendor prefix (e.g. `my-plugin/crumb`) so they don't collide with the plugin's built-in types or with other extensions. The following is a quick example of registering one of each:
 
 ```php
 use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
@@ -431,10 +431,10 @@ use X3P0\Breadcrumbs\Markup\MarkupRegistry;
 use X3P0\Breadcrumbs\Query\QueryRegistry;
 
 add_action('x3p0/breadcrumbs/register', function ($plugin) {
-	$plugin->container()->get(QueryRegistry::class)->register('your-query', YourQuery::class);
-	$plugin->container()->get(AssemblerRegistry::class)->register('your-assembler', YourAssembler::class);
-	$plugin->container()->get(CrumbRegistry::class)->register('your-crumb', YourCrumb::class);
-	$plugin->container()->get(MarkupRegistry::class)->register('your-markup', YourMarkup::class);
+	$plugin->container()->get(QueryRegistry::class)->register('my-plugin/query', MyQuery::class);
+	$plugin->container()->get(AssemblerRegistry::class)->register('my-plugin/assembler', MyAssembler::class);
+	$plugin->container()->get(CrumbRegistry::class)->register('my-plugin/crumb', MyCrumb::class);
+	$plugin->container()->get(MarkupRegistry::class)->register('my-plugin/markup', MyMarkup::class);
 });
 ```
 
@@ -460,10 +460,14 @@ use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
+use X3P0\Breadcrumbs\Query\QueryRegistry;
 
 final class MyExtension extends Extension
 {
-	public function __construct(private CrumbRegistry $crumbs) {}
+	public function __construct(
+		private QueryRegistry $queries,
+		private CrumbRegistry $crumbs
+	) {}
 
 	public function isSupported(): bool
 	{
@@ -472,7 +476,8 @@ final class MyExtension extends Extension
 
 	public function register(): void
 	{
-		$this->crumbs->register('my-platform/thing', ThingCrumb::class);
+		$this->queries->register('my-plugin/query', MyQuery::class);
+		$this->crumbs->register('my-plugin/thing', ThingCrumb::class);
 	}
 
 	public function getSubscribedEvents(): array
@@ -486,7 +491,7 @@ final class MyExtension extends Extension
 	public function resolveQueryType(QueryTypeResolving $event): void
 	{
 		if (my_platform_is_thing_page()) {
-			$event->setQueryType('my-query');
+			$event->setQueryType('my-plugin/query');
 			$event->stopPropagation();
 		}
 	}
@@ -495,7 +500,7 @@ final class MyExtension extends Extension
 	{
 		$event->crumbs->replaceWhere(
 			fn (Crumb $crumb) => 'post-type' === $crumb->getType(),
-			fn (Crumb $crumb) => $event->context->makeCrumb('my-platform/thing', [
+			fn (Crumb $crumb) => $event->context->makeCrumb('my-plugin/thing', [
 				'decoratedCrumb' => $crumb
 			])
 		);

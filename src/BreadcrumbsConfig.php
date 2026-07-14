@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Support\BuildsFromArray;
+
 /**
  * Immutable configuration object passed through the breadcrumbs pipeline. It
  * controls how the trail is built: the labels used for generated crumbs, which
@@ -22,6 +24,8 @@ namespace X3P0\Breadcrumbs;
  */
 final class BreadcrumbsConfig
 {
+	use BuildsFromArray;
+
 	/**
 	 * Translated labels for generated crumbs, keyed by label slug. Caller
 	 * values are merged over the built-in defaults.
@@ -51,20 +55,6 @@ final class BreadcrumbsConfig
 	) {
 		$this->labels         = array_merge($this->defaultLabels(), $labels);
 		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $mapRewriteTags);
-	}
-
-	/**
-	 * Builds a config from an associative array, ignoring any keys that do
-	 * not map to a constructor parameter.
-	 */
-	public static function fromArray(array $options = []): self
-	{
-		return new self(...array_intersect_key($options, array_flip([
-			'labels',
-			'mapRewriteTags',
-			'postTaxonomy',
-			'network'
-		])));
 	}
 
 	/**

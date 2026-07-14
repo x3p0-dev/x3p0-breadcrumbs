@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Support\BuildsFromArray;
+
 /**
  * Immutable configuration object passed into markup objects to control how the
  * breadcrumb trail is displayed: the class namespace, container attributes, and
@@ -20,6 +22,8 @@ namespace X3P0\Breadcrumbs\Markup;
  */
 final class MarkupConfig
 {
+	use BuildsFromArray;
+
 	/**
 	 * The sanitized namespace used for class prefixes.
 	 */
@@ -55,22 +59,6 @@ final class MarkupConfig
 			'data-wp-interactive'   => 'x3p0/breadcrumbs',
 			'data-wp-router-region' => 'breadcrumbs'
 		], $containerAttr);
-	}
-
-	/**
-	 * Builds a config from an associative array, ignoring any keys that do
-	 * not map to a known constructor parameter.
-	 */
-	public static function fromArray(array $options): self
-	{
-		return new self(...array_intersect_key($options, array_flip([
-			'namespace',
-			'containerAttr',
-			'showOnFront',
-			'showFirstCrumb',
-			'showLastCrumb',
-			'linkLastCrumb'
-		])));
 	}
 
 	/**

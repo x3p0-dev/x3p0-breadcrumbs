@@ -236,6 +236,17 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
+	 * Returns a new collection of the crumbs that are instances of the
+	 * given class or interface.
+	 *
+	 * @param class-string<Crumb> $class
+	 */
+	public function whereInstanceOf(string $class): self
+	{
+		return $this->filter(static fn (Crumb $crumb) => $crumb instanceof $class);
+	}
+
+	/**
 	 * Determines if a crumb of the given type slug exists in the collection.
 	 */
 	public function hasType(string $type): bool

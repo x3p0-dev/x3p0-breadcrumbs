@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for an hourly archive. Labels with the hour and builds an hour archive
@@ -39,7 +40,7 @@ final class Hour extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_hour'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveHour),
 			get_the_time(
 				esc_html_x('H', 'hour archives time format', 'x3p0-breadcrumbs'),
 				$this->post

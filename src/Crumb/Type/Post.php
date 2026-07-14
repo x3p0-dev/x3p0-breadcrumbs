@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb representing a single post (of any post type). Its label is the post
@@ -42,10 +43,10 @@ final class Post extends Crumb
 		$post_id = $this->post->ID;
 
 		if (is_single($post_id) || is_page($post_id) || is_attachment($post_id)) {
-			return single_post_title('', false) ?: $this->context->config()->getLabel('untitled');
+			return single_post_title('', false) ?: $this->context->config()->getLabel(BreadcrumbsLabel::Untitled);
 		}
 
-		return get_the_title($this->post->ID) ?: $this->context->config()->getLabel('untitled');
+		return get_the_title($this->post->ID) ?: $this->context->config()->getLabel(BreadcrumbsLabel::Untitled);
 	}
 
 	/**

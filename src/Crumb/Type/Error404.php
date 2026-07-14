@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a 404 (not found) page. Outputs the configured error label and has
@@ -26,6 +27,6 @@ final class Error404 extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel('error_404');
+		return $this->context->config()->getLabel(BreadcrumbsLabel::Error404);
 	}
 }

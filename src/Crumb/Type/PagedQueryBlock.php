@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -40,7 +41,7 @@ final class PagedQueryBlock extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('paged'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::Paged),
 			number_format_i18n(absint($this->pagination->getQueryBlockPage()))
 		);
 	}

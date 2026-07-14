@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb representing a search results page. Its label is the configured
@@ -27,7 +28,7 @@ final class Search extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return sprintf($this->context->config()->getLabel('search'), get_search_query());
+		return sprintf($this->context->config()->getLabel(BreadcrumbsLabel::Search), get_search_query());
 	}
 
 	/**

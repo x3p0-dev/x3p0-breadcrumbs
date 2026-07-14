@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a daily archive. Labels with the day of the month and links to the
@@ -39,7 +40,7 @@ final class Day extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_day'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveDay),
 			get_the_time(
 				esc_html_x('j', 'daily archives date format', 'x3p0-breadcrumbs'),
 				$this->post

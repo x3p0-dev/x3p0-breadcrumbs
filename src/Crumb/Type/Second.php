@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb representing a by-the-second time archive. Its label is the configured
@@ -41,7 +42,7 @@ final class Second extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_second'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveSecond),
 			get_the_time(
 				esc_html_x('s', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post

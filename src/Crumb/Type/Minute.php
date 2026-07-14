@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a minute archive. Labels with the minute and builds a minute
@@ -40,7 +41,7 @@ final class Minute extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_minute'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveMinute),
 			get_the_time(
 				esc_html_x('i', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a paginated comments page on a singular post. Labels with the
@@ -28,7 +29,7 @@ final class PagedComments extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('paged_comments'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::PagedComments),
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}

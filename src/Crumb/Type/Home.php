@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for the site home. Outputs the configured home label and links to the
@@ -26,7 +27,7 @@ final class Home extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel('home');
+		return $this->context->config()->getLabel(BreadcrumbsLabel::Home);
 	}
 
 	/**

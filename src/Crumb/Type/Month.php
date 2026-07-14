@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a monthly archive. Labels with the month name and links to the
@@ -39,7 +40,7 @@ final class Month extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel('archive_month'),
+			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveMonth),
 			get_the_time(
 				esc_html_x('F', 'monthly archives date format', 'x3p0-breadcrumbs'),
 				$this->post

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for the multisite network home. Uses the configured home label and
@@ -26,7 +27,7 @@ final class Network extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel('home');
+		return $this->context->config()->getLabel(BreadcrumbsLabel::Home);
 	}
 
 	/**

@@ -27,14 +27,6 @@ final class BreadcrumbsConfig
 	use BuildsFromArray;
 
 	/**
-	 * Translated labels for generated crumbs, keyed by label slug. Caller
-	 * values are merged over the built-in defaults.
-	 *
-	 * @var array<string, string>
-	 */
-	private readonly array $labels;
-
-	/**
 	 * Whether each post type's permalink rewrite tags map into crumbs, keyed
 	 * by post type. Caller values are merged over the built-in defaults.
 	 *
@@ -43,27 +35,33 @@ final class BreadcrumbsConfig
 	private readonly array $mapRewriteTags;
 
 	/**
-	 * Stores the config values, merging the given labels and rewrite-tag
-	 * settings on top of the built-in defaults so callers only need to
-	 * override what differs.
+	 * Stores the config values. Labels are kept as caller overrides only
+	 * (defaults live on `BreadcrumbsLabel`), while rewrite-tag settings are
+	 * merged on top of the built-in defaults so callers only override what
+	 * differs.
+	 *
+	 * @param array<string, string> $labels
 	 */
 	public function __construct(
-		array                  $labels         = [],
 		array                  $mapRewriteTags = [],
 		private readonly array $postTaxonomy   = [],
+		private readonly array $labels         = [],
 		private readonly bool  $network        = false
 	) {
-		$this->labels         = array_merge($this->defaultLabels(), $labels);
 		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $mapRewriteTags);
 	}
 
 	/**
-	 * Returns the label registered under the given key, or an empty string
-	 * if none is set.
+	 * Returns the label for the given key: a caller override if one is set,
+	 * otherwise the built-in default from `BreadcrumbsLabel`. A raw string
+	 * key with no override resolves to an empty string.
 	 */
-	public function getLabel(string $key): string
+	public function getLabel(BreadcrumbsLabel|string $label): string
 	{
-		return $this->labels[$key] ?? '';
+		$slug = $label instanceof BreadcrumbsLabel ? $label->value : $label;
+
+		return $this->labels[$slug]
+			?? ($label instanceof BreadcrumbsLabel ? $label->text() : '');
 	}
 
 	/**
@@ -91,41 +89,6 @@ final class BreadcrumbsConfig
 	public function showNetwork(): bool
 	{
 		return $this->network;
-	}
-
-	/**
-	 * Returns the built-in, translated labels used for generated crumbs,
-	 * keyed by label slug. Caller-supplied labels are merged on top of these.
-	 */
-	private function defaultLabels(): array
-	{
-		// phpcs:disable Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma
-		return [
-			'home'                => __('Home', 'x3p0-breadcrumbs'),
-			'untitled'            => __('Untitled', 'x3p0-breadcrumbs'),
-			'error_404'           => __('Page not found', 'x3p0-breadcrumbs'),
-			'archives'            => __('Archives', 'x3p0-breadcrumbs'),
-			// Translators: %s is the search query.
-			'search'              => __('Search results for: %s', 'x3p0-breadcrumbs'),
-			// Translators: %s is the page number.
-			'paged'               => __('Page %s', 'x3p0-breadcrumbs'),
-			// Translators: %s is the page number.
-			'paged_comments'      => __('Comment Page %s', 'x3p0-breadcrumbs'),
-			// Translators: Hour archive title. %s is the hour time format.
-			'archive_hour'        => __('Hour %s', 'x3p0-breadcrumbs'),
-			// Translators: Minute archive title. %s is the minute time format.
-			'archive_minute'      => __('Minute %s', 'x3p0-breadcrumbs'),
-			// Translators: Second archive title. %s is the second time format.
-			'archive_second'      => __('Second %s', 'x3p0-breadcrumbs'),
-			// Translators: Weekly archive title. %s is the week date format.
-			'archive_week'        => __('Week %s', 'x3p0-breadcrumbs'),
-
-			// "%s" is replaced with the translated date/time format.
-			'archive_day'         => '%s',
-			'archive_month'       => '%s',
-			'archive_year'        => '%s'
-		];
-		// phpcs:enable
 	}
 
 	/**

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\BreadcrumbsLabel;
 
 /**
  * Crumb for a generic "Archives" label. Carries no URL; it acts as a
@@ -26,6 +27,6 @@ final class Archive extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel('archives');
+		return $this->context->config()->getLabel(BreadcrumbsLabel::Archives);
 	}
 }

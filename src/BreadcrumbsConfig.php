@@ -27,29 +27,19 @@ final class BreadcrumbsConfig
 	use BuildsFromArray;
 
 	/**
-	 * Whether each post type's permalink rewrite tags map into crumbs, keyed
-	 * by post type. Caller values are merged over the built-in defaults.
+	 * Stores the config values as caller overrides only. Built-in defaults
+	 * live on `BreadcrumbsLabel` (labels) and in the `mapRewriteTags()`
+	 * accessor (which defaults to `true`), so callers pass only what differs.
 	 *
-	 * @var array<string, bool>
-	 */
-	private readonly array $mapRewriteTags;
-
-	/**
-	 * Stores the config values. Labels are kept as caller overrides only
-	 * (defaults live on `BreadcrumbsLabel`), while rewrite-tag settings are
-	 * merged on top of the built-in defaults so callers only override what
-	 * differs.
-	 *
+	 * @param array<string, bool>   $mapRewriteTags
 	 * @param array<string, string> $labels
 	 */
 	public function __construct(
-		array                  $mapRewriteTags = [],
+		private readonly array $mapRewriteTags = [],
 		private readonly array $postTaxonomy   = [],
 		private readonly array $labels         = [],
 		private readonly bool  $network        = false
-	) {
-		$this->mapRewriteTags = array_merge($this->defaultRewriteTags(), $mapRewriteTags);
-	}
+	) {}
 
 	/**
 	 * Returns the label for the given key: a caller override if one is set,
@@ -89,21 +79,5 @@ final class BreadcrumbsConfig
 	public function showNetwork(): bool
 	{
 		return $this->network;
-	}
-
-	/**
-	 * Returns an array of the default post rewrite tag settings. Array keys
-	 * should be the post type and array values a boolean that sets whether
-	 * the rewrite tags should be mapped for the permalink structure as
-	 * breadcrumbs.
-	 */
-	private function defaultRewriteTags(): array
-	{
-		$types = array_filter(
-			get_post_types(['publicly_queryable' => true], 'objects'),
-			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
-		);
-
-		return ['post' => true] + array_fill_keys(array_keys($types), true);
 	}
 }

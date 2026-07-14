@@ -25,48 +25,28 @@ final class MarkupConfig
 	use BuildsFromArray;
 
 	/**
-	 * The sanitized namespace used for class prefixes.
-	 */
-	private readonly string $namespace;
-
-	/**
-	 * The container HTML attributes, with caller values merged over the
-	 * defaults (class, navigation role, ARIA label, Interactivity bindings).
+	 * Stores the config values as caller overrides only. The namespace is
+	 * sanitized and the container attributes are merged over the defaults
+	 * (class, navigation role, ARIA label, and Interactivity API bindings)
+	 * lazily in the accessors, so only what the caller passes is stored.
 	 *
-	 * @var array<string, string>
-	 */
-	private readonly array $containerAttr;
-
-	/**
-	 * Sets up the config state, sanitizing the namespace and merging the
-	 * given container attributes over the defaults (class, navigation role,
-	 * ARIA label, and Interactivity API bindings).
+	 * @param array<string, string> $containerAttr
 	 */
 	public function __construct(
-		string                $namespace      = 'breadcrumbs',
-		array                 $containerAttr  = [],
-		private readonly bool $showOnFront    = false,
-		private readonly bool $showFirstCrumb = true,
-		private readonly bool $showLastCrumb  = true,
-		private readonly bool $linkLastCrumb  = false
-	) {
-		$this->namespace = sanitize_html_class($namespace, 'breadcrumbs');
-
-		$this->containerAttr = array_merge([
-			'class'                 => $this->namespace,
-			'role'                  => 'navigation',
-			'aria-label'            => __('Breadcrumbs', 'x3p0-breadcrumbs'),
-			'data-wp-interactive'   => 'x3p0/breadcrumbs',
-			'data-wp-router-region' => 'breadcrumbs'
-		], $containerAttr);
-	}
+		private readonly string $namespace      = 'breadcrumbs',
+		private readonly array  $containerAttr  = [],
+		private readonly bool   $showOnFront    = false,
+		private readonly bool   $showFirstCrumb = true,
+		private readonly bool   $showLastCrumb  = true,
+		private readonly bool   $linkLastCrumb  = false
+	) {}
 
 	/**
 	 * Returns the markup namespace, which can be used for class prefixes.
 	 */
 	public function namespace(): string
 	{
-		return $this->namespace;
+		return sanitize_html_class($this->namespace, 'breadcrumbs');
 	}
 
 	/**
@@ -74,7 +54,13 @@ final class MarkupConfig
 	 */
 	public function getContainerAttr(): array
 	{
-		return $this->containerAttr;
+		return array_merge([
+			'class'                 => $this->namespace(),
+			'role'                  => 'navigation',
+			'aria-label'            => __('Breadcrumbs', 'x3p0-breadcrumbs'),
+			'data-wp-interactive'   => 'x3p0/breadcrumbs',
+			'data-wp-router-region' => 'breadcrumbs'
+		], $this->containerAttr);
 	}
 
 	/**

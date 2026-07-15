@@ -53,9 +53,15 @@ final class PostTypeArchive extends Query
 		$type = $this->postType ?: get_post_type_object(get_query_var('post_type'));
 
 		$this->context->assemble(AssemblerType::Home);
-		$this->context->assemble(AssemblerType::PostType, [
-			'postType' => $type,
-		]);
+
+		// Skip the post type step when the post type cannot be resolved,
+		// so a query left in an unexpected state degrades to a safe trail
+		// instead of passing null into the post type assembler.
+		if ($type instanceof WP_Post_Type) {
+			$this->context->assemble(AssemblerType::PostType, [
+				'postType' => $type,
+			]);
+		}
 
 		// If viewing a post type archive by author, add author crumb.
 		// This handles URLs like `/?post_type={type}&author={author}`.

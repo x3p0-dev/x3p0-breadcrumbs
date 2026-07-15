@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
+use WP_Exception;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
@@ -40,13 +41,21 @@ final class Taxonomy extends Query
 
 	/**
 	 * @inheritDoc
+	 * @throws WP_Exception
 	 */
 	public function query(): void
 	{
-		$term = $this->term ?: get_queried_object();
+		$term = $this->term ?: $this->queriedObject(WP_Term::class);
 
 		$this->context->assemble(AssemblerType::Home);
-		$this->context->assemble(AssemblerType::Term, [ 'term' => $term ]);
+
+		// Skip the term step when the queried object is not a term, so
+		// a query left in an unexpected state degrades to a safe trail
+		// instead of passing a wrong type into the term assembler.
+		if ($term instanceof WP_Term) {
+			$this->context->assemble(AssemblerType::Term, [ 'term' => $term ]);
+		}
+
 		$this->context->assemble(AssemblerType::Paged);
 	}
 }

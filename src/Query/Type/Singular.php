@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Type;
 
+use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
@@ -40,13 +41,21 @@ final class Singular extends Query
 
 	/**
 	 * @inheritDoc
+	 * @throws WP_Exception
 	 */
 	public function query(): void
 	{
-		$post = $this->post ?: get_queried_object();
+		$post = $this->post ?: $this->queriedObject(WP_Post::class);
 
 		$this->context->assemble(AssemblerType::Home);
-		$this->context->assemble(AssemblerType::Post, [ 'post' => $post ]);
+
+		// Skip the post step when the queried object is not a post, so a
+		// query left in an unexpected state degrades to a safe trail
+		// instead of passing a wrong type into the post assembler.
+		if ($post instanceof WP_Post) {
+			$this->context->assemble(AssemblerType::Post, [ 'post' => $post ]);
+		}
+
 		$this->context->assemble(AssemblerType::Paged);
 	}
 }

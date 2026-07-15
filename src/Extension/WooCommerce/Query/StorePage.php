@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Query;
 
-use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -64,7 +63,7 @@ abstract class StorePage extends Query
 	 */
 	protected function assembleEndpoint(string $endpoint): void
 	{
-		$this->context->addCrumb('woocommerce/endpoint', [
+		$this->context->addCrumb(WooCommerce::CRUMB_ENDPOINT, [
 			'endpoint' => $endpoint
 		]);
 	}

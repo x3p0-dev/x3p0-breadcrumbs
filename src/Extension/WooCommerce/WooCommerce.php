@@ -43,6 +43,12 @@ use X3P0\Breadcrumbs\Query\QueryRegistry;
  */
 final class WooCommerce extends Extension
 {
+	public const QUERY_ACCOUNT  = 'woocommerce/account';
+	public const QUERY_CART     = 'woocommerce/cart';
+	public const QUERY_CHECKOUT = 'woocommerce/checkout';
+	public const CRUMB_ENDPOINT = 'woocommerce/endpoint';
+	public const CRUMB_SHOP     = 'woocommerce/shop';
+
 	/**
 	 * Stores the query and crumb registries the extension seeds its custom
 	 * types into.
@@ -67,13 +73,13 @@ final class WooCommerce extends Extension
 	public function register(): void
 	{
 		// Register WooCommerce query types.
-		$this->queries->register('woocommerce/account', AccountQuery::class);
-		$this->queries->register('woocommerce/cart', CartQuery::class);
-		$this->queries->register('woocommerce/checkout', CheckoutQuery::class);
+		$this->queries->register(self::QUERY_ACCOUNT, AccountQuery::class);
+		$this->queries->register(self::QUERY_CART, CartQuery::class);
+		$this->queries->register(self::QUERY_CHECKOUT, CheckoutQuery::class);
 
 		// Register WooCommerce crumb types.
-		$this->crumbs->register('woocommerce/endpoint', EndpointCrumb::class);
-		$this->crumbs->register('woocommerce/shop', ShopCrumb::class);
+		$this->crumbs->register(self::CRUMB_ENDPOINT, EndpointCrumb::class);
+		$this->crumbs->register(self::CRUMB_SHOP, ShopCrumb::class);
 	}
 
 	/**
@@ -97,9 +103,9 @@ final class WooCommerce extends Extension
 	public function resolveQueryType(QueryTypeResolving $event): void
 	{
 		$type = match (true) {
-			is_account_page() => 'woocommerce/account',
-			is_cart()         => 'woocommerce/cart',
-			is_checkout()     => 'woocommerce/checkout',
+			is_account_page() => self::QUERY_ACCOUNT,
+			is_cart()         => self::QUERY_CART,
+			is_checkout()     => self::QUERY_CHECKOUT,
 			default           => null
 		};
 
@@ -119,7 +125,7 @@ final class WooCommerce extends Extension
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
-			fn (PostTypeCrumb $crumb) => $event->context->makeCrumb('woocommerce/shop', [
+			fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(self::CRUMB_SHOP, [
 				'decoratedCrumb' => $crumb
 			])
 		);

@@ -36,6 +36,13 @@ final class Search extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		return get_search_link();
+		// `get_search_link()` only encodes the search term, so a search
+		// scoped by post type, taxonomy, or any custom query var (e.g.,
+		// `?s={search}&post_type={type}`) would lose that scope. Instead,
+		// mirror WordPress's own pagination links by capturing the real
+		// request URL and resetting it to the first page, which preserves
+		// every query variable on the current search results page. The
+		// URL is escaped at the point of output, so return it unescaped.
+		return is_paged() ? get_pagenum_link(1, false) : get_search_link();
 	}
 }

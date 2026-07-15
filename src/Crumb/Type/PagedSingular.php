@@ -17,6 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb representing a sub-page of a multipage singular post (split via the
@@ -30,7 +31,7 @@ final class PagedSingular extends Crumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		public readonly WP_Post $post
+		#[NoAutowire] public readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

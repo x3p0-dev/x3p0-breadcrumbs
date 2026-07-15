@@ -20,6 +20,7 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Term as TermCrumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Builds the trail leading up to a term and adds the term's own crumb. It
@@ -35,7 +36,7 @@ final class Term extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Term $term
+		#[NoAutowire] private readonly WP_Term $term
 	) {
 		parent::__construct(context: $context);
 	}

@@ -21,6 +21,7 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Adds the archive crumb for a post type. For the built-in `post` type it
@@ -35,7 +36,7 @@ final class PostType extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly ?WP_Post_Type $postType = null
+		#[NoAutowire] private readonly ?WP_Post_Type $postType = null
 	) {
 		parent::__construct(context: $context);
 	}

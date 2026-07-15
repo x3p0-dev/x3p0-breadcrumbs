@@ -17,6 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Builds the structural trail above a post from its post type's rewrite
@@ -33,7 +34,7 @@ final class PostHierarchy extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Post $post
+		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

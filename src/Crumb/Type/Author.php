@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_User;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb for an author archive. Labels with the user's display name and links
@@ -28,7 +29,7 @@ final class Author extends Crumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		public readonly WP_User $user
+		#[NoAutowire] public readonly WP_User $user
 	) {
 		parent::__construct(context: $context);
 	}

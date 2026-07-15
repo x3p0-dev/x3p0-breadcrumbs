@@ -20,6 +20,7 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Builds the trail leading up to a single post and adds the post's own crumb.
@@ -35,7 +36,7 @@ final class Post extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Post $post
+		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

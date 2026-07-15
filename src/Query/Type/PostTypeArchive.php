@@ -18,6 +18,7 @@ use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -39,8 +40,8 @@ final class PostTypeArchive extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly ?WP_Post_Type $postType = null,
-		private readonly ?WP_User $user = null
+		#[NoAutowire] private readonly ?WP_Post_Type $postType = null,
+		#[NoAutowire] private readonly ?WP_User $user = null
 	) {
 		parent::__construct(context: $context);
 	}

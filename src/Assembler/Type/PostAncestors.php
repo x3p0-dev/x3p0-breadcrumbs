@@ -18,6 +18,7 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Walks a post's parent chain to its topmost ancestor, then builds the trail
@@ -33,7 +34,7 @@ final class PostAncestors extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Post $post
+		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}

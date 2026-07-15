@@ -17,6 +17,7 @@ use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -34,7 +35,7 @@ final class Singular extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly ?WP_Post $post = null
+		#[NoAutowire] private readonly ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);
 	}

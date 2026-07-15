@@ -18,6 +18,7 @@ use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
 use X3P0\Breadcrumbs\Query\QueryType;
 
@@ -36,7 +37,7 @@ final class Author extends Query
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly ?WP_User $user = null
+		#[NoAutowire] private readonly ?WP_User $user = null
 	) {
 		parent::__construct(context: $context);
 	}

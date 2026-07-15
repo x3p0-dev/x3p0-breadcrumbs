@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post_Type;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb representing a post type archive. Its label is the post type's archive
@@ -28,7 +29,7 @@ final class PostType extends Crumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		public readonly WP_Post_Type $postType
+		#[NoAutowire] public readonly WP_Post_Type $postType
 	) {
 		parent::__construct(context: $context);
 	}

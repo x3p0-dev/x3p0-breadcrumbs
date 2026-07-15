@@ -19,6 +19,7 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Maps the rewrite tags in a permalink structure to crumbs for a post. Walks the
@@ -34,7 +35,7 @@ final class PostRewriteTags extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Post $post,
+		#[NoAutowire] private readonly WP_Post $post,
 		private readonly string $path = ''
 	) {
 		parent::__construct(context: $context);

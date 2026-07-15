@@ -17,6 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb representing a yearly time archive. Its label is the configured
@@ -30,7 +31,7 @@ final class Year extends Crumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		public readonly ?WP_Post $post = null
+		#[NoAutowire] public readonly ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);
 	}

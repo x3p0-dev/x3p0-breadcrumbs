@@ -18,6 +18,7 @@ use WP_Taxonomy;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Picks the first term assigned to the post in the given taxonomy and delegates
@@ -31,8 +32,8 @@ final class PostTerms extends Assembler
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		private readonly WP_Post $post,
-		private readonly WP_Taxonomy $taxonomy
+		#[NoAutowire] private readonly WP_Post $post,
+		#[NoAutowire] private readonly WP_Taxonomy $taxonomy
 	) {
 		parent::__construct(context: $context);
 	}

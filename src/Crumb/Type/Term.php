@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Term;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb representing a single taxonomy term (category, tag, or custom
@@ -29,7 +30,7 @@ final class Term extends Crumb
 	 */
 	public function __construct(
 		BreadcrumbsContext $context,
-		public readonly WP_Term $term
+		#[NoAutowire] public readonly WP_Term $term
 	) {
 		parent::__construct(context: $context);
 	}

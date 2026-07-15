@@ -41,8 +41,8 @@ final class CrumbFactory
 	{
 		$key = $type instanceof CrumbType ? $type->value : $type;
 
-		/** @var null|class-string<Crumb> $class */
 		if ($class = $this->crumbRegistry->get($key)) {
+			/** @var Crumb $crumb */
 			$crumb = $this->resolver->make($class, $params);
 			$crumb->setType($key);
 

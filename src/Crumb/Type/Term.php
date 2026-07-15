@@ -58,6 +58,10 @@ final class Term extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		return get_term_link($this->term, $this->term->taxonomy);
+		$link = get_term_link($this->term, $this->term->taxonomy);
+
+		// `get_term_link()` returns a `WP_Error` for an invalid term;
+		// fall back to an empty string.
+		return is_wp_error($link) ? '' : $link;
 	}
 }

@@ -46,8 +46,8 @@ final class Paged extends Assembler
 			$this->context->addCrumb(CrumbType::Paged);
 
 		// If viewing a paged singular post.
-		} elseif (is_singular() && 1 < get_query_var('page')) {
-			$this->context->addCrumb(CrumbType::PagedSingular);
+		} elseif (is_singular() && 1 < get_query_var('page') && $post = get_post()) {
+			$this->context->addCrumb(CrumbType::PagedSingular, [ 'post' => $post ]);
 
 		// If viewing a singular post with paged comments.
 		} elseif (is_singular() && get_option('page_comments') && 1 < get_query_var('cpage')) {

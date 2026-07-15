@@ -54,6 +54,6 @@ final class Post extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		return get_permalink($this->post->ID);
+		return (string) get_permalink($this->post->ID);
 	}
 }

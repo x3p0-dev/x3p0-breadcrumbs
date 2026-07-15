@@ -50,6 +50,6 @@ final class PostType extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		return get_post_type_archive_link($this->postType->name);
+		return (string) get_post_type_archive_link($this->postType->name);
 	}
 }

@@ -305,12 +305,13 @@ add_action('wp_head', function() {
 
 #### Modifying the Breadcrumb Trail with Events
 
-The plugin dispatches typed events at the key moments while a trail is built. Listening to these events is the recommended way to change which breadcrumbs are shown or to adjust the finished trail. Each event is also bridged to a matching WordPress action, so you can use a plain `add_action()` callback.
+The plugin dispatches typed events at the key moments while a trail is built and rendered. Listening to these events is the recommended way to change which breadcrumbs are shown, to adjust the finished trail, or to retarget how it is rendered. Each event is also bridged to a matching WordPress action, so you can use a plain `add_action()` callback.
 
-There are two events:
+There are three events:
 
 - **`Query\Event\QueryTypeResolving`:** Dispatched while resolving which query type matches the current request, _before_ the query runs. This is what you hook into to change which breadcrumbs are shown for a given page.
 - **`Crumb\Event\CrumbsBuilt`:** Dispatched _after_ the trail has been built, before it is returned. This is what you hook into to append, remove, or relabel crumbs.
+- **`Markup\Event\MarkupRendering`:** Dispatched _after_ the trail is built but _before_ it is rendered. This is what you hook into to change the markup type or config used to render the trail for a given request.
 
 ##### Changing the Query Type
 
@@ -411,6 +412,29 @@ add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
 
 As with the query event, you may register a typed listener for `CrumbsBuilt::class` on the dispatcher instead of using the action bridge — see [The Extension System](#the-extension-system) below for the tidiest way to do that.
 
+##### Retargeting the Rendered Markup
+
+The `MarkupRendering` event fires after the trail is built but before it is rendered, so it is where you change *how* a finished trail is presented for the current request. It carries three things:
+
+- **`$event->crumbs`:** The finished `CrumbCollection`, read-only. Mutate crumbs on `CrumbsBuilt` instead; by this point the trail is fixed and only its presentation is in play.
+- **`getMarkupType()` / `setMarkupType()`:** The markup type to render with. Pass a `MarkupType` case for a built-in format or a string key for a custom one.
+- **`getConfig()` / `setConfig()`:** The `MarkupConfig` to render with.
+
+For example, render the trail with microdata on your shop's pages while leaving every other request untouched:
+
+```php
+use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
+use X3P0\Breadcrumbs\Markup\MarkupType;
+
+add_action('x3p0/breadcrumbs/markup-rendering', function (MarkupRendering $event) {
+	if (function_exists('is_shop') && is_shop()) {
+		$event->setMarkupType(MarkupType::Microdata);
+	}
+});
+```
+
+As with the other events, you may register a typed listener for `MarkupRendering::class` on the dispatcher instead of using the action bridge.
+
 #### Available Hooks
 
 Beyond the event bridges above, the plugin fires one lifecycle action.
@@ -451,7 +475,7 @@ An extension extends `X3P0\Breadcrumbs\Extension\Extension` and can implement th
 
 - **`isActive(): bool`** _(required)_ — Whether the extension should participate in the current request. Guard on something the target platform itself defines (a class or function); the extension is skipped entirely — never registered, never subscribed — when this returns `false`, so an inactive platform costs a single check and nothing more.
 - **`register(): void`** _(optional)_ — Register the extension's custom query, assembler, and crumb types. Called once, only for active extensions. Registering an existing key overrides the built-in type for that key.
-- **`getSubscribedEvents(): array`** _(optional)_ — Map each event class to the name of the method that handles it. This is how you subscribe listeners to `QueryTypeResolving` and `CrumbsBuilt` without reaching for the global action bridges.
+- **`getSubscribedEvents(): array`** _(optional)_ — Map each event class to the name of the method that handles it. This is how you subscribe listeners to `QueryTypeResolving`, `CrumbsBuilt`, and `MarkupRendering` without reaching for the global action bridges.
 
 Constructor dependencies are resolved from the container, so you can typehint the registries — or any other service — you need.
 

@@ -13,16 +13,19 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupFactory;
 use X3P0\Breadcrumbs\Markup\MarkupType;
+use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 
 /**
  * The public, outside-in entry point for turning a request into a rendered
  * breadcrumb trail. Given a config, it builds the trail (via the breadcrumbs
  * generator) and renders it to a string in the requested markup format (via the
  * markup factory), hiding that two-step pipeline behind a single `render()`
- * call.
+ * call. Between the two steps it dispatches the `MarkupRendering` event, so
+ * listeners can retarget the markup type or config for the current request.
  *
  * This is the mirror image of `BreadcrumbsContext`: where the context is the
  * inside-out facade the build participants talk through, this is the outside-in
@@ -38,11 +41,13 @@ class BreadcrumbsRenderer
 {
 	/**
 	 * Sets up the initial renderer state with the breadcrumbs generator and
-	 * the markup factory used to build and render a breadcrumb trail.
+	 * the markup factory used to build and render a breadcrumb trail, plus
+	 * the dispatcher that lets listeners retarget rendering.
 	 */
 	public function __construct(
 		private readonly BreadcrumbsGenerator $generator,
-		private readonly MarkupFactory        $markupFactory
+		private readonly MarkupFactory        $markupFactory,
+		private readonly Dispatcher           $events
 	) {}
 
 	/**
@@ -66,9 +71,25 @@ class BreadcrumbsRenderer
 			? MarkupConfig::fromArray($markupConfig)
 			: $markupConfig;
 
-		$markup = $this->markupFactory->make($markupType, [
-			'crumbs' => $this->generator->generate($breadcrumbsConfig),
-			'config' => $markupConfig
+		$crumbs = $this->generator->generate($breadcrumbsConfig);
+
+		// Let listeners retarget the markup type or config for this
+		// request, then bridge the same event to WordPress unless a
+		// listener claimed stopped propagation, so `add_action()`
+		// callbacks can retarget it alongside the typed listeners.
+		$event = $this->events->dispatch(new MarkupRendering(
+			crumbs:     $crumbs,
+			markupType: $markupType,
+			config:     $markupConfig
+		));
+
+		if (! $event->isPropagationStopped()) {
+			do_action(MarkupRendering::HOOK_NAME, $event);
+		}
+
+		$markup = $this->markupFactory->make($event->getMarkupType(), [
+			'crumbs' => $crumbs,
+			'config' => $event->getConfig()
 		]);
 
 		return $markup?->render() ?? '';

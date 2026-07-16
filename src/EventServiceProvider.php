@@ -64,8 +64,6 @@ final class EventServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		parent::register();
-
 		// The one registry instance listeners and subscribers register
 		// on, resolved by both the `ListenerRegistry` write contract
 		// and the `ListenerProvider` read contract that delegates to it.

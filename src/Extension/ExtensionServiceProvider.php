@@ -52,8 +52,6 @@ final class ExtensionServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		parent::register();
-
 		foreach (self::EXTENSIONS as $extension) {
 			$this->container->singletonIf($extension);
 		}
@@ -68,7 +66,6 @@ final class ExtensionServiceProvider extends ServiceProvider
 	 */
 	public function boot(): void
 	{
-		parent::boot();
 		$this->container->call($this->bootExtensions(...));
 	}
 

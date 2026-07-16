@@ -30,28 +30,36 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class ExtensionServiceProvider extends ServiceProvider
 {
 	/**
-	 * The built-in extensions bound as shared singletons only if not already
-	 * bound, so third parties may replace one with their own concrete.
+	 * The built-in extensions. Each is bound as an overridable singleton
+	 * and tagged, so third parties may replace one and their own tagged
+	 * extensions boot alongside these.
 	 *
-	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
+	 * @var  list<string>
 	 */
-	protected const SINGLETONS_IF = [
+	protected const EXTENSIONS = [
 		WooCommerce::class
 	];
 
 	/**
-	 * Tags the built-in extensions so they are collected and booted
-	 * alongside any third-party extensions tagged with `Extension::TAG`.
-	 *
-	 * @var  array<string, array<string>>
-	 * @todo Type hint with PHP 8.3+ requirement.
+	 * Binds and tags the built-in extensions. Runs the parent first, then
+	 * walks `EXTENSIONS` once to register each as an overridable singleton
+	 * and tag it under `Extension::TAG`. Driving both from a single list
+	 * keeps the binding and the tag in sync: the `singletonIf` binding lets
+	 * an extension swap a built-in by binding its own concrete first, and
+	 * the shared tag collects those swaps alongside any third-party
+	 * extensions for `bootExtensions()`.
 	 */
-	protected const TAGS = [
-		Extension::TAG => [
-			WooCommerce::class
-		]
-	];
+	public function register(): void
+	{
+		parent::register();
+
+		foreach (self::EXTENSIONS as $extension) {
+			$this->container->singletonIf($extension);
+		}
+
+		$this->container->tag(self::EXTENSIONS, Extension::TAG);
+	}
 
 	/**
 	 * Boots the tagged extensions by handing `bootExtensions()` to the

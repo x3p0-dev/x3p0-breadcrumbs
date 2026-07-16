@@ -22,7 +22,7 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  * Wires the plugin's built-in platform extensions into the container and boots
  * the ones whose platform is active. Each extension is bound as an overridable
  * singleton and, on boot, is registered and subscribed only when its
- * `isSupported()` check passes, so an inactive platform costs a single guard and
+ * `isActive()` check passes, so an inactive platform costs a single guard and
  * nothing more. This provider is registered last so extensions boot after the
  * subsystems (query, crumb, event) they build on, letting an extension override
  * a built-in type by re-registering its key.
@@ -73,20 +73,20 @@ final class ExtensionServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Boots each supported extension, letting it register its own query,
+	 * Boots each active extension, letting it register its own query,
 	 * assembler, and crumb types and subscribing its event listeners. The
 	 * container injects the shared `ListenerRegistry` and, through the
 	 * `#[Tagged]` attribute, every service tagged with `Extension::TAG` as
 	 * the variadic `$extensions`, whose `Extension` type enforces that each
 	 * tagged service is an extension. An extension whose platform is
-	 * inactive (`isSupported()` is false) is skipped.
+	 * inactive (`isActive()` is false) is skipped.
 	 */
 	private function bootExtensions(
 		ListenerRegistry $listeners,
 		#[Tagged(Extension::TAG)] Extension ...$extensions
 	): void {
 		foreach ($extensions as $extension) {
-			if ($extension->isSupported()) {
+			if ($extension->isActive()) {
 				$extension->register();
 				$listeners->subscribe($extension);
 			}

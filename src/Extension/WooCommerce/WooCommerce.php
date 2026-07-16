@@ -61,7 +61,7 @@ final class WooCommerce extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function isSupported(): bool
+	public function isActive(): bool
 	{
 		return class_exists('WooCommerce');
 	}

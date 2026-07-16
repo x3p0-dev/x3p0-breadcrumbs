@@ -449,8 +449,8 @@ The registration and event examples above are the raw seams. When you're integra
 
 An extension extends `X3P0\Breadcrumbs\Extension\Extension` and can implement three methods:
 
-- **`isSupported(): bool`** _(required)_ — Whether the target platform is present for the current request. Guard on something the platform itself defines (a class or function); the extension is skipped entirely — never registered, never subscribed — when this returns `false`, so an inactive platform costs a single check and nothing more.
-- **`register(): void`** _(optional)_ — Register the extension's custom query, assembler, and crumb types. Called once, only for supported extensions. Registering an existing key overrides the built-in type for that key.
+- **`isActive(): bool`** _(required)_ — Whether the extension should participate in the current request. Guard on something the target platform itself defines (a class or function); the extension is skipped entirely — never registered, never subscribed — when this returns `false`, so an inactive platform costs a single check and nothing more.
+- **`register(): void`** _(optional)_ — Register the extension's custom query, assembler, and crumb types. Called once, only for active extensions. Registering an existing key overrides the built-in type for that key.
 - **`getSubscribedEvents(): array`** _(optional)_ — Map each event class to the name of the method that handles it. This is how you subscribe listeners to `QueryTypeResolving` and `CrumbsBuilt` without reaching for the global action bridges.
 
 Constructor dependencies are resolved from the container, so you can typehint the registries — or any other service — you need.
@@ -472,7 +472,7 @@ final class MyExtension extends Extension
 		private CrumbRegistry $crumbs
 	) {}
 
-	public function isSupported(): bool
+	public function isActive(): bool
 	{
 		return function_exists('my_platform');
 	}
@@ -511,7 +511,7 @@ final class MyExtension extends Extension
 }
 ```
 
-To activate it, bind it in the container and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are collected and booted automatically — the plugin calls `isSupported()`, then `register()`, then subscribes the listeners — right alongside the built-ins:
+To activate it, bind it in the container and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are collected and booted automatically — the plugin calls `isActive()`, then `register()`, then subscribes the listeners — right alongside the built-ins:
 
 ```php
 use X3P0\Breadcrumbs\Extension\Extension;

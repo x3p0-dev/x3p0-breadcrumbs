@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Packages\Event\Subscriber;
  * edits by using the same public seams available to third parties: it registers
  * custom query, assembler, or crumb types in `register()` and subscribes
  * listeners to the plugin's events via the `Subscriber` contract. The
- * `ExtensionServiceProvider` only wires up an extension when `isSupported()`
+ * `ExtensionServiceProvider` only wires up an extension when `isActive()`
  * reports that its target platform is present, so nothing runs when the
  * platform is inactive. Concrete extensions are `final` and live under their
  * own sub-namespace; this class is the typehint the service provider checks.
@@ -39,16 +39,16 @@ abstract class Extension implements Subscriber
 	public const TAG = 'x3p0/breadcrumbs/extension';
 
 	/**
-	 * Whether the target platform is present for the current request. The
+	 * Whether the extension should participate in the current request. The
 	 * service provider skips an extension entirely when this returns false,
-	 * so guard on the platform's own API (e.g. a class or function it
-	 * defines) rather than assuming it is loaded.
+	 * so guard on the target platform's own API (e.g. a class or function
+	 * it defines) rather than assuming it is loaded.
 	 */
-	abstract public function isSupported(): bool;
+	abstract public function isActive(): bool;
 
 	/**
 	 * Registers the extension's custom query, assembler, and crumb types in
-	 * their registries. Called once for supported extensions, before its
+	 * their registries. Called once for active extensions, before its
 	 * listeners are subscribed. Registering an existing key overrides the
 	 * built-in type of that key.
 	 */

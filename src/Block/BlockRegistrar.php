@@ -93,7 +93,7 @@ final class BlockRegistrar implements Bootable
 
 		$types = array_filter(
 			get_post_types(['publicly_queryable' => true], 'objects'),
-			fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
+			static fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')
 		);
 
 		$metadata['attributes']['mapRewriteTags']['default'] = [

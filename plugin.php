@@ -30,7 +30,7 @@ if (! class_exists(Plugin::class) && is_file(PLUGIN_DIR . '/vendor/autoload.php'
 }
 
 # Initialize the plugin and boot registered services.
-add_action('plugins_loaded', function (): void {
+add_action('plugins_loaded', static function (): void {
 	do_action('x3p0/breadcrumbs/register', plugin());
 	plugin()->boot();
 }, -999);

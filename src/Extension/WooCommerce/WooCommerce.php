@@ -124,8 +124,8 @@ final class WooCommerce extends Extension
 	{
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
-			fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
-			fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(self::CRUMB_SHOP, [
+			static fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
+			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(self::CRUMB_SHOP, [
 				'decoratedCrumb' => $crumb
 			])
 		);

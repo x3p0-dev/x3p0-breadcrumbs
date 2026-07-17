@@ -75,7 +75,7 @@ abstract class Markup implements Renderable
 		$attr = $this->config->getContainerAttr();
 
 		return implode(' ', array_map(
-			fn($name, $value) => sprintf('%s="%s"', esc_attr($name), esc_attr($value)),
+			static fn($name, $value) => sprintf('%s="%s"', esc_attr($name), esc_attr($value)),
 			array_keys($attr),
 			$attr
 		));
@@ -151,7 +151,7 @@ abstract class Markup implements Renderable
 		$namespace = $this->config->namespace();
 
 		return implode(' ', array_map(
-			fn($className) => "{$namespace}__" . str_replace('/', '-', $className),
+			static fn($className) => "{$namespace}__" . str_replace('/', '-', $className),
 			(array) $class
 		));
 	}

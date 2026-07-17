@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 use X3P0\Breadcrumbs\Support\ClassEnum;
+use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
 
 /**
  * Defines the canonical string keys for the plugin's built-in assemblers. The
@@ -22,6 +23,8 @@ use X3P0\Breadcrumbs\Support\ClassEnum;
  */
 enum AssemblerType: string implements ClassEnum
 {
+	use ResolvesTypeKey;
+
 	case Date            = 'date';
 	case Home            = 'home';
 	case Paged           = 'paged';

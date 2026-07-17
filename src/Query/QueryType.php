@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query;
 
 use X3P0\Breadcrumbs\Support\ClassEnum;
+use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
 
 /**
  * The canonical string keys for the built-in query types, one per WordPress
@@ -22,6 +23,8 @@ use X3P0\Breadcrumbs\Support\ClassEnum;
  */
 enum QueryType: string implements ClassEnum
 {
+	use ResolvesTypeKey;
+
 	case Archive         = 'archive';
 	case Author          = 'author';
 	case Date            = 'date';

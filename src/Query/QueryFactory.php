@@ -32,14 +32,15 @@ final class QueryFactory
 	) {}
 
 	/**
-	 * Resolves the query registered under `$type` from the container, forwarding
-	 * `$params` as named constructor arguments. Accepts a `QueryType` for
-	 * built-in queries or a string key for custom ones. Returns `null` if the
+	 * Resolves the query registered under `$type` from the container,
+	 * forwarding `$params` as named constructor arguments. Accepts a
+	 * `QueryType` case, one of the concrete `Type\` class names it defines,
+	 * or a string key (built-in or custom). Returns `null` if the resolved
 	 * key is not registered.
 	 */
 	public function make(QueryType|string $type, array $params = []): ?Query
 	{
-		$key = $type instanceof QueryType ? $type->value : $type;
+		$key = QueryType::key($type);
 
 		/** @var null|class-string<Query> $query */
 		if ($query = $this->queryRegistry->get($key)) {

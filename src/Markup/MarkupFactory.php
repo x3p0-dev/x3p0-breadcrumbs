@@ -31,14 +31,15 @@ final class MarkupFactory
 	) {}
 
 	/**
-	 * Resolves the markup class registered for a given type from the container,
-	 * forwarding `$params` as named constructor arguments. Accepts a
-	 * `MarkupType` for built-in markup or a string key for custom ones. Returns
-	 * `null` for an unknown key.
+	 * Resolves the markup class registered for a given type from the
+	 * container, forwarding `$params` as named constructor arguments.
+	 * Accepts a `MarkupType` case, one of the concrete `Type\` class names
+	 * it defines, or a string key (built-in or custom). Returns `null` for
+	 * an unknown resolved key.
 	 */
 	public function make(MarkupType|string $type, array $params = []): ?Markup
 	{
-		$key = $type instanceof MarkupType ? $type->value : $type;
+		$key = MarkupType::key($type);
 
 		/** @var null|class-string<Markup> $markup */
 		if ($markup = $this->markupRegistry->get($key)) {

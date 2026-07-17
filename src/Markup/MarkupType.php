@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Support\ClassEnum;
+use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
 
 /**
  * Canonical keys for the built-in markup formats. The backed string value is
@@ -22,6 +23,8 @@ use X3P0\Breadcrumbs\Support\ClassEnum;
  */
 enum MarkupType: string implements ClassEnum
 {
+	use ResolvesTypeKey;
+
 	case Html           = 'html';
 	case Microdata      = 'microdata';
 	case Rdfa           = 'rdfa';

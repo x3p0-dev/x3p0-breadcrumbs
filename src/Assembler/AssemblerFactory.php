@@ -34,13 +34,13 @@ final class AssemblerFactory
 	/**
 	 * Looks up the class registered for the given type and resolves a new
 	 * instance from the container, forwarding `$params` as named constructor
-	 * arguments. Accepts an `AssemblerType` for built-in assemblers or a string
-	 * key for custom ones. Returns `null` when no assembler is registered under
-	 * the key.
+	 * arguments. Accepts an `AssemblerType` case, one of the concrete `Type\`
+	 * class names it defines, or a string key (built-in or custom). Returns
+	 * `null` when no assembler is registered under the resolved key.
 	 */
 	public function make(AssemblerType|string $type, array $params = []): ?Assembler
 	{
-		$key = $type instanceof AssemblerType ? $type->value : $type;
+		$key = AssemblerType::key($type);
 
 		/** @var null|class-string<Assembler> $assembler */
 		if ($assembler = $this->assemblerRegistry->get($key)) {

@@ -59,7 +59,10 @@ final class BlockAssets implements Bootable
 			sprintf(
 				'window.%1$s = Object.assign(window.%1$s || {}, %2$s);',
 				self::SCRIPT_GLOBAL,
-				wp_json_encode(['markupTypes' => $this->markupOptions->forBlock()])
+				wp_json_encode(
+					['markupTypes' => $this->markupOptions->forBlock()],
+					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
+				)
 			),
 			'before'
 		);

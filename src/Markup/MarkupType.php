@@ -28,14 +28,19 @@ enum MarkupType: string implements ClassEnum
 	case JsonLinkedData = 'json-ld';
 
 	/**
-	 * Returns the markup class associated with the type. Each case name matches
-	 * a concrete class under the `Type` sub-namespace.
+	 * Returns the markup class associated with the type, mapping each case
+	 * to a concrete class under the `Type` sub-namespace.
 	 *
 	 * @return class-string<Markup>
 	 */
 	public function className(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return __NAMESPACE__ . '\\Type\\' . $this->name;
+		return match ($this) {
+			self::Html           => Type\Html::class,
+			self::Microdata      => Type\Microdata::class,
+			self::Rdfa           => Type\Rdfa::class,
+			self::JsonLinkedData => Type\JsonLinkedData::class
+		};
 	}
 }

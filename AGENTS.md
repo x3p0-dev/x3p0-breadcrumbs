@@ -28,7 +28,7 @@ The plugin bootstraps via a central `Plugin` class that registers service provid
 
 Extensible subsystems follow this pattern:
 
-- **Type enum** — a backed `enum` (implementing `Support\ClassEnum`) whose cases are the canonical string keys. Its `className()` maps each case to its concrete class under `Type\`; the case name matches the class name.
+- **Type enum** — a backed `enum` (implementing `Support\ClassEnum`) whose cases are the canonical string keys. Its `className()` uses a `match ($this)` to map each case to its concrete class under `Type\`, returning a real `::class` constant per arm (so the classes stay discoverable to the IDE and static analysis, and the narrowed `class-string<Base>` return is verifiable). By convention each case name matches its class name.
 - **Registry** — stores `string key → class name` mappings. Extends the `x3p0-class-registry` package base and sets a `CONTRACT` constant naming the abstract type that entries must extend.
 - **Factory** — resolves a key (the enum case or its raw string) from the registry and instantiates the class via the DI container.
 - **Registrar** — a `final` class extending `Support\EnumRegistrar`. It declares the `ENUM` constant; the inherited `boot()` seeds the registry from the enum's cases, skipping any key already registered so extensions can override the built-ins.

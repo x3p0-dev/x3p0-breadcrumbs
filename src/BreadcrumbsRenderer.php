@@ -72,14 +72,12 @@ class BreadcrumbsRenderer
 			? MarkupConfig::fromArray($markupConfig)
 			: $markupConfig;
 
-		$crumbs = $this->generator->generate($breadcrumbsConfig);
-
 		// Let listeners retarget the markup type or config for this
 		// request, then bridge the same event to WordPress unless a
 		// listener claimed stopped propagation, so `add_action()`
 		// callbacks can retarget it alongside the typed listeners.
 		$event = $this->events->dispatch(new MarkupRendering(
-			crumbs:     $crumbs,
+			crumbs:     $this->generator->generate($breadcrumbsConfig),
 			markupType: $markupType,
 			config:     $markupConfig
 		));
@@ -89,7 +87,7 @@ class BreadcrumbsRenderer
 		}
 
 		$markup = $this->markupFactory->make($event->getMarkupType(), [
-			'crumbs' => $crumbs,
+			'crumbs' => $event->crumbs,
 			'config' => $event->getConfig()
 		]);
 

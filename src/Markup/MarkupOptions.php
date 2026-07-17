@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Markup block options class.
+ * Markup options class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -30,9 +30,9 @@ final class MarkupOptions
 
 	/**
 	 * Returns the markup types offered as a block option — those that opt
-	 * in by implementing `MarkupOption` — as `key`/`name` pairs in registry
-	 * order. This is the single source consumed by both the block's
-	 * attribute `enum` and the editor script.
+	 * in by implementing `MarkupBlockOption` — as `key`/`name` pairs in
+	 * registry order. This is the single source consumed by both the
+	 * block's attribute `enum` and the editor script.
 	 *
 	 * @return array<int, array{key: string, name: string}>
 	 */
@@ -41,7 +41,7 @@ final class MarkupOptions
 		$options = [];
 
 		foreach ($this->registry as $key => $className) {
-			if (is_subclass_of($className, MarkupOption::class)) {
+			if (is_subclass_of($className, MarkupBlockOption::class)) {
 				$options[] = [
 					'key'  => $key,
 					'name' => $className::label()

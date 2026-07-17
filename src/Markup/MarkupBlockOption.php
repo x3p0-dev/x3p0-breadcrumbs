@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Markup option interface.
+ * Markup block option interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Implemented by markup types that may be presented as a selectable option,
- * such as the block editor's markup-style control. Types that opt in supply
- * the human-readable label shown for the choice; types that do not implement
- * this contract (e.g., JSON-LD) are omitted from those controls.
+ * Implemented by markup types that may be presented as a selectable option in
+ * the block editor's markup-style control. Types that opt in supply the
+ * human-readable label shown for the choice; types that do not implement this
+ * contract (e.g., JSON-LD) are omitted from the control.
  */
-interface MarkupOption
+interface MarkupBlockOption
 {
 	/**
 	 * Returns the internationalized label shown when presenting this markup

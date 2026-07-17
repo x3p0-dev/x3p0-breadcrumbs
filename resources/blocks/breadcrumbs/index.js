@@ -19,6 +19,7 @@ import metadata   from './block.json';
 import edit       from './edit';
 import icon       from './icon';
 import deprecated from './deprecated';
+import transforms from './transforms';
 
 // Keep the accepted markup values in sync with the server-defined list
 // (`MarkupType`), passed in on the `x3p0Breadcrumbs` global.
@@ -28,4 +29,4 @@ metadata.attributes.markup.enum =
 	(window.x3p0Breadcrumbs?.markupTypes ?? []).map(({key}) => key);
 
 // Register the block type.
-registerBlockType(metadata, { edit, icon, deprecated });
+registerBlockType(metadata, { edit, icon, deprecated, transforms });

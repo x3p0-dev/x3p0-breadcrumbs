@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
-use X3P0\Breadcrumbs\Markup\MarkupType;
+use X3P0\Breadcrumbs\Markup\MarkupKey;
 use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
 
@@ -25,9 +25,10 @@ use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
  * the finished crumbs read-only — mutate them on the `CrumbsBuilt` event
  * instead — along with the markup type and markup config to render with, both
  * mutable: swap the type with `setMarkupType()` to render a different format,
- * or replace the config with `setConfig()` to adjust its options. Pass a
- * `MarkupType` case for a built-in format or a string key for a custom one. The
- * renderer reads the final type and config back from this same instance.
+ * or replace the config with `setConfig()` to adjust its options. Pass any
+ * `MarkupKey` (such as a `MarkupType` case) for a typed reference or a string
+ * key for a custom one. The renderer reads the final type and config back from
+ * this same instance.
  */
 final class MarkupRendering implements StoppableEvent
 {
@@ -45,29 +46,30 @@ final class MarkupRendering implements StoppableEvent
 
 	/**
 	 * Stores the finished crumbs and the mutable markup type and config to
-	 * render with. The crumbs are the same collection the build produced; the
-	 * type accepts a `MarkupType` case or a string key for a custom format.
+	 * render with. The crumbs are the same collection the build produced;
+	 * the type accepts any `MarkupKey` (such as a `MarkupType` case) or a
+	 * string key for a custom format.
 	 */
 	public function __construct(
 		public readonly CrumbCollection $crumbs,
-		private MarkupType|string $markupType,
+		private MarkupKey|string $markupType,
 		private MarkupConfig $config
 	) {}
 
 	/**
-	 * Returns the markup type to render with: a `MarkupType` case or a
-	 * string key for a custom format.
+	 * Returns the markup type to render with: a `MarkupKey` (such as a
+	 * `MarkupType` case) or a string key for a custom format.
 	 */
-	public function getMarkupType(): MarkupType|string
+	public function getMarkupType(): MarkupKey|string
 	{
 		return $this->markupType;
 	}
 
 	/**
-	 * Overrides the markup type to render with. Pass a `MarkupType` case
-	 * for a built-in format or a string key for a custom one.
+	 * Overrides the markup type to render with. Pass any `MarkupKey` (such
+	 * as a `MarkupType` case) or a string key for a custom one.
 	 */
-	public function setMarkupType(MarkupType|string $markupType): void
+	public function setMarkupType(MarkupKey|string $markupType): void
 	{
 		$this->markupType = $markupType;
 	}

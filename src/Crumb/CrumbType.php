@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Support\ClassEnum;
-use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
+use X3P0\Breadcrumbs\Contracts\ClassEnum;
+use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
 
 /**
  * Canonical string keys for the built-in crumb types. Each case value is the
@@ -22,9 +22,9 @@ use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
  * the `Type` sub-namespace (see `className()`), so the registrar can map every
  * case to its class automatically.
  */
-enum CrumbType: string implements ClassEnum
+enum CrumbType: string implements ClassEnum, CrumbKey
 {
-	use ResolvesTypeKey;
+	use ProvidesTypeKey;
 
 	case Archive         = 'archive';
 	case Author          = 'author';

@@ -60,7 +60,7 @@ final class QueryResolver
 		// Normalize the event's value to a string key for the legacy
 		// filter and the return type.
 		$queryType = $event->getQueryType();
-		$key = $queryType instanceof QueryType ? $queryType->value : $queryType;
+		$key = $queryType instanceof QueryKey ? $queryType->key() : $queryType;
 
 		// A listener that stopped propagation — typed or through the
 		// hook — has claimed the final say, so skip the legacy filter

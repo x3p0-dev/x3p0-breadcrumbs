@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Support\ClassEnum;
-use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
+use X3P0\Breadcrumbs\Contracts\ClassEnum;
+use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
 
 /**
  * Defines the canonical string keys for the plugin's built-in assemblers. The
  * registrar uses these cases to seed the registry, and the values are the keys
  * that callers pass to the factory and to `BreadcrumbsContext::assemble()`.
  */
-enum AssemblerType: string implements ClassEnum
+enum AssemblerType: string implements ClassEnum, AssemblerKey
 {
-	use ResolvesTypeKey;
+	use ProvidesTypeKey;
 
 	case Date            = 'date';
 	case Home            = 'home';

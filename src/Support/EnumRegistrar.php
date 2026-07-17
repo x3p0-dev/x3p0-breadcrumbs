@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Support;
 
 use BackedEnum;
 use ReflectionException;
+use X3P0\Breadcrumbs\Contracts\ClassEnum;
 use X3P0\Breadcrumbs\Packages\ClassRegistry\Registry;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 

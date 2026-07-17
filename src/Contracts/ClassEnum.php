@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Support;
+namespace X3P0\Breadcrumbs\Contracts;
 
 /**
  * Implemented by the backed enums that name a subsystem's built-in types, so an

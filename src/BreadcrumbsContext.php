@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
-use X3P0\Breadcrumbs\Assembler\AssemblerType;
+use X3P0\Breadcrumbs\Assembler\AssemblerKey;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
-use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Crumb\CrumbKey;
 use X3P0\Breadcrumbs\Query\QueryFactory;
-use X3P0\Breadcrumbs\Query\QueryType;
+use X3P0\Breadcrumbs\Query\QueryKey;
 
 /**
  * A facade over the query, assembler, and crumb factories, bundled with the
@@ -51,11 +51,12 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Dispatches a query by type, injecting this context so the query can add
-	 * to the trail. Accepts a `QueryType` for built-in queries or a string key
-	 * for custom ones registered by third parties.
+	 * Dispatches a query by type, injecting this context so the query can
+	 * add to the trail. Accepts any `QueryKey` (the `QueryType` enum or a
+	 * third-party implementation) or a string key for custom ones registered
+	 * by third parties.
 	 */
-	public function query(QueryType|string $type, array $params = []): void
+	public function query(QueryKey|string $type, array $params = []): void
 	{
 		$query = $this->queryFactory->make($type, [
 			'context' => $this,
@@ -66,11 +67,12 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Dispatches an assembler by type, injecting this context so the assembler
-	 * can add to the trail. Accepts an `AssemblerType` for built-in assemblers
-	 * or a string key for custom ones registered by third parties.
+	 * Dispatches an assembler by type, injecting this context so the
+	 * assembler can add to the trail. Accepts any `AssemblerKey` (the
+	 * `AssemblerType` enum or a third-party implementation) or a string key
+	 * for custom ones registered by third parties.
 	 */
-	public function assemble(AssemblerType|string $type, array $params = []): void
+	public function assemble(AssemblerKey|string $type, array $params = []): void
 	{
 		$assembler = $this->assemblerFactory->make($type, [
 			'context' => $this,
@@ -82,13 +84,14 @@ final class BreadcrumbsContext
 
 	/**
 	 * Builds a crumb by type and returns it without adding it to the
-	 * collection, injecting this context. Accepts a `CrumbType` for built-in
-	 * crumbs or a string key for custom ones registered by third parties.
-	 * Returns null when the type is not registered. Useful for extensions
-	 * that need a crumb instance to hand to the collection's insert or
-	 * replace methods on the `CrumbsBuilt` event.
+	 * collection, injecting this context. Accepts any `CrumbKey` (the
+	 * `CrumbType` enum or a third-party implementation) or a string key for
+	 * custom ones registered by third parties. Returns null when the type
+	 * is not registered. Useful for extensions that need a crumb instance
+	 * to hand to the collection's insert or replace methods on the
+	 * `CrumbsBuilt` event.
 	 */
-	public function makeCrumb(CrumbType|string $type, array $params = []): ?Crumb
+	public function makeCrumb(CrumbKey|string $type, array $params = []): ?Crumb
 	{
 		return $this->crumbFactory->make($type, [
 			'context' => $this,
@@ -98,10 +101,11 @@ final class BreadcrumbsContext
 
 	/**
 	 * Builds a crumb by type and appends it to the shared collection.
-	 * Accepts a `CrumbType` for built-in crumbs or a string key for custom
-	 * ones registered by third parties.
+	 * Accepts any `CrumbKey` (the `CrumbType` enum or a third-party
+	 * implementation) or a string key for custom ones registered by third
+	 * parties.
 	 */
-	public function addCrumb(CrumbType|string $type, array $params = []): void
+	public function addCrumb(CrumbKey|string $type, array $params = []): void
 	{
 		if ($crumb = $this->makeCrumb($type, $params)) {
 			$this->crumbs->push($crumb);

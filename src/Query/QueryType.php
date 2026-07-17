@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Support\ClassEnum;
-use X3P0\Breadcrumbs\Support\ResolvesTypeKey;
+use X3P0\Breadcrumbs\Contracts\ClassEnum;
+use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
 
 /**
  * The canonical string keys for the built-in query types, one per WordPress
  * request type. The registrar uses these to seed the registry, and the values
  * double as the keys callers pass to `BreadcrumbsContext::query()`.
  */
-enum QueryType: string implements ClassEnum
+enum QueryType: string implements ClassEnum, QueryKey
 {
-	use ResolvesTypeKey;
+	use ProvidesTypeKey;
 
 	case Archive         = 'archive';
 	case Author          = 'author';

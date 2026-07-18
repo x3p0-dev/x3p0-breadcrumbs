@@ -16,15 +16,16 @@ namespace X3P0\Breadcrumbs\Support;
 use ReflectionMethod;
 
 /**
- * Builds an immutable value object from an associative array, passing only the
- * keys that match a constructor parameter as named arguments and ignoring the
- * rest. The parameter list is derived from the constructor via reflection so it
- * cannot drift from the signature.
+ * Derives immutable value objects from a parameter map: `fromArray()` builds one
+ * from an associative array, and `with()` returns a copy of an existing instance
+ * with one or more options changed. Both map to the constructor parameters,
+ * derived via reflection so they cannot drift from the signature. Assumes the
+ * parameters are promoted properties of the same name (as the plugin's config
+ * objects are), so `with()` can read the current values back.
  *
- * @internal This is an internal implementation detail of the plugin, not part
- *           of its public API. Its signature may change or it may be removed at
- *           any time without notice; third-party code should not use it
- *           directly.
+ * @internal The trait itself is an internal implementation detail; third-party
+ *           code should not use it directly. Its public methods, once composed
+ *           into a class, are part of that class's public API.
  */
 trait BuildsFromArray
 {
@@ -34,13 +35,45 @@ trait BuildsFromArray
 	 */
 	public static function fromArray(array $options = []): static
 	{
+		return new static(...array_intersect_key(
+			$options,
+			array_flip(self::constructorParamNames())
+		));
+	}
+
+	/**
+	 * Returns a copy of this instance with the given options overridden,
+	 * leaving every other option carried through from the current values.
+	 * The instance stays immutable — a new one is constructed rather than
+	 * mutated. Throws if any key does not map to a constructor parameter.
+	 *
+	 * @param array<string, mixed> $options
+	 */
+	public function with(array $options): static
+	{
+		$current = [];
+
+		foreach (self::constructorParamNames() as $name) {
+			$current[$name] = $this->$name;
+		}
+
+		return new static(...array_merge($current, $options));
+	}
+
+	/**
+	 * Returns the constructor's parameter names, cached per class. Drives
+	 * both `fromArray()` and `with()` so their parameter mapping cannot
+	 * diverge.
+	 *
+	 * @return list<string>
+	 */
+	private static function constructorParamNames(): array
+	{
 		static $paramNames;
 
-		$paramNames ??= array_column(
+		return $paramNames ??= array_column(
 			(new ReflectionMethod(static::class, '__construct'))->getParameters(),
 			'name'
 		);
-
-		return new static(...array_intersect_key($options, array_flip($paramNames)));
 	}
 }

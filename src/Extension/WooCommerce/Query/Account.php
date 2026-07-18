@@ -53,6 +53,12 @@ final class Account extends StorePage
 	/**
 	 * Returns the localized title for a billing or shipping address sub-view,
 	 * matching the heading WooCommerce shows on the edit-address form.
+	 *
+	 * Note that we must recreate WooCommerce strings and its filter hook
+	 * here because it doesn't have a function in its public API for getting
+	 * the address title.
+	 *
+	 * @link https://github.com/woocommerce/woocommerce/issues/66565
 	 */
 	private function addressTitle(string $type): string
 	{

@@ -46,6 +46,7 @@ enum CrumbType: string implements ClassEnum, CrumbKey
 	case Search          = 'search';
 	case Second          = 'second';
 	case Term            = 'term';
+	case User            = 'user';
 	case Week            = 'week';
 	case Year            = 'year';
 
@@ -79,6 +80,7 @@ enum CrumbType: string implements ClassEnum, CrumbKey
 			self::Search          => Type\Search::class,
 			self::Second          => Type\Second::class,
 			self::Term            => Type\Term::class,
+			self::User            => Type\User::class,
 			self::Week            => Type\Week::class,
 			self::Year            => Type\Year::class
 		};

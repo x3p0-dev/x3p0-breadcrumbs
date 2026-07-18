@@ -23,6 +23,8 @@ import {createBlock} from '@wordpress/blocks';
  * block's icon keys) and `prefersTaxonomy` (a global boolean vs. this block's
  * per-post-type `postTaxonomy`/`mapRewriteTags`) behind — neither has a
  * reliable equivalent — while `woocommerce/breadcrumbs` maps in full.
+ * `yoast-seo/breadcrumbs` carries no attributes beyond `className`, so its
+ * conversion falls back entirely to this block's defaults.
  */
 export default {
 	from: [
@@ -45,6 +47,12 @@ export default {
 					...attributes,
 					justifyContent: attributes.contentJustification
 				})
+		},
+		{
+			type: 'block',
+			blocks: ['yoast-seo/breadcrumbs'],
+			transform: (attributes) =>
+				createBlock('x3p0/breadcrumbs', {...attributes})
 		}
 	]
 };

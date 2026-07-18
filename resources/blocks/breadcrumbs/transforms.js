@@ -11,22 +11,39 @@
 import {createBlock} from '@wordpress/blocks';
 
 /**
- * Transforms the core breadcrumbs block into this plugin's block. Only the
- * attributes with a faithful mapping are carried over; core's `separator`
- * (a literal glyph vs. this block's icon keys) and `prefersTaxonomy` (a global
- * boolean vs. this block's per-post-type `postTaxonomy`/`mapRewriteTags`) have
- * no reliable equivalent, so they fall back to this block's defaults.
+ * Transforms other breadcrumb blocks into this plugin's block.
+ *
+ * Each transform spreads the source attributes so the shared block supports
+ * (`align`, spacing, color, border, typography, etc.) carry over, then remaps
+ * the source's semantic attributes onto this block's names. `createBlock()`
+ * sanitizes against this block's registered attributes, so source-only keys
+ * with no equivalent here are dropped automatically.
+ *
+ * From `core/breadcrumbs`, that leaves `separator` (a literal glyph vs. this
+ * block's icon keys) and `prefersTaxonomy` (a global boolean vs. this block's
+ * per-post-type `postTaxonomy`/`mapRewriteTags`) behind — neither has a
+ * reliable equivalent — while `woocommerce/breadcrumbs` maps in full.
  */
 export default {
 	from: [
 		{
 			type: 'block',
 			blocks: ['core/breadcrumbs'],
-			transform: ({showOnHomePage, showCurrentItem, showHomeItem}) =>
+			transform: (attributes) =>
 				createBlock('x3p0/breadcrumbs', {
-					showOnHomepage: showOnHomePage,
-					showTrailEnd: showCurrentItem,
-					showTrailStart: showHomeItem
+					...attributes,
+					showOnHomepage: attributes.showOnHomePage,
+					showTrailEnd: attributes.showCurrentItem,
+					showTrailStart: attributes.showHomeItem
+				})
+		},
+		{
+			type: 'block',
+			blocks: ['woocommerce/breadcrumbs'],
+			transform: (attributes) =>
+				createBlock('x3p0/breadcrumbs', {
+					...attributes,
+					justifyContent: attributes.contentJustification
 				})
 		}
 	]

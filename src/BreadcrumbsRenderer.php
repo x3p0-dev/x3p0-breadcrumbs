@@ -86,9 +86,9 @@ class BreadcrumbsRenderer
 			do_action(MarkupRendering::HOOK_NAME, $event);
 		}
 
-		$markup = $this->markupFactory->make($event->getMarkupType(), [
+		$markup = $this->markupFactory->make($event->markupType, [
 			'crumbs' => $event->crumbs,
-			'config' => $event->getConfig()
+			'config' => $event->config
 		]);
 
 		return $markup?->render() ?? '';

@@ -24,11 +24,11 @@ use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
  * can change how a finished trail is presented for the current request. Carries
  * the finished crumbs read-only — mutate them on the `CrumbsBuilt` event
  * instead — along with the markup type and markup config to render with, both
- * mutable: swap the type with `setMarkupType()` to render a different format,
- * or replace the config with `setConfig()` to adjust its options. Pass any
- * `MarkupKey` (such as a `MarkupType` case) for a typed reference or a string
- * key for a custom one. The renderer reads the final type and config back from
- * this same instance.
+ * writable: reassign `$markupType` to render a different format, or reassign
+ * `$config` (typically via `MarkupConfig::with()`) to adjust its options. The
+ * markup type accepts any `MarkupKey` (such as a `MarkupType` case) or a string
+ * key for a custom format. The renderer reads the final type and config back
+ * from this same instance.
  */
 final class MarkupRendering implements StoppableEvent
 {
@@ -45,48 +45,14 @@ final class MarkupRendering implements StoppableEvent
 	public const HOOK_NAME = 'x3p0/breadcrumbs/markup-rendering';
 
 	/**
-	 * Stores the finished crumbs and the mutable markup type and config to
-	 * render with. The crumbs are the same collection the build produced;
-	 * the type accepts any `MarkupKey` (such as a `MarkupType` case) or a
-	 * string key for a custom format.
+	 * Stores the finished crumbs and the writable markup type and config to
+	 * render with. The crumbs are the same collection the build produced; the
+	 * type accepts any `MarkupKey` (such as a `MarkupType` case) or a string
+	 * key for a custom format.
 	 */
 	public function __construct(
 		public readonly CrumbCollection $crumbs,
-		private MarkupKey|string $markupType,
-		private MarkupConfig $config
+		public MarkupKey|string $markupType,
+		public MarkupConfig $config
 	) {}
-
-	/**
-	 * Returns the markup type to render with: a `MarkupKey` (such as a
-	 * `MarkupType` case) or a string key for a custom format.
-	 */
-	public function getMarkupType(): MarkupKey|string
-	{
-		return $this->markupType;
-	}
-
-	/**
-	 * Overrides the markup type to render with. Pass any `MarkupKey` (such
-	 * as a `MarkupType` case) or a string key for a custom one.
-	 */
-	public function setMarkupType(MarkupKey|string $markupType): void
-	{
-		$this->markupType = $markupType;
-	}
-
-	/**
-	 * Returns the markup config to render with.
-	 */
-	public function getConfig(): MarkupConfig
-	{
-		return $this->config;
-	}
-
-	/**
-	 * Overrides the markup config to render with.
-	 */
-	public function setConfig(MarkupConfig $config): void
-	{
-		$this->config = $config;
-	}
 }

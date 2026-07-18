@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension;
 
+use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
 use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Tagged;
@@ -38,7 +39,8 @@ final class ExtensionServiceProvider extends ServiceProvider
 	 * @var  list<string>
 	 */
 	protected const EXTENSIONS = [
-		WooCommerce::class
+		WooCommerce::class,
+		SenseiLms::class
 	];
 
 	/**

@@ -13,26 +13,22 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Contracts\ClassEnum;
-use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
-
 /**
- * Canonical keys for the built-in markup formats. The backed string value is
- * the key used in the registry, and the case name maps to the concrete class
- * under the `Type` sub-namespace.
+ * The canonical built-in markup formats — the source of truth mapping each key
+ * to its class via `className()`. `MarkupServiceProvider` tags each class under
+ * `Markup::TAG` from these cases, so the resolver can build a format by key and
+ * enumerate the available formats (including third-party additions).
  */
-enum MarkupType: string implements ClassEnum, MarkupKey
+enum MarkupType: string
 {
-	use ProvidesTypeKey;
-
 	case Html           = 'html';
 	case Microdata      = 'microdata';
 	case Rdfa           = 'rdfa';
 	case JsonLinkedData = 'json-ld';
 
 	/**
-	 * Returns the markup class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
+	 * Returns the markup class associated with the type, mapping each case to a
+	 * concrete class under the `Type` sub-namespace.
 	 *
 	 * @return class-string<Markup>
 	 */
@@ -45,5 +41,26 @@ enum MarkupType: string implements ClassEnum, MarkupKey
 			self::Rdfa           => Type\Rdfa::class,
 			self::JsonLinkedData => Type\JsonLinkedData::class
 		};
+	}
+	/**
+	 * Returns this case's key, which is its backing value. Satisfies the
+	 * `TypeKey` contract so a case can be passed wherever a key is expected.
+	 */
+	public function key(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return $this->value;
+	}
+
+	/**
+	 * Returns this case's container alias — its key namespaced under the
+	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
+	 * be reused across subsystems without colliding in the container's single,
+	 * global alias table.
+	 */
+	public function alias(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return 'x3p0/breadcrumbs/markup/' . $this->value;
 	}
 }

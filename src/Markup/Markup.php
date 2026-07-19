@@ -30,6 +30,16 @@ use X3P0\Breadcrumbs\Support\Pagination;
 abstract class Markup implements Renderable
 {
 	/**
+	 * The container tag under which markup types are collected, so the full set
+	 * — built-in and third-party — can be resolved by key and enumerated for
+	 * the block editor. `MarkupServiceProvider` seeds it from `MarkupType`.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TAG = 'x3p0/breadcrumbs/markup';
+
+	/**
 	 * Whitelist of inline HTML elements (and their permitted attributes) that
 	 * are allowed within a crumb label. Pass this to `wp_kses()` to strip any
 	 * other markup from a label before output.
@@ -65,6 +75,13 @@ abstract class Markup implements Renderable
 		protected readonly MarkupConfig $config,
 		protected readonly Pagination $pagination
 	) {}
+
+	/**
+	 * Returns the markup type — its stable slug, matching the value of the
+	 * `MarkupType` case that names it. Declared here so every tagged type
+	 * reports its own key for resolution and block enumeration.
+	 */
+	abstract public static function type(): string;
 
 	/**
 	 * Flattens the configured container attributes into an escaped, space-

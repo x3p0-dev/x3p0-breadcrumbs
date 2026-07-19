@@ -13,34 +13,36 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the crumb subsystem into the container: binds the registry and factory
- * as shared singletons and boots the registrar that seeds the built-in types.
+ * Wires the crumb subsystem into the container: binds the factory as a shared
+ * singleton (only if not already bound) so extensions may replace it, and
+ * registers each built-in `CrumbType` value as a container alias for its class.
+ * Crumbs are then built by the factory from their key or class name.
  */
-final class CrumbServiceProvider extends ServiceProvider implements Bootable
+final class CrumbServiceProvider extends ServiceProvider
 {
 	/**
-	 * The crumb factory and registry, bound as shared singletons only if not
-	 * already bound so extensions may replace them.
+	 * The crumb factory, bound as a shared singleton only if not already bound
+	 * so extensions may replace it.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
-		CrumbFactory::class,
-		CrumbRegistry::class
+		CrumbFactory::class
 	];
 
 	/**
-	 * The registrar booted on startup to seed the built-in crumb types.
-	 *
-	 * @var  array<string>
-	 * @todo Type hint with PHP 8.3+ requirement.
+	 * Aliases each built-in crumb key to its class, so callers may dispatch by
+	 * the `CrumbType` case, its string key, or the class name. The enum is the
+	 * source of truth for the mapping.
 	 */
-	protected const BOOTABLE = [
-		CrumbRegistrar::class
-	];
+	public function register(): void
+	{
+		foreach (CrumbType::cases() as $type) {
+			$this->container->alias($type->alias(), $type->className());
+		}
+	}
 }

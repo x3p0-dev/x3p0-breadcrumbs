@@ -14,26 +14,25 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
-use X3P0\Breadcrumbs\Assembler\AssemblerKey;
+use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
-use X3P0\Breadcrumbs\Crumb\CrumbKey;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Query\QueryFactory;
-use X3P0\Breadcrumbs\Query\QueryKey;
+use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
  * A facade over the query, assembler, and crumb factories, bundled with the
- * shared crumb collection and config, and passed through the build pipeline as
- * a context object. Each participant (query, assembler, or crumb) receives this
- * so it can dispatch the next step and read or append shared state — without
+ * shared crumb collection and config, and passed through the build pipeline as a
+ * context object. Each participant (query, assembler, or crumb) receives this so
+ * it can dispatch the next step and read or append shared state — without
  * depending on the factories or on one another directly.
  *
- * The `query()`, `assemble()`, and `addCrumb()` methods are the facade: they
- * hide the repeated dance of normalizing a type to its string key, building the
- * object through its factory (injecting this context), and invoking it. The
- * crumb collection is mutable and accumulated into as the pipeline runs; the
- * config is read-only.
+ * The `query()`, `assemble()`, and `addCrumb()` methods are the facade: each
+ * hands the type to its factory (injecting this context) and invokes the built
+ * object. The crumb collection is mutable and accumulated into as the pipeline
+ * runs; the config is read-only.
  */
 final class BreadcrumbsContext
 {
@@ -51,47 +50,42 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Dispatches a query by type, injecting this context so the query can
-	 * add to the trail. Accepts any `QueryKey` (the `QueryType` enum or a
-	 * third-party implementation) or a string key for custom ones registered
-	 * by third parties.
+	 * Dispatches a query by type, injecting this context so the query can add
+	 * to the trail. Accepts any `QueryType` (the `QueryType` enum or a
+	 * third-party implementation), its string key, or a query class name. Does
+	 * nothing when the type is unknown.
 	 */
-	public function query(QueryKey|string $type, array $params = []): void
+	public function query(QueryType|string $type, array $params = []): void
 	{
-		$query = $this->queryFactory->make($type, [
+		$this->queryFactory->make($type, [
 			'context' => $this,
 			...$params
-		]);
-
-		$query?->query();
+		])?->query();
 	}
 
 	/**
-	 * Dispatches an assembler by type, injecting this context so the
-	 * assembler can add to the trail. Accepts any `AssemblerKey` (the
-	 * `AssemblerType` enum or a third-party implementation) or a string key
-	 * for custom ones registered by third parties.
+	 * Dispatches an assembler by type, injecting this context so the assembler
+	 * can add to the trail. Accepts any `AssemblerType` (the `AssemblerType`
+	 * enum or a third-party implementation), its string key, or an assembler
+	 * class name. Does nothing when the type is unknown.
 	 */
-	public function assemble(AssemblerKey|string $type, array $params = []): void
+	public function assemble(AssemblerType|string $type, array $params = []): void
 	{
-		$assembler = $this->assemblerFactory->make($type, [
+		$this->assemblerFactory->make($type, [
 			'context' => $this,
 			...$params
-		]);
-
-		$assembler?->assemble();
+		])?->assemble();
 	}
 
 	/**
 	 * Builds a crumb by type and returns it without adding it to the
-	 * collection, injecting this context. Accepts any `CrumbKey` (the
-	 * `CrumbType` enum or a third-party implementation) or a string key for
-	 * custom ones registered by third parties. Returns null when the type
-	 * is not registered. Useful for extensions that need a crumb instance
-	 * to hand to the collection's insert or replace methods on the
-	 * `CrumbsBuilt` event.
+	 * collection, injecting this context. Accepts any `CrumbType` (the
+	 * `CrumbType` enum or a third-party implementation), its string key, or a
+	 * crumb class name. Returns null for an unknown type. Useful for extensions
+	 * that need a crumb instance to hand to the collection's insert or replace
+	 * methods on the `CrumbsBuilt` event.
 	 */
-	public function makeCrumb(CrumbKey|string $type, array $params = []): ?Crumb
+	public function makeCrumb(CrumbType|string $type, array $params = []): ?Crumb
 	{
 		return $this->crumbFactory->make($type, [
 			'context' => $this,
@@ -100,12 +94,11 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Builds a crumb by type and appends it to the shared collection.
-	 * Accepts any `CrumbKey` (the `CrumbType` enum or a third-party
-	 * implementation) or a string key for custom ones registered by third
-	 * parties.
+	 * Builds a crumb by type and appends it to the shared collection. Accepts
+	 * any `CrumbType` (the `CrumbType` enum or a third-party implementation), its
+	 * string key, or a crumb class name.
 	 */
-	public function addCrumb(CrumbKey|string $type, array $params = []): void
+	public function addCrumb(CrumbType|string $type, array $params = []): void
 	{
 		if ($crumb = $this->makeCrumb($type, $params)) {
 			$this->crumbs->push($crumb);

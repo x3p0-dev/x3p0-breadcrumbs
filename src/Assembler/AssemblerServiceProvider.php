@@ -13,35 +13,36 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the assembler subsystem into the DI container. The factory and registry
- * are bound as shared singletons, and the registrar is booted so the built-in
- * assembler types are registered on plugin startup.
+ * Wires the assembler subsystem into the container: binds the factory as a
+ * shared singleton (only if not already bound) so extensions may replace it, and
+ * registers each built-in `AssemblerType` value as a container alias for its
+ * class. Assemblers are then built by the factory from their key or class name.
  */
-final class AssemblerServiceProvider extends ServiceProvider implements Bootable
+final class AssemblerServiceProvider extends ServiceProvider
 {
 	/**
-	 * The assembler factory and registry, bound as shared services only if
-	 * not already bound so extensions may replace them.
+	 * The assembler factory, bound as a shared singleton only if not already
+	 * bound so extensions may replace it.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
-		AssemblerFactory::class,
-		AssemblerRegistry::class
+		AssemblerFactory::class
 	];
 
 	/**
-	 * The registrar booted on startup to seed the built-in assembler types.
-	 *
-	 * @var  array<string>
-	 * @todo Type hint with PHP 8.3+ requirement.
+	 * Aliases each built-in assembler key to its class, so callers may dispatch
+	 * by the `AssemblerType` case, its string key, or the class name. The enum
+	 * is the source of truth for the mapping.
 	 */
-	protected const BOOTABLE = [
-		AssemblerRegistrar::class
-	];
+	public function register(): void
+	{
+		foreach (AssemblerType::cases() as $type) {
+			$this->container->alias($type->alias(), $type->className());
+		}
+	}
 }

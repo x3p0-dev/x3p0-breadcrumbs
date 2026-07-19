@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Markup\MarkupFactory;
+use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 
 /**
  * Deprecated alias of `BreadcrumbsRenderer`, retained so existing code that
@@ -30,11 +31,12 @@ final class BreadcrumbsService extends BreadcrumbsRenderer
 	 * @inheritDoc
 	 */
 	public function __construct(
-		Breadcrumbs   $breadcrumbs,
-		MarkupFactory $markupFactory
+		BreadcrumbsGenerator $generator,
+		MarkupFactory        $markupFactory,
+		Dispatcher           $events
 	) {
 		_deprecated_class(self::class, '5.0.0', BreadcrumbsRenderer::class);
 
-		parent::__construct($breadcrumbs, $markupFactory);
+		parent::__construct($generator, $markupFactory, $events);
 	}
 }

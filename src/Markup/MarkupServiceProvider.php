@@ -13,36 +13,41 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the markup subsystem into the container: registers the factory and
- * registry as shared (singleton) services and boots the registrar that seeds
- * the built-in markup types.
+ * Wires the markup subsystem into the container: binds the factory and options
+ * as shared singletons (only if not already bound) and, from the `MarkupType`
+ * enum as the source of truth, both aliases each built-in key to its class and
+ * tags each class under `Markup::TAG`. The aliases let a format resolve by key
+ * or class name like every other subsystem; the tag lets the factory enumerate
+ * the full set for the block editor, which stays open to third parties that add
+ * their own by aliasing and tagging under the same names.
  */
-final class MarkupServiceProvider extends ServiceProvider implements Bootable
+final class MarkupServiceProvider extends ServiceProvider
 {
 	/**
-	 * The markup factory, options, and registry, bound as shared singletons
-	 * only if not already bound so extensions may replace them.
+	 * The markup factory and options, bound as shared singletons only if not
+	 * already bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
-		MarkupFactory::class,
 		MarkupOptions::class,
-		MarkupRegistry::class
+		MarkupFactory::class
 	];
 
 	/**
-	 * The registrar booted on startup to seed the built-in markup types.
-	 *
-	 * @var  array<string>
-	 * @todo Type hint with PHP 8.3+ requirement.
+	 * Aliases each built-in markup key to its class and tags each class under
+	 * `Markup::TAG`, both seeded from the `MarkupType` enum as the source of
+	 * truth — the alias for key/class resolution, the tag for enumeration.
 	 */
-	protected const BOOTABLE = [
-		MarkupRegistrar::class
-	];
+	public function register(): void
+	{
+		foreach (MarkupType::cases() as $type) {
+			$this->container->alias($type->alias(), $type->className());
+			$this->container->tag($type->className(), Markup::TAG);
+		}
+	}
 }

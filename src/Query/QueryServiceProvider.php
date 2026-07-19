@@ -13,36 +13,37 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the query subsystem into the container: binds the registry, factory,
- * and resolver as shared singletons (only if not already bound) and boots the
- * registrar that seeds the built-in query types.
+ * Wires the query subsystem into the container: binds the factory and resolver
+ * as shared singletons (only if not already bound) so extensions may replace
+ * them, and registers each built-in `QueryType` value as a container alias for
+ * its class. Queries are then built by the factory from their key or class name.
  */
-final class QueryServiceProvider extends ServiceProvider implements Bootable
+final class QueryServiceProvider extends ServiceProvider
 {
 	/**
-	 * The query factory, registry, and resolver, bound as shared singletons
-	 * only if not already bound so extensions may replace them.
+	 * The query factory and resolver, bound as shared singletons only if not
+	 * already bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
 		QueryFactory::class,
-		QueryRegistry::class,
 		QueryResolver::class
 	];
 
 	/**
-	 * The registrar booted on startup to seed the built-in query types.
-	 *
-	 * @var  array<string>
-	 * @todo Type hint with PHP 8.3+ requirement.
+	 * Aliases each built-in query key to its class, so callers may dispatch by
+	 * the `QueryType` case, its string key, or the class name. The enum is the
+	 * source of truth for the mapping.
 	 */
-	protected const BOOTABLE = [
-		QueryRegistrar::class
-	];
+	public function register(): void
+	{
+		foreach (QueryType::cases() as $type) {
+			$this->container->alias($type->alias(), $type->className());
+		}
+	}
 }

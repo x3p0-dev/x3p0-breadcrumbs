@@ -16,36 +16,34 @@ namespace X3P0\Breadcrumbs\Query;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Resolves a query key to its registered class and instantiates it. Returns
- * `null` when the key is not registered, so callers can dispatch optimistically
- * without first checking the registry.
+ * Resolves a query type to a container identifier and builds it. A `QueryType`
+ * (the `QueryType` enum or a third-party implementation) or its string key
+ * resolves to the query's container alias; a class name is built directly.
+ * Returns `null` for an unknown key so callers can dispatch optimistically.
  */
 final class QueryFactory
 {
 	/**
-	 * Stores the registry that maps query keys to their class names and the
-	 * resolver that builds the mapped class through the container.
+	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		private readonly QueryRegistry    $queryRegistry,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
-	 * Resolves the query registered under `$type` from the container,
-	 * forwarding `$params` as named constructor arguments. Accepts any
-	 * `QueryKey` (the `QueryType` enum or a third-party implementation) or
-	 * a registry key string. Returns `null` if the key is not registered.
+	 * Builds the query for the given type, forwarding `$params` as named
+	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(QueryKey|string $type, array $params = []): ?Query
+	public function make(QueryType|string $type, array $params = []): ?Query
 	{
-		$key = is_string($type) ? $type : $type->key();
+		$abstract = is_string($type) ? $type : $type->classname();
+		$abstract = class_exists($abstract) ? $abstract : QueryType::tryFrom($abstract)?->classname();
 
-		/** @var null|class-string<Query> $query */
-		if ($query = $this->queryRegistry->get($key)) {
-			return $this->resolver->make($query, $params);
+		if (! $abstract) {
+			return null;
 		}
 
-		return null;
+		/** @var Query */
+		return $this->resolver->make($abstract, $params);
 	}
 }

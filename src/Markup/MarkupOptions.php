@@ -14,25 +14,25 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 /**
- * Derives option lists of markup types from the registry — the authoritative
+ * Derives option lists of markup types from the factory — the authoritative
  * list of available types, including third-party registrations — for the
  * various contexts that need to present them. Each method filters and shapes
- * the registered types for a specific consumer.
+ * the available types for a specific consumer.
  */
 final class MarkupOptions
 {
 	/**
-	 * Stores the registry the options are derived from.
+	 * Stores the factory the options are derived from.
 	 */
 	public function __construct(
-		private readonly MarkupRegistry $registry
+		private readonly MarkupFactory $factory
 	) {}
 
 	/**
-	 * Returns the markup types offered as a block option — those that opt
-	 * in by implementing `MarkupBlockOption` — as `key`/`name` pairs in
-	 * registry order. This is the single source consumed by both the
-	 * block's attribute `enum` and the editor script.
+	 * Returns the markup types offered as a block option — those whose class
+	 * opts in by implementing `MarkupBlockOption` — as `key`/`name` pairs in
+	 * tag order. This is the single source consumed by both the block's
+	 * attribute `enum` and the editor script.
 	 *
 	 * @return array<int, array{key: string, name: string}>
 	 */
@@ -40,7 +40,7 @@ final class MarkupOptions
 	{
 		$options = [];
 
-		foreach ($this->registry as $key => $className) {
+		foreach ($this->factory->classes() as $key => $className) {
 			if (is_subclass_of($className, MarkupBlockOption::class)) {
 				$options[] = [
 					'key'  => $key,

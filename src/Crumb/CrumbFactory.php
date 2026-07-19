@@ -16,40 +16,44 @@ namespace X3P0\Breadcrumbs\Crumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Resolves a crumb type key against the registry and instantiates the mapped
- * class. This is the single entry point for creating crumbs, keeping callers
- * decoupled from concrete `Type` class names.
+ * Resolves a crumb type to a container identifier and builds it. A `CrumbType`
+ * (the `CrumbType` enum or a third-party implementation) or its string key
+ * resolves to the crumb's container alias and becomes the crumb's type slug; a
+ * class name is built directly, and `getType()` derives its slug from the class.
+ * Returns `null` for an unknown key so callers can dispatch optimistically.
  */
 final class CrumbFactory
 {
 	/**
-	 * Stores the registry used to look up crumb classes by key and the
-	 * resolver that builds the mapped class through the container.
+	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		private readonly CrumbRegistry    $crumbRegistry,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
-	 * Builds the crumb registered under the given type by resolving it from
-	 * the container, forwarding `$params` as named constructor arguments.
-	 * Accepts any `CrumbKey` (the `CrumbType` enum or a third-party
-	 * implementation) or a registry key string. Returns null when the key
-	 * is not registered.
+	 * Builds the crumb for the given type, forwarding `$params` as named
+	 * constructor arguments and assigning its type slug from an alias key, or
+	 * returns `null` when the type is unknown.
 	 */
-	public function make(CrumbKey|string $type, array $params = []): ?Crumb
+	public function make(CrumbType|string $type, array $params = []): ?Crumb
 	{
-		$key = is_string($type) ? $type : $type->key();
+		$abstract = is_string($type) ? $type : $type->classname();
+		$abstract = class_exists($abstract) ? $abstract : CrumbType::tryFrom($abstract)?->classname();
 
-		if ($class = $this->crumbRegistry->get($key)) {
-			/** @var Crumb $crumb */
-			$crumb = $this->resolver->make($class, $params);
-			$crumb->setType($key);
-
-			return $crumb;
+		if (! $abstract) {
+			return null;
 		}
 
-		return null;
+		/** @var Crumb $crumb */
+		$crumb = $this->resolver->make($abstract, $params);
+
+		if (is_string($type) && ! class_exists($type)) {
+			$crumb->setType($type);
+		} elseif ($type instanceof CrumbType) {
+			$crumb->setType($type->value);
+		}
+
+		return $crumb;
 	}
 }

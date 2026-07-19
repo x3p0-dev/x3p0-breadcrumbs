@@ -25,6 +25,14 @@ final class JsonLinkedData extends Markup
 	/**
 	 * @inheritDoc
 	 */
+	public static function type(): string
+	{
+		return 'json-ld';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function render(): string
 	{
 		if (! $this->isRenderable()) {

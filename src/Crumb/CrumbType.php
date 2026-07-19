@@ -13,19 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Contracts\ClassEnum;
-use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
-
 /**
- * Canonical string keys for the built-in crumb types. Each case value is the
- * key used in the registry, and each case name matches a concrete class under
- * the `Type` sub-namespace (see `className()`), so the registrar can map every
- * case to its class automatically.
+ * The canonical built-in crumb types — the source of truth mapping each key to
+ * its class via `className()`. `CrumbServiceProvider` registers each value as a
+ * container alias for that class, so a caller may pass the case, its string key,
+ * or the class name to the crumb methods. Each case value is also the crumb's
+ * type slug.
  */
-enum CrumbType: string implements ClassEnum, CrumbKey
+enum CrumbType: string
 {
-	use ProvidesTypeKey;
-
 	case Archive         = 'archive';
 	case Author          = 'author';
 	case Custom          = 'custom';
@@ -84,5 +80,17 @@ enum CrumbType: string implements ClassEnum, CrumbKey
 			self::Week            => Type\Week::class,
 			self::Year            => Type\Year::class
 		};
+	}
+
+	/**
+	 * Returns this case's container alias — its key namespaced under the
+	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
+	 * be reused across subsystems without colliding in the container's single,
+	 * global alias table.
+	 */
+	public function alias(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return 'x3p0/breadcrumbs/crumb/' . $this->value;
 	}
 }

@@ -17,7 +17,7 @@ use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
+use X3P0\Breadcrumbs\Extension\SenseiLms\Assembler\LessonAncestry;
 use X3P0\Breadcrumbs\Query\Query;
 
 use function Sensei;
@@ -46,7 +46,7 @@ final class Quiz extends Query
 			$lessonId = (int) Sensei()->quiz->get_lesson_id($quiz->ID);
 
 			if (0 < $lessonId && $lesson = get_post($lessonId)) {
-				$this->context->assemble(SenseiLms::ASSEMBLER_LESSON_ANCESTRY, [
+				$this->context->assemble(LessonAncestry::class, [
 					'lesson' => $lesson
 				]);
 

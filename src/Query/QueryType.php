@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Contracts\ClassEnum;
-use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
-
 /**
- * The canonical string keys for the built-in query types, one per WordPress
- * request type. The registrar uses these to seed the registry, and the values
- * double as the keys callers pass to `BreadcrumbsContext::query()`.
+ * The canonical built-in query types, one per WordPress request type — the
+ * source of truth mapping each key to its class via `className()`.
+ * `QueryServiceProvider` registers each value as a container alias for that
+ * class, so a caller may pass the case, its string key, or the class name to
+ * `BreadcrumbsContext::query()`.
  */
-enum QueryType: string implements ClassEnum, QueryKey
+enum QueryType: string
 {
-	use ProvidesTypeKey;
-
 	case Archive         = 'archive';
 	case Author          = 'author';
 	case Date            = 'date';
@@ -59,5 +56,17 @@ enum QueryType: string implements ClassEnum, QueryKey
 			self::Singular        => Type\Singular::class,
 			self::Taxonomy        => Type\Taxonomy::class
 		};
+	}
+
+	/**
+	 * Returns this case's container alias — its key namespaced under the
+	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
+	 * be reused across subsystems without colliding in the container's single,
+	 * global alias table.
+	 */
+	public function alias(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return 'x3p0/breadcrumbs/query/' . $this->value;
 	}
 }

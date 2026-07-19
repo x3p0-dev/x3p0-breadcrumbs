@@ -41,7 +41,7 @@ final class QueryResolver
 	 * Resolves the query type key for the current request, giving listeners
 	 * and the legacy filter a chance to override the detected default.
 	 */
-	public function resolve(BreadcrumbsContext $context): QueryKey|string|null
+	public function resolve(BreadcrumbsContext $context): QueryType|string|null
 	{
 		// Let listeners inspect the context and change the detected
 		// type. The event accepts a `QueryType` case or a string key.
@@ -72,7 +72,7 @@ final class QueryResolver
 		// notice steers integrators toward the `QueryTypeResolving` event.
 		return apply_filters_deprecated(
 			'x3p0/breadcrumbs/resolve/query-type',
-			[ $queryType instanceof QueryKey ? $queryType->key() : $queryType ],
+			[ $queryType instanceof QueryType ? $queryType->value : $queryType ],
 			'5.0.0',
 			QueryTypeResolving::class
 		);

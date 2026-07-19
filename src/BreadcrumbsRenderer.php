@@ -16,7 +16,6 @@ namespace X3P0\Breadcrumbs;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupFactory;
-use X3P0\Breadcrumbs\Markup\MarkupKey;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 
@@ -31,7 +30,7 @@ use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
  * This is the mirror image of `BreadcrumbsContext`: where the context is the
  * inside-out facade the build participants talk through, this is the outside-in
  * facade callers reach for. It is markup-agnostic — the output format is chosen
- * per call via the `MarkupKey` argument (typically a `MarkupType` case).
+ * per call via the `MarkupType` argument (typically a `MarkupType` case).
  *
  * Not declared `final` so the deprecated `BreadcrumbsService` can extend it for
  * backward compatibility; treat it as effectively final otherwise.
@@ -62,7 +61,7 @@ class BreadcrumbsRenderer
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
 		MarkupConfig|array      $markupConfig      = new MarkupConfig(),
-		MarkupKey|string        $markupType        = MarkupType::Html
+		MarkupType|string        $markupType        = MarkupType::Html
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
 			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)

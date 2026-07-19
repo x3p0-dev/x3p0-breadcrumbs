@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint as EndpointCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Account as AccountQuery;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Cart as CartQuery;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Checkout as CheckoutQuery;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
-use X3P0\Breadcrumbs\Query\QueryRegistry;
 
 /**
  * Built-in WooCommerce integration. The base queries already build correct
@@ -43,43 +39,12 @@ use X3P0\Breadcrumbs\Query\QueryRegistry;
  */
 final class WooCommerce extends Extension
 {
-	public const QUERY_ACCOUNT  = 'woocommerce/account';
-	public const QUERY_CART     = 'woocommerce/cart';
-	public const QUERY_CHECKOUT = 'woocommerce/checkout';
-	public const CRUMB_ENDPOINT = 'woocommerce/endpoint';
-	public const CRUMB_SHOP     = 'woocommerce/shop';
-
-	/**
-	 * Stores the query and crumb registries the extension seeds its custom
-	 * types into.
-	 */
-	public function __construct(
-		private readonly QueryRegistry $queries,
-		private readonly CrumbRegistry $crumbs
-	) {}
-
 	/**
 	 * @inheritDoc
 	 */
 	public function isActive(): bool
 	{
 		return class_exists('WooCommerce');
-	}
-
-	/**
-	 * @inheritDoc
-	 * @throws ReflectionException
-	 */
-	public function register(): void
-	{
-		// Register WooCommerce query types.
-		$this->queries->register(self::QUERY_ACCOUNT, AccountQuery::class);
-		$this->queries->register(self::QUERY_CART, CartQuery::class);
-		$this->queries->register(self::QUERY_CHECKOUT, CheckoutQuery::class);
-
-		// Register WooCommerce crumb types.
-		$this->crumbs->register(self::CRUMB_ENDPOINT, EndpointCrumb::class);
-		$this->crumbs->register(self::CRUMB_SHOP, ShopCrumb::class);
 	}
 
 	/**
@@ -103,9 +68,9 @@ final class WooCommerce extends Extension
 	public function resolveQueryType(QueryTypeResolving $event): void
 	{
 		$type = match (true) {
-			is_account_page() => self::QUERY_ACCOUNT,
-			is_cart()         => self::QUERY_CART,
-			is_checkout()     => self::QUERY_CHECKOUT,
+			is_account_page() => AccountQuery::class,
+			is_cart()         => CartQuery::class,
+			is_checkout()     => CheckoutQuery::class,
 			default           => null
 		};
 
@@ -125,7 +90,7 @@ final class WooCommerce extends Extension
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
-			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(self::CRUMB_SHOP, [
+			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(ShopCrumb::class, [
 				'decoratedCrumb' => $crumb
 			])
 		);

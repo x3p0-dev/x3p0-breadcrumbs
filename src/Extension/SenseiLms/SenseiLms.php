@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\SenseiLms;
 
-use ReflectionException;
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Assembler\LessonAncestry as LessonAncestryAssembler;
 use X3P0\Breadcrumbs\Extension\SenseiLms\Crumb\Courses as CoursesCrumb;
 use X3P0\Breadcrumbs\Extension\SenseiLms\Query\CourseCompleted as CourseCompletedQuery;
 use X3P0\Breadcrumbs\Extension\SenseiLms\Query\CourseResults as CourseResultsQuery;
@@ -29,7 +25,6 @@ use X3P0\Breadcrumbs\Extension\SenseiLms\Query\Module as ModuleQuery;
 use X3P0\Breadcrumbs\Extension\SenseiLms\Query\Quiz as QuizQuery;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
-use X3P0\Breadcrumbs\Query\QueryRegistry;
 
 use function Sensei;
 
@@ -58,52 +53,12 @@ use function Sensei;
  */
 final class SenseiLms extends Extension
 {
-	public const QUERY_LESSON              = 'sensei-lms/lesson';
-	public const QUERY_QUIZ                = 'sensei-lms/quiz';
-	public const QUERY_MODULE              = 'sensei-lms/module';
-	public const QUERY_COURSE_RESULTS      = 'sensei-lms/course-results';
-	public const QUERY_COURSE_COMPLETED    = 'sensei-lms/course-completed';
-	public const QUERY_LEARNER_PROFILE     = 'sensei-lms/learner-profile';
-	public const CRUMB_COURSES             = 'sensei-lms/courses';
-	public const ASSEMBLER_LESSON_ANCESTRY = 'sensei-lms/lesson-ancestry';
-
-	/**
-	 * Stores the query and crumb registries the extension seeds its custom
-	 * types into.
-	 */
-	public function __construct(
-		private readonly QueryRegistry $queries,
-		private readonly AssemblerRegistry $assemblers,
-		private readonly CrumbRegistry $crumbs
-	) {}
-
 	/**
 	 * @inheritDoc
 	 */
 	public function isActive(): bool
 	{
 		return function_exists('Sensei');
-	}
-
-	/**
-	 * @inheritDoc
-	 * @throws ReflectionException
-	 */
-	public function register(): void
-	{
-		// Register Sensei LMS query types.
-		$this->queries->register(self::QUERY_LESSON, LessonQuery::class);
-		$this->queries->register(self::QUERY_QUIZ, QuizQuery::class);
-		$this->queries->register(self::QUERY_MODULE, ModuleQuery::class);
-		$this->queries->register(self::QUERY_COURSE_RESULTS, CourseResultsQuery::class);
-		$this->queries->register(self::QUERY_COURSE_COMPLETED, CourseCompletedQuery::class);
-		$this->queries->register(self::QUERY_LEARNER_PROFILE, LearnerProfileQuery::class);
-
-		// Register Sensei LMS assembler types.
-		$this->assemblers->register(self::ASSEMBLER_LESSON_ANCESTRY, LessonAncestryAssembler::class);
-
-		// Register Sensei LMS crumb types.
-		$this->crumbs->register(self::CRUMB_COURSES, CoursesCrumb::class);
 	}
 
 	/**
@@ -129,12 +84,12 @@ final class SenseiLms extends Extension
 	public function resolveQueryType(QueryTypeResolving $event): void
 	{
 		$type = match (true) {
-			is_singular('quiz')            => self::QUERY_QUIZ,
-			is_singular('lesson')          => self::QUERY_LESSON,
-			is_tax('module')               => self::QUERY_MODULE,
-			$this->isCourseResultsPage()   => self::QUERY_COURSE_RESULTS,
-			$this->isLearnerProfilePage()  => self::QUERY_LEARNER_PROFILE,
-			$this->isCourseCompletedPage() => self::QUERY_COURSE_COMPLETED,
+			is_singular('quiz')            => QuizQuery::class,
+			is_singular('lesson')          => LessonQuery::class,
+			is_tax('module')               => ModuleQuery::class,
+			$this->isCourseResultsPage()   => CourseResultsQuery::class,
+			$this->isLearnerProfilePage()  => LearnerProfileQuery::class,
+			$this->isCourseCompletedPage() => CourseCompletedQuery::class,
 			default                        => null
 		};
 
@@ -155,7 +110,7 @@ final class SenseiLms extends Extension
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name,
 			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(
-				self::CRUMB_COURSES,
+				CoursesCrumb::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);

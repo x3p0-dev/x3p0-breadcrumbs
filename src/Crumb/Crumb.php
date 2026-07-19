@@ -26,9 +26,9 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 abstract class Crumb
 {
 	/**
-	 * The crumb's type slug, assigned once by the factory to the registry
-	 * key the crumb was built from. Left unset for crumbs built outside the
-	 * factory, in which case `type()` derives a slug from the class name.
+	 * The crumb's type slug, assigned once by the context to the key the crumb
+	 * was built from. Left unset for crumbs built outside `makeCrumb()`, in
+	 * which case `getType()` derives a slug from the class name.
 	 */
 	private readonly string $type;
 
@@ -40,9 +40,9 @@ abstract class Crumb
 	{}
 
 	/**
-	 * Assigns the crumb's type slug. Called once by the factory with the
-	 * registry key the crumb was built from; the `readonly` property makes
-	 * it writable a single time.
+	 * Assigns the crumb's type slug. Called once by the context with the key
+	 * the crumb was built from; the `readonly` property makes it writable a
+	 * single time.
 	 */
 	public function setType(string $type): void
 	{
@@ -51,10 +51,10 @@ abstract class Crumb
 
 	/**
 	 * Returns the crumb's type slug, used for its `crumb--{type}` CSS class
-	 * and to match it in the collection. This is the factory-assigned key
+	 * and to match it in the collection. This is the context-assigned key
 	 * when set, otherwise a kebab-cased form of the class short name
 	 * (`PostType` becomes `post-type`) as a fallback for crumbs built
-	 * outside the factory.
+	 * outside `makeCrumb()`.
 	 */
 	public function getType(): string
 	{

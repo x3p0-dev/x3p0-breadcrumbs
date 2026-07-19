@@ -17,7 +17,7 @@ use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
+use X3P0\Breadcrumbs\Extension\SenseiLms\Assembler\LessonAncestry;
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -40,7 +40,7 @@ final class Lesson extends Query
 		// Skip the lesson steps when the queried object is not a post,
 		// so a query left in an unexpected state degrades to a safe trail.
 		if ($lesson instanceof WP_Post) {
-			$this->context->assemble(SenseiLms::ASSEMBLER_LESSON_ANCESTRY, [
+			$this->context->assemble(LessonAncestry::class, [
 				'lesson' => $lesson
 			]);
 

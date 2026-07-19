@@ -32,9 +32,10 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
 final class BreadcrumbsGenerator
 {
 	/**
-	 * Sets up the build with the dispatcher, the query resolver, and the
-	 * factories used to create the pipeline participants. The config that
-	 * controls how the trail is built is supplied per call to `generate()`.
+	 * Sets up the build with the dispatcher, the query resolver, and the query,
+	 * assembler, and crumb factories used to build the pipeline participants.
+	 * The config that controls how the trail is built is supplied per call to
+	 * `generate()`.
 	 */
 	public function __construct(
 		private readonly Dispatcher       $events,

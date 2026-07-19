@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
-use X3P0\Breadcrumbs\Markup\MarkupKey;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
 
@@ -26,7 +26,7 @@ use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
  * instead — along with the markup type and markup config to render with, both
  * writable: reassign `$markupType` to render a different format, or reassign
  * `$config` (typically via `MarkupConfig::with()`) to adjust its options. The
- * markup type accepts any `MarkupKey` (such as a `MarkupType` case) or a string
+ * markup type accepts any `MarkupType` (such as a `MarkupType` case) or a string
  * key for a custom format. The renderer reads the final type and config back
  * from this same instance.
  */
@@ -47,12 +47,12 @@ final class MarkupRendering implements StoppableEvent
 	/**
 	 * Stores the finished crumbs and the writable markup type and config to
 	 * render with. The crumbs are the same collection the build produced; the
-	 * type accepts any `MarkupKey` (such as a `MarkupType` case) or a string
+	 * type accepts any `MarkupType` (such as a `MarkupType` case) or a string
 	 * key for a custom format.
 	 */
 	public function __construct(
 		public readonly CrumbCollection $crumbs,
-		public MarkupKey|string $markupType,
+		public MarkupType|string $markupType,
 		public MarkupConfig $config
 	) {}
 }

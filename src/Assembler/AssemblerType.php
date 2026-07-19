@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Contracts\ClassEnum;
-use X3P0\Breadcrumbs\Support\ProvidesTypeKey;
-
 /**
- * Defines the canonical string keys for the plugin's built-in assemblers. The
- * registrar uses these cases to seed the registry, and the values are the keys
- * that callers pass to the factory and to `BreadcrumbsContext::assemble()`.
+ * The canonical built-in assembler types — the source of truth mapping each key
+ * to its class via `className()`. `AssemblerServiceProvider` registers each
+ * value as a container alias for that class, so a caller may pass the case, its
+ * string key, or the class name to `BreadcrumbsContext::assemble()`.
  */
-enum AssemblerType: string implements ClassEnum, AssemblerKey
+enum AssemblerType: string
 {
-	use ProvidesTypeKey;
-
 	case Date            = 'date';
 	case Home            = 'home';
 	case Paged           = 'paged';
@@ -63,5 +59,17 @@ enum AssemblerType: string implements ClassEnum, AssemblerKey
 			self::Term            => Type\Term::class,
 			self::TermAncestors   => Type\TermAncestors::class
 		};
+	}
+
+	/**
+	 * Returns this case's container alias — its key namespaced under the
+	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
+	 * be reused across subsystems without colliding in the container's single,
+	 * global alias table.
+	 */
+	public function alias(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return 'x3p0/breadcrumbs/assembler/' . $this->value;
 	}
 }

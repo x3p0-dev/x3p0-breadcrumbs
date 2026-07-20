@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use BackedEnum;
+use X3P0\Breadcrumbs\Contracts\EnumDefinition;
 
 /**
  * Interface required for enums tied to queries.
  */
-interface QueryDefinition extends BackedEnum
+interface QueryDefinition extends EnumDefinition
 {
-	/**
-	 * Returns the query class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Query>
-	 */
-	public function className(): string;
 }

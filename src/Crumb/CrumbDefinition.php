@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use BackedEnum;
+use X3P0\Breadcrumbs\Contracts\EnumDefinition;
 
 /**
- * Interface required for enums tied to crumbs
+ * Interface required for enums tied to crumbs.
  */
-interface CrumbDefinition extends BackedEnum
+interface CrumbDefinition extends EnumDefinition
 {
-	/**
-	 * Returns the crumb class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Crumb>
-	 */
-	public function className(): string;
 }

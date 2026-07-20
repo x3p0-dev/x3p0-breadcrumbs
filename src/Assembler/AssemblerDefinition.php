@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use BackedEnum;
+use X3P0\Breadcrumbs\Contracts\EnumDefinition;
 
 /**
  * Interface required for enums tied to assemblers.
  */
-interface AssemblerDefinition extends BackedEnum
+interface AssemblerDefinition extends EnumDefinition
 {
-	/**
-	 * Returns the assembler class associated with the type, mapping each
-	 * case to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Assembler>
-	 */
-	public function className(): string;
 }

@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use BackedEnum;
+use X3P0\Breadcrumbs\Contracts\EnumDefinition;
 
 /**
  * Interface required for enums tied to markup types.
  */
-interface MarkupDefinition extends BackedEnum
+interface MarkupDefinition extends EnumDefinition
 {
-	/**
-	 * Returns the markup class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Markup>
-	 */
-	public function className(): string;
 }

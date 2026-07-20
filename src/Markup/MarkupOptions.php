@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedMap;
+
 /**
  * Derives option lists of markup types from the factory — the authoritative
  * list of available types, including third-party registrations — for the
@@ -25,7 +27,7 @@ final class MarkupOptions
 	 * Stores the factory the options are derived from.
 	 */
 	public function __construct(
-		private readonly MarkupFactory $factory
+		#[TaggedMap(Markup::class, 'slug')] private readonly array $types
 	) {}
 
 	/**
@@ -40,11 +42,11 @@ final class MarkupOptions
 	{
 		$options = [];
 
-		foreach ($this->factory->classes() as $key => $className) {
-			if (is_subclass_of($className, MarkupBlockOption::class)) {
+		foreach ($this->types as $attribute => $abstract) {
+			if (is_subclass_of($abstract, MarkupBlockOption::class)) {
 				$options[] = [
-					'key'  => $key,
-					'name' => $className::label()
+					'key'  => $attribute,
+					'name' => $abstract::label()
 				];
 			}
 		}

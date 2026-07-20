@@ -36,14 +36,11 @@ final class QueryFactory
 	 */
 	public function make(QueryType|string $type, array $params = []): ?Query
 	{
-		$abstract = is_string($type) ? $type : $type->classname();
-		$abstract = class_exists($abstract) ? $abstract : QueryType::tryFrom($abstract)?->classname();
+		$query = $this->resolver->make(
+			is_string($type) ? $type : $type->className(),
+			$params
+		);
 
-		if (! $abstract) {
-			return null;
-		}
-
-		/** @var Query */
-		return $this->resolver->make($abstract, $params);
+		return $query instanceof Query ? $query : null;
 	}
 }

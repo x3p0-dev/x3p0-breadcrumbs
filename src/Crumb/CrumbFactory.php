@@ -38,22 +38,11 @@ final class CrumbFactory
 	 */
 	public function make(CrumbType|string $type, array $params = []): ?Crumb
 	{
-		$abstract = is_string($type) ? $type : $type->classname();
-		$abstract = class_exists($abstract) ? $abstract : CrumbType::tryFrom($abstract)?->classname();
+		$crumb = $this->resolver->make(
+			is_string($type) ? $type : $type->className(),
+			$params
+		);
 
-		if (! $abstract) {
-			return null;
-		}
-
-		/** @var Crumb $crumb */
-		$crumb = $this->resolver->make($abstract, $params);
-
-		if (is_string($type) && ! class_exists($type)) {
-			$crumb->setType($type);
-		} elseif ($type instanceof CrumbType) {
-			$crumb->setType($type->value);
-		}
-
-		return $crumb;
+		return $crumb instanceof Crumb ? $crumb : null;
 	}
 }

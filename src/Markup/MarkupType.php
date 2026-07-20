@@ -42,15 +42,6 @@ enum MarkupType: string
 			self::JsonLinkedData => Type\JsonLinkedData::class
 		};
 	}
-	/**
-	 * Returns this case's key, which is its backing value. Satisfies the
-	 * `TypeKey` contract so a case can be passed wherever a key is expected.
-	 */
-	public function key(): string
-	{
-		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return $this->value;
-	}
 
 	/**
 	 * Returns this case's container alias — its key namespaced under the

@@ -30,7 +30,7 @@ abstract class Crumb
 	 * was built from. Left unset for crumbs built outside `makeCrumb()`, in
 	 * which case `getType()` derives a slug from the class name.
 	 */
-	private readonly string $type;
+	protected const TYPE = '';
 
 	/**
 	 * Stores the shared breadcrumbs context, the entry point to config and
@@ -38,16 +38,6 @@ abstract class Crumb
 	 */
 	public function __construct(protected readonly BreadcrumbsContext $context)
 	{}
-
-	/**
-	 * Assigns the crumb's type slug. Called once by the context with the key
-	 * the crumb was built from; the `readonly` property makes it writable a
-	 * single time.
-	 */
-	public function setType(string $type): void
-	{
-		$this->type = $type;
-	}
 
 	/**
 	 * Returns the crumb's type slug, used for its `crumb--{type}` CSS class
@@ -58,11 +48,13 @@ abstract class Crumb
 	 */
 	public function getType(): string
 	{
-		return $this->type ?? strtolower(preg_replace(
-			'/(?<!^)[A-Z]/',
-			'-$0',
-			basename(str_replace('\\', '/', static::class))
-		));
+		return static::TYPE !== ''
+			? static::TYPE
+			: strtolower(preg_replace(
+				'/(?<!^)[A-Z]/',
+				'-$0',
+				basename(str_replace('\\', '/', static::class))
+			));
 	}
 
 	/**

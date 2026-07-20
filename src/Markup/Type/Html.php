@@ -27,14 +27,6 @@ class Html extends Markup implements MarkupBlockOption
 	/**
 	 * @inheritDoc
 	 */
-	public static function type(): string
-	{
-		return 'html';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public static function label(): string
 	{
 		return __('Plain HTML', 'x3p0-breadcrumbs');

@@ -37,14 +37,11 @@ final class AssemblerFactory
 	 */
 	public function make(AssemblerType|string $type, array $params = []): ?Assembler
 	{
-		$abstract = is_string($type) ? $type : $type->classname();
-		$abstract = class_exists($abstract) ? $abstract : AssemblerType::tryFrom($abstract)?->classname();
+		$assembler = $this->resolver->make(
+			is_string($type) ? $type : $type->className(),
+			$params
+		);
 
-		if (! $abstract) {
-			return null;
-		}
-
-		/** @var Assembler */
-		return $this->resolver->make($abstract, $params);
+		return $assembler instanceof Assembler ? $assembler : null;
 	}
 }

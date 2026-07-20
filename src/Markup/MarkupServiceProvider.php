@@ -46,8 +46,9 @@ final class MarkupServiceProvider extends ServiceProvider
 	public function register(): void
 	{
 		foreach (MarkupType::cases() as $type) {
-			$this->container->alias($type->alias(), $type->className());
-			$this->container->tag($type->className(), Markup::TAG);
+			$this->container->tag($type->className(), Markup::TAG, [
+				'slug' => $type->value
+			]);
 		}
 	}
 }

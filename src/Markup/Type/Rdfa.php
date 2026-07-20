@@ -25,14 +25,6 @@ final class Rdfa extends Html
 	/**
 	 * @inheritDoc
 	 */
-	public static function type(): string
-	{
-		return 'rdfa';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public static function label(): string
 	{
 		return __('RDFa (Schema.org)', 'x3p0-breadcrumbs');

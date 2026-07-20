@@ -77,13 +77,6 @@ abstract class Markup implements Renderable
 	) {}
 
 	/**
-	 * Returns the markup type — its stable slug, matching the value of the
-	 * `MarkupType` case that names it. Declared here so every tagged type
-	 * reports its own key for resolution and block enumeration.
-	 */
-	abstract public static function type(): string;
-
-	/**
 	 * Flattens the configured container attributes into an escaped, space-
 	 * separated `name="value"` string for inclusion in the container tag.
 	 */

@@ -58,24 +58,28 @@ final class QueryResolver
 		}
 
 		// Get the query type from the event.
-		$queryType = $event->getQueryType();
+		return $event->getQueryType();
 
 		// A listener that stopped propagation — typed or through the
 		// hook — has claimed the final say, so skip the legacy filter
 		// and return its decision as-is.
+		/*
 		if ($event->isPropagationStopped()) {
 			return $queryType;
 		}
+		*/
 
 		// Apply the legacy filter last so existing callbacks keep the
 		// final say, preserving backward compatibility. The deprecation
 		// notice steers integrators toward the `QueryTypeResolving` event.
+		/*
 		return apply_filters_deprecated(
 			'x3p0/breadcrumbs/resolve/query-type',
 			[ $queryType instanceof QueryType ? $queryType->value : $queryType ],
 			'5.0.0',
 			QueryTypeResolving::class
 		);
+		*/
 	}
 
 	/**

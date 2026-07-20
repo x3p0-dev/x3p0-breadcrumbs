@@ -35,7 +35,7 @@ abstract class Query
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const TAG = 'x3p0/breadcrumbs/query';
+	final public const TAG = 'x3p0/breadcrumbs/query';
 
 	/**
 	 * Stores the shared context object so subclasses can dispatch further

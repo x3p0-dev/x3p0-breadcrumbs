@@ -35,7 +35,7 @@ abstract class Assembler
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const TAG = 'x3p0/breadcrumbs/assembler';
+	final public const TAG = 'x3p0/breadcrumbs/assembler';
 
 	/**
 	 * Stores the shared context facade that assemblers use to add crumbs and

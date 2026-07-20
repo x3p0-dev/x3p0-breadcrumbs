@@ -34,7 +34,7 @@ abstract class Crumb
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const TAG = 'x3p0/breadcrumbs/crumb';
+	final public const TAG = 'x3p0/breadcrumbs/crumb';
 
 	/**
 	 * The crumb's type slug, assigned once by the context to the key the crumb

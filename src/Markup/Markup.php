@@ -37,7 +37,7 @@ abstract class Markup implements Renderable
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const TAG = 'x3p0/breadcrumbs/markup';
+	final public const TAG = 'x3p0/breadcrumbs/markup';
 
 	/**
 	 * Whitelist of inline HTML elements (and their permitted attributes) that

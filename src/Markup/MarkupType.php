@@ -39,16 +39,4 @@ enum MarkupType: string implements MarkupDefinition
 			self::JsonLinkedData => Type\JsonLinkedData::class
 		};
 	}
-
-	/**
-	 * Returns this case's container alias — its key namespaced under the
-	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
-	 * be reused across subsystems without colliding in the container's single,
-	 * global alias table.
-	 */
-	public function alias(): string
-	{
-		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return 'x3p0/breadcrumbs/markup/' . $this->value;
-	}
 }

@@ -35,7 +35,7 @@ final class AssemblerFactory
 	 * Builds the assembler for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(AssemblerType|string $type, array $params = []): ?Assembler
+	public function make(AssemblerDefinition|string $type, array $params = []): ?Assembler
 	{
 		$assembler = $this->resolver->make(
 			is_string($type) ? $type : $type->className(),

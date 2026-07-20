@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Markup definition interface.
+ * Assembler definition interface.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -11,20 +11,20 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Markup;
+namespace X3P0\Breadcrumbs\Assembler;
 
 use BackedEnum;
 
 /**
- * Interface required for enums tied to markup types.
+ * Interface required for enums tied to assemblers.
  */
-interface MarkupDefinition extends BackedEnum
+interface AssemblerDefinition extends BackedEnum
 {
 	/**
-	 * Returns the markup class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
+	 * Returns the assembler class associated with the type, mapping each
+	 * case to a concrete class under the `Type` sub-namespace.
 	 *
-	 * @return class-string<Markup>
+	 * @return class-string<Assembler>
 	 */
 	public function className(): string;
 }

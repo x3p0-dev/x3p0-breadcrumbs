@@ -20,7 +20,7 @@ namespace X3P0\Breadcrumbs\Query;
  * class, so a caller may pass the case, its string key, or the class name to
  * `BreadcrumbsContext::query()`.
  */
-enum QueryType: string
+enum QueryType: string implements QueryDefinition
 {
 	case Archive         = 'archive';
 	case Author          = 'author';
@@ -35,10 +35,7 @@ enum QueryType: string
 	case Taxonomy        = 'taxonomy';
 
 	/**
-	 * Returns the query class associated with the type, mapping each case
-	 * to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Query>
+	 * @inheritDoc
 	 */
 	public function className(): string
 	{
@@ -56,17 +53,5 @@ enum QueryType: string
 			self::Singular        => Type\Singular::class,
 			self::Taxonomy        => Type\Taxonomy::class
 		};
-	}
-
-	/**
-	 * Returns this case's container alias — its key namespaced under the
-	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
-	 * be reused across subsystems without colliding in the container's single,
-	 * global alias table.
-	 */
-	public function alias(): string
-	{
-		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return 'x3p0/breadcrumbs/query/' . $this->value;
 	}
 }

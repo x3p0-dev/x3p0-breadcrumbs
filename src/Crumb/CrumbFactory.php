@@ -36,7 +36,7 @@ final class CrumbFactory
 	 * constructor arguments and assigning its type slug from an alias key, or
 	 * returns `null` when the type is unknown.
 	 */
-	public function make(CrumbType|string $type, array $params = []): ?Crumb
+	public function make(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
 		$crumb = $this->resolver->make(
 			is_string($type) ? $type : $type->className(),

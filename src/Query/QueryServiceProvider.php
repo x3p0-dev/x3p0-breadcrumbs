@@ -42,8 +42,8 @@ final class QueryServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		foreach (QueryType::cases() as $type) {
-			$this->container->alias($type->alias(), $type->className());
-		}
+	//	foreach (QueryType::cases() as $type) {
+	//		$this->container->alias($type->alias(), $type->className());
+	//	}
 	}
 }

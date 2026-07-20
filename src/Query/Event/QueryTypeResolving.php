@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Query\Event;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
-use X3P0\Breadcrumbs\Query\QueryType;
+use X3P0\Breadcrumbs\Query\QueryDefinition;
 
 /**
  * Dispatched while resolving which query type matches the current request,
@@ -50,14 +50,14 @@ final class QueryTypeResolving implements StoppableEvent
 	 */
 	public function __construct(
 		public readonly BreadcrumbsContext $context,
-		private QueryType|string|null $queryType
+		private QueryDefinition|string|null $queryType
 	) {}
 
 	/**
 	 * Returns the query type resolved so far: a `QueryType` (such as a
 	 * `QueryType` case), a string key, or null when none matched.
 	 */
-	public function getQueryType(): QueryType|string|null
+	public function getQueryType(): QueryDefinition|string|null
 	{
 		return $this->queryType;
 	}
@@ -67,7 +67,7 @@ final class QueryTypeResolving implements StoppableEvent
 	 * `QueryType` case), a string key for a custom type, or null to build
 	 * no breadcrumbs.
 	 */
-	public function setQueryType(QueryType|string|null $queryType): void
+	public function setQueryType(QueryDefinition|string|null $queryType): void
 	{
 		$this->queryType = $queryType;
 	}

@@ -41,8 +41,8 @@ final class CrumbServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-		foreach (CrumbType::cases() as $type) {
-			$this->container->alias($type->alias(), $type->className());
-		}
+	//	foreach (CrumbType::cases() as $type) {
+	//		$this->container->alias($type->alias(), $type->className());
+	//	}
 	}
 }

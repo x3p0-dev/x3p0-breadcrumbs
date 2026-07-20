@@ -34,7 +34,7 @@ final class QueryFactory
 	 * Builds the query for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(QueryType|string $type, array $params = []): ?Query
+	public function make(QueryDefinition|string $type, array $params = []): ?Query
 	{
 		$query = $this->resolver->make(
 			is_string($type) ? $type : $type->className(),

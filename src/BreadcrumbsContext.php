@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Assembler\AssemblerDefinition;
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
-use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Crumb\CrumbDefinition;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
-use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Query\QueryDefinition;
 use X3P0\Breadcrumbs\Query\QueryFactory;
-use X3P0\Breadcrumbs\Query\QueryType;
 
 /**
  * A facade over the query, assembler, and crumb factories, bundled with the
@@ -55,7 +55,7 @@ final class BreadcrumbsContext
 	 * third-party implementation), its string key, or a query class name. Does
 	 * nothing when the type is unknown.
 	 */
-	public function query(QueryType|string $type, array $params = []): void
+	public function query(QueryDefinition|string $type, array $params = []): void
 	{
 		$this->queryFactory->make($type, [
 			'context' => $this,
@@ -69,7 +69,7 @@ final class BreadcrumbsContext
 	 * enum or a third-party implementation), its string key, or an assembler
 	 * class name. Does nothing when the type is unknown.
 	 */
-	public function assemble(AssemblerType|string $type, array $params = []): void
+	public function assemble(AssemblerDefinition|string $type, array $params = []): void
 	{
 		$this->assemblerFactory->make($type, [
 			'context' => $this,
@@ -85,7 +85,7 @@ final class BreadcrumbsContext
 	 * that need a crumb instance to hand to the collection's insert or replace
 	 * methods on the `CrumbsBuilt` event.
 	 */
-	public function makeCrumb(CrumbType|string $type, array $params = []): ?Crumb
+	public function makeCrumb(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
 		return $this->crumbFactory->make($type, [
 			'context' => $this,
@@ -98,7 +98,7 @@ final class BreadcrumbsContext
 	 * any `CrumbType` (the `CrumbType` enum or a third-party implementation), its
 	 * string key, or a crumb class name.
 	 */
-	public function addCrumb(CrumbType|string $type, array $params = []): void
+	public function addCrumb(CrumbDefinition|string $type, array $params = []): void
 	{
 		if ($crumb = $this->makeCrumb($type, $params)) {
 			$this->crumbs->push($crumb);

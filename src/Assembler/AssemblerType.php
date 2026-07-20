@@ -19,7 +19,7 @@ namespace X3P0\Breadcrumbs\Assembler;
  * value as a container alias for that class, so a caller may pass the case, its
  * string key, or the class name to `BreadcrumbsContext::assemble()`.
  */
-enum AssemblerType: string
+enum AssemblerType: string implements AssemblerDefinition
 {
 	case Date            = 'date';
 	case Home            = 'home';
@@ -36,10 +36,7 @@ enum AssemblerType: string
 	case TermAncestors   = 'term-ancestors';
 
 	/**
-	 * Returns the assembler class associated with the type, mapping each
-	 * case to a concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Assembler>
+	 * @inheritDoc
 	 */
 	public function className(): string
 	{
@@ -59,17 +56,5 @@ enum AssemblerType: string
 			self::Term            => Type\Term::class,
 			self::TermAncestors   => Type\TermAncestors::class
 		};
-	}
-
-	/**
-	 * Returns this case's container alias — its key namespaced under the
-	 * subsystem as `x3p0/breadcrumbs/{TYPE}/{key}` — so the same short key can
-	 * be reused across subsystems without colliding in the container's single,
-	 * global alias table.
-	 */
-	public function alias(): string
-	{
-		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return 'x3p0/breadcrumbs/assembler/' . $this->value;
 	}
 }

@@ -41,8 +41,10 @@ final class AssemblerServiceProvider extends ServiceProvider
 	 */
 	public function register(): void
 	{
-	//	foreach (AssemblerType::cases() as $type) {
-	//		$this->container->alias($type->alias(), $type->className());
-	//	}
+		foreach (AssemblerType::cases() as $type) {
+			$this->container->tag($type->className(), Assembler::TAG, [
+				'slug' => $type->value
+			]);
+		}
 	}
 }

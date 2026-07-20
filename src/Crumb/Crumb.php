@@ -26,6 +26,17 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 abstract class Crumb
 {
 	/**
+	 * The container tag under which crumb types are collected, so the
+	 * full set — built-in and third-party — can be resolved by key and
+	 * enumerated for the block editor. `CrumbServiceProvider` seeds it
+	 * from `CrumbType`.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TAG = 'x3p0/breadcrumbs/crumb';
+
+	/**
 	 * The crumb's type slug, assigned once by the context to the key the crumb
 	 * was built from. Left unset for crumbs built outside `makeCrumb()`, in
 	 * which case `getType()` derives a slug from the class name.

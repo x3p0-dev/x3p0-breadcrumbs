@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedMap;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -27,6 +28,7 @@ final class QueryFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
+		#[DeferredTaggedMap(Query::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 
@@ -34,13 +36,17 @@ final class QueryFactory
 	 * Builds the query for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(QueryDefinition|string $type, array $params = []): ?Query
+	public function make(QueryDefinition|string $abstract, array $params = []): ?Query
 	{
-		$query = $this->resolver->make(
-			is_string($type) ? $type : $type->className(),
-			$params
-		);
+		$abstract = is_string($abstract) ? $abstract : $abstract->value;
 
-		return $query instanceof Query ? $query : null;
+		// If passing a class string, we can just resolve directly.
+		if (is_subclass_of($abstract, Query::class)) {
+			/** @var null|Query */
+			return $this->resolver->make($abstract, $params);
+		}
+
+		/** @var null|Query */
+		return isset($this->factories[$abstract]) ? ($this->factories[$abstract])($params) : null;
 	}
 }

@@ -27,6 +27,17 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 abstract class Assembler
 {
 	/**
+	 * The container tag under which assembler types are collected, so the
+	 * full set — built-in and third-party — can be resolved by key and
+	 * enumerated for the block editor. `AssemblerServiceProvider` seeds it
+	 * from `AssemblerType`.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TAG = 'x3p0/breadcrumbs/assembler';
+
+	/**
 	 * Stores the shared context facade that assemblers use to add crumbs and
 	 * delegate to other assemblers.
 	 */

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedMap;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -28,21 +29,25 @@ final class CrumbFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
+		#[DeferredTaggedMap(Crumb::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
 	 * Builds the crumb for the given type, forwarding `$params` as named
-	 * constructor arguments and assigning its type slug from an alias key, or
-	 * returns `null` when the type is unknown.
+	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(CrumbDefinition|string $type, array $params = []): ?Crumb
+	public function make(CrumbDefinition|string $abstract, array $params = []): ?Crumb
 	{
-		$crumb = $this->resolver->make(
-			is_string($type) ? $type : $type->className(),
-			$params
-		);
+		$abstract = is_string($abstract) ? $abstract : $abstract->value;
 
-		return $crumb instanceof Crumb ? $crumb : null;
+		// If passing a class string, we can just resolve directly.
+		if (is_subclass_of($abstract, Crumb::class)) {
+			/** @var null|Crumb */
+			return $this->resolver->make($abstract, $params);
+		}
+
+		/** @var null|Crumb */
+		return isset($this->factories[$abstract]) ? ($this->factories[$abstract])($params) : null;
 	}
 }

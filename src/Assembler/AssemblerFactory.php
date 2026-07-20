@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedMap;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -28,6 +29,7 @@ final class AssemblerFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
+		#[DeferredTaggedMap(Assembler::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 
@@ -35,13 +37,17 @@ final class AssemblerFactory
 	 * Builds the assembler for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(AssemblerDefinition|string $type, array $params = []): ?Assembler
+	public function make(AssemblerDefinition|string $abstract, array $params = []): ?Assembler
 	{
-		$assembler = $this->resolver->make(
-			is_string($type) ? $type : $type->className(),
-			$params
-		);
+		$abstract = is_string($abstract) ? $abstract : $abstract->value;
 
-		return $assembler instanceof Assembler ? $assembler : null;
+		// If passing a class string, we can just resolve directly.
+		if (is_subclass_of($abstract, Assembler::class)) {
+			/** @var null|Assembler */
+			return $this->resolver->make($abstract, $params);
+		}
+
+		/** @var null|Assembler */
+		return isset($this->factories[$abstract]) ? ($this->factories[$abstract])($params) : null;
 	}
 }

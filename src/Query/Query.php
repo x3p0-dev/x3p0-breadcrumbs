@@ -27,6 +27,17 @@ use X3P0\Breadcrumbs\BreadcrumbsContext;
 abstract class Query
 {
 	/**
+	 * The container tag under which query types are collected, so the
+	 * full set — built-in and third-party — can be resolved by key and
+	 * enumerated for the block editor. `QueryServiceProvider` seeds it
+	 * from `QueryType`.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const TAG = 'x3p0/breadcrumbs/query';
+
+	/**
 	 * Stores the shared context object so subclasses can dispatch further
 	 * queries, assemblers, and crumbs into the trail being built.
 	 */

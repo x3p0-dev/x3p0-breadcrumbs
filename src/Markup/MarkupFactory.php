@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedMap;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedMap;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -52,7 +51,7 @@ final class MarkupFactory
 	 * enum or a third-party implementation) or a string key. Returns `null` when
 	 * no tagged markup type reports the key.
 	 */
-	public function make(MarkupType|string $abstract, array $params = []): ?Markup
+	public function make(MarkupDefinition|string $abstract, array $params = []): ?Markup
 	{
 		$abstract = is_string($abstract) ? $abstract : $abstract->value;
 

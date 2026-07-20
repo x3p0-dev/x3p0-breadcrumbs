@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\MarkupDefinition;
 use X3P0\Breadcrumbs\Markup\MarkupFactory;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
@@ -61,7 +62,7 @@ class BreadcrumbsRenderer
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
 		MarkupConfig|array      $markupConfig      = new MarkupConfig(),
-		MarkupType|string        $markupType        = MarkupType::Html
+		MarkupDefinition|string $markupType        = MarkupType::Html
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
 			? BreadcrumbsConfig::fromArray($breadcrumbsConfig)

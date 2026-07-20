@@ -19,7 +19,7 @@ namespace X3P0\Breadcrumbs\Markup;
  * `Markup::TAG` from these cases, so the resolver can build a format by key and
  * enumerate the available formats (including third-party additions).
  */
-enum MarkupType: string
+enum MarkupType: string implements MarkupDefinition
 {
 	case Html           = 'html';
 	case Microdata      = 'microdata';
@@ -27,10 +27,7 @@ enum MarkupType: string
 	case JsonLinkedData = 'json-ld';
 
 	/**
-	 * Returns the markup class associated with the type, mapping each case to a
-	 * concrete class under the `Type` sub-namespace.
-	 *
-	 * @return class-string<Markup>
+	 * @inheritDoc
 	 */
 	public function className(): string
 	{

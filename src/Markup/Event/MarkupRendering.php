@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
-use X3P0\Breadcrumbs\Markup\MarkupType;
+use X3P0\Breadcrumbs\Markup\MarkupDefinition;
 use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
 
@@ -52,7 +52,7 @@ final class MarkupRendering implements StoppableEvent
 	 */
 	public function __construct(
 		public readonly CrumbCollection $crumbs,
-		public MarkupType|string $markupType,
+		public MarkupDefinition|string $markupType,
 		public MarkupConfig $config
 	) {}
 }

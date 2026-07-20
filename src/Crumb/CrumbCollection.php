@@ -247,38 +247,6 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
-	 * Determines if a crumb of the given type slug exists in the collection.
-	 */
-	public function hasType(string $type): bool
-	{
-		return $this->contains(static fn (Crumb $crumb) => $crumb->getType() === $type);
-	}
-
-	/**
-	 * Returns the first crumb with the given type slug, or null.
-	 */
-	public function firstOfType(string $type): ?Crumb
-	{
-		return $this->first(static fn (Crumb $crumb) => $crumb->getType() === $type);
-	}
-
-	/**
-	 * Returns the last crumb with the given type slug, or null.
-	 */
-	public function lastOfType(string $type): ?Crumb
-	{
-		return $this->last(static fn (Crumb $crumb) => $crumb->getType() === $type);
-	}
-
-	/**
-	 * Returns a new collection of every crumb with the given type slug.
-	 */
-	public function allOfType(string $type): self
-	{
-		return $this->filter(static fn (Crumb $crumb) => $crumb->getType() === $type);
-	}
-
-	/**
 	 * Appends a crumb to the end of the collection.
 	 */
 	public function push(Crumb $crumb): void
@@ -318,14 +286,6 @@ final class CrumbCollection implements Iterator, Countable
 		if (false !== $index) {
 			array_splice($this->crumbs, $index + 1, 0, [$crumb]);
 		}
-	}
-
-	/**
-	 * Removes every crumb with the given type slug, then re-indexes.
-	 */
-	public function removeType(string $type): void
-	{
-		$this->removeWhere(static fn (Crumb $crumb) => $crumb->getType() === $type);
 	}
 
 	/**

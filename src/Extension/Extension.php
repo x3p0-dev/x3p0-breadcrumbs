@@ -47,15 +47,6 @@ abstract class Extension implements Subscriber
 	abstract public function isActive(): bool;
 
 	/**
-	 * Registers the extension's custom query, assembler, and crumb types in
-	 * their registries. Called once for active extensions, before its
-	 * listeners are subscribed. Registering an existing key overrides the
-	 * built-in type of that key.
-	 */
-	public function register(): void
-	{}
-
-	/**
 	 * @inheritDoc
 	 */
 	public function getSubscribedEvents(): array

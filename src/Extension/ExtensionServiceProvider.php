@@ -86,7 +86,6 @@ final class ExtensionServiceProvider extends ServiceProvider
 	): void {
 		foreach ($extensions as $extension) {
 			if ($extension->isActive()) {
-				$extension->register();
 				$listeners->subscribe($extension);
 			}
 		}

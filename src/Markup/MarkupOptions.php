@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedMap;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstractsWith;
 
 /**
  * Derives option lists of markup types from the factory — the authoritative
@@ -27,7 +27,7 @@ final class MarkupOptions
 	 * Stores the factory the options are derived from.
 	 */
 	public function __construct(
-		#[TaggedMap(Markup::class, 'slug')] private readonly array $types
+		#[TaggedAbstractsWith(Markup::class, 'slug')] private readonly array $types
 	) {}
 
 	/**

@@ -45,8 +45,8 @@ final class CrumbFactory
 	public function make(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
 		// Always use the classname from the interface because this
-		// ensures it works in the `is_subclass_check()` without falling
-		// through to the tagged types.
+		// ensures it works in the `is_subclass_of()` check without
+		// falling through to the tagged types.
 		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.

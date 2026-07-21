@@ -51,17 +51,17 @@ final class MarkupFactory
 	 * enum or a third-party implementation) or a string key. Returns `null` when
 	 * no tagged markup type reports the key.
 	 */
-	public function make(MarkupDefinition|string $abstract, array $params = []): ?Markup
+	public function make(MarkupDefinition|string $type, array $params = []): ?Markup
 	{
-		$abstract = is_string($abstract) ? $abstract : $abstract->value;
+		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.
-		if (is_subclass_of($abstract, Markup::class)) {
+		if (is_subclass_of($type, Markup::class)) {
 			/** @var null|Markup */
-			return $this->resolver->make($abstract, $params);
+			return $this->resolver->make($type, $params);
 		}
 
 		/** @var null|Markup */
-		return isset($this->factories[$abstract]) ? ($this->factories[$abstract])($params) : null;
+		return isset($this->factories[$type]) ? ($this->factories[$type])($params) : null;
 	}
 }

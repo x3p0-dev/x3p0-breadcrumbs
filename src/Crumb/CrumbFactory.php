@@ -37,17 +37,17 @@ final class CrumbFactory
 	 * Builds the crumb for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 */
-	public function make(CrumbDefinition|string $abstract, array $params = []): ?Crumb
+	public function make(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
-		$abstract = is_string($abstract) ? $abstract : $abstract->value;
+		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.
-		if (is_subclass_of($abstract, Crumb::class)) {
-			/** @var null|Crumb */
-			return $this->resolver->make($abstract, $params);
+		if (is_subclass_of($type, Crumb::class)) {
+			/** @var Crumb */
+			return $this->resolver->make($type, $params);
 		}
 
 		/** @var null|Crumb */
-		return isset($this->factories[$abstract]) ? ($this->factories[$abstract])($params) : null;
+		return isset($this->factories[$type]) ? ($this->factories[$type])($params) : null;
 	}
 }

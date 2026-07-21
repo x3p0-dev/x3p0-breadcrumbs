@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use X3P0\Breadcrumbs\Crumb\Crumb;
+
 /**
  * The canonical built-in query types, one per WordPress request type — the
  * source of truth mapping each key to its class via `className()`.
- * `QueryServiceProvider` registers each value as a container alias for that
- * class, so a caller may pass the case, its string key, or the class name to
- * `BreadcrumbsContext::query()`.
  */
 enum QueryType: string implements QueryDefinition
 {
@@ -36,6 +35,7 @@ enum QueryType: string implements QueryDefinition
 
 	/**
 	 * @inheritDoc
+	 * @return class-string<Crumb>
 	 */
 	public function className(): string
 	{

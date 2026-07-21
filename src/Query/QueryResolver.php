@@ -20,14 +20,12 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 /**
  * Decides which query type matches the current WordPress request. It detects a
  * default type from an ordered map of conditional tags, then lets third parties
- * override it in turn: first by dispatching a `QueryTypeResolving` event, then by
- * firing the `x3p0/breadcrumbs/query-type-resolving` action so `add_action()`
- * callbacks can change the same event, and finally through the legacy
- * `x3p0/breadcrumbs/resolve/query-type` filter, which keeps the final say for
- * backward compatibility. A listener that stops the event's propagation claims
- * the final say early, skipping the action and the legacy filter. The result is
- * a query key string (a built-in `QueryType` value or a custom one) or null when
- * nothing matched.
+ * override it in turn: first by dispatching a {@see QueryTypeResolving} event,
+ * then by firing the {@see QueryTypeResolving::HOOK_NAME} action so `add_action()`
+ * callbacks can change the same event. A listener that stops the event's
+ * propagation claims the final say early, skipping the action. The result is a
+ * {@see Query} class-string, {@see QueryDefinition} enum, tagged slug, or null
+ * when nothing matched.
  */
 final class QueryResolver
 {
@@ -38,7 +36,7 @@ final class QueryResolver
 	{}
 
 	/**
-	 * Resolves the query type key for the current request, giving listeners
+	 * Resolves the query type for the current request, giving listeners
 	 * and the legacy filter a chance to override the detected default.
 	 */
 	public function resolve(BreadcrumbsContext $context): QueryType|string|null

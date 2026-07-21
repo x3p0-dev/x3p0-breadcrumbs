@@ -40,7 +40,7 @@ final class QueryFactory
 	 * This can be constructed via an enum that implements the `QueryDefinition`
 	 * interface, a class-string, or a slug value when the query type is
 	 * tagged in the container via {@see Query::TAG} with a valid `slug`
-	 * value at the time of tagging {@see QueryServiceProvider::register()}.
+	 * value at the time of tagging ({@see QueryServiceProvider::register()}).
 	 */
 	public function make(QueryDefinition|string $type, array $params = []): ?Query
 	{

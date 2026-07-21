@@ -36,8 +36,8 @@ final class QueryServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Aliases each built-in query key to its class, so callers may dispatch by
-	 * the `QueryType` case, its string key, or the class name. The enum is the
+	 * Tags each built-in query to the {@see Query::TAG} with its unique
+	 * slug, so callers may dispatch by the slug if desired. The enum is the
 	 * source of truth for the mapping.
 	 */
 	public function register(): void

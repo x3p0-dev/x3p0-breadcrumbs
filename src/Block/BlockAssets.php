@@ -18,8 +18,9 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
  * Passes server-side data to the block editor. The selectable markup types are
- * defined once in PHP via `MarkupType` and handed to the editor script so the
- * JavaScript never has to recreate (and risk desyncing) the list.
+ * defined once in PHP (captured via {@see MarkupOptions}) and handed to the
+ * editor script so the JavaScript never has to recreate (and risk desyncing)
+ * the list.
  */
 final class BlockAssets implements Bootable
 {

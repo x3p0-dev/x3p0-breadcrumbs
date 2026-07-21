@@ -37,9 +37,10 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
 final class BreadcrumbsContext
 {
 	/**
-	 * Bundles the shared instances needed to build a single breadcrumb trail.
-	 * The crumb collection is the mutable accumulator that the pipeline appends
-	 * to; the factories and config are shared, read-only collaborators.
+	 * Bundles the shared instances needed to build a single breadcrumb
+	 * trail. The crumb collection is the mutable accumulator that the
+	 * pipeline appends to; the factories and config are shared, read-only
+	 * collaborators.
 	 */
 	public function __construct(
 		private readonly CrumbCollection   $crumbs,
@@ -50,10 +51,9 @@ final class BreadcrumbsContext
 	) {}
 
 	/**
-	 * Dispatches a query by type, injecting this context so the query can add
-	 * to the trail. Accepts any `QueryType` (the `QueryType` enum or a
-	 * third-party implementation), its string key, or a query class name. Does
-	 * nothing when the type is unknown.
+	 * Dispatches a query by type, injecting this context so the query can
+	 * add to the trail. Accepts any `QueryDefinition` enum, `Query` class
+	 * string, or tagged slug. Does nothing when the type is unknown.
 	 */
 	public function query(QueryDefinition|string $type, array $params = []): void
 	{
@@ -64,10 +64,10 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Dispatches an assembler by type, injecting this context so the assembler
-	 * can add to the trail. Accepts any `AssemblerType` (the `AssemblerType`
-	 * enum or a third-party implementation), its string key, or an assembler
-	 * class name. Does nothing when the type is unknown.
+	 * Dispatches an assembler by type, injecting this context so the
+	 * assembler can add to the trail. Accepts any `AssemblerDefinition`
+	 * enum, `Assembler` class string, or tagged slug. Does nothing when the
+	 * type is unknown.
 	 */
 	public function assemble(AssemblerDefinition|string $type, array $params = []): void
 	{
@@ -79,11 +79,11 @@ final class BreadcrumbsContext
 
 	/**
 	 * Builds a crumb by type and returns it without adding it to the
-	 * collection, injecting this context. Accepts any `CrumbType` (the
-	 * `CrumbType` enum or a third-party implementation), its string key, or a
-	 * crumb class name. Returns null for an unknown type. Useful for extensions
-	 * that need a crumb instance to hand to the collection's insert or replace
-	 * methods on the `CrumbsBuilt` event.
+	 * collection, injecting this context. Accepts any `CrumbDefinition`
+	 * enum, `Crumb` class string, or tagged slug. Returns null for an
+	 * unknown type. Useful for extensions that need a crumb instance to
+	 * hand to the collection's insert or replace methods on the
+	 * `CrumbsBuilt` event.
 	 */
 	public function makeCrumb(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
@@ -94,9 +94,9 @@ final class BreadcrumbsContext
 	}
 
 	/**
-	 * Builds a crumb by type and appends it to the shared collection. Accepts
-	 * any `CrumbType` (the `CrumbType` enum or a third-party implementation), its
-	 * string key, or a crumb class name.
+	 * Builds a crumb by type and appends it to the shared collection.
+	 * Accepts any `CrumbDefinition` enum, `Crumb` class string, or tagged
+	 * slug. Does nothing when the type is unknown.
 	 */
 	public function addCrumb(CrumbDefinition|string $type, array $params = []): void
 	{

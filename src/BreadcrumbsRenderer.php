@@ -31,7 +31,7 @@ use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
  * This is the mirror image of `BreadcrumbsContext`: where the context is the
  * inside-out facade the build participants talk through, this is the outside-in
  * facade callers reach for. It is markup-agnostic — the output format is chosen
- * per call via the `MarkupType` argument (typically a `MarkupType` case).
+ * per call via the `$markupType` param.
  *
  * Not declared `final` so the deprecated `BreadcrumbsService` can extend it for
  * backward compatibility; treat it as effectively final otherwise.
@@ -56,8 +56,9 @@ class BreadcrumbsRenderer
 	 *
 	 * Each argument accepts either a typed object or the loose value it is
 	 * built from: the configs may be passed as arrays (coerced via their
-	 * `fromArray()` factories), and the markup type may be passed as a string
-	 * key. Returns an empty string if the markup type is not registered.
+	 * `fromArray()` factories), and the markup type may be passed as a
+	 * `MarkupDefinition` enum, `Markup` class-string, or tagged slug. If
+	 * the markup type cannot be created, it will return an empty string.
 	 */
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
@@ -74,8 +75,8 @@ class BreadcrumbsRenderer
 
 		// Let listeners retarget the markup type or config for this
 		// request, then bridge the same event to WordPress unless a
-		// listener claimed stopped propagation, so `add_action()`
-		// callbacks can retarget it alongside the typed listeners.
+		// listener stopped propagation, so `add_action()` callbacks can
+		// retarget it alongside the typed listeners.
 		$event = $this->events->dispatch(new MarkupRendering(
 			crumbs:     $this->generator->generate($breadcrumbsConfig),
 			markupType: $markupType,

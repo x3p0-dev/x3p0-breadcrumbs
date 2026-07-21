@@ -91,6 +91,8 @@ final class BlockRegistrar implements Bootable
 			return $metadata;
 		}
 
+		// Get the post types with a `%tag%` in their rewrite slug and
+		// mark them to map rewrite tags by default.
 		$types = array_filter(
 			get_post_types(['publicly_queryable' => true], 'objects'),
 			static fn($type) => is_array($type->rewrite) && str_contains($type->rewrite['slug'] ?? '', '%')

@@ -32,10 +32,10 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
 final class BreadcrumbsGenerator
 {
 	/**
-	 * Sets up the build with the dispatcher, the query resolver, and the query,
-	 * assembler, and crumb factories used to build the pipeline participants.
-	 * The config that controls how the trail is built is supplied per call to
-	 * `generate()`.
+	 * Sets up the build with the dispatcher, the query resolver, and the
+	 * query, assembler, and crumb factories used to build the pipeline
+	 * participants. The config that controls how the trail is built is
+	 * supplied per call to `generate()`.
 	 */
 	public function __construct(
 		private readonly Dispatcher       $events,
@@ -65,14 +65,14 @@ final class BreadcrumbsGenerator
 
 		// Resolve the query type for the request, then run it to build
 		// the trail. Resolution is overridable via the `QueryTypeResolving`
-		// event and the legacy filter.
+		// event and related hook.
 		if ($queryType = $this->queryResolver->resolve($context)) {
 			$context->query($queryType);
 		}
 
-		// Let listeners adjust the finished crumbs before they are returned,
-		// then bridge the same event to WordPress so `add_action()`
-		// callbacks can adjust them too.
+		// Let listeners adjust the finished crumbs before they are
+		// returned, then bridge the same event to WordPress so
+		// `add_action()` callbacks can adjust them too.
 		do_action(
 			CrumbsBuilt::HOOK_NAME,
 			$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()))

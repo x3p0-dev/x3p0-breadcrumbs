@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Contracts;
 
-use BackedEnum;
+use UnitEnum;
 
 /**
  * Contract for a backed enum case that declaratively maps itself to a
@@ -23,7 +23,7 @@ use BackedEnum;
  * @internal The interface itself is an internal contract; third-party code
  *           should not use it directly.
  */
-interface EnumDefinition extends BackedEnum
+interface EnumDefinition extends UnitEnum
 {
 	/**
 	 * Returns the concrete class associated with this case.

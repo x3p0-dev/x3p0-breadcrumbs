@@ -17,11 +17,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Resolves an assembler type to a container identifier and builds it. An
- * `AssemblerType` (the `AssemblerType` enum or a third-party implementation) or
- * its string key resolves to the assembler's container alias; a class name is
- * built directly. Returns `null` for an unknown key so callers can dispatch
- * optimistically.
+ * Builds a `Assembler` instance from a type identifier, either by instantiating
+ * a class directly through the container or by invoking a factory closure
+ * registered under a tagged slug. Returns `null` when resolution is not
+ * successful, so callers can dispatch optimistically.
  */
 final class AssemblerFactory
 {
@@ -29,16 +28,25 @@ final class AssemblerFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferTaggedWith(Assembler::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Assembler::TAG, 'slug')]
+		private readonly array            $tagged,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
 	 * Builds the assembler for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
+	 *
+	 * This can be constructed via an enum that implements the `AssemblerDefinition`
+	 * interface, a class-string, or a slug value when the assembler type is
+	 * tagged in the container via {@see Assembler::TAG} with a valid `slug`
+	 * value at the time of tagging {@see AssemblerServiceProvider::register()}.
 	 */
 	public function make(AssemblerDefinition|string $type, array $params = []): ?Assembler
 	{
+		// Always use the classname from the interface because this
+		// ensures it works in the `is_subclass_check()` without falling
+		// through to the tagged types.
 		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.
@@ -48,6 +56,6 @@ final class AssemblerFactory
 		}
 
 		/** @var null|Assembler */
-		return isset($this->factories[$type]) ? ($this->factories[$type])($params) : null;
+		return isset($this->tagged[$type]) ? ($this->tagged[$type])($params) : null;
 	}
 }

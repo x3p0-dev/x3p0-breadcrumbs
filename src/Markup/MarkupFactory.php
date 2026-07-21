@@ -17,51 +17,45 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Builds markup formats from the container tag and enumerates the available set.
- * Unlike the query, assembler, and crumb factories (which resolve a key to a
- * container alias), this is injected with two maps derived from the same tag
- * and `slug` attribute: a `slug => class-string` map for enumeration, and a
- * `slug => Closure` map of deferred resolvers for building. Neither requires
- * a class to report its own key — the slug lives entirely in the tag
- * attribute recorded at registration, not in the class. That keeps both
- * building a format by slug and enumerating the formats for the block editor
- * driven by one source, and it is open to third parties: an extension that
- * tags its class under `Markup::TAG` with a `slug` is built and listed
- * alongside the built-ins. The built-ins are tagged from `MarkupType` by
- * `MarkupServiceProvider`.
+ * Builds a `Markup` instance from a type identifier, either by instantiating
+ * a class directly through the container or by invoking a factory closure
+ * registered under a tagged slug. Returns `null` when resolution is not
+ * successful, so callers can dispatch optimistically.
  */
 final class MarkupFactory
 {
 	/**
-	 * Stores the `slug => class-string` map and the `slug => Closure` map of
-	 * deferred resolvers, both derived from the tagged classes' `slug`
-	 * attribute. Each closure builds its markup on demand, forwarding the
-	 * params it is called with.
-	 *
-	 * @param array<string, Closure> $factories
+	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferTaggedWith(Markup::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Markup::TAG, 'slug')]
+		private readonly array            $tagged,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
-	 * Builds the markup registered for the given type, forwarding `$params` as
-	 * named constructor arguments. Accepts any `MarkupType` (the `MarkupType`
-	 * enum or a third-party implementation) or a string key. Returns `null` when
-	 * no tagged markup type reports the key.
+	 * Builds the markup for the given type, forwarding `$params` as named
+	 * constructor arguments, or returns `null` when the type is unknown.
+	 *
+	 * This can be constructed via an enum that implements the `MarkupDefinition`
+	 * interface, a class-string, or a slug value when the markup type is
+	 * tagged in the container via {@see Markup::TAG} with a valid `slug`
+	 * value at the time of tagging {@see MarkupServiceProvider::register()}.
 	 */
 	public function make(MarkupDefinition|string $type, array $params = []): ?Markup
 	{
+		// Always use the classname from the interface because this
+		// ensures it works in the `is_subclass_check()` without falling
+		// through to the tagged types.
 		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.
 		if (is_subclass_of($type, Markup::class)) {
-			/** @var null|Markup */
+			/** @var Markup */
 			return $this->resolver->make($type, $params);
 		}
 
 		/** @var null|Markup */
-		return isset($this->factories[$type]) ? ($this->factories[$type])($params) : null;
+		return isset($this->tagged[$type]) ? ($this->tagged[$type])($params) : null;
 	}
 }

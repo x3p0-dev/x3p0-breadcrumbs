@@ -17,10 +17,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Resolves a query type to a container identifier and builds it. A `QueryType`
- * (the `QueryType` enum or a third-party implementation) or its string key
- * resolves to the query's container alias; a class name is built directly.
- * Returns `null` for an unknown key so callers can dispatch optimistically.
+ * Builds a `Query` instance from a type identifier, either by instantiating
+ * a class directly through the container or by invoking a factory closure
+ * registered under a tagged slug. Returns `null` when resolution is not
+ * successful, so callers can dispatch optimistically.
  */
 final class QueryFactory
 {
@@ -28,25 +28,34 @@ final class QueryFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferTaggedWith(Query::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Query::TAG, 'slug')]
+		private readonly array            $tagged,
 		private readonly InstanceResolver $resolver
 	) {}
 
 	/**
 	 * Builds the query for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
+	 *
+	 * This can be constructed via an enum that implements the `QueryDefinition`
+	 * interface, a class-string, or a slug value when the query type is
+	 * tagged in the container via {@see Query::TAG} with a valid `slug`
+	 * value at the time of tagging {@see QueryServiceProvider::register()}.
 	 */
 	public function make(QueryDefinition|string $type, array $params = []): ?Query
 	{
+		// Always use the classname from the interface because this
+		// ensures it works in the `is_subclass_check()` without falling
+		// through to the tagged types.
 		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.
 		if (is_subclass_of($type, Query::class)) {
-			/** @var null|Query */
+			/** @var Query */
 			return $this->resolver->make($type, $params);
 		}
 
 		/** @var null|Query */
-		return isset($this->factories[$type]) ? ($this->factories[$type])($params) : null;
+		return isset($this->tagged[$type]) ? ($this->tagged[$type])($params) : null;
 	}
 }

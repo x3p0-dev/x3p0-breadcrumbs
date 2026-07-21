@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -28,7 +28,7 @@ final class QueryFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferredTaggedWith(Query::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Query::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 

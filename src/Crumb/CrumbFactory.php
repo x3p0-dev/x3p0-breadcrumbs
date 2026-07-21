@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -29,7 +29,7 @@ final class CrumbFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferredTaggedWith(Crumb::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Crumb::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 

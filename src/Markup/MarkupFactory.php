@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferredTaggedWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -41,7 +41,7 @@ final class MarkupFactory
 	 * @param array<string, Closure> $factories
 	 */
 	public function __construct(
-		#[DeferredTaggedWith(Markup::TAG, 'slug')] private readonly array $factories,
+		#[DeferTaggedWith(Markup::TAG, 'slug')] private readonly array $factories,
 		private readonly InstanceResolver $resolver
 	) {}
 

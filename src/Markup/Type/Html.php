@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Markup\Markup;
 use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
  * Renders the trail as a plain, semantic ordered list wrapped in a `<nav>`
@@ -24,6 +25,14 @@ use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
  */
 class Html extends Markup implements MarkupBlockOption
 {
+	/**
+	 * @inheritDoc
+	 */
+	public static function key(): string
+	{
+		return MarkupType::Html->value;
+	}
+
 	/**
 	 * @inheritDoc
 	 */

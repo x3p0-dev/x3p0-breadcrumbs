@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstracts;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
@@ -28,7 +28,7 @@ final class MarkupFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferTaggedWith(Markup::TAG, 'slug')]
+		#[TaggedAbstracts(Markup::TAG)]
 		private readonly array            $tagged,
 		private readonly InstanceResolver $resolver
 	) {}
@@ -38,24 +38,47 @@ final class MarkupFactory
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 *
 	 * This can be constructed via an enum that implements the `MarkupDefinition`
-	 * interface, a class-string, or a slug value when the markup type is
-	 * tagged in the container via {@see Markup::TAG} with a valid `slug`
-	 * value at the time of tagging {@see MarkupServiceProvider::register()}.
+	 * interface, a class-string, or a key value when the markup type
+	 * implements {@see MarkupBlockOption}.
 	 */
 	public function make(MarkupDefinition|string $type, array $params = []): ?Markup
 	{
 		// Always use the classname from the interface because this
 		// ensures it works in the `is_subclass_of()` check without
 		// falling through to the tagged types.
-		$type = is_string($type) ? $type : $type->className();
+		$className = is_string($type) ? $type : $type->className();
 
-		// If passing a class string, we can just resolve directly.
-		if (is_subclass_of($type, Markup::class)) {
-			/** @var Markup */
-			return $this->resolver->make($type, $params);
+		// If this is not a markup class, assume it is a defined key and
+		// attempt to look it up via the class's static `key()` method.
+		if (! is_subclass_of($className, Markup::class)) {
+			$className = $this->resolveByKey($className);
+
+			if (! $className) {
+				return null;
+			}
 		}
 
-		/** @var null|Markup */
-		return isset($this->tagged[$type]) ? ($this->tagged[$type])($params) : null;
+		/** @var Markup */
+		return $this->resolver->make($className, $params);
+	}
+
+	/**
+	 * Attempts to resolve a classname by its key.
+	 *
+	 * @param string $slug
+	 * @return null|class-string<Markup>
+	 */
+	private function resolveByKey(string $slug): ?string
+	{
+		foreach ($this->tagged as $class) {
+			if (
+				is_subclass_of($class, MarkupBlockOption::class)
+				&& $class::key() === $slug
+			) {
+				return $class;
+			}
+		}
+
+		return null;
 	}
 }

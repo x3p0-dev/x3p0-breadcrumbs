@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstractsWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstracts;
 
 /**
  * Derives option lists of markup types from the classes tagged under
@@ -28,7 +28,7 @@ final class MarkupOptions
 	 * Stores the factory the options are derived from.
 	 */
 	public function __construct(
-		#[TaggedAbstractsWith(Markup::class, 'slug')] private readonly array $types
+		#[TaggedAbstracts(Markup::TAG)] private readonly array $types
 	) {}
 
 	/**
@@ -43,10 +43,10 @@ final class MarkupOptions
 	{
 		$options = [];
 
-		foreach ($this->types as $attribute => $abstract) {
+		foreach ($this->types as $abstract) {
 			if (is_subclass_of($abstract, MarkupBlockOption::class)) {
 				$options[] = [
-					'key'  => $attribute,
+					'key'  => $abstract::key(),
 					'name' => $abstract::label()
 				];
 			}

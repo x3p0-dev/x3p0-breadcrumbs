@@ -22,6 +22,12 @@ namespace X3P0\Breadcrumbs\Markup;
 interface MarkupBlockOption
 {
 	/**
+	 * Returns the block option key when presenting this markup type as a
+	 * selectable option.
+	 */
+	public static function key(): string;
+
+	/**
 	 * Returns the internationalized label shown when presenting this markup
 	 * type as a selectable option.
 	 */

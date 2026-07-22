@@ -19,17 +19,15 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  * Wires the markup subsystem into the container: binds the factory and options
  * as shared singletons (only if not already bound) and, from the `MarkupType`
  * enum as the source of truth, tags each built-in class under `Markup::TAG`
- * with its key as the `slug` attribute. Unlike the other subsystems, markup
- * types are not aliased in the container — `MarkupFactory` resolves a
- * class-string directly and a string key by looking it up among the tagged
- * classes, which stays open to third parties that tag their own classes under
- * the same names.
+ * with its key as the `slug` attribute. `MarkupFactory` resolves a class-string
+ * directly and a string key by looking it up among the tagged classes, which
+ * stays open to third parties that tag their own classes under the same names.
  */
 final class MarkupServiceProvider extends ServiceProvider
 {
 	/**
-	 * The markup factory and options, bound as shared singletons only if not
-	 * already bound so extensions may replace them.
+	 * The markup factory and options, bound as shared singletons only if
+	 * not already bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -40,16 +38,13 @@ final class MarkupServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Aliases each built-in markup key to its class and tags each class under
-	 * `Markup::TAG`, both seeded from the `MarkupType` enum as the source of
-	 * truth — the alias for key/class resolution, the tag for enumeration.
+	 * Tags each built-in query to the {@see Markup::TAG} tag. The
+	 * {@see MarkupType} enum is the source of the canonical markup types.
 	 */
 	public function register(): void
 	{
 		foreach (MarkupType::cases() as $type) {
-			$this->container->tag($type->className(), Markup::TAG, [
-				'slug' => $type->value
-			]);
+			$this->container->tag($type->className(), Markup::TAG);
 		}
 	}
 }

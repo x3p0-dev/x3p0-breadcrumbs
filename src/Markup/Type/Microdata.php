@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
  * Extends the plain HTML list with Schema.org microdata (`itemscope`,
@@ -22,6 +23,14 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
  */
 final class Microdata extends Html
 {
+	/**
+	 * @inheritDoc
+	 */
+	public static function key(): string
+	{
+		return MarkupType::Microdata->value;
+	}
+
 	/**
 	 * @inheritDoc
 	 */

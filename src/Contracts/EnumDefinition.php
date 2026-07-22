@@ -16,9 +16,11 @@ namespace X3P0\Breadcrumbs\Contracts;
 use UnitEnum;
 
 /**
- * Contract for a backed enum case that declaratively maps itself to a
- * concrete class, so a factory can build and enumerate its subsystem's
- * registered types without depending on the concrete enum.
+ * Contract for an enum case that declaratively maps itself to a concrete
+ * class, so a factory can build and enumerate its subsystem's registered
+ * types without depending on the concrete enum. Extends `UnitEnum` rather
+ * than `BackedEnum`: the only guarantee required is `className()`, not a
+ * backing value.
  *
  * @internal The interface itself is an internal contract; third-party code
  *           should not use it directly.

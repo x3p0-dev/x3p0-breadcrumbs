@@ -18,13 +18,14 @@ use X3P0\Breadcrumbs\Packages\Event\Subscriber;
 /**
  * Base contract for a built-in integration with a third-party platform (such as
  * WooCommerce). An extension wires itself into the plugin without any core
- * edits by using the same public seams available to third parties: it registers
- * custom query, assembler, or crumb types in `register()` and subscribes
- * listeners to the plugin's events via the `Subscriber` contract. The
- * `ExtensionServiceProvider` only wires up an extension when `isActive()`
- * reports that its target platform is present, so nothing runs when the
- * platform is inactive. Concrete extensions are `final` and live under their
- * own sub-namespace; this class is the typehint the service provider checks.
+ * edits by using the same public seams available to third parties: it defines
+ * its own query, assembler, or crumb types and routes to them by subscribing
+ * listeners to the plugin's events (e.g. resolving the query type, relabeling
+ * a built crumb) via the `Subscriber` contract. The `ExtensionServiceProvider`
+ * only wires up an extension when `isActive()` reports that its target
+ * platform is present, so nothing runs when the platform is inactive.
+ * Concrete extensions are `final` and live under their own sub-namespace;
+ * this class is the typehint the service provider checks.
  */
 abstract class Extension implements Subscriber
 {

@@ -17,8 +17,10 @@ use X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires up the Block subsystem: binds the Breadcrumbs block type as a
- * singleton and boots the registrar that registers the block with WordPress.
+ * Wires up the Block subsystem: binds the Breadcrumbs block renderer as a
+ * singleton and boots the registrar, editor asset injector, and inserter
+ * filter that register the block with WordPress and prepare its editor
+ * experience.
  */
 final class BlockServiceProvider extends ServiceProvider
 {

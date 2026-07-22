@@ -18,11 +18,12 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the markup subsystem into the container: binds the factory and options
  * as shared singletons (only if not already bound) and, from the `MarkupType`
- * enum as the source of truth, both aliases each built-in key to its class and
- * tags each class under `Markup::TAG`. The aliases let a format resolve by key
- * or class name like every other subsystem; the tag lets the factory enumerate
- * the full set for the block editor, which stays open to third parties that add
- * their own by aliasing and tagging under the same names.
+ * enum as the source of truth, tags each built-in class under `Markup::TAG`
+ * with its key as the `slug` attribute. Unlike the other subsystems, markup
+ * types are not aliased in the container — `MarkupFactory` resolves a
+ * class-string directly and a string key by looking it up among the tagged
+ * classes, which stays open to third parties that tag their own classes under
+ * the same names.
  */
 final class MarkupServiceProvider extends ServiceProvider
 {

@@ -17,9 +17,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the assembler subsystem into the container: binds the factory as a
- * shared singleton (only if not already bound) so extensions may replace it, and
- * registers each built-in `AssemblerType` value as a container alias for its
- * class. Assemblers are then built by the factory from their key or class name.
+ * shared singleton (only if not already bound) so extensions may replace it,
+ * and tags each built-in `AssemblerType` case's class under `Assembler::TAG`
+ * with its string value as the slug. `AssemblerFactory` collects these tagged
+ * entries to resolve an assembler by key, enum case, or class name.
  */
 final class AssemblerServiceProvider extends ServiceProvider
 {

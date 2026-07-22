@@ -18,8 +18,9 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the query subsystem into the container: binds the factory and resolver
  * as shared singletons (only if not already bound) so extensions may replace
- * them, and registers each built-in `QueryType` value as a container alias for
- * its class. Queries are then built by the factory from their key or class name.
+ * them, and tags each built-in `QueryType` case's class under `Query::TAG`
+ * with its string value as the slug. `QueryFactory` collects these tagged
+ * entries to resolve a query by key, enum case, or class name.
  */
 final class QueryServiceProvider extends ServiceProvider
 {

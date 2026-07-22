@@ -16,10 +16,11 @@ namespace X3P0\Breadcrumbs\Markup;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstractsWith;
 
 /**
- * Derives option lists of markup types from the factory — the authoritative
- * list of available types, including third-party registrations — for the
- * various contexts that need to present them. Each method filters and shapes
- * the available types for a specific consumer.
+ * Derives option lists of markup types from the classes tagged under
+ * `Markup::TAG` — the authoritative list of available types, including
+ * third-party registrations — for the various contexts that need to present
+ * them. Each method filters and shapes the available types for a specific
+ * consumer.
  */
 final class MarkupOptions
 {

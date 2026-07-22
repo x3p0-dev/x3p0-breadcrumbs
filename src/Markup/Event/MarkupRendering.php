@@ -26,9 +26,9 @@ use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
  * instead — along with the markup type and markup config to render with, both
  * writable: reassign `$markupType` to render a different format, or reassign
  * `$config` (typically via `MarkupConfig::with()`) to adjust its options. The
- * markup type accepts any `MarkupType` (such as a `MarkupType` case) or a string
- * key for a custom format. The renderer reads the final type and config back
- * from this same instance.
+ * markup type accepts any `MarkupDefinition` (such as a `MarkupType` case) or a
+ * string key for a custom format. The renderer reads the final type and config
+ * back from this same instance.
  */
 final class MarkupRendering implements StoppableEvent
 {

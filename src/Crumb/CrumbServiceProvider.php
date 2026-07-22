@@ -17,9 +17,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the crumb subsystem into the container: binds the factory as a shared
- * singleton (only if not already bound) so extensions may replace it, and
- * registers each built-in `CrumbType` value as a container alias for its class.
- * Crumbs are then built by the factory from their key or class name.
+ * singleton (only if not already bound) so extensions may replace it, and tags
+ * each built-in `CrumbType` case's class under `Crumb::TAG` with its string
+ * value as the slug. `CrumbFactory` collects these tagged entries to resolve
+ * a crumb by key, enum case, or class name.
  */
 final class CrumbServiceProvider extends ServiceProvider
 {

@@ -1,7 +1,8 @@
 <?php
 
 /**
- * The helpers functions file houses any necessary PHP functions for the plugin.
+ * Global helper functions for accessing the plugin instance, its DI container,
+ * and the breadcrumbs renderer, without relying on static classes or globals.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock

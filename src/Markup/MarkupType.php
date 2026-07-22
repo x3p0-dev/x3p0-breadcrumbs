@@ -16,8 +16,9 @@ namespace X3P0\Breadcrumbs\Markup;
 /**
  * The canonical built-in markup formats — the source of truth mapping each key
  * to its class via `className()`. `MarkupServiceProvider` tags each class under
- * `Markup::TAG` from these cases, so the resolver can build a format by key and
- * enumerate the available formats (including third-party additions).
+ * `Markup::TAG` from these cases, so `MarkupFactory` can build a format by key
+ * and `MarkupOptions` can enumerate the available formats (including
+ * third-party additions).
  */
 enum MarkupType: string implements MarkupDefinition
 {

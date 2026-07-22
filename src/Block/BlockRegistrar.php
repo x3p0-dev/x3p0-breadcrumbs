@@ -20,8 +20,10 @@ use const X3P0\Breadcrumbs\PLUGIN_DIR;
 
 /**
  * Registers the plugin's block types with WordPress from their built metadata
- * and adjusts that metadata at registration time so that rewrite-tag post
- * types map by default. Wired into WordPress on boot.
+ * and adjusts that metadata at registration time: rewrite-tag post types are
+ * marked to map by default, and the `markup` attribute's accepted values are
+ * synced from the registered markup options so the enum never drifts from the
+ * registry. Wired into WordPress on boot.
  */
 final class BlockRegistrar implements Bootable
 {

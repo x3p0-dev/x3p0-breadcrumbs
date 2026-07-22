@@ -29,10 +29,12 @@ use X3P0\Breadcrumbs\Query\QueryFactory;
  * it can dispatch the next step and read or append shared state — without
  * depending on the factories or on one another directly.
  *
- * The `query()`, `assemble()`, and `addCrumb()` methods are the facade: each
- * hands the type to its factory (injecting this context) and invokes the built
- * object. The crumb collection is mutable and accumulated into as the pipeline
- * runs; the config is read-only.
+ * The `query()`, `assemble()`, `makeCrumb()`, and `addCrumb()` methods are the
+ * facade: each hands the type to its factory, injecting this context. `query()`
+ * and `assemble()` invoke the built object; `makeCrumb()` builds a crumb without
+ * adding it, and `addCrumb()` builds one and pushes it onto the collection. The
+ * crumb collection is mutable and accumulated into as the pipeline runs; the
+ * config is read-only.
  */
 final class BreadcrumbsContext
 {

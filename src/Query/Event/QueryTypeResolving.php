@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
 /**
  * Dispatched while resolving which query type matches the current request,
  * before the query runs. Carries the type detected from the request — a
- * {@see Query} class-string, a {@see QueryDefiniton} enum, a valid `slug` value
+ * {@see Query} class-string, a {@see QueryDefinition} enum, a valid `slug` value
  * at the time of tagging ({@see QueryServiceProvider::register()}), or
  * null when nothing matched — along with the shared context, so listeners can
  * inspect what is being built and the active config, then change the type with

@@ -26,6 +26,8 @@ use X3P0\Breadcrumbs\Query\QueryType;
  * Builds the trail for an author archive. Adds the home, rewrite-front, and
  * (when an author base is configured) author-base path steps, then the author
  * crumb, plus a search crumb when the request also carries a search query.
+ * Forwards to the post type archive query first when the request is also a
+ * post type archive.
  */
 final class Author extends Query
 {

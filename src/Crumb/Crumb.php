@@ -62,7 +62,7 @@ abstract class Crumb
 		return static::TYPE !== ''
 			? static::TYPE
 			: strtolower(preg_replace(
-				'/(?<!^)[A-Z]/',
+				'/(?<!^)(?:[A-Z]|(?<=[a-zA-Z])[0-9])/',
 				'-$0',
 				basename(str_replace('\\', '/', static::class))
 			));

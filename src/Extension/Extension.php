@@ -37,7 +37,7 @@ abstract class Extension implements Subscriber
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const TAG = 'x3p0/breadcrumbs/extension';
+	final public const TAG = 'x3p0/breadcrumbs/extension';
 
 	/**
 	 * Whether the extension should participate in the current request. The

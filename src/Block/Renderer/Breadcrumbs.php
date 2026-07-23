@@ -17,7 +17,7 @@ use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
-use X3P0\Breadcrumbs\Markup\MarkupType;
+use X3P0\Breadcrumbs\Markup\MarkupOptions;
 
 /**
  * Server-renders the Breadcrumbs block. Translates the block's saved
@@ -30,8 +30,10 @@ final class Breadcrumbs implements BlockRenderer
 	/**
 	 * Injects the renderer used to build the breadcrumb trail markup.
 	 */
-	public function __construct(private readonly BreadcrumbsRenderer $breadcrumbsRenderer)
-	{}
+	public function __construct(
+		private readonly BreadcrumbsRenderer $breadcrumbsRenderer,
+		private readonly MarkupOptions       $markupOptions
+	) {}
 
 	/**
 	 * @inheritDoc
@@ -54,7 +56,7 @@ final class Breadcrumbs implements BlockRenderer
 				'showLastCrumb'  => $attributes['showTrailEnd']   ?? true,
 				'linkLastCrumb'  => $attributes['linkTrailEnd']   ?? false
 			],
-			markupType: $attributes['markup'] ?? MarkupType::Rdfa
+			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
 	}
 

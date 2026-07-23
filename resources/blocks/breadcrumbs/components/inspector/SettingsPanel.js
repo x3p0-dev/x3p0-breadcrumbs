@@ -25,6 +25,9 @@ import {
 // noinspection JSUnresolvedVariable
 const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
 
+// noinspection JSUnresolvedVariable
+const DEFAULT_MARKUP = window.x3p0Breadcrumbs?.defaultMarkup ?? 'rdfa';
+
 /**
  * Renders a `<ToolsPanel>` component with the block's primary setting controls.
  * @param props
@@ -47,7 +50,7 @@ const SettingsPanel = ({
 		<ToolsPanel
 			label={__('Settings', 'x3p0-breadcrumbs')}
 			resetAll={() => setAttributes({
-				markup: 'rdfa',
+				markup: DEFAULT_MARKUP,
 				showOnHomepage: false,
 				showTrailStart: false,
 				showTrailEnd: false,
@@ -58,8 +61,8 @@ const SettingsPanel = ({
 		>
 			<ToolsPanelItem
 				label={__('Markup style', 'x3p0-breadcrumbs')}
-				hasValue={() => markup !== 'rdfa'}
-				onDeselect={() => setAttributes({ markup: 'rdfa' })}
+				hasValue={() => markup !== DEFAULT_MARKUP}
+				onDeselect={() => setAttributes({ markup: DEFAULT_MARKUP })}
 				panelId={panelId}
 				isShownByDefault={true}
 			>

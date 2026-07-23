@@ -93,6 +93,10 @@ final class BlockRegistrar implements Bootable
 			return $metadata;
 		}
 
+		// Assign the default markup based on what is registered for the
+		// `MarkupBlockOption` interface.
+		$metadata['attributes']['markup']['default'] = $this->markupOptions->getBlockDefaultKey();
+
 		// Get the post types with a `%tag%` in their rewrite slug and
 		// mark them to map rewrite tags by default.
 		$types = array_filter(

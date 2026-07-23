@@ -61,7 +61,10 @@ final class BlockAssets implements Bootable
 				'window.%1$s = Object.assign(window.%1$s || {}, %2$s);',
 				self::SCRIPT_GLOBAL,
 				wp_json_encode(
-					['markupTypes' => $this->markupOptions->forBlock()],
+					[
+						'markupTypes'   => $this->markupOptions->forBlock(),
+						'defaultMarkup' => $this->markupOptions->getBlockDefaultKey()
+					],
 					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
 				)
 			),

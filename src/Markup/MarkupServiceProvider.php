@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
+use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
+use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -26,25 +29,39 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class MarkupServiceProvider extends ServiceProvider
 {
 	/**
-	 * The markup factory and options, bound as shared singletons only if
-	 * not already bound so extensions may replace them.
+	 * The markup factory, bound as a shared singletons only if not already
+	 * bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
-		MarkupOptions::class,
 		MarkupFactory::class
 	];
 
 	/**
-	 * Tags each built-in query to the {@see Markup::TAG} tag. The
-	 * {@see MarkupType} enum is the source of the canonical markup types.
+	 * Sets the markup options singleton and tags each built-in markup type
+	 * to the {@see Markup::TAG} tag. The {@see MarkupType} enum is the
+	 * source of the canonical markup types.
+	 *
+	 * @throws ContainerException
 	 */
 	public function register(): void
 	{
+		$this->container->singletonIf(
+			MarkupOptions::class,
+			static fn (Container $container) => new MarkupOptions(
+				$container->taggedAbstracts(Markup::TAG),
+				MarkupType::Rdfa->className()
+			)
+		);
+
 		foreach (MarkupType::cases() as $type) {
-			$this->container->tag($type->className(), Markup::TAG);
+			$this->container->tag(
+				abstracts: $type->className(),
+				tag:       Markup::TAG,
+				of:        Markup::class
+			);
 		}
 	}
 }

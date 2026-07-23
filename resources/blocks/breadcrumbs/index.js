@@ -28,5 +28,11 @@ import transforms from './transforms';
 metadata.attributes.markup.enum =
 	(window.x3p0Breadcrumbs?.markupTypes ?? []).map(({key}) => key);
 
+// noinspection JSUnresolvedVariable
+if (window.x3p0Breadcrumbs?.defaultMarkup) {
+	// noinspection JSUnresolvedVariable
+	metadata.attributes.markup.default = window.x3p0Breadcrumbs.defaultMarkup;
+}
+
 // Register the block type.
 registerBlockType(metadata, { edit, icon, deprecated, transforms });

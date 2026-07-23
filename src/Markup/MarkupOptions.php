@@ -25,10 +25,19 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstracts;
 final class MarkupOptions
 {
 	/**
+	 * Cached array of block options.
+	 */
+	private ?array $blockOptions = null;
+
+	/**
 	 * Stores the factory the options are derived from.
+	 *
+	 * @param class-string<MarkupBlockOption> $defaultBlockClass
 	 */
 	public function __construct(
-		#[TaggedAbstracts(Markup::TAG)] private readonly array $types
+		#[TaggedAbstracts(Markup::TAG)]
+		private readonly array $types,
+		private readonly string $defaultBlockClass
 	) {}
 
 	/**
@@ -41,17 +50,38 @@ final class MarkupOptions
 	 */
 	public function forBlock(): array
 	{
-		$options = [];
+		if ($this->blockOptions !== null) {
+			return $this->blockOptions;
+		}
+
+		$this->blockOptions = [];
 
 		foreach ($this->types as $abstract) {
 			if (is_subclass_of($abstract, MarkupBlockOption::class)) {
-				$options[] = [
+				$this->blockOptions[] = [
 					'key'  => $abstract::key(),
 					'name' => $abstract::label()
 				];
 			}
 		}
 
-		return $options;
+		return $this->blockOptions;
+	}
+	/**
+	 * Returns the key for the default block markup type. Falls back to the
+	 * first available block option if the configured default isn't among
+	 * the currently registered/tagged types.
+	 */
+	public function getBlockDefaultKey(): string
+	{
+		$default = $this->defaultBlockClass::key();
+
+		foreach ($this->forBlock() as $option) {
+			if ($option['key'] === $default) {
+				return $default;
+			}
+		}
+
+		return $this->forBlock()[0]['key'] ?? $default;
 	}
 }

@@ -33,8 +33,8 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class MarkupServiceProvider extends ServiceProvider
 {
 	/**
-	 * The markup factory, bound as a shared singletons only if not already
-	 * bound so extensions may replace them.
+	 * The markup factory, bound as a shared singleton only if not already
+	 * bound so extensions may replace it.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -55,19 +55,29 @@ final class MarkupServiceProvider extends ServiceProvider
 
 	/**
 	 * Sets the default block markup class parameter, sets the markup options
-	 * singleton, and tags each built-in markup type to the {@see Markup::TAG}
-	 * tag. The {@see MarkupType} enum is the source of the canonical markup
-	 * types.
+	 * singleton, sets the contract for tagged markup types, and tags each
+	 * built-in markup type to the {@see Markup::TAG} tag. The
+	 * {@see MarkupType} enum is the source of the canonical markup types.
 	 *
 	 * @throws ContainerException
 	 */
 	public function register(): void
 	{
+		// The param representing the default markup type to use for the
+		// block implementation of the breadcrumbs. If overwriting, this
+		// must be a class string for a class that implements the
+		// `MarkupBlockOption` interface.
 		$this->container->setParam(
 			self::DEFAULT_BLOCK_CLASS_PARAM,
 			MarkupType::Rdfa->className()
 		);
 
+		// Defines the `Markup` class as the contract that all tagged
+		// Markup types must follow.
+		$this->container->setTagContract(Markup::TAG, Markup::class);
+
+		// Define `MarkupOptions` as a singleton, passing in the tagged
+		// markup types and the default type.
 		$this->container->singletonIf(
 			MarkupOptions::class,
 			static fn (Container $container) => new MarkupOptions(
@@ -76,12 +86,9 @@ final class MarkupServiceProvider extends ServiceProvider
 			)
 		);
 
+		// Tag the canonical markup types.
 		foreach (MarkupType::cases() as $type) {
-			$this->container->tag(
-				abstracts: $type->className(),
-				tag:       Markup::TAG,
-				of:        Markup::class
-			);
+			$this->container->tag($type->className(), Markup::TAG);
 		}
 	}
 }

@@ -15,7 +15,6 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
 use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
-use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**

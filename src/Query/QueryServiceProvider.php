@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
+use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -40,9 +41,13 @@ final class QueryServiceProvider extends ServiceProvider
 	 * Tags each built-in query to the {@see Query::TAG} with its unique
 	 * slug, so callers may dispatch by the slug if desired. The enum is the
 	 * source of truth for the mapping.
+	 *
+	 * @throws ContainerException
 	 */
 	public function register(): void
 	{
+		$this->container->setTagContract(Query::TAG, Query::class);
+
 		foreach (QueryType::cases() as $type) {
 			$this->container->tag($type->className(), Query::TAG, [
 				'slug' => $type->value

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstracts;
-
 /**
  * Derives option lists of markup types from the classes tagged under
  * `Markup::TAG` — the authoritative list of available types, including
@@ -32,10 +30,10 @@ final class MarkupOptions
 	/**
 	 * Stores the factory the options are derived from.
 	 *
+	 * @param class-string<Markup>[]          $types
 	 * @param class-string<MarkupBlockOption> $defaultBlockClass
 	 */
 	public function __construct(
-		#[TaggedAbstracts(Markup::TAG)]
 		private readonly array $types,
 		private readonly string $defaultBlockClass
 	) {}

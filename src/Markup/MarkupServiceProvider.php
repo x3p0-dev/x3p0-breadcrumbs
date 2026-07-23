@@ -25,6 +25,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  * with its key as the `slug` attribute. `MarkupFactory` resolves a class-string
  * directly and a string key by looking it up among the tagged classes, which
  * stays open to third parties that tag their own classes under the same names.
+ * The default block markup class is stored as a named container parameter
+ * rather than baked into the `MarkupOptions` binding, so an extension can
+ * override just that value via `setParam()` without needing to reconstruct
+ * the rest of the binding.
  */
 final class MarkupServiceProvider extends ServiceProvider
 {
@@ -40,19 +44,35 @@ final class MarkupServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Sets the markup options singleton and tags each built-in markup type
-	 * to the {@see Markup::TAG} tag. The {@see MarkupType} enum is the
-	 * source of the canonical markup types.
+	 * The container parameter name under which the default block markup
+	 * class is stored. An extension may override it via `setParam()` any
+	 * time before `MarkupOptions` is first resolved.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const DEFAULT_BLOCK_CLASS_PARAM = 'x3p0/breadcrumbs/markup/default-block-class';
+
+	/**
+	 * Sets the default block markup class parameter, sets the markup options
+	 * singleton, and tags each built-in markup type to the {@see Markup::TAG}
+	 * tag. The {@see MarkupType} enum is the source of the canonical markup
+	 * types.
 	 *
 	 * @throws ContainerException
 	 */
 	public function register(): void
 	{
+		$this->container->setParam(
+			self::DEFAULT_BLOCK_CLASS_PARAM,
+			MarkupType::Rdfa->className()
+		);
+
 		$this->container->singletonIf(
 			MarkupOptions::class,
 			static fn (Container $container) => new MarkupOptions(
 				$container->taggedAbstracts(Markup::TAG),
-				MarkupType::Rdfa->className()
+				(string) $container->getParam(self::DEFAULT_BLOCK_CLASS_PARAM)
 			)
 		);
 

@@ -8,7 +8,9 @@
  */
 
 // WordPress dependencies.
+import { getBlockType } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
+import { useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -24,9 +26,6 @@ import {
 //
 // noinspection JSUnresolvedVariable
 const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
-
-// noinspection JSUnresolvedVariable
-const DEFAULT_MARKUP = window.x3p0Breadcrumbs?.defaultMarkup ?? 'rdfa';
 
 /**
  * Renders a `<ToolsPanel>` component with the block's primary setting controls.
@@ -46,11 +45,18 @@ const SettingsPanel = ({
 }) => {
 	const panelId = useInstanceId(SettingsPanel);
 
+	// Prefer the (possibly filtered) PHP-supplied default, which should be
+	// set for the block metadata; fall back to a literal as a last resort.
+	const defaultMarkup = useMemo(
+		() => getBlockType('x3p0/breadcrumbs')?.attributes?.markup?.default ?? 'rdfa',
+		[]
+	);
+
 	return (
 		<ToolsPanel
 			label={__('Settings', 'x3p0-breadcrumbs')}
 			resetAll={() => setAttributes({
-				markup: DEFAULT_MARKUP,
+				markup: defaultMarkup,
 				showOnHomepage: false,
 				showTrailStart: false,
 				showTrailEnd: false,
@@ -61,8 +67,8 @@ const SettingsPanel = ({
 		>
 			<ToolsPanelItem
 				label={__('Markup style', 'x3p0-breadcrumbs')}
-				hasValue={() => markup !== DEFAULT_MARKUP}
-				onDeselect={() => setAttributes({ markup: DEFAULT_MARKUP })}
+				hasValue={() => markup !== defaultMarkup}
+				onDeselect={() => setAttributes({ markup: defaultMarkup })}
 				panelId={panelId}
 				isShownByDefault={true}
 			>

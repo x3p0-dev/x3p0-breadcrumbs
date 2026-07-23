@@ -55,7 +55,7 @@
 		},
 		"markup": {
 			"type": "string",
-			"default": "html"
+			"default": "rdfa"
 		},
 		"postTaxonomy": {
 			"type": "object",

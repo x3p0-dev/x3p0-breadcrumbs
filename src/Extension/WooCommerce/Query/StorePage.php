@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Query;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Assembler\Endpoint;
 use X3P0\Breadcrumbs\Query\Query;
 
 /**
@@ -23,8 +23,8 @@ use X3P0\Breadcrumbs\Query\Query;
  * also expose sub-views as endpoints (orders, view-order, order-received, and
  * the rest), which WooCommerce serves as query vars on the host page and which
  * would otherwise collapse into the host page's single crumb; when one is
- * active, a leaf crumb is appended using WooCommerce's own endpoint title.
- * Concrete subclasses supply the host page via `pageId()`.
+ * active, the `Endpoint` assembler adds crumbs for it. Concrete subclasses
+ * supply the host page via `pageId()`.
  */
 abstract class StorePage extends Query
 {
@@ -50,21 +50,11 @@ abstract class StorePage extends Query
 		// Endpoints (orders, view-order, order-received, …) are query
 		// vars on the host page; add crumbs for the active one.
 		if ($endpoint = WC()->query?->get_current_endpoint()) {
-			$this->assembleEndpoint($endpoint);
+			$this->context->assemble(Endpoint::class, [
+				'endpoint' => $endpoint
+			]);
 		}
 
 		$this->context->assemble(AssemblerType::Paged);
-	}
-
-	/**
-	 * Adds the crumb(s) for the active endpoint. The base adds a single
-	 * leaf crumb using WooCommerce's endpoint title; subclasses may override
-	 * to add deeper crumbs for endpoints with their own sub-views.
-	 */
-	protected function assembleEndpoint(string $endpoint): void
-	{
-		$this->context->addCrumb(Endpoint::class, [
-			'endpoint' => $endpoint
-		]);
 	}
 }

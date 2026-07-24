@@ -14,26 +14,26 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler;
 
 /**
- * The canonical built-in assembler types — the source of truth mapping each key
- * to its class via `className()`. `AssemblerServiceProvider` registers each
- * value as a container alias for that class, so a caller may pass the case, its
- * string key, or the class name to `BreadcrumbsContext::assemble()`.
+ * The canonical built-in assembler types — the source of truth mapping each
+ * case to its class via `className()`. `AssemblerServiceProvider` tags each
+ * class under `Assembler::TAG`, so a caller may pass the case or the class
+ * name to `BreadcrumbsContext::assemble()`.
  */
-enum AssemblerType: string implements AssemblerDefinition
+enum AssemblerType implements AssemblerDefinition
 {
-	case Date            = 'date';
-	case Home            = 'home';
-	case Paged           = 'paged';
-	case Path            = 'path';
-	case Post            = 'post';
-	case PostAncestors   = 'post-ancestors';
-	case PostHierarchy   = 'post-hierarchy';
-	case PostRewriteTags = 'post-rewrite-tags';
-	case PostTerms       = 'post-terms';
-	case PostType        = 'post-type';
-	case RewriteFront    = 'rewrite-front';
-	case Term            = 'term';
-	case TermAncestors   = 'term-ancestors';
+	case Date;
+	case Home;
+	case Paged;
+	case Path;
+	case Post;
+	case PostAncestors;
+	case PostHierarchy;
+	case PostRewriteTags;
+	case PostTerms;
+	case PostType;
+	case RewriteFront;
+	case Term;
+	case TermAncestors;
 
 	/**
 	 * @inheritDoc

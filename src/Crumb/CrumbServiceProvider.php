@@ -19,9 +19,8 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the crumb subsystem into the container: binds the factory as a shared
  * singleton (only if not already bound) so extensions may replace it, and tags
- * each built-in `CrumbType` case's class under `Crumb::TAG` with its string
- * value as the slug. `CrumbFactory` collects these tagged entries to resolve
- * a crumb by key, enum case, or class name.
+ * each built-in `CrumbType` case's class under `Crumb::TAG`. `CrumbFactory`
+ * collects these tagged entries to resolve a crumb by enum case or class name.
  */
 final class CrumbServiceProvider extends ServiceProvider
 {
@@ -37,9 +36,8 @@ final class CrumbServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Aliases each built-in crumb key to its class, so callers may dispatch by
-	 * the `CrumbType` case, its string key, or the class name. The enum is the
-	 * source of truth for the mapping.
+	 * Tags each built-in crumb to {@see Crumb::TAG}. The enum is the source
+	 * of truth for the mapping.
 	 *
 	 * @throws ContainerException
 	 */
@@ -48,9 +46,7 @@ final class CrumbServiceProvider extends ServiceProvider
 		$this->container->setTagContract(Crumb::TAG, Crumb::class);
 
 		foreach (CrumbType::cases() as $type) {
-			$this->container->tag($type->className(), Crumb::TAG, [
-				'slug' => $type->value
-			]);
+			$this->container->tag($type->className(), Crumb::TAG);
 		}
 	}
 }

@@ -14,37 +14,36 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 /**
- * The canonical built-in crumb types — the source of truth mapping each key to
- * its class via `className()`. `CrumbServiceProvider` registers each value as a
- * container alias for that class, so a caller may pass the case, its string key,
- * or the class name to the crumb methods. Each case value is also the crumb's
- * type slug.
+ * The canonical built-in crumb types — the source of truth mapping each case
+ * to its class via `className()`. `CrumbServiceProvider` tags each class under
+ * `Crumb::TAG`, so a caller may pass the case or the class name to the crumb
+ * methods.
  */
-enum CrumbType: string implements CrumbDefinition
+enum CrumbType implements CrumbDefinition
 {
-	case Archive         = 'archive';
-	case Author          = 'author';
-	case Custom          = 'custom';
-	case Day             = 'day';
-	case Error404        = 'error-404';
-	case Home            = 'home';
-	case Hour            = 'hour';
-	case Minute          = 'minute';
-	case Month           = 'month';
-	case Network         = 'network';
-	case NetworkSite     = 'network-site';
-	case Paged           = 'paged';
-	case PagedComments   = 'paged-comments';
-	case PagedQueryBlock = 'paged-query-block';
-	case PagedSingular   = 'paged-singular';
-	case Post            = 'post';
-	case PostType        = 'post-type';
-	case Search          = 'search';
-	case Second          = 'second';
-	case Term            = 'term';
-	case User            = 'user';
-	case Week            = 'week';
-	case Year            = 'year';
+	case Archive;
+	case Author;
+	case Custom;
+	case Day;
+	case Error404;
+	case Home;
+	case Hour;
+	case Minute;
+	case Month;
+	case Network;
+	case NetworkSite;
+	case Paged;
+	case PagedComments;
+	case PagedQueryBlock;
+	case PagedSingular;
+	case Post;
+	case PostType;
+	case Search;
+	case Second;
+	case Term;
+	case User;
+	case Week;
+	case Year;
 
 	/**
 	 * @inheritDoc

@@ -17,19 +17,19 @@ namespace X3P0\Breadcrumbs\Query;
  * The canonical built-in query types, one per WordPress request type — the
  * source of truth mapping each key to its class via `className()`.
  */
-enum QueryType: string implements QueryDefinition
+enum QueryType implements QueryDefinition
 {
-	case Archive         = 'archive';
-	case Author          = 'author';
-	case Date            = 'date';
-	case Error404        = 'error-404';
-	case FrontPage       = 'front-page';
-	case Home            = 'home';
-	case Paged           = 'paged';
-	case PostTypeArchive = 'post-type-archive';
-	case Search          = 'search';
-	case Singular        = 'singular';
-	case Taxonomy        = 'taxonomy';
+	case Archive;
+	case Author;
+	case Date;
+	case Error404;
+	case FrontPage;
+	case Home;
+	case Paged;
+	case PostTypeArchive;
+	case Search;
+	case Singular;
+	case Taxonomy;
 
 	/**
 	 * @inheritDoc

@@ -21,10 +21,9 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
 /**
  * Dispatched while resolving which query type matches the current request,
  * before the query runs. Carries the type detected from the request — a
- * {@see Query} class-string, a {@see QueryDefinition} enum, a valid `slug` value
- * at the time of tagging ({@see QueryServiceProvider::register()}), or
- * null when nothing matched — along with the shared context, so listeners can
- * inspect what is being built and the active config, then change the type with
+ * {@see Query} class-string, a {@see QueryDefinition} enum, or null when
+ * nothing matched — along with the shared context, so listeners can inspect
+ * what is being built and the active config, then change the type with
  * `setQueryType()`. The dispatcher returns this same instance and the resolver
  * reads the final value back from it.
  */
@@ -45,9 +44,8 @@ final class QueryTypeResolving implements StoppableEvent
 	/**
 	 * Stores the shared context and the query type resolved so far. The
 	 * query type is mutable so listeners can override it; pass a
-	 * {@see QueryDefiniton}, {@see Query} class-string, or a tagged query
-	 * slug. A null value means no type has been resolved and no breadcrumbs
-	 * will be built.
+	 * {@see QueryDefiniton} or {@see Query} class-string. A null value
+	 * means no type has been resolved and no breadcrumbs will be built.
 	 */
 	public function __construct(
 		public readonly BreadcrumbsContext $context,
@@ -55,8 +53,8 @@ final class QueryTypeResolving implements StoppableEvent
 	) {}
 
 	/**
-	 * Returns the query type: a `QueryDefinition`, class-string, a tagged
-	 * slug, or null when none matched.
+	 * Returns the query type: a `QueryDefinition`, class-string, or null
+	 * when none matched.
 	 */
 	public function getQueryType(): QueryDefinition|string|null
 	{
@@ -65,7 +63,7 @@ final class QueryTypeResolving implements StoppableEvent
 
 	/**
 	 * Overrides the query type to build for. Pass a `QueryDefinition`,
-	 * class-string, a tagged slug, or null to build no breadcrumbs.
+	 * class-string, or null to build no breadcrumbs.
 	 */
 	public function setQueryType(QueryDefinition|string|null $queryType): void
 	{

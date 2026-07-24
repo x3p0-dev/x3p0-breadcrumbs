@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTaggedWith;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTagged;
 use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
- * Builds a `Query` instance from a type identifier, either by instantiating
- * a class directly through the container or by invoking a factory closure
- * registered under a tagged slug. Returns `null` when resolution is not
+ * Builds a `Query` instance from a type identifier, by invoking a factory
+ * closure from the {@see Query::TAG} tag. Returns `null` when resolution is not
  * successful, so callers can dispatch optimistically.
  */
 final class QueryFactory
@@ -28,7 +27,7 @@ final class QueryFactory
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
 	public function __construct(
-		#[DeferTaggedWith(Query::TAG, 'slug')]
+		#[DeferTagged(Query::TAG)]
 		private readonly array            $tagged,
 		private readonly InstanceResolver $resolver
 	) {}
@@ -37,16 +36,13 @@ final class QueryFactory
 	 * Builds the query for the given type, forwarding `$params` as named
 	 * constructor arguments, or returns `null` when the type is unknown.
 	 *
-	 * This can be constructed via an enum that implements the `QueryDefinition`
-	 * interface, a class-string, or a slug value when the query type is
-	 * tagged in the container via {@see Query::TAG} with a valid `slug`
-	 * value at the time of tagging ({@see QueryServiceProvider::register()}).
+	 * The type be constructed via a class-string or an enum that implements
+	 * the {@see QueryDefinition} interface (the class can be derived from
+	 * the enum).
 	 */
 	public function make(QueryDefinition|string $type, array $params = []): ?Query
 	{
-		// Always use the classname from the interface because this
-		// ensures it works in the `is_subclass_of()` check without
-		// falling through to the tagged types.
+		// If a plain string, assume it is the FQCN.
 		$type = is_string($type) ? $type : $type->className();
 
 		// If passing a class string, we can just resolve directly.

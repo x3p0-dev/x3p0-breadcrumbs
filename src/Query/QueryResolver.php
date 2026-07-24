@@ -24,8 +24,7 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
  * then by firing the {@see QueryTypeResolving::HOOK_NAME} action so `add_action()`
  * callbacks can change the same event. A listener that stops the event's
  * propagation claims the final say early, skipping the action. The result is a
- * {@see Query} class-string, {@see QueryDefinition} enum, tagged slug, or null
- * when nothing matched.
+ * {@see Query} class-string, {@see QueryDefinition} enum, or null.
  */
 final class QueryResolver
 {
@@ -37,20 +36,20 @@ final class QueryResolver
 
 	/**
 	 * Resolves the query type for the current request, giving listeners
-	 * and the legacy filter a chance to override the detected default.
+	 * a chance to override the detected default.
 	 */
 	public function resolve(BreadcrumbsContext $context): QueryType|string|null
 	{
 		// Let listeners inspect the context and change the detected
-		// type. The event accepts a `QueryType` case or a string key.
+		// type. The event accepts a `QueryType` case or a class-string.
 		$event = $this->events->dispatch(new QueryTypeResolving(
 			context:   $context,
 			queryType: $this->detect()
 		));
 
-		// Bridge the event to WordPress unless a listener already claimed
-		// the final say by stopping propagation, so `add_action()`
-		// callbacks can change the type alongside the typed listeners.
+		// Bridge the event to WordPress unless a listener already
+		// stopped propagation, so `add_action()` callbacks can change
+		// the type alongside the typed listeners.
 		if (! $event->isPropagationStopped()) {
 			do_action(QueryTypeResolving::HOOK_NAME, $event);
 		}

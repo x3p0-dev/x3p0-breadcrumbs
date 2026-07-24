@@ -19,15 +19,15 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the query subsystem into the container: binds the factory and resolver
  * as shared singletons (only if not already bound) so extensions may replace
- * them, and tags each built-in `QueryType` case's class under `Query::TAG`
- * with its string value as the slug. `QueryFactory` collects these tagged
- * entries to resolve a query by key, enum case, or class name.
+ * them, and tags each built-in `QueryType` case's class under `Query::TAG`.
+ * `QueryFactory` collects these tagged entries to resolve a query by enum case
+ * or class name.
  */
 final class QueryServiceProvider extends ServiceProvider
 {
 	/**
-	 * The query factory and resolver, bound as shared singletons only if not
-	 * already bound so extensions may replace them.
+	 * The query factory and resolver, bound as shared singletons only if
+	 * not already bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -38,9 +38,8 @@ final class QueryServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Tags each built-in query to the {@see Query::TAG} with its unique
-	 * slug, so callers may dispatch by the slug if desired. The enum is the
-	 * source of truth for the mapping.
+	 * Tags each built-in query to {@see Query::TAG}. The enum is the source
+	 * of truth for the mapping.
 	 *
 	 * @throws ContainerException
 	 */
@@ -49,9 +48,7 @@ final class QueryServiceProvider extends ServiceProvider
 		$this->container->setTagContract(Query::TAG, Query::class);
 
 		foreach (QueryType::cases() as $type) {
-			$this->container->tag($type->className(), Query::TAG, [
-				'slug' => $type->value
-			]);
+			$this->container->tag($type->className(), Query::TAG);
 		}
 	}
 }

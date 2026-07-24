@@ -37,10 +37,16 @@ final class Account extends StorePage
 	 *
 	 * The edit-address endpoint has billing and shipping sub-views. When one
 	 * is active, the endpoint crumb becomes a linked ancestor (the address
-	 * list) and the specific address is added as the leaf.
+	 * list) and the specific address is added as the leaf. And when the
+	 * view-order endpoint is present, add the orders endpoint first to
+	 * ensure that it appears in the trail.
 	 */
 	protected function assembleEndpoint(string $endpoint): void
 	{
+		if ('view-order' === $endpoint) {
+			parent::assembleEndpoint('orders');
+		}
+
 		parent::assembleEndpoint($endpoint);
 
 		if ('edit-address' === $endpoint && $type = get_query_var('edit-address')) {

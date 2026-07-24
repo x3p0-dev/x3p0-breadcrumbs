@@ -25,9 +25,37 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint as EndpointCrumb;
  * collapse into that page's single crumb. Most endpoints only need a single
  * leaf crumb using WooCommerce's own endpoint title; the few that need more
  * are special-cased here, giving new endpoints one place to grow into.
+ *
+ * WooCommerce uses magic strings instead of a constant or enum to reference
+ * its own endpoints. To avoid that, the class stores the endpoints that it must
+ * specifically reference as constants.
  */
 final class Endpoint extends Assembler
 {
+	/**
+	 * WooCommerce orders endpoint slug.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const ORDERS_ENDPOINT = 'orders';
+
+	/**
+	 * WooCommerce view-order endpoint slug.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const VIEW_ORDER_ENDPOINT = 'view-order';
+
+	/**
+	 * WooCommerce edit-address endpoint slug.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const EDIT_ADDRESS_ENDPOINT = 'edit-address';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -44,9 +72,9 @@ final class Endpoint extends Assembler
 	public function assemble(): void
 	{
 		match ($this->endpoint) {
-			'view-order'   => $this->assembleViewOrder(),
-			'edit-address' => $this->assembleEditAddress(),
-			default        => $this->addEndpointCrumb($this->endpoint)
+			self::VIEW_ORDER_ENDPOINT   => $this->assembleViewOrder(),
+			self::EDIT_ADDRESS_ENDPOINT => $this->assembleEditAddress(),
+			default                     => $this->addEndpointCrumb($this->endpoint)
 		};
 	}
 
@@ -56,7 +84,7 @@ final class Endpoint extends Assembler
 	 */
 	private function assembleViewOrder(): void
 	{
-		$this->addEndpointCrumb('orders');
+		$this->addEndpointCrumb(self::ORDERS_ENDPOINT);
 		$this->addEndpointCrumb($this->endpoint);
 	}
 
@@ -69,7 +97,7 @@ final class Endpoint extends Assembler
 	{
 		$this->addEndpointCrumb($this->endpoint);
 
-		if ($type = get_query_var('edit-address')) {
+		if ($type = get_query_var(self::EDIT_ADDRESS_ENDPOINT)) {
 			$this->context->addCrumb(CrumbType::Custom, [
 				'label' => $this->addressTitle($type)
 			]);

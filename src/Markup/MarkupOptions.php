@@ -65,6 +65,7 @@ final class MarkupOptions
 
 		return $this->blockOptions;
 	}
+
 	/**
 	 * Returns the key for the default block markup type. Falls back to the
 	 * first available block option if the configured default isn't among

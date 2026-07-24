@@ -42,7 +42,7 @@ final class WooCommerce extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function isActive(): bool
+	public static function isActive(): bool
 	{
 		return class_exists('WooCommerce');
 	}

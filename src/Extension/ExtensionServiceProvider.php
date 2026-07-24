@@ -16,7 +16,8 @@ namespace X3P0\Breadcrumbs\Extension;
 use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
 use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Tagged;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTagged;
+use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
@@ -44,16 +45,21 @@ final class ExtensionServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Binds and tags the built-in extensions. Runs the parent first, then
-	 * walks `EXTENSIONS` once to register each as an overridable singleton
-	 * and tag it under `Extension::TAG`. Driving both from a single list
-	 * keeps the binding and the tag in sync: the `singletonIf` binding lets
-	 * an extension swap a built-in by binding its own concrete first, and
-	 * the shared tag collects those swaps alongside any third-party
-	 * extensions for `bootExtensions()`.
+	 * Binds and tags the built-in extensions. Types `Extension::TAG` so
+	 * every member, built-in or third-party, is validated as a concrete
+	 * `Extension` when tagged rather than at resolution. Then walks
+	 * `EXTENSIONS` once to register each as an overridable singleton and
+	 * tag it. Driving both from a single list keeps the binding and the tag
+	 * in sync: the `singletonIf` binding lets an extension swap a built-in
+	 * by binding its own concrete first, and the shared tag collects those
+	 * swaps alongside any third-party extensions for `bootExtensions()`.
+	 *
+	 * @throws ContainerException
 	 */
 	public function register(): void
 	{
+		$this->container->setTagContract(Extension::TAG, Extension::class);
+
 		foreach (self::EXTENSIONS as $extension) {
 			$this->container->singletonIf($extension);
 		}
@@ -75,18 +81,22 @@ final class ExtensionServiceProvider extends ServiceProvider
 	 * Boots each active extension, letting it register its own query,
 	 * assembler, and crumb types and subscribing its event listeners. The
 	 * container injects the shared `ListenerRegistry` and, through the
-	 * `#[Tagged]` attribute, every service tagged with `Extension::TAG` as
-	 * the variadic `$extensions`, whose `Extension` type enforces that each
-	 * tagged service is an extension. An extension whose platform is
-	 * inactive (`isActive()` is false) is skipped.
+	 * `#[DeferTagged]` attribute, one deferred resolver per class tagged
+	 * with `Extension::TAG`, keyed by its class-string. `isActive()` is
+	 * checked statically against that class-string first, so an extension
+	 * whose platform is inactive is never built at all.
 	 */
 	private function bootExtensions(
 		ListenerRegistry $listeners,
-		#[Tagged(Extension::TAG)] Extension ...$extensions
+		#[DeferTagged(Extension::TAG)] iterable $extensions
 	): void {
-		foreach ($extensions as $extension) {
-			if ($extension->isActive()) {
-				$listeners->subscribe($extension);
+		/**
+		 * @var class-string<Extension> $class
+		 * @var Closure(): Extension    $makeExtension
+		 */
+		foreach ($extensions as $class => $makeExtension) {
+			if ($class::isActive()) {
+				$listeners->subscribe($makeExtension());
 			}
 		}
 	}

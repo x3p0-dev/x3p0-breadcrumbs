@@ -40,12 +40,13 @@ abstract class Extension implements Subscriber
 	final public const TAG = 'x3p0/breadcrumbs/extension';
 
 	/**
-	 * Whether the extension should participate in the current request. The
-	 * service provider skips an extension entirely when this returns false,
-	 * so guard on the target platform's own API (e.g. a class or function
-	 * it defines) rather than assuming it is loaded.
+	 * Whether the extension should participate in the current request.
+	 * Static so the service provider can check it against the class-string
+	 * before building the extension, skipping construction entirely when
+	 * the target platform is absent. Guard on the platform's own API (e.g.
+	 * a class or function it defines) rather than assuming it is loaded.
 	 */
-	abstract public function isActive(): bool;
+	abstract public static function isActive(): bool;
 
 	/**
 	 * @inheritDoc

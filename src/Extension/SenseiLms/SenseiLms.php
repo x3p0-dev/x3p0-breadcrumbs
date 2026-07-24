@@ -56,7 +56,7 @@ final class SenseiLms extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function isActive(): bool
+	public static function isActive(): bool
 	{
 		return function_exists('Sensei');
 	}

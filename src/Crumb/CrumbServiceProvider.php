@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the crumb subsystem into the container: binds the factory as a shared
- * singleton (only if not already bound) so extensions may replace it, and tags
- * each built-in `CrumbType` case's class under `Crumb::TAG`. `CrumbFactory`
- * collects these tagged entries to resolve a crumb by enum case or class name.
+ * singletons (only if not already bound) so extensions may replace it, and
+ * binds each built-in `CrumbType` case's class.
  */
 final class CrumbServiceProvider extends ServiceProvider
 {
 	/**
-	 * The crumb factory, bound as a shared singleton only if not already bound
-	 * so extensions may replace it.
+	 * The crumb factory, bound as a shared singleton only if not already
+	 * bound so extensions may replace it.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -36,17 +34,13 @@ final class CrumbServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Tags each built-in crumb to {@see Crumb::TAG}. The enum is the source
-	 * of truth for the mapping.
-	 *
-	 * @throws ContainerException
+	 * Binds each built-in crumb. The enum is the source of truth for the
+	 * canonical mapping.
 	 */
 	public function register(): void
 	{
-		$this->container->setTagContract(Crumb::TAG, Crumb::class);
-
 		foreach (CrumbType::cases() as $type) {
-			$this->container->tag($type->className(), Crumb::TAG);
+			$this->container->transientIf($type->className());
 		}
 	}
 }

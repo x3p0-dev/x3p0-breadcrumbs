@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the assembler subsystem into the container: binds the factory as a
  * shared singletons (only if not already bound) so extensions may replace it,
- * and tags each built-in `AssemblerType` case's class under `Assembler::TAG`.
- * `AssemblerFactory` collects these tagged entries to resolve an assembler by
- * enum case or class name.
+ * and binds each built-in `AssemblerType` case's class.
  */
 final class AssemblerServiceProvider extends ServiceProvider
 {
@@ -37,17 +34,13 @@ final class AssemblerServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Tags each built-in assembler to {@see Assembler::TAG}. The enum is
-	 * the source of truth for the mapping.
-	 *
-	 * @throws ContainerException
+	 * Bind each built-in assembler. The enum is the source of truth for the
+	 * canonical mapping.
 	 */
 	public function register(): void
 	{
-		$this->container->setTagContract(Assembler::TAG, Assembler::class);
-
 		foreach (AssemblerType::cases() as $type) {
-			$this->container->tag($type->className(), Assembler::TAG);
+			$this->container->transientIf($type->className());
 		}
 	}
 }

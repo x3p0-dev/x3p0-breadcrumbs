@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the query subsystem into the container: binds the factory and resolver
  * as shared singletons (only if not already bound) so extensions may replace
- * them, and tags each built-in `QueryType` case's class under `Query::TAG`.
- * `QueryFactory` collects these tagged entries to resolve a query by enum case
- * or class name.
+ * them, and binds each built-in `QueryType` case's class.
  */
 final class QueryServiceProvider extends ServiceProvider
 {
@@ -38,17 +35,13 @@ final class QueryServiceProvider extends ServiceProvider
 	];
 
 	/**
-	 * Tags each built-in query to {@see Query::TAG}. The enum is the source
-	 * of truth for the mapping.
-	 *
-	 * @throws ContainerException
+	 * Binds each built-in query. The enum is the source of truth for the
+	 * canonical mapping.
 	 */
 	public function register(): void
 	{
-		$this->container->setTagContract(Query::TAG, Query::class);
-
 		foreach (QueryType::cases() as $type) {
-			$this->container->tag($type->className(), Query::TAG);
+			$this->container->transientIf($type->className());
 		}
 	}
 }

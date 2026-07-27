@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension;
 
-use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
-use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\DeferTagged;
+use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Tagged;
 use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
@@ -25,32 +23,17 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
  * the ones whose platform is active. Each extension is bound as an overridable
  * singleton and, on boot, is registered and subscribed only when its
  * `isActive()` check passes, so an inactive platform costs a single guard and
- * nothing more. This provider is registered last so extensions boot after the
- * subsystems (query, crumb, event) they build on, letting an extension override
- * a built-in type by re-registering its key.
+ * nothing more.
  */
 final class ExtensionServiceProvider extends ServiceProvider
 {
 	/**
-	 * The built-in extensions. Each is bound as an overridable singleton
-	 * and tagged, so third parties may replace one and their own tagged
-	 * extensions boot alongside these.
-	 *
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 * @var  list<string>
-	 */
-	protected const EXTENSIONS = [
-		WooCommerce::class,
-		SenseiLms::class
-	];
-
-	/**
 	 * Binds and tags the built-in extensions. Types `Extension::TAG` so
 	 * every member, built-in or third-party, is validated as a concrete
 	 * `Extension` when tagged rather than at resolution. Then walks
-	 * `EXTENSIONS` once to register each as an overridable singleton and
-	 * tag it. Driving both from a single list keeps the binding and the tag
-	 * in sync: the `singletonIf` binding lets an extension swap a built-in
+	 * `ExtensionType::active()` to register each as an overridable singleton
+	 * and tag it. Driving both from a single list keeps the binding and the
+	 * tag in sync: the `singletonIf` binding lets an extension swap a built-in
 	 * by binding its own concrete first, and the shared tag collects those
 	 * swaps alongside any third-party extensions for `bootExtensions()`.
 	 *
@@ -60,11 +43,10 @@ final class ExtensionServiceProvider extends ServiceProvider
 	{
 		$this->container->setTagContract(Extension::TAG, Extension::class);
 
-		foreach (self::EXTENSIONS as $extension) {
+		foreach (ExtensionType::active() as $extension) {
 			$this->container->singletonIf($extension);
+			$this->container->tag($extension, Extension::TAG);
 		}
-
-		$this->container->tag(self::EXTENSIONS, Extension::TAG);
 	}
 
 	/**
@@ -78,26 +60,14 @@ final class ExtensionServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Boots each active extension, letting it register its own query,
-	 * assembler, and crumb types and subscribing its event listeners. The
-	 * container injects the shared `ListenerRegistry` and, through the
-	 * `#[DeferTagged]` attribute, one deferred resolver per class tagged
-	 * with `Extension::TAG`, keyed by its class-string. `isActive()` is
-	 * checked statically against that class-string first, so an extension
-	 * whose platform is inactive is never built at all.
+	 * Boots each active extension and subscribes it via the listener registry.
 	 */
 	private function bootExtensions(
 		ListenerRegistry $listeners,
-		#[DeferTagged(Extension::TAG)] iterable $extensions
+		#[Tagged(Extension::TAG)] Extension ...$extensions
 	): void {
-		/**
-		 * @var class-string<Extension> $class
-		 * @var Closure(): Extension    $makeExtension
-		 */
-		foreach ($extensions as $class => $makeExtension) {
-			if ($class::isActive()) {
-				$listeners->subscribe($makeExtension());
-			}
+		foreach ($extensions as $extension) {
+			$listeners->subscribe($extension);
 		}
 	}
 }

@@ -42,14 +42,6 @@ final class WooCommerce extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public static function isActive(): bool
-	{
-		return class_exists('WooCommerce');
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getSubscribedEvents(): array
 	{
 		return [

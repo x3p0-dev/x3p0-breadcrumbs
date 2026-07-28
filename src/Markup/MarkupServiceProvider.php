@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\Container;
 use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
@@ -32,14 +31,15 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class MarkupServiceProvider extends ServiceProvider
 {
 	/**
-	 * The markup factory, bound as a shared singleton only if not already
-	 * bound so extensions may replace it.
+	 * The markup factory and options, bound as shared singletons only if
+	 * not already bound so extensions may replace them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS_IF = [
-		MarkupFactory::class
+		MarkupFactory::class,
+		MarkupOptions::class
 	];
 
 	/**
@@ -74,16 +74,6 @@ final class MarkupServiceProvider extends ServiceProvider
 		// Defines the `Markup` class as the contract that all tagged
 		// Markup types must follow.
 		$this->container->setTagContract(Markup::TAG, Markup::class);
-
-		// Define `MarkupOptions` as a singleton, passing in the tagged
-		// markup types and the default type.
-		$this->container->singletonIf(
-			MarkupOptions::class,
-			static fn (Container $container) => new MarkupOptions(
-				$container->taggedAbstracts(Markup::TAG),
-				(string) $container->getParam(self::DEFAULT_BLOCK_CLASS_PARAM)
-			)
-		);
 
 		// Tag the canonical markup types.
 		foreach (MarkupType::cases() as $type) {

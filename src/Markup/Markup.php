@@ -15,7 +15,6 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Packages\Framework\Contracts\Renderable;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -27,7 +26,7 @@ use X3P0\Breadcrumbs\Support\Pagination;
  * common decisions of what is renderable, what is linkable, and how classes are
  * namespaced.
  */
-abstract class Markup implements Renderable
+abstract class Markup
 {
 	/**
 	 * The container tag under which markup types are collected, so the full set
@@ -75,6 +74,11 @@ abstract class Markup implements Renderable
 		protected readonly MarkupConfig $config,
 		protected readonly Pagination $pagination
 	) {}
+
+	/**
+	 * Renders the markup and returns its HTML for output on the front end.
+	 */
+	abstract public function render(): string;
 
 	/**
 	 * Flattens the configured container attributes into an escaped, space-

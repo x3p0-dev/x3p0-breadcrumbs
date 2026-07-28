@@ -49,7 +49,7 @@ enum ExtensionType implements EnumDefinition
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return match ($this) {
 			self::SenseiLms   => function_exists('Sensei'),
-			self::WooCommerce => class_exists(WooCommerce::class)
+			self::WooCommerce => class_exists('WooCommerce')
 		};
 	}
 

@@ -44,7 +44,7 @@ final class QueryTypeResolving implements StoppableEvent
 	/**
 	 * Stores the shared context and the query type resolved so far. The
 	 * query type is mutable so listeners can override it; pass a
-	 * {@see QueryDefiniton} or {@see Query} class-string. A null value
+	 * {@see QueryDefinition} or {@see Query} class-string. A null value
 	 * means no type has been resolved and no breadcrumbs will be built.
 	 */
 	public function __construct(

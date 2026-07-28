@@ -18,8 +18,8 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
 
 /**
  * Builds a `Markup` instance from a type identifier, either by instantiating
- * a class directly through the container or by invoking a factory closure
- * registered under a tagged slug. Returns `null` when resolution is not
+ * a class directly through the container or by looking it up among the
+ * tagged classes by its static `key()`. Returns `null` when resolution is not
  * successful, so callers can dispatch optimistically.
  */
 final class MarkupFactory

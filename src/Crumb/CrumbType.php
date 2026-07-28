@@ -15,9 +15,8 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 /**
  * The canonical built-in crumb types — the source of truth mapping each case
- * to its class via `className()`. `CrumbServiceProvider` tags each class under
- * `Crumb::TAG`, so a caller may pass the case or the class name to the crumb
- * methods.
+ * to its class via `className()`, so a caller may pass the case or the class
+ * name to the crumb methods.
  */
 enum CrumbType implements CrumbDefinition
 {

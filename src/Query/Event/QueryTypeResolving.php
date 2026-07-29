@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
 use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 use X3P0\Breadcrumbs\Query\QueryDefinition;
@@ -29,8 +31,9 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
  * `setQueryType()`. The dispatcher returns this same instance and the resolver
  * reads the final value back from it.
  */
-final class QueryTypeResolving implements StoppableEvent
+final class QueryTypeResolving implements BroadcastableEvent, NamedEvent, StoppableEvent
 {
+	use BroadcastsHooks;
 	use Named;
 	use Stoppable;
 

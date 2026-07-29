@@ -16,8 +16,10 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
 use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 
@@ -32,8 +34,9 @@ use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
  * string key for a custom format. The renderer reads the final type and config
  * back from this same instance.
  */
-final class MarkupRendering implements StoppableEvent
+final class MarkupRendering implements BroadcastableEvent, NamedEvent, StoppableEvent
 {
+	use BroadcastsHooks;
 	use Named;
 	use Stoppable;
 

@@ -15,7 +15,9 @@ namespace X3P0\Breadcrumbs\Crumb\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
 use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 
 /**
@@ -26,8 +28,9 @@ use X3P0\Breadcrumbs\Packages\Event\Support\Named;
  * changes made here are what callers ultimately receive; use the context's
  * `addCrumb()` to append a crumb built through its factory.
  */
-final class CrumbsBuilt implements NamedEvent
+final class CrumbsBuilt implements BroadcastableEvent, NamedEvent
 {
+	use BroadcastsHooks;
 	use Named;
 
 	/**

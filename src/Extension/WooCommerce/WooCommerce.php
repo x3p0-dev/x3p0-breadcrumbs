@@ -16,10 +16,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Account as AccountQuery;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Cart as CartQuery;
-use X3P0\Breadcrumbs\Extension\WooCommerce\Query\Checkout as CheckoutQuery;
+use X3P0\Breadcrumbs\Packages\Event\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 /**
@@ -42,12 +39,10 @@ final class WooCommerce extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubscribedEvents(): array
+	public function subscribeListeners(Listenable $registry): void
 	{
-		return [
-			QueryTypeResolving::class => 'resolveQueryType',
-			CrumbsBuilt::class        => 'relabelShop'
-		];
+		$registry->listenTo($this->onQueryTypeResolving(...));
+		$registry->listenTo($this->onCrumbsBuilt(...));
 	}
 
 	/**
@@ -57,12 +52,12 @@ final class WooCommerce extends Extension
 	 * shop, products, and product taxonomies, which the base queries handle
 	 * — falls through untouched.
 	 */
-	public function resolveQueryType(QueryTypeResolving $event): void
+	public function onQueryTypeResolving(QueryTypeResolving $event): void
 	{
 		$type = match (true) {
-			is_account_page() => AccountQuery::class,
-			is_cart()         => CartQuery::class,
-			is_checkout()     => CheckoutQuery::class,
+			is_account_page() => Query\Account::class,
+			is_cart()         => Query\Cart::class,
+			is_checkout()     => Query\Checkout::class,
 			default           => null
 		};
 
@@ -77,14 +72,15 @@ final class WooCommerce extends Extension
 	 * wherever it appears, so the archive reads as the shop without
 	 * overriding the built-in post type crumb class.
 	 */
-	public function relabelShop(CrumbsBuilt $event): void
+	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
-			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(ShopCrumb::class, [
-				'decoratedCrumb' => $crumb
-			])
+			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(
+				Crumb\Shop::class,
+				['decoratedCrumb' => $crumb]
+			)
 		);
 	}
 }

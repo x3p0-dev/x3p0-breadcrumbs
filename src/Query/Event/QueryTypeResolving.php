@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
-use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 use X3P0\Breadcrumbs\Query\QueryDefinition;
 
 /**

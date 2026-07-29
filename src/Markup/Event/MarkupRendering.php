@@ -16,8 +16,8 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
-use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 
 /**
  * Dispatched after the trail is built but before it is rendered, so listeners

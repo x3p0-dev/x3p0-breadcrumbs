@@ -16,14 +16,8 @@ namespace X3P0\Breadcrumbs\Extension\SenseiLms;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Crumb\Courses as CoursesCrumb;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\CourseCompleted as CourseCompletedQuery;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\CourseResults as CourseResultsQuery;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\LearnerProfile as LearnerProfileQuery;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\Lesson as LessonQuery;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\Module as ModuleQuery;
-use X3P0\Breadcrumbs\Extension\SenseiLms\Query\Quiz as QuizQuery;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
+use X3P0\Breadcrumbs\Packages\Event\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 use function Sensei;
@@ -56,13 +50,11 @@ final class SenseiLms extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubscribedEvents(): array
+	public function subscribeListeners(Listenable $registry): void
 	{
-		return [
-			QueryTypeResolving::class => 'resolveQueryType',
-			CrumbsBuilt::class        => 'relabelCourses',
-			MarkupRendering::class    => 'showOnVirtualPages'
-		];
+		$registry->listenTo($this->onQueryTypeResolving(...));
+		$registry->listenTo($this->onCrumbsBuilt(...));
+		$registry->listenTo($this->onMarkupRendering(...));
 	}
 
 	/**
@@ -73,15 +65,15 @@ final class SenseiLms extends Extension
 	 * including the course archive, single courses, and course taxonomies,
 	 * which the base queries handle — falls through untouched.
 	 */
-	public function resolveQueryType(QueryTypeResolving $event): void
+	public function onQueryTypeResolving(QueryTypeResolving $event): void
 	{
 		$type = match (true) {
-			is_singular('quiz')            => QuizQuery::class,
-			is_singular('lesson')          => LessonQuery::class,
-			is_tax('module')               => ModuleQuery::class,
-			$this->isCourseResultsPage()   => CourseResultsQuery::class,
-			$this->isLearnerProfilePage()  => LearnerProfileQuery::class,
-			$this->isCourseCompletedPage() => CourseCompletedQuery::class,
+			is_singular('quiz')            => Query\Quiz::class,
+			is_singular('lesson')          => Query\Lesson::class,
+			is_tax('module')               => Query\Module::class,
+			$this->isCourseResultsPage()   => Query\CourseResults::class,
+			$this->isLearnerProfilePage()  => Query\LearnerProfile::class,
+			$this->isCourseCompletedPage() => Query\CourseCompleted::class,
 			default                        => null
 		};
 
@@ -96,13 +88,13 @@ final class SenseiLms extends Extension
 	 * wherever it appears, so the archive reads as the configured courses
 	 * page without overriding the built-in post type crumb class.
 	 */
-	public function relabelCourses(CrumbsBuilt $event): void
+	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name,
 			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(
-				CoursesCrumb::class,
+				Crumb\Courses::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);
@@ -116,9 +108,9 @@ final class SenseiLms extends Extension
 	 * suppress. These pages are not the front page, so front-page visibility
 	 * is forced on for them alone, leaving the rest of the config untouched.
 	 */
-	public function showOnVirtualPages(MarkupRendering $event): void
+	public function onMarkupRendering(MarkupRendering $event): void
 	{
-		if ($this->isVirtualPage()) {
+		if ($this->isVirtualPage() && is_front_page()) {
 			$event->config = $event->config->with([
 				'showOnFront' => true
 			]);
@@ -132,7 +124,7 @@ final class SenseiLms extends Extension
 	 */
 	private function isVirtualPage(): bool
 	{
-		return $this->isLearnerProfilePage();
+		return $this->isCourseResultsPage() || $this->isLearnerProfilePage();
 	}
 
 	/**

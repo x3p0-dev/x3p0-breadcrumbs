@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension;
 
+use X3P0\Breadcrumbs\Packages\Event\Listenable;
 use X3P0\Breadcrumbs\Packages\Event\Subscriber;
 
 /**
@@ -39,8 +40,6 @@ abstract class Extension implements Subscriber
 	/**
 	 * @inheritDoc
 	 */
-	public function getSubscribedEvents(): array
-	{
-		return [];
-	}
+	public function subscribeListeners(Listenable $registry): void
+	{}
 }

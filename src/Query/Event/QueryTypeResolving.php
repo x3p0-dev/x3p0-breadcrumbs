@@ -15,11 +15,11 @@ namespace X3P0\Breadcrumbs\Query\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastsToHooks;
+use X3P0\Breadcrumbs\Packages\Event\Named;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
+use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
-use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
-use X3P0\Breadcrumbs\Packages\Event\Support\Named;
-use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 use X3P0\Breadcrumbs\Query\QueryDefinition;
 
 /**
@@ -33,7 +33,7 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
  */
 final class QueryTypeResolving implements BroadcastableEvent, NamedEvent, StoppableEvent
 {
-	use BroadcastsHooks;
+	use BroadcastsToHooks;
 	use Named;
 	use Stoppable;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension;
 
-use X3P0\Breadcrumbs\Packages\Event\ListenerRegistry;
+use X3P0\Breadcrumbs\Packages\Event\Listener\Subscribable;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\Tagged;
 use X3P0\Breadcrumbs\Packages\Framework\Container\ContainerException;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
@@ -63,11 +63,11 @@ final class ExtensionServiceProvider extends ServiceProvider
 	 * Boots each active extension and subscribes it via the listener registry.
 	 */
 	private function bootExtensions(
-		ListenerRegistry $listeners,
+		Subscribable $registry,
 		#[Tagged(Extension::TAG)] Extension ...$extensions
 	): void {
 		foreach ($extensions as $extension) {
-			$listeners->subscribe($extension);
+			$registry->subscribe($extension);
 		}
 	}
 }

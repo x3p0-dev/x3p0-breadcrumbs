@@ -17,11 +17,11 @@ use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
 use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastsToHooks;
+use X3P0\Breadcrumbs\Packages\Event\Named;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
+use X3P0\Breadcrumbs\Packages\Event\Stoppable;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
-use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
-use X3P0\Breadcrumbs\Packages\Event\Support\Named;
-use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 
 /**
  * Dispatched after the trail is built but before it is rendered, so listeners
@@ -36,7 +36,7 @@ use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
  */
 final class MarkupRendering implements BroadcastableEvent, NamedEvent, StoppableEvent
 {
-	use BroadcastsHooks;
+	use BroadcastsToHooks;
 	use Named;
 	use Stoppable;
 

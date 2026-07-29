@@ -16,9 +16,9 @@ namespace X3P0\Breadcrumbs\Crumb\Event;
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
+use X3P0\Breadcrumbs\Packages\Event\BroadcastsToHooks;
+use X3P0\Breadcrumbs\Packages\Event\Named;
 use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
-use X3P0\Breadcrumbs\Packages\Event\Support\BroadcastsHooks;
-use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 
 /**
  * Dispatched after the query has populated the crumbs, before they are returned.
@@ -30,7 +30,7 @@ use X3P0\Breadcrumbs\Packages\Event\Support\Named;
  */
 final class CrumbsBuilt implements BroadcastableEvent, NamedEvent
 {
-	use BroadcastsHooks;
+	use BroadcastsToHooks;
 	use Named;
 
 	/**

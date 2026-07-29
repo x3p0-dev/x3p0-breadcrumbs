@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension;
 
-use X3P0\Breadcrumbs\Packages\Event\Listenable;
-use X3P0\Breadcrumbs\Packages\Event\Subscriber;
+use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
+use X3P0\Breadcrumbs\Packages\Event\Listener\ListenerSubscriber;
 
 /**
  * Base contract for a built-in integration with a third-party platform (such as
@@ -25,7 +25,7 @@ use X3P0\Breadcrumbs\Packages\Event\Subscriber;
  * and live under their own sub-namespace; this class is the typehint the
  * service provider checks.
  */
-abstract class Extension implements Subscriber
+abstract class Extension implements ListenerSubscriber
 {
 	/**
 	 * The container tag under which extensions are collected. Tagging a
@@ -40,6 +40,6 @@ abstract class Extension implements Subscriber
 	/**
 	 * @inheritDoc
 	 */
-	public function subscribeListeners(Listenable $registry): void
+	public function subscribeTo(Listenable $registry): void
 	{}
 }

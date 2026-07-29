@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
-use X3P0\Breadcrumbs\Packages\Event\Listenable;
+use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 /**
@@ -39,7 +39,7 @@ final class WooCommerce extends Extension
 	/**
 	 * @inheritDoc
 	 */
-	public function subscribeListeners(Listenable $registry): void
+	public function subscribeTo(Listenable $registry): void
 	{
 		$registry->listenTo($this->onQueryTypeResolving(...));
 		$registry->listenTo($this->onCrumbsBuilt(...));

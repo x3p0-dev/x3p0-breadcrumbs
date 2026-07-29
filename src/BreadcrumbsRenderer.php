@@ -84,7 +84,7 @@ class BreadcrumbsRenderer
 		));
 
 		if (! $event->isPropagationStopped()) {
-			do_action(MarkupRendering::HOOK_NAME, $event);
+			do_action($event->eventName(), $event);
 		}
 
 		$markup = $this->markupFactory->make($event->markupType, [

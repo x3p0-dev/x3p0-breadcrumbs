@@ -16,7 +16,9 @@ namespace X3P0\Breadcrumbs\Markup\Event;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
+use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 
 /**
@@ -32,6 +34,7 @@ use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
  */
 final class MarkupRendering implements StoppableEvent
 {
+	use Named;
 	use Stoppable;
 
 	/**
@@ -42,7 +45,7 @@ final class MarkupRendering implements StoppableEvent
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const HOOK_NAME = 'x3p0/breadcrumbs/markup-rendering';
+	public const NAME = 'x3p0/breadcrumbs/markup-rendering';
 
 	/**
 	 * Stores the finished crumbs and the writable markup type and config to

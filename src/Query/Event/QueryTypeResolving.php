@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Query\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
 use X3P0\Breadcrumbs\Packages\Event\StoppableEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 use X3P0\Breadcrumbs\Packages\Event\Support\Stoppable;
 use X3P0\Breadcrumbs\Query\QueryDefinition;
 
@@ -29,6 +31,7 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
  */
 final class QueryTypeResolving implements StoppableEvent
 {
+	use Named;
 	use Stoppable;
 
 	/**
@@ -39,7 +42,7 @@ final class QueryTypeResolving implements StoppableEvent
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const HOOK_NAME = 'x3p0/breadcrumbs/query-type-resolving';
+	public const NAME = 'x3p0/breadcrumbs/query-type-resolving';
 
 	/**
 	 * Stores the shared context and the query type resolved so far. The

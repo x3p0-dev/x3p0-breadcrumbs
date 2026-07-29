@@ -73,10 +73,9 @@ final class BreadcrumbsGenerator
 		// Let listeners adjust the finished crumbs before they are
 		// returned, then bridge the same event to WordPress so
 		// `add_action()` callbacks can adjust them too.
-		do_action(
-			CrumbsBuilt::HOOK_NAME,
-			$this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()))
-		);
+		$event = $this->events->dispatch(new CrumbsBuilt($context, $context->crumbs()));
+
+		do_action($event->eventName(), $event);
 
 		return $context->crumbs();
 	}

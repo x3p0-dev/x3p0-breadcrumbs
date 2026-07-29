@@ -51,7 +51,7 @@ final class QueryResolver
 		// stopped propagation, so `add_action()` callbacks can change
 		// the type alongside the typed listeners.
 		if (! $event->isPropagationStopped()) {
-			do_action(QueryTypeResolving::HOOK_NAME, $event);
+			do_action($event->eventName(), $event);
 		}
 
 		// Get the query type from the event.

@@ -15,6 +15,8 @@ namespace X3P0\Breadcrumbs\Crumb\Event;
 
 use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
+use X3P0\Breadcrumbs\Packages\Event\Support\Named;
 
 /**
  * Dispatched after the query has populated the crumbs, before they are returned.
@@ -24,17 +26,19 @@ use X3P0\Breadcrumbs\Crumb\CrumbCollection;
  * changes made here are what callers ultimately receive; use the context's
  * `addCrumb()` to append a crumb built through its factory.
  */
-final class CrumbsBuilt
+final class CrumbsBuilt implements NamedEvent
 {
+	use Named;
+
 	/**
-	 * The name of the WordPress action this event is bridged to after it
+	 * The name of the WordPress hook this event is bridged to after it
 	 * is dispatched, so `add_action()` callbacks can adjust the finished
 	 * crumbs alongside the typed listeners.
 	 *
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	public const HOOK_NAME = 'x3p0/breadcrumbs/crumbs-built';
+	public const NAME = 'x3p0/breadcrumbs/crumbs-built';
 
 	/**
 	 * Stores the shared build context and the finished, mutable crumb

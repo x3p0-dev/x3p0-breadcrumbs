@@ -24,7 +24,7 @@ In 2009, I [launched the first version of this script](https://justintadlock.com
 		- [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld)
 		- [Modifying the Breadcrumb Trail with Events](#modifying-the-breadcrumb-trail-with-events)
 		- [Available Hooks](#available-hooks)
-		- [Registering Custom Queries, Assemblers, Crumbs, and Markup](#registering-custom-queries-assemblers-crumbs-and-markup)
+		- [Building Custom Query, Assembler, Crumb, and Markup Types](#building-custom-query-assembler-crumb-and-markup-types)
 		- [The Extension System](#the-extension-system)
 - [License](#license)
 
@@ -315,16 +315,16 @@ There are three events:
 
 ##### Changing the Query Type
 
-The `QueryTypeResolving` event carries the type detected from the current request — a `QueryType` case for a built-in type, a string key for a custom one, or `null` when nothing matched. Call `setQueryType()` to override it, passing a `QueryType` case, a custom string key, or `null` to build no breadcrumbs.
+The `QueryTypeResolving` event carries the type detected from the current request — a `QueryType` case for a built-in type, a `Query` class-string for a custom one, or `null` when nothing matched. Call `setQueryType()` to override it, passing a `QueryDefinition` case, a `Query` class-string, or `null` to build no breadcrumbs.
 
 The simplest way to hook in is the bridged action, which passes the event object:
 
 ```php
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
-add_action('x3p0/breadcrumbs/query-type-resolving', function (QueryTypeResolving $event) {
+add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
 	if ($yourCondition) {
-		$event->setQueryType('my-plugin/query');
+		$event->setQueryType(MyQuery::class);
 	}
 });
 ```
@@ -363,10 +363,10 @@ Add `count()`, `isEmpty()`, `isNotEmpty()`, `all()`, `map()`, and `reduce()` for
 
 **Which axis should you use?** Prefer the **class-based** methods (`whereInstanceOf`, an `instanceof` callback, or `replaceInstanceWhere` below) when you have the crumb class available — your editor gets full type hinting and you can safely read the crumb's typed properties. Reach for the **type-slug** methods (`hasType`, `firstOfType`, `removeType`, …) when you only know a crumb's registered key rather than its class, such as targeting another plugin's crumb or a built-in like `home`. The type slug is the stable, public identifier; the class is the type-safe one.
 
-**Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a registered crumb type key and its constructor parameters. It returns the crumb *without* adding it to the trail:
+**Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a `CrumbType` case (for a built-in type) or a `Crumb` class-string (for a custom one), plus its constructor parameters. It returns the crumb *without* adding it to the trail:
 
 ```php
-$crumb = $event->context->makeCrumb('my-plugin/crumb', ['foo' => $bar]);
+$crumb = $event->context->makeCrumb(MyCrumb::class, ['foo' => $bar]);
 ```
 
 To build *and* append in a single step, use `$event->context->addCrumb()` instead.
@@ -396,7 +396,7 @@ Here's a practical example that removes the home crumb, relabels the post type a
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 
-add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
+add_action(CrumbsBuilt::NAME, function (CrumbsBuilt $event) {
 	// Remove the home crumb.
 	$event->crumbs->removeType('home');
 
@@ -404,7 +404,7 @@ add_action('x3p0/breadcrumbs/crumbs-built', function (CrumbsBuilt $event) {
 	if ($archive = $event->crumbs->firstOfType('post-type')) {
 		$event->crumbs->insertAfter(
 			$archive,
-			$event->context->makeCrumb('my-plugin/crumb')
+			$event->context->makeCrumb(MyCrumb::class)
 		);
 	}
 });
@@ -426,7 +426,7 @@ For example, render the trail with microdata on your shop's pages while leaving 
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
-add_action('x3p0/breadcrumbs/markup-rendering', function (MarkupRendering $event) {
+add_action(MarkupRendering::NAME, function (MarkupRendering $event) {
 	if (function_exists('is_shop') && is_shop()) {
 		$event->setMarkupType(MarkupType::Microdata);
 	}
@@ -447,87 +447,114 @@ Fires immediately after the `X3P0\Breadcrumbs\Plugin` class registers its defaul
 do_action('x3p0/breadcrumbs/register', $plugin);
 ```
 
-#### Registering Custom Queries, Assemblers, Crumbs, and Markup
+#### Building Custom Query, Assembler, Crumb, and Markup Types
 
-There may be times when you need to register custom `Query`, `Assembler`, `Crumb`, or `Markup` classes for custom use cases. Each subsystem has its own registry, and registering a class is the same in every case: map a string key to a class name. Namespace your keys with a vendor prefix (e.g. `my-plugin/crumb`) so they don't collide with the plugin's built-in types or with other extensions. The following is a quick example of registering one of each:
+There may be times when you need custom `Query`, `Assembler`, `Crumb`, or `Markup` classes for custom use cases. There's no registry to populate — each subsystem's factory resolves a class directly through the container, so you just extend the subsystem's abstract base (`Query`, `Assembler`, or `Crumb`) and dispatch to it by its `::class` name wherever the plugin accepts that subsystem's type:
 
 ```php
-use X3P0\Breadcrumbs\Assembler\AssemblerRegistry;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
-use X3P0\Breadcrumbs\Markup\MarkupRegistry;
-use X3P0\Breadcrumbs\Query\QueryRegistry;
+namespace MyPlugin\Breadcrumbs;
 
-add_action('x3p0/breadcrumbs/register', function ($plugin) {
-	$plugin->container()->get(QueryRegistry::class)->register('my-plugin/query', MyQuery::class);
-	$plugin->container()->get(AssemblerRegistry::class)->register('my-plugin/assembler', MyAssembler::class);
-	$plugin->container()->get(CrumbRegistry::class)->register('my-plugin/crumb', MyCrumb::class);
-	$plugin->container()->get(MarkupRegistry::class)->register('my-plugin/markup', MyMarkup::class);
+use X3P0\Breadcrumbs\Query\Query;
+
+final class MyQuery extends Query
+{
+	public function query(): void
+	{
+		$this->context->addCrumb(/* ... */);
+	}
+}
+```
+
+```php
+use MyPlugin\Breadcrumbs\MyQuery;
+use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
+
+add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
+	if ($yourCondition) {
+		$event->setQueryType(MyQuery::class);
+	}
 });
 ```
 
-Each registered class must extend its subsystem's abstract base — `Query`, `Assembler`, `Crumb`, or `Markup` respectively. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
+The same pattern applies to a custom `Assembler` — dispatched via `$context->assemble(MyAssembler::class)` — and a custom `Crumb` — dispatched via `$context->makeCrumb(MyCrumb::class)` or `$context->addCrumb(MyCrumb::class)`. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
+
+##### Custom Markup Types
+
+A custom `Markup` type works the same way: extend `Markup` and pass its `::class` name as `markupType` (or to `setMarkupType()` on the `MarkupRendering` event). If you also want it selectable by a short string key — for `markupType: 'my-key'`, or as an option in the block editor's markup control — implement `MarkupBlockOption` and tag the class under `Markup::TAG`:
+
+```php
+use X3P0\Breadcrumbs\Markup\Markup;
+use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
+
+final class MyMarkup extends Markup implements MarkupBlockOption
+{
+	public static function key(): string
+	{
+		return 'my-key';
+	}
+
+	public static function label(): string
+	{
+		return __('My Markup', 'my-plugin');
+	}
+
+	public function render(): string
+	{
+		// ...
+	}
+}
+```
+
+```php
+use X3P0\Breadcrumbs\Markup\Markup;
+
+add_action('x3p0/breadcrumbs/register', function ($plugin) {
+	$plugin->container()->tag(MyMarkup::class, Markup::TAG);
+});
+```
 
 #### The Extension System
 
-The registration and event examples above are the raw seams. When you're integrating an entire platform or plugin — registering several custom types *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is exactly how the built-in WooCommerce integration works, and third parties use the same mechanism with no core edits.
+The event examples above are the raw seams. When you're integrating an entire platform or plugin — routing several pages through custom queries *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is exactly how the plugin's own built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) and [Sensei LMS](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/SenseiLms) integrations work, and third parties use the same mechanism with no core edits.
 
-An extension extends `X3P0\Breadcrumbs\Extension\Extension` and can implement three methods:
+An extension extends `X3P0\Breadcrumbs\Extension\Extension`, which implements the event package's `ListenerSubscriber` contract, and defines one method:
 
-- **`isActive(): bool`** _(required)_ — Whether the extension should participate in the current request. Guard on something the target platform itself defines (a class or function); the extension is skipped entirely — never registered, never subscribed — when this returns `false`, so an inactive platform costs a single check and nothing more.
-- **`register(): void`** _(optional)_ — Register the extension's custom query, assembler, and crumb types. Called once, only for active extensions. Registering an existing key overrides the built-in type for that key.
-- **`getSubscribedEvents(): array`** _(optional)_ — Map each event class to the name of the method that handles it. This is how you subscribe listeners to `QueryTypeResolving`, `CrumbsBuilt`, and `MarkupRendering` without reaching for the global action bridges.
+- **`subscribeTo(Listenable $registry): void`** — registers the extension's listeners on the registry it is given, typically a handful of `$registry->listenTo(...)` calls. This is how you subscribe to `QueryTypeResolving`, `CrumbsBuilt`, and `MarkupRendering` without reaching for the global action bridges.
 
-Constructor dependencies are resolved from the container, so you can typehint the registries — or any other service — you need.
+There's no `isActive()` or `register()` on the base class — an extension is treated as active the moment it's tagged (see below), so the platform guard (checking for a class or function the target platform defines) belongs in the code doing the tagging. And there's nothing to register: any custom `Query`, `Assembler`, or `Crumb` types the extension needs are just classes dispatched by their `::class` name, exactly as described above.
+
+Constructor dependencies, if any, are resolved from the container.
 
 Here's an extension that reroutes a page to a custom query and relabels a crumb:
 
 ```php
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbRegistry;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
-use X3P0\Breadcrumbs\Query\QueryRegistry;
 
 final class MyExtension extends Extension
 {
-	public function __construct(
-		private QueryRegistry $queries,
-		private CrumbRegistry $crumbs
-	) {}
-
-	public function isActive(): bool
+	public function subscribeTo(Listenable $registry): void
 	{
-		return function_exists('my_platform');
+		$registry->listenTo($this->onQueryTypeResolving(...));
+		$registry->listenTo($this->onCrumbsBuilt(...));
 	}
 
-	public function register(): void
-	{
-		$this->queries->register('my-plugin/query', MyQuery::class);
-		$this->crumbs->register('my-plugin/thing', ThingCrumb::class);
-	}
-
-	public function getSubscribedEvents(): array
-	{
-		return [
-			QueryTypeResolving::class => 'resolveQueryType',
-			CrumbsBuilt::class        => 'adjustCrumbs'
-		];
-	}
-
-	public function resolveQueryType(QueryTypeResolving $event): void
+	public function onQueryTypeResolving(QueryTypeResolving $event): void
 	{
 		if (my_platform_is_thing_page()) {
-			$event->setQueryType('my-plugin/query');
+			$event->setQueryType(MyQuery::class);
 			$event->stopPropagation();
 		}
 	}
 
-	public function adjustCrumbs(CrumbsBuilt $event): void
+	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
 		$event->crumbs->replaceWhere(
 			fn (Crumb $crumb) => 'post-type' === $crumb->getType(),
-			fn (Crumb $crumb) => $event->context->makeCrumb('my-plugin/thing', [
+			fn (Crumb $crumb) => $event->context->makeCrumb(ThingCrumb::class, [
 				'decoratedCrumb' => $crumb
 			])
 		);
@@ -535,18 +562,22 @@ final class MyExtension extends Extension
 }
 ```
 
-To activate it, bind it in the container and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are collected and booted automatically — the plugin calls `isActive()`, then `register()`, then subscribes the listeners — right alongside the built-ins:
+To activate it, guard on the target platform, bind the extension in the container, and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are subscribed automatically, right alongside the built-ins:
 
 ```php
 use X3P0\Breadcrumbs\Extension\Extension;
 
 add_action('x3p0/breadcrumbs/register', function ($plugin) {
+	if (! function_exists('my_platform')) {
+		return;
+	}
+
 	$plugin->container()->singleton(MyExtension::class);
 	$plugin->container()->tag(MyExtension::class, Extension::TAG);
 });
 ```
 
-That's the whole lifecycle in one class: the platform guard, the type registrations, and the event listeners, all opted into the same boot sequence the plugin uses for its own integrations.
+That's the whole lifecycle in one class: the platform guard gating the single tag call, and the event listeners doing the real work — opted into the same boot sequence the plugin uses for its own WooCommerce and Sensei LMS integrations.
 
 ## License
 

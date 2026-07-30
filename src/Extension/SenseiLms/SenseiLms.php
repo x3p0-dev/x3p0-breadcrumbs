@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\SenseiLms;
 
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
@@ -26,11 +27,14 @@ use function Sensei;
  * Built-in Sensei LMS integration. The base queries already build correct
  * trails for the course archive, single courses, and the course taxonomies,
  * since a course is a public post type with an archive and the course
- * taxonomies are ordinary taxonomies — so the extension only relabels the
- * course post type archive crumb to read as the configured courses page. It
- * does this on the `CrumbsBuilt` event rather than by replacing the built-in
- * crumb class, so other extensions can relabel their own crumbs on the same
- * event without one overriding the others.
+ * taxonomies are ordinary taxonomies — so the extension only relabels two
+ * crumbs: the course post type archive crumb, to read as the configured
+ * courses page, and a quiz's own crumb, since Sensei copies the parent
+ * lesson's `post_title` onto the quiz post, leaving it indistinguishable from
+ * the lesson crumb the trail already places before it. Both are relabeled
+ * on the `CrumbsBuilt` event rather than by replacing the built-in crumb
+ * classes, so other extensions can relabel their own crumbs on the same event
+ * without one overriding the others.
  *
  * The rest is the part core has no concept of: lessons, quizzes, module
  * archives, course results, course completion, and learner profiles. Sensei
@@ -102,7 +106,9 @@ final class SenseiLms extends Extension
 	/**
 	 * Replaces the course post type archive crumb with the courses crumb
 	 * wherever it appears, so the archive reads as the configured courses
-	 * page without overriding the built-in post type crumb class.
+	 * page without overriding the built-in post type crumb class, and
+	 * replaces a quiz's own crumb with one labeled from the quiz post type
+	 * instead of its Sensei-mirrored, lesson-duplicate title.
 	 */
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
@@ -111,6 +117,15 @@ final class SenseiLms extends Extension
 			static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name,
 			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(
 				Crumb\Courses::class,
+				['decoratedCrumb' => $crumb]
+			)
+		);
+
+		$event->crumbs->replaceInstanceWhere(
+			PostCrumb::class,
+			static fn (PostCrumb $crumb) => 'quiz' === $crumb->post->post_type,
+			static fn (PostCrumb $crumb) => $event->context->makeCrumb(
+				Crumb\Quiz::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);

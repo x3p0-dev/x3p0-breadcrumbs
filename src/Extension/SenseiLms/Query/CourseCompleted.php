@@ -29,6 +29,8 @@ use X3P0\Breadcrumbs\Query\Query;
  */
 final class CourseCompleted extends Query
 {
+	use AssemblesCourseFromRequest;
+
 	/**
 	 * @inheritDoc
 	 * @throws WP_Exception
@@ -39,18 +41,7 @@ final class CourseCompleted extends Query
 
 		$this->context->assemble(AssemblerType::Home);
 
-		// The completed page is shown for a specific course, passed as
-		// a `course_id` query arg; root the trail at that course when
-		// present. This is a read-only display value, so it is sanitized
-		// rather than nonce-checked.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$courseId = absint($_GET['course_id'] ?? 0);
-
-		if (0 < $courseId && $course = get_post($courseId)) {
-			$this->context->assemble(AssemblerType::Post, [
-				'post' => $course
-			]);
-		}
+		$this->assembleCourseFromRequest();
 
 		if ($page instanceof WP_Post) {
 			$this->context->addCrumb(CrumbType::Post, [

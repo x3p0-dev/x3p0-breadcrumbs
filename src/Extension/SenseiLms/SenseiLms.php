@@ -48,6 +48,22 @@ use function Sensei;
 final class SenseiLms extends Extension
 {
 	/**
+	 * Query var Sensei uses to scope a module archive or the course
+	 * completed page to one course.
+	 */
+	public const COURSE_ID_VAR = 'course_id';
+
+	/**
+	 * Query var Sensei's course results rewrite endpoint sets.
+	 */
+	public const COURSE_RESULTS_VAR = 'course_results';
+
+	/**
+	 * Query var Sensei's learner profile rewrite endpoint sets.
+	 */
+	public const LEARNER_PROFILE_VAR = 'learner_profile';
+
+	/**
 	 * @inheritDoc
 	 */
 	public function subscribeTo(Listenable $registry): void
@@ -133,7 +149,7 @@ final class SenseiLms extends Extension
 	 */
 	private function isCourseResultsPage(): bool
 	{
-		return '' !== get_query_var('course_results');
+		return '' !== get_query_var(self::COURSE_RESULTS_VAR);
 	}
 
 	/**
@@ -142,7 +158,7 @@ final class SenseiLms extends Extension
 	 */
 	private function isLearnerProfilePage(): bool
 	{
-		return '' !== get_query_var('learner_profile');
+		return '' !== get_query_var(self::LEARNER_PROFILE_VAR);
 	}
 
 	/**

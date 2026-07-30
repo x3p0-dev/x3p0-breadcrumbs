@@ -30,6 +30,8 @@ use X3P0\Breadcrumbs\Query\Query;
  */
 final class Module extends Query
 {
+	use AssemblesCourseFromRequest;
+
 	/**
 	 * @inheritDoc
 	 */
@@ -37,18 +39,7 @@ final class Module extends Query
 	{
 		$this->context->assemble(AssemblerType::Home);
 
-		// A module can belong to several courses, so its archive URL
-		// scopes it to one through a `course_id` query arg; root the
-		// trail at that course when present. This is a read-only display
-		// value, so it is sanitized rather than nonce-checked.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$courseId = absint($_GET['course_id'] ?? 0);
-
-		if (0 < $courseId && $course = get_post($courseId)) {
-			$this->context->assemble(AssemblerType::Post, [
-				'post' => $course
-			]);
-		}
+		$this->assembleCourseFromRequest();
 
 		// Sensei rewrites the archive's main query to list lessons, so
 		// the queried object is unreliable here: use it when it is a

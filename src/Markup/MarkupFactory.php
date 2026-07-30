@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\TaggedAbstracts;
-use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
+use X3P0\Breadcrumbs\Packages\Framework\Container\ServiceResolver;
 
 /**
  * Builds a `Markup` instance from a type identifier, either by instantiating
@@ -30,7 +30,7 @@ final class MarkupFactory
 	public function __construct(
 		#[TaggedAbstracts(Markup::TAG)]
 		private readonly array            $tagged,
-		private readonly InstanceResolver $resolver
+		private readonly ServiceResolver $resolver
 	) {}
 
 	/**

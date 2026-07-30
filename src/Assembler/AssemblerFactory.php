@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\Packages\Framework\Container\InstanceResolver;
+use X3P0\Breadcrumbs\Packages\Framework\Container\ServiceResolver;
 
 /**
  * Builds a `Assembler` instance from a type identifier. Returns `null` when
@@ -24,7 +24,7 @@ final class AssemblerFactory
 	/**
 	 * Stores the resolver that builds the mapped class through the container.
 	 */
-	public function __construct(private readonly InstanceResolver $resolver)
+	public function __construct(private readonly ServiceResolver $resolver)
 	{}
 
 	/**

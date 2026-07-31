@@ -4,6 +4,46 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0] - Unreleased
+
+### Added
+
+- **Built-in WooCommerce support.** Shop, product, and product category/tag archive breadcrumbs (the product archive crumb is relabeled to your configured shop page); Cart, Checkout, and My Account trails; account/checkout endpoint crumbs (Orders, View Order, Order Received, Edit Address, Payment Methods, etc.), with View Order nesting under Orders and Edit Address adding a Billing/Shipping crumb.
+- **Built-in Sensei LMS support.** A full Courses → Course → Module → Lesson → Quiz trail built from Sensei's post meta and module taxonomy; the course archive crumb is relabeled to your configured Courses page; Course Results and Course Completed root at their course, and Learner Profile roots at Home.
+- **Block transforms** for switching from another breadcrumbs block: Core's `core/breadcrumbs`, WooCommerce's `woocommerce/breadcrumbs`, and Yoast SEO's `yoast-seo/breadcrumbs` can all be transformed into this block, carrying over shared settings (alignment, spacing, color) wherever an equivalent exists.
+- **"Show trailing separator" block option**, which also shows the separator after the last (current page) crumb instead of only between crumbs.
+- Separator color is now settable directly from the block's color controls in the inspector, not only via `theme.json`.
+- Separator characters (slash, arrow, etc.) are now hidden from screen readers instead of being read aloud as literal punctuation.
+- The core **Breadcrumbs block is now hidden from the inserter** while this plugin is active, to avoid confusion between the two. It remains visible when WordPress is running in development mode, and existing `core/breadcrumbs` instances keep working.
+- New `CrumbsBuilt` and `MarkupRendering` events for developers: the former lets listeners append, remove, or relabel any crumb after a trail is built; the latter lets listeners swap the output format (or its config) before rendering.
+- New general-purpose `User` crumb (for a `WP_User`) and `Custom` crumb (an open-ended crumb from a caller-supplied label and URL) for developers building extensions.
+- `BuildsFromArray::with()` for cloning a config object with specific options overridden.
+
+### Changed
+
+- **The plugin's extension platform has been rebuilt around the DI container instead of registries — a breaking change for anyone extending the plugin in PHP.** The `AssemblerRegistry`, `CrumbRegistry`, `QueryRegistry`, and `MarkupRegistry` classes (and their registrars) are gone. Query, Assembler, and Crumb types now resolve directly from their `*Type` enum through the container; markup formats resolve via a container tag. Registering a custom type is now a matter of adding an enum case (or class) rather than calling a registry's `register()` method.
+- **`CrumbCollection` has been overhauled from a keyed map into a plain ordered sequence.** `ArrayAccess` support and the key-based `set()`, `get()`, `has()`, `remove()`, and the old `hasWhere()` are gone, replaced by `push()`, `prepend()`, `insertBefore()`/`insertAfter()`, `pop()`/`shift()`, `filter()`/`reject()`/`map()`/`reduce()`, `contains()`/`every()`, `whereInstanceOf()`, `replace()`/`replaceWhere()`/`replaceInstanceWhere()`, and `first()`/`last()`.
+- Renamed public classes: `Block` interface → `BlockRenderer`; `Breadcrumbs` → `BreadcrumbsGenerator` (config is now passed directly to its `generate()` method per request instead of going through a factory); `Assembler\Type\PostTypeArchives` → `PostTypes`.
+- `Tools\Helpers` has been removed and split into injectable `Support\Pagination` and `Support\PostTypes` services.
+- The block's Labels panel has moved into WordPress 7.0's Content inspector tab, and its dimensions panel no longer shows margin controls by default.
+
+### Fixed
+
+- Search results lost extra query variables (e.g. a scoped `post_type`) when paginated, because the Search crumb built its link from only the search term. It now preserves every query variable on paged results, matching how WordPress builds its own pagination links. (Fixes [#26](https://github.com/x3p0-dev/x3p0-breadcrumbs/issues/26).)
+- Other plugins altering the main query on an earlier hook (e.g. `pre_get_posts`) could leave the trail built from the wrong object or trigger a fatal error. The plugin now validates the queried object's type before using it and degrades to a safe trail instead of erroring.
+- Building an ancestor trail no longer errors if a post's parent has been deleted; it now stops cleanly at that point instead.
+- A multi-page post's "page 2" breadcrumb could build its link from the wrong post; permalink, archive, and term-link lookups are also hardened against unexpected `WP_Error`/`false` returns.
+
+### Deprecated
+
+- `BreadcrumbsService` in favor of `BreadcrumbsRenderer`. The old class still works and forwards every call, but triggers a `_deprecated_class()` notice.
+
+### Removed
+
+- The `x3p0/breadcrumbs/init` and `x3p0/breadcrumbs/boot` action hooks (added in 4.0.0) no longer fire. Move any code on either hook to `x3p0/breadcrumbs/register`.
+- The `x3p0/breadcrumbs/resolve/query-type` filter hook (added in 4.0.0). Use the `QueryTypeResolving` event, or its bridged `x3p0/breadcrumbs/query-type-resolving` action, instead.
+- `BreadcrumbsFactory` (folded into `BreadcrumbsGenerator`).
+
 ## [4.1.0] - 2026-02-23
 
 ### Added

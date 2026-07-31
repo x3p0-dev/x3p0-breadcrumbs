@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query\Event;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Packages\Event\BroadcastableEvent;
 use X3P0\Breadcrumbs\Packages\Event\BroadcastsToHooks;
 use X3P0\Breadcrumbs\Packages\Event\Named;
@@ -26,10 +26,10 @@ use X3P0\Breadcrumbs\Query\QueryDefinition;
  * Dispatched while resolving which query type matches the current request,
  * before the query runs. Carries the type detected from the request — a
  * {@see Query} class-string, a {@see QueryDefinition} enum, or null when
- * nothing matched — along with the shared context, so listeners can inspect
- * what is being built and the active config, then change the type with
- * `setQueryType()`. The dispatcher returns this same instance and the resolver
- * reads the final value back from it.
+ * nothing matched — along with the active {@see BreadcrumbsConfig}, so
+ * listeners can inspect the config in play, then change the type by
+ * reassigning `$queryType`. The dispatcher returns this same instance and the
+ * resolver reads the final value back from it.
  */
 final class QueryTypeResolving implements BroadcastableEvent, NamedEvent, StoppableEvent
 {
@@ -48,31 +48,13 @@ final class QueryTypeResolving implements BroadcastableEvent, NamedEvent, Stoppa
 	public const NAME = 'x3p0/breadcrumbs/query-type-resolving';
 
 	/**
-	 * Stores the shared context and the query type resolved so far. The
+	 * Stores the query type resolved so far and the active config. The
 	 * query type is mutable so listeners can override it; pass a
 	 * {@see QueryDefinition} or {@see Query} class-string. A null value
 	 * means no type has been resolved and no breadcrumbs will be built.
 	 */
 	public function __construct(
-		public readonly BreadcrumbsContext $context,
-		private QueryDefinition|string|null $queryType
+		public QueryDefinition|string|null $queryType,
+		public readonly BreadcrumbsConfig $breadcrumbsConfig
 	) {}
-
-	/**
-	 * Returns the query type: a `QueryDefinition`, class-string, or null
-	 * when none matched.
-	 */
-	public function getQueryType(): QueryDefinition|string|null
-	{
-		return $this->queryType;
-	}
-
-	/**
-	 * Overrides the query type to build for. Pass a `QueryDefinition`,
-	 * class-string, or null to build no breadcrumbs.
-	 */
-	public function setQueryType(QueryDefinition|string|null $queryType): void
-	{
-		$this->queryType = $queryType;
-	}
 }

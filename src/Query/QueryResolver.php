@@ -40,15 +40,14 @@ final class QueryResolver
 	 */
 	public function resolve(BreadcrumbsContext $context): QueryType|string|null
 	{
-		// Let listeners inspect the context and change the detected
-		// type. Then broadcast the event to WordPress unless a listener
-		// already stopped propagation, so `add_action()` callbacks can
-		// change the type alongside the typed listeners. Then return
-		// the query type.
+		// Let listeners inspect the config and change the detected type.
+		// Then broadcast the event to WordPress unless a listener already
+		// stopped propagation, so `add_action()` callbacks can change the
+		// type alongside the typed listeners. Then return the query type.
 		return $this->events->dispatch(new QueryTypeResolving(
-			context:   $context,
-			queryType: $this->detect()
-		))->broadcast()->getQueryType();
+			queryType:         $this->detect(),
+			breadcrumbsConfig: $context->config()
+		))->broadcast()->queryType;
 	}
 
 	/**

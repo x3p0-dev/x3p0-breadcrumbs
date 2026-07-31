@@ -315,7 +315,7 @@ There are three events:
 
 ##### Changing the Query Type
 
-The `QueryTypeResolving` event carries the type detected from the current request — a `QueryType` case for a built-in type, a `Query` class-string for a custom one, or `null` when nothing matched. Call `setQueryType()` to override it, passing a `QueryDefinition` case, a `Query` class-string, or `null` to build no breadcrumbs.
+The `QueryTypeResolving` event carries `$event->queryType` — the type detected from the current request: a `QueryType` case for a built-in type, a `Query` class-string for a custom one, or `null` when nothing matched — and `$event->breadcrumbsConfig`, the active `BreadcrumbsConfig` for this build. Reassign `$event->queryType` to override it, to a `QueryDefinition` case, a `Query` class-string, or `null` to build no breadcrumbs.
 
 The simplest way to hook in is the bridged action, which passes the event object:
 
@@ -324,7 +324,7 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
 	if ($yourCondition) {
-		$event->setQueryType(MyQuery::class);
+		$event->queryType = MyQuery::class;
 	}
 });
 ```
@@ -471,7 +471,7 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
 add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
 	if ($yourCondition) {
-		$event->setQueryType(MyQuery::class);
+		$event->queryType = MyQuery::class;
 	}
 });
 ```
@@ -545,7 +545,7 @@ final class MyExtension extends Extension
 	public function onQueryTypeResolving(QueryTypeResolving $event): void
 	{
 		if (my_platform_is_thing_page()) {
-			$event->setQueryType(MyQuery::class);
+			$event->queryType = MyQuery::class;
 			$event->stopPropagation();
 		}
 	}

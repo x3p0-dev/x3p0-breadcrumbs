@@ -62,7 +62,7 @@ final class WooCommerce extends Extension
 		};
 
 		if ($type) {
-			$event->setQueryType($type);
+			$event->queryType = $type;
 			$event->stopPropagation();
 		}
 	}

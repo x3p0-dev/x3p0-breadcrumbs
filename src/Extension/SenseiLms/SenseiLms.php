@@ -98,7 +98,7 @@ final class SenseiLms extends Extension
 		};
 
 		if ($type) {
-			$event->setQueryType($type);
+			$event->queryType = $type;
 			$event->stopPropagation();
 		}
 	}

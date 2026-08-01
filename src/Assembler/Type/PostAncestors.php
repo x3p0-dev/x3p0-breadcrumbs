@@ -44,22 +44,22 @@ final class PostAncestors extends Assembler
 	 */
 	public function assemble(): void
 	{
-		$post          = $this->post;
-		$post_id       = $post->post_parent;
-		$parents       = [];
-		$show_on_front = get_option('show_on_front');
-		$page_on_front = get_option('page_on_front');
+		$post        = $this->post;
+		$postId      = $post->post_parent;
+		$parents     = [];
+		$showOnFront = get_option('show_on_front');
+		$pageOnFront = get_option('page_on_front');
 
-		while ($post_id) {
+		while ($postId) {
 			// If we hit a post that's set as the front page, bail.
-			if ('posts' !== $show_on_front && $post_id === $page_on_front) {
+			if ('posts' !== $showOnFront && $postId === $pageOnFront) {
 				break;
 			}
 
 			// Get the parent post. Bail if it no longer exists, e.g.
 			// the parent was deleted but the child's `post_parent`
 			// still points at its ID.
-			if (! $parent = get_post($post_id)) {
+			if (! $parent = get_post($postId)) {
 				break;
 			}
 
@@ -82,7 +82,7 @@ final class PostAncestors extends Assembler
 			}
 
 			// Change the post ID to the parent post to continue looping.
-			$post_id = $post->post_parent;
+			$postId = $post->post_parent;
 		}
 
 		// Get the post hierarchy based off the final parent post.

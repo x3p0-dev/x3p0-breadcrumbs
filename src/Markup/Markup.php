@@ -71,8 +71,8 @@ abstract class Markup
 	 */
 	public function __construct(
 		protected readonly CrumbCollection $crumbs,
-		protected readonly MarkupConfig $config,
-		protected readonly Pagination $pagination
+		protected readonly MarkupConfig    $config,
+		protected readonly Pagination      $pagination
 	) {}
 
 	/**

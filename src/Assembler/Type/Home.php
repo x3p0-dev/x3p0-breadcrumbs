@@ -35,8 +35,9 @@ final class Home extends Assembler
 		) {
 			$this->context->addCrumb(CrumbType::Network);
 			$this->context->addCrumb(CrumbType::NetworkSite);
-		} else {
-			$this->context->addCrumb(CrumbType::Home);
+			return;
 		}
+
+		$this->context->addCrumb(CrumbType::Home);
 	}
 }

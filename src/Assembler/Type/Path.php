@@ -48,7 +48,7 @@ final class Path extends Assembler
 		// uses it for a slug. Each iteration removes a segment from the
 		// path before checking again.
 		while ($path) {
-			if ($this->tryAssemblePath($path)) {
+			if ($this->tryPath($path)) {
 				return;
 			}
 
@@ -70,16 +70,15 @@ final class Path extends Assembler
 	 * Attempts to resolve the path to a post first, then to a post type.
 	 * Returns `true` as soon as either succeeds.
 	 */
-	private function tryAssemblePath(string $path): bool
+	private function tryPath(string $path): bool
 	{
-		return $this->tryAssemblePost($path)
-			|| $this->tryAssemblePostType($path);
+		return $this->tryPost($path) || $this->tryPostType($path);
 	}
 
 	/**
 	 * Attempts to assemble breadcrumbs for a post by path.
 	 */
-	private function tryAssemblePost(string $path): bool
+	private function tryPost(string $path): bool
 	{
 		if (! $post = get_page_by_path($path)) {
 			return false;
@@ -93,9 +92,9 @@ final class Path extends Assembler
 	}
 
 	/**
-	 * Attempts to assemble breadcrumbs for a post type by path.
+	 * Attempts to assemble breadcrumbs for a post type archive by path.
 	 */
-	private function tryAssemblePostType(string $path): bool
+	private function tryPostType(string $path): bool
 	{
 		$types = $this->postTypes->withArchiveSlug($path);
 

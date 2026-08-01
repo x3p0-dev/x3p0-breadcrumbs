@@ -54,15 +54,15 @@ final class PostType extends Assembler
 			return;
 		}
 
-		// If this the post type is `post`, add the posts page and bail.
+		// If the post type is `post`, add the posts page and bail.
 		if ('post' === $this->postType->name) {
-			$show_on_front = get_option('show_on_front');
-			$post_id       = absint(get_option('page_for_posts'));
+			$showOnFront = get_option('show_on_front');
+			$postId      = absint(get_option('page_for_posts'));
 
 			// Add post crumb if we have a posts page.
-			if ('posts' !== $show_on_front && 0 < $post_id) {
+			if ('posts' !== $showOnFront && 0 < $postId) {
 				$this->context->assemble(AssemblerType::Post, [
-					'post' => get_post($post_id)
+					'post' => get_post($postId)
 				]);
 			}
 

@@ -41,19 +41,19 @@ final class TermAncestors extends Assembler
 	 */
 	public function assemble(): void
 	{
-		$term_id  = $this->term->parent;
+		$termId   = $this->term->parent;
 		$taxonomy = $this->term->taxonomy;
 		$parents  = [];
 
-		while ($term_id) {
+		while ($termId) {
 			// Get the parent term.
-			$term = get_term($term_id, $taxonomy);
+			$term = get_term($termId, $taxonomy);
 
 			// Add the term link to the array of parent terms.
 			$parents[] = $term;
 
 			// Set the parent term's parent as the parent ID.
-			$term_id = $term->parent;
+			$termId = $term->parent;
 		}
 
 		// Reverse the parents and add their crumbs.

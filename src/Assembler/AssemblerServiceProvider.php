@@ -17,7 +17,7 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the assembler subsystem into the container: binds the factory as a
- * shared singletons (only if not already bound) so extensions may replace it,
+ * shared singleton (only if not already bound) so extensions may replace it,
  * and binds each built-in `AssemblerType` case's class.
  */
 final class AssemblerServiceProvider extends ServiceProvider

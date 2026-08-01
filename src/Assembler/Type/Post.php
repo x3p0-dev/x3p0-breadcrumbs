@@ -57,7 +57,8 @@ final class Post extends Assembler
 				'post' => $this->post
 			]);
 
-		// If the post doesn't have a parent, get its hierarchy based off the post type.
+		// If the post doesn't have a parent, get its hierarchy based
+		// off the post type.
 		} else {
 			$this->context->assemble(AssemblerType::PostHierarchy, [
 				'post' => $this->post

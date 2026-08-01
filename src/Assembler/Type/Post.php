@@ -66,7 +66,7 @@ final class Post extends Assembler
 		}
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($taxonomy = $this->context->config()->getPostTaxonomy($this->post->post_type)) {
+		if ($taxonomy = $this->context->config->getPostTaxonomy($this->post->post_type)) {
 			$this->context->assemble(AssemblerType::PostTerms, [
 				'post'     => $this->post,
 				'taxonomy' => get_taxonomy($taxonomy)
@@ -84,7 +84,7 @@ final class Post extends Assembler
 	 */
 	private function postCrumbExists(): bool
 	{
-		return $this->context->crumbs()->contains(
+		return $this->context->crumbs->contains(
 			fn (Crumb $crumb) =>
 				$crumb instanceof PostCrumb
 				&& $crumb->post->ID === $this->post->ID

@@ -45,12 +45,28 @@ final class BreadcrumbsContext
 	 * collaborators.
 	 */
 	public function __construct(
-		private readonly CrumbCollection   $crumbs,
+		public  readonly BreadcrumbsConfig $config,
+		public  readonly CrumbCollection   $crumbs,
 		private readonly QueryFactory      $queryFactory,
 		private readonly AssemblerFactory  $assemblerFactory,
-		private readonly CrumbFactory      $crumbFactory,
-		private readonly BreadcrumbsConfig $config
+		private readonly CrumbFactory      $crumbFactory
 	) {}
+
+	/**
+	 * Returns the shared, read-only config for this build.
+	 */
+	public function config(): BreadcrumbsConfig
+	{
+		return $this->config;
+	}
+
+	/**
+	 * Returns the crumb collection accumulated so far.
+	 */
+	public function crumbs(): CrumbCollection
+	{
+		return $this->crumbs;
+	}
 
 	/**
 	 * Dispatches a query by type, injecting this context so the query can
@@ -105,21 +121,5 @@ final class BreadcrumbsContext
 		if ($crumb = $this->makeCrumb($type, $params)) {
 			$this->crumbs->push($crumb);
 		}
-	}
-
-	/**
-	 * Returns the shared, read-only config for this build.
-	 */
-	public function config(): BreadcrumbsConfig
-	{
-		return $this->config;
-	}
-
-	/**
-	 * Returns the crumb collection accumulated so far.
-	 */
-	public function crumbs(): CrumbCollection
-	{
-		return $this->crumbs;
 	}
 }

@@ -29,7 +29,7 @@ final class Second extends TimeArchive
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveSecond),
+			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveSecond),
 			get_the_time(
 				esc_html_x('s', 'second archives time format', 'x3p0-breadcrumbs'),
 				$this->post

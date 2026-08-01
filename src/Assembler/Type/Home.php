@@ -30,7 +30,7 @@ final class Home extends Assembler
 	{
 		if (
 			is_multisite()
-			&& $this->context->config()->showNetwork()
+			&& $this->context->config->showNetwork()
 			&& ! is_main_site()
 		) {
 			$this->context->addCrumb(CrumbType::Network);

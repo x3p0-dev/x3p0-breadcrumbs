@@ -80,7 +80,7 @@ final class PostType extends Assembler
 	 */
 	private function postTypeCrumbExists(): bool
 	{
-		return $this->context->crumbs()->contains(
+		return $this->context->crumbs->contains(
 			fn (Crumb $crumb) =>
 				$crumb instanceof PostTypeCrumb
 				&& $crumb->postType->name === $this->postType->name

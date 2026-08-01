@@ -42,7 +42,7 @@ final class Year extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveYear),
+			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveYear),
 			get_the_time(esc_html_x(
 				'Y',
 				'yearly archives date format',

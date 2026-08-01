@@ -29,7 +29,7 @@ final class MarkupFactory
 	 */
 	public function __construct(
 		#[TaggedAbstracts(Markup::TAG)]
-		private readonly array            $tagged,
+		private readonly array           $tagged,
 		private readonly ServiceResolver $resolver
 	) {}
 

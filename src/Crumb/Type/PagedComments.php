@@ -29,7 +29,7 @@ final class PagedComments extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel(BreadcrumbsLabel::PagedComments),
+			$this->context->config->getLabel(BreadcrumbsLabel::PagedComments),
 			number_format_i18n(absint(get_query_var('cpage')))
 		);
 	}

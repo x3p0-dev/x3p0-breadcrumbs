@@ -45,10 +45,10 @@ final class CrumbsBuilt implements BroadcastableEvent, NamedEvent
 
 	/**
 	 * Stores the shared build context and the finished, mutable crumb
-	 * collection (the same instance returned by `$context->crumbs()`).
+	 * collection (the same instance returned by `$context->crumbs`).
 	 */
 	public function __construct(
 		public readonly BreadcrumbsContext $context,
-		public readonly CrumbCollection $crumbs
+		public readonly CrumbCollection    $crumbs
 	) {}
 }

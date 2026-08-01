@@ -41,7 +41,7 @@ final class Month extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveMonth),
+			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveMonth),
 			get_the_time(
 				esc_html_x('F', 'monthly archives date format', 'x3p0-breadcrumbs'),
 				$this->post

@@ -46,7 +46,7 @@ final class QueryResolver
 		// type alongside the typed listeners. Then return the query type.
 		return $this->events->dispatch(new QueryTypeResolving(
 			queryType:         $this->detect(),
-			breadcrumbsConfig: $context->config()
+			breadcrumbsConfig: $context->config
 		))->broadcast()->queryType;
 	}
 

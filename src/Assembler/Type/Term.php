@@ -97,7 +97,7 @@ final class Term extends Assembler
 	 */
 	private function termCrumbExists(): bool
 	{
-		return $this->context->crumbs()->contains(
+		return $this->context->crumbs->contains(
 			fn (Crumb $crumb) =>
 				$crumb instanceof TermCrumb
 				&& $crumb->term->term_id === $this->term->term_id

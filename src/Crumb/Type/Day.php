@@ -41,7 +41,7 @@ final class Day extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config()->getLabel(BreadcrumbsLabel::ArchiveDay),
+			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveDay),
 			get_the_time(
 				esc_html_x('j', 'daily archives date format', 'x3p0-breadcrumbs'),
 				$this->post

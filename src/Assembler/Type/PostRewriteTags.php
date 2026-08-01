@@ -47,7 +47,7 @@ final class PostRewriteTags extends Assembler
 	public function assemble(): void
 	{
 		// Bail early if rewrite tag mapping is disabled.
-		if (! $this->context->config()->mapRewriteTags($this->post->post_type)) {
+		if (! $this->context->config->mapRewriteTags($this->post->post_type)) {
 			return;
 		}
 
@@ -110,7 +110,7 @@ final class PostRewriteTags extends Assembler
 
 		$tax = trim($tag, '%');
 
-		return taxonomy_exists($tax) && $tax !== $this->context->config()->getPostTaxonomy($this->post->post_type)
+		return taxonomy_exists($tax) && $tax !== $this->context->config->getPostTaxonomy($this->post->post_type)
 			? $tag
 			: null;
 	}

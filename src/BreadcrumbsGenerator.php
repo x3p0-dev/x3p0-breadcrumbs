@@ -56,11 +56,11 @@ final class BreadcrumbsGenerator
 		// Create the shared context passed through the query, assembler,
 		// and crumb pipeline.
 		$context = new BreadcrumbsContext(
+			config:           $config,
 			crumbs:           new CrumbCollection(),
 			queryFactory:     $this->queryFactory,
 			assemblerFactory: $this->assemblerFactory,
-			crumbFactory:     $this->crumbFactory,
-			config:           $config
+			crumbFactory:     $this->crumbFactory
 		);
 
 		// Resolve the query type for the request, then run it to build
@@ -74,7 +74,7 @@ final class BreadcrumbsGenerator
 		// returned, then broadcast the same event to WordPress so
 		// `add_action()` callbacks can adjust them too.
 		$event = $this->events->dispatch(
-			new CrumbsBuilt($context, $context->crumbs())
+			new CrumbsBuilt($context, $context->crumbs)
 		)->broadcast();
 
 		return $event->crumbs;

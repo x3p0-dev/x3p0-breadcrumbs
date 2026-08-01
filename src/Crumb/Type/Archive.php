@@ -27,6 +27,6 @@ final class Archive extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel(BreadcrumbsLabel::Archives);
+		return $this->context->config->getLabel(BreadcrumbsLabel::Archives);
 	}
 }

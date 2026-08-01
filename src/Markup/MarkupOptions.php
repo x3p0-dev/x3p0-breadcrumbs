@@ -44,10 +44,10 @@ final class MarkupOptions
 	) {}
 
 	/**
-	 * Returns the markup types offered as a block option — those whose class
-	 * opts in by implementing `MarkupBlockOption` — as `key`/`name` pairs in
-	 * tag order. This is the single source consumed by both the block's
-	 * attribute `enum` and the editor script.
+	 * Returns the markup types offered as a block option — those whose
+	 * class opts in by implementing `MarkupBlockOption` — as `key`/`name`
+	 * pairs in tag order. This is the single source consumed by both the
+	 * block's attribute `enum` and the editor script.
 	 *
 	 * @return array<int, array{key: string, name: string}>
 	 */

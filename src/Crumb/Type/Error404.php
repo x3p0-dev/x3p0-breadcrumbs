@@ -27,6 +27,6 @@ final class Error404 extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel(BreadcrumbsLabel::Error404);
+		return $this->context->config->getLabel(BreadcrumbsLabel::Error404);
 	}
 }

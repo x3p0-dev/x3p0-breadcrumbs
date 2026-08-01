@@ -91,7 +91,7 @@ final class PostAncestors extends Assembler
 		]);
 
 		// Display terms for specific post type taxonomy if requested.
-		if ($taxonomy = $this->context->config()->getPostTaxonomy($post->post_type)) {
+		if ($taxonomy = $this->context->config->getPostTaxonomy($post->post_type)) {
 			$this->context->assemble(AssemblerType::PostTerms, [
 				'post'     => $post,
 				'taxonomy' => get_taxonomy($taxonomy)

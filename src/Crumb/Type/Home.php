@@ -27,7 +27,7 @@ final class Home extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return $this->context->config()->getLabel(BreadcrumbsLabel::Home);
+		return $this->context->config->getLabel(BreadcrumbsLabel::Home);
 	}
 
 	/**

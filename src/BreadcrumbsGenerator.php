@@ -66,7 +66,7 @@ final class BreadcrumbsGenerator
 		// Resolve the query type for the request, then run it to build
 		// the trail. Resolution is overridable via the `QueryTypeResolving`
 		// event and related hook.
-		if ($queryType = $this->queryResolver->resolve($context)) {
+		if ($queryType = $this->queryResolver->resolve($context->config)) {
 			$context->query($queryType);
 		}
 

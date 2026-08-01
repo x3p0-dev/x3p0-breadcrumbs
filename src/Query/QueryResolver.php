@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Query;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
@@ -38,7 +38,7 @@ final class QueryResolver
 	 * Resolves the query type for the current request, giving listeners
 	 * a chance to override the detected default.
 	 */
-	public function resolve(BreadcrumbsContext $context): QueryType|string|null
+	public function resolve(BreadcrumbsConfig $breadcrumbsConfig): QueryType|string|null
 	{
 		// Let listeners inspect the config and change the detected type.
 		// Then broadcast the event to WordPress unless a listener already
@@ -46,7 +46,7 @@ final class QueryResolver
 		// type alongside the typed listeners. Then return the query type.
 		return $this->events->dispatch(new QueryTypeResolving(
 			queryType:         $this->detect(),
-			breadcrumbsConfig: $context->config
+			breadcrumbsConfig: $breadcrumbsConfig
 		))->broadcast()->queryType;
 	}
 

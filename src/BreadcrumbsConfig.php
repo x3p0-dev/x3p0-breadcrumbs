@@ -44,14 +44,18 @@ final class BreadcrumbsConfig
 	/**
 	 * Returns the label for the given key: a caller override if one is set,
 	 * otherwise the built-in default from `BreadcrumbsLabel`. A raw string
-	 * key with no override resolves to an empty string.
+	 * that does not match one of the enum's values resolves to an empty
+	 * string.
 	 */
 	public function getLabel(BreadcrumbsLabel|string $label): string
 	{
-		$slug = $label instanceof BreadcrumbsLabel ? $label->value : $label;
+		$label = $label instanceof BreadcrumbsLabel ? $label : BreadcrumbsLabel::tryFrom($label);
 
-		return $this->labels[$slug]
-			?? ($label instanceof BreadcrumbsLabel ? $label->text() : '');
+		if (! $label instanceof BreadcrumbsLabel) {
+			return '';
+		}
+
+		return $this->labels[$label->value] ?? $label->text();
 	}
 
 	/**

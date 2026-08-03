@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -30,10 +30,10 @@ abstract class TimeArchive extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly ?WP_Post $post = null
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**

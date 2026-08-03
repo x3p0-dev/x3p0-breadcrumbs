@@ -333,23 +333,14 @@ Alternatively, register a typed listener directly on the dispatcher. Do this on 
 
 ##### Adjusting the Finished Crumbs
 
-The `CrumbsBuilt` event carries two things:
+The `CrumbsBuilt` event carries:
 
 - **`$event->crumbs`:** The finished `CrumbCollection` — the same mutable instance the caller receives, so changes you make here are what ultimately gets rendered.
-- **`$event->context`:** The build context, used to build new crumbs through the plugin's factory.
+- **`$event->makeCrumb()` / `$event->addCrumb()`:** Build new crumbs through the plugin's factory (see below).
 
 Every crumb in the collection is a `Crumb` object exposing `getType()` (its type slug, e.g. `post`, used in the `crumb--{type}` CSS class), `getLabel()`, and `getUrl()`.
 
-**Finding crumbs.** The collection provides two ways to locate crumbs — by their type slug, or by a callback (which lets you match on the crumb's class or any property):
-
-_By type slug:_
-
-- **`hasType(string $type): bool`:** Whether a crumb of the type exists.
-- **`firstOfType(string $type): ?Crumb`:** The first crumb of the type, or `null`.
-- **`lastOfType(string $type): ?Crumb`:** The last crumb of the type, or `null`.
-- **`allOfType(string $type): CrumbCollection`:** A new collection of every crumb of the type.
-
-_By callback or class:_
+**Finding crumbs.** Every lookup method takes a callback matching the crumb itself. Match on the crumb's class — with `whereInstanceOf()`, an `instanceof` check inside a callback, or `replaceInstanceWhere()` (below) — rather than a string identifier. Your editor gets full type hinting this way, and you can safely read the crumb's typed properties (e.g. a `Term` crumb's `$term`, a `Post` crumb's `$post`):
 
 - **`first(?callable $callback = null): ?Crumb`:** The first crumb, or the first matching the callback.
 - **`last(?callable $callback = null): ?Crumb`:** The last crumb, or the last matching the callback.
@@ -361,15 +352,13 @@ _By callback or class:_
 
 Add `count()`, `isEmpty()`, `isNotEmpty()`, `all()`, `map()`, and `reduce()` for inspecting the collection as a whole.
 
-**Which axis should you use?** Prefer the **class-based** methods (`whereInstanceOf`, an `instanceof` callback, or `replaceInstanceWhere` below) when you have the crumb class available — your editor gets full type hinting and you can safely read the crumb's typed properties. Reach for the **type-slug** methods (`hasType`, `firstOfType`, `removeType`, …) when you only know a crumb's registered key rather than its class, such as targeting another plugin's crumb or a built-in like `home`. The type slug is the stable, public identifier; the class is the type-safe one.
-
-**Building a crumb.** To create a crumb to add or use as a replacement, call `$event->context->makeCrumb()` with a `CrumbType` case (for a built-in type) or a `Crumb` class-string (for a custom one), plus its constructor parameters. It returns the crumb *without* adding it to the trail:
+**Building a crumb.** To create a crumb to add or use as a replacement, call `$event->makeCrumb()` with a `CrumbType` case (for a built-in type) or a `Crumb` class-string (for a custom one), plus its constructor parameters. It returns the crumb *without* adding it to the trail:
 
 ```php
-$crumb = $event->context->makeCrumb(MyCrumb::class, ['foo' => $bar]);
+$crumb = $event->makeCrumb(MyCrumb::class, ['foo' => $bar]);
 ```
 
-To build *and* append in a single step, use `$event->context->addCrumb()` instead.
+To build *and* append in a single step, use `$event->addCrumb()` instead.
 
 **Adding crumbs:**
 
@@ -380,8 +369,7 @@ To build *and* append in a single step, use `$event->context->addCrumb()` instea
 
 **Removing crumbs:**
 
-- **`removeType(string $type): void`:** Remove every crumb of the type.
-- **`removeWhere(callable $callback): void`:** Remove every crumb that satisfies the callback.
+- **`removeWhere(callable $callback): void`:** Remove every crumb that satisfies the callback (e.g. an `instanceof` check).
 - **`pop(): ?Crumb`** / **`shift(): ?Crumb`:** Remove and return the last/first crumb.
 
 **Replacing crumbs:**
@@ -395,16 +383,18 @@ Here's a practical example that removes the home crumb, relabels the post type a
 ```php
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Crumb\Type\Home;
+use X3P0\Breadcrumbs\Crumb\Type\PostType;
 
 add_action(CrumbsBuilt::NAME, function (CrumbsBuilt $event) {
 	// Remove the home crumb.
-	$event->crumbs->removeType('home');
+	$event->crumbs->removeWhere(fn (Crumb $crumb) => $crumb instanceof Home);
 
 	// Insert a custom crumb right after the post type archive crumb.
-	if ($archive = $event->crumbs->firstOfType('post-type')) {
+	if ($archive = $event->crumbs->first(fn (Crumb $crumb) => $crumb instanceof PostType)) {
 		$event->crumbs->insertAfter(
 			$archive,
-			$event->context->makeCrumb(MyCrumb::class)
+			$event->makeCrumb(MyCrumb::class)
 		);
 	}
 });
@@ -478,6 +468,8 @@ add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
 
 The same pattern applies to a custom `Assembler` — dispatched via `$context->assemble(MyAssembler::class)` — and a custom `Crumb` — dispatched via `$context->makeCrumb(MyCrumb::class)` or `$context->addCrumb(MyCrumb::class)`. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
 
+Note that `$context` isn't the same object for every subsystem: a `Query` receives a `QueryContext` (`query()`, `assemble()`, `makeCrumb()`, `addCrumb()`), while an `Assembler` receives the narrower `AssemblerContext` (everything but `query()`) — an assembler can delegate to other assemblers and build crumbs, but it cannot dispatch a query, by design. A `Crumb` doesn't receive a context at all; its constructor takes `BreadcrumbsConfig $config` directly, since a crumb only ever needs to read config to produce its label and URL.
+
 ##### Custom Markup Types
 
 A custom `Markup` type works the same way: extend `Markup` and pass its `::class` name as `markupType` (or to `setMarkupType()` on the `MarkupRendering` event). If you also want it selectable by a short string key — for `markupType: 'my-key'`, or as an option in the block editor's markup control — implement `MarkupBlockOption` and tag the class under `Markup::TAG`:
@@ -530,6 +522,7 @@ Here's an extension that reroutes a page to a custom query and relabels a crumb:
 ```php
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Crumb\Type\PostType;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
@@ -552,9 +545,10 @@ final class MyExtension extends Extension
 
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
-		$event->crumbs->replaceWhere(
-			fn (Crumb $crumb) => 'post-type' === $crumb->getType(),
-			fn (Crumb $crumb) => $event->context->makeCrumb(ThingCrumb::class, [
+		$event->crumbs->replaceInstanceWhere(
+			PostType::class,
+			fn (PostType $crumb) => 'thing' === $crumb->postType->name,
+			fn (PostType $crumb) => $event->makeCrumb(ThingCrumb::class, [
 				'decoratedCrumb' => $crumb
 			])
 		);

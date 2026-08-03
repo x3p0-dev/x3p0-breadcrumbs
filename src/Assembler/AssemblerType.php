@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Assembler;
 /**
  * The canonical built-in assembler types — the source of truth mapping each
  * case to its class via `className()`, so a caller may pass the case or the
- * class name to `BreadcrumbsContext::assemble()`.
+ * class name to `AssemblerContext::assemble()`.
  */
 enum AssemblerType implements AssemblerDefinition
 {

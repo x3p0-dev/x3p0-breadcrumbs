@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Support\Pagination;
@@ -29,10 +29,10 @@ final class PagedQueryBlock extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		private readonly Pagination $pagination
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -41,7 +41,7 @@ final class PagedQueryBlock extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::Paged),
+			$this->config->getLabel(BreadcrumbsLabel::Paged),
 			number_format_i18n(absint($this->pagination->getQueryBlockPage()))
 		);
 	}

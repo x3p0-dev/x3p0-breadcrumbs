@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 
 /**
  * Abstract base for a single item in the breadcrumb trail. A crumb is created
  * by a `Query` or `Assembler` and exposes everything needed to output the item:
  * a text label and, optionally, a URL. Concrete crumbs live under `Type` and
- * read shared config and factories from the supplied context. This class is the
+ * read shared config from the supplied `BreadcrumbsConfig`. This class is the
  * contract that the rest of the system typehints against; subclasses override
  * `getLabel()` (and `getUrl()` where the crumb links somewhere).
  */
@@ -33,10 +33,9 @@ abstract class Crumb
 	protected const TYPE = '';
 
 	/**
-	 * Stores the shared breadcrumbs context, the entry point to config and
-	 * the collection being built.
+	 * Stores the shared, read-only config.
 	 */
-	public function __construct(protected readonly BreadcrumbsContext $context)
+	public function __construct(protected readonly BreadcrumbsConfig $config)
 	{}
 
 	/**

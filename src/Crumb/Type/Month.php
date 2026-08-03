@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -29,10 +29,10 @@ final class Month extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly ?WP_Post $post = null
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -41,7 +41,7 @@ final class Month extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveMonth),
+			$this->config->getLabel(BreadcrumbsLabel::ArchiveMonth),
 			get_the_time(
 				esc_html_x('F', 'monthly archives date format', 'x3p0-breadcrumbs'),
 				$this->post

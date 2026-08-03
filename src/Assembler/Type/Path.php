@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Assembler\Type;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Support\PostTypes;
 
 /**
@@ -30,7 +30,7 @@ final class Path extends Assembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext         $context,
+		AssemblerContext           $context,
 		private readonly PostTypes $postTypes,
 		private readonly string    $path        = ''
 	) {

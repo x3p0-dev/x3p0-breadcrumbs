@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\SenseiLms\Query;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
+use X3P0\Breadcrumbs\Query\QueryContext;
 
 /**
  * Shared by the Sensei queries that scope themselves to a course passed as a
  * `course_id` query arg — the module archive and the course completed page.
  * Assumes the composing class is a `Query`, reading its `$context` property.
  *
- * @property BreadcrumbsContext $context
+ * @property QueryContext $context
  */
 trait AssemblesCourseFromRequest
 {

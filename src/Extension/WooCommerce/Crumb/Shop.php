@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
@@ -30,10 +30,10 @@ final class Shop extends Crumb
 	 * when no shop page is configured.
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		private readonly Crumb $decoratedCrumb
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**

@@ -28,7 +28,7 @@ final class Search extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		return sprintf($this->context->config->getLabel(BreadcrumbsLabel::Search), get_search_query());
+		return sprintf($this->config->getLabel(BreadcrumbsLabel::Search), get_search_query());
 	}
 
 	/**

@@ -16,8 +16,8 @@ namespace X3P0\Breadcrumbs\Extension\SenseiLms\Assembler;
 use WP_Post;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\Assembler;
+use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -37,7 +37,7 @@ final class LessonAncestry extends Assembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		AssemblerContext $context,
 		#[NoAutowire] private readonly WP_Post $lesson
 	) {
 		parent::__construct(context: $context);

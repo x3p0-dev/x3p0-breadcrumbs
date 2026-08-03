@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 ### Changed
 
 - **The plugin's extension platform has been rebuilt around the DI container instead of registries — a breaking change for anyone extending the plugin in PHP.** The `AssemblerRegistry`, `CrumbRegistry`, `QueryRegistry`, and `MarkupRegistry` classes (and their registrars) are gone. Query, Assembler, and Crumb types now resolve directly from their `*Type` enum through the container; markup formats resolve via a container tag. Registering a custom type is now a matter of adding an enum case (or class) rather than calling a registry's `register()` method.
+- **`BreadcrumbsContext` has been split into tiered context objects, one per subsystem — also a breaking change for custom `Query`/`Assembler`/`Crumb` classes.** An `Assembler` now receives `Assembler\AssemblerContext` (`assemble()`, `makeCrumb()`, `addCrumb()`, `$config`, `$crumbs`); `query()` isn't reachable from it, by design. A `Query` receives `Query\QueryContext`, which adds `query()` on top of everything `AssemblerContext` offers. A `Crumb` no longer takes a context at all — its constructor now takes `BreadcrumbsConfig $config` directly, since a crumb only ever reads config to produce its label and URL.
 - **`CrumbCollection` has been overhauled from a keyed map into a plain ordered sequence.** `ArrayAccess` support and the key-based `set()`, `get()`, `has()`, `remove()`, and the old `hasWhere()` are gone, replaced by `push()`, `prepend()`, `insertBefore()`/`insertAfter()`, `pop()`/`shift()`, `filter()`/`reject()`/`map()`/`reduce()`, `contains()`/`every()`, `whereInstanceOf()`, `replace()`/`replaceWhere()`/`replaceInstanceWhere()`, and `first()`/`last()`.
 - Renamed public classes: `Block` interface → `BlockRenderer`; `Breadcrumbs` → `BreadcrumbsGenerator` (config is now passed directly to its `generate()` method per request instead of going through a factory); `Assembler\Type\PostTypeArchives` → `PostTypes`.
 - `Tools\Helpers` has been removed and split into injectable `Support\Pagination` and `Support\PostTypes` services.
@@ -43,6 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 - The `x3p0/breadcrumbs/init` and `x3p0/breadcrumbs/boot` action hooks (added in 4.0.0) no longer fire. Move any code on either hook to `x3p0/breadcrumbs/register`.
 - The `x3p0/breadcrumbs/resolve/query-type` filter hook (added in 4.0.0). Use the `QueryTypeResolving` event, or its bridged `x3p0/breadcrumbs/query-type-resolving` action, instead.
 - `BreadcrumbsFactory` (folded into `BreadcrumbsGenerator`).
+- `BreadcrumbsContext` (split into `Assembler\AssemblerContext` and `Query\QueryContext`; see Changed).
 
 ## [4.1.0] - 2026-02-23
 

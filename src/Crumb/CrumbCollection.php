@@ -18,13 +18,13 @@ use Iterator;
 
 /**
  * Ordered, iterable collection of the crumbs that make up a breadcrumb trail.
- * The collection stores only the crumbs themselves. The public API has two
- * retrieval axes: predicate methods (`first()`, `contains()`, `filter()`, …)
- * that match against the crumb object, and type methods (`hasType()`,
- * `firstOfType()`, …) that match against the crumb's type slug. Query methods
- * leave the collection untouched; mutation methods (`push()`, `removeType()`,
- * `replace()`, …) act in place, since the collection is the accumulator the
- * build pipeline appends to.
+ * The collection stores only the crumbs themselves. Retrieval is entirely
+ * predicate-based (`first()`, `contains()`, `filter()`, …) — there is no
+ * separate type-slug API; match on `Crumb::getType()` inside the callback
+ * when you only know a crumb's registered type slug rather than its class.
+ * Query methods leave the collection untouched; mutation methods (`push()`,
+ * `removeWhere()`, `replace()`, …) act in place, since the collection is the
+ * accumulator the build pipeline appends to.
  *
  * The class also tracks an iteration cursor so callers rendering the trail can
  * ask whether the current crumb is first or last while looping. Call `rewind()`
@@ -289,8 +289,7 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
-	 * Removes every crumb that satisfies the callback, then re-indexes. The
-	 * predicate counterpart to `removeType()`, which matches by type instead.
+	 * Removes every crumb that satisfies the callback, then re-indexes.
 	 *
 	 * @param callable(Crumb): bool $callback
 	 */

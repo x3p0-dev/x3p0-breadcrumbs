@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_User;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -30,11 +30,11 @@ final class User extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_User $user,
 		public readonly string $url = ''
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**

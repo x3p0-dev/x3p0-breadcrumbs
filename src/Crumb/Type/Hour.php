@@ -27,7 +27,7 @@ final class Hour extends TimeArchive
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveHour),
+			$this->config->getLabel(BreadcrumbsLabel::ArchiveHour),
 			get_the_time(
 				esc_html_x('H', 'hour archives time format', 'x3p0-breadcrumbs'),
 				$this->post

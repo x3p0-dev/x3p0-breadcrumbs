@@ -13,24 +13,23 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Assembler;
 
-use X3P0\Breadcrumbs\BreadcrumbsContext;
-
 /**
  * Base contract for all assemblers. An assembler is a helper that sits between
  * the `Query` and `Crumb` layers: given the current request, it decides which
  * crumbs to add to the trail and which other assemblers to delegate to. All
- * work is dispatched through the shared `BreadcrumbsContext`, which exposes
- * `addCrumb()`, `assemble()`, `config()`, and `crumbs()`. Concrete assemblers
- * are `final` and live under the `Type` sub-namespace; this class is the
- * typehint used throughout the subsystem and is never instantiated directly.
+ * work is dispatched through the `AssemblerContext`, which exposes
+ * `addCrumb()`, `assemble()`, `config`, and `crumbs` — but never `query()`,
+ * which is structurally unreachable from here. Concrete assemblers are
+ * `final` and live under the `Type` sub-namespace; this class is the typehint
+ * used throughout the subsystem and is never instantiated directly.
  */
 abstract class Assembler
 {
 	/**
-	 * Stores the shared context facade that assemblers use to add crumbs and
-	 * delegate to other assemblers.
+	 * Stores the context that assemblers use to add crumbs and delegate to
+	 * other assemblers.
 	 */
-	public function __construct(protected readonly BreadcrumbsContext $context)
+	public function __construct(protected readonly AssemblerContext $context)
 	{}
 
 	/**

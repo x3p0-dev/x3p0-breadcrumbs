@@ -16,9 +16,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\QueryContext;
 
 /**
  * Builds the trail for a singular request (single post, page, attachment, or
@@ -34,7 +34,7 @@ final class Singular extends Query
 	 *                      queried object when omitted.
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		QueryContext $context,
 		#[NoAutowire] private readonly ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);

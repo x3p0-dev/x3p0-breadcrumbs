@@ -115,7 +115,7 @@ final class SenseiLms extends Extension
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name,
-			static fn (PostTypeCrumb $crumb) => $event->context->makeCrumb(
+			static fn (PostTypeCrumb $crumb) => $event->makeCrumb(
 				Crumb\Courses::class,
 				['decoratedCrumb' => $crumb]
 			)
@@ -124,7 +124,7 @@ final class SenseiLms extends Extension
 		$event->crumbs->replaceInstanceWhere(
 			PostCrumb::class,
 			static fn (PostCrumb $crumb) => 'quiz' === $crumb->post->post_type,
-			static fn (PostCrumb $crumb) => $event->context->makeCrumb(
+			static fn (PostCrumb $crumb) => $event->makeCrumb(
 				Crumb\Quiz::class,
 				['decoratedCrumb' => $crumb]
 			)

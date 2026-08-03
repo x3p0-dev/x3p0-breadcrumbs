@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -30,10 +30,10 @@ final class Post extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post $post
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -44,10 +44,10 @@ final class Post extends Crumb
 		$post_id = $this->post->ID;
 
 		if (is_single($post_id) || is_page($post_id) || is_attachment($post_id)) {
-			return single_post_title('', false) ?: $this->context->config->getLabel(BreadcrumbsLabel::Untitled);
+			return single_post_title('', false) ?: $this->config->getLabel(BreadcrumbsLabel::Untitled);
 		}
 
-		return get_the_title($this->post->ID) ?: $this->context->config->getLabel(BreadcrumbsLabel::Untitled);
+		return get_the_title($this->post->ID) ?: $this->config->getLabel(BreadcrumbsLabel::Untitled);
 	}
 
 	/**

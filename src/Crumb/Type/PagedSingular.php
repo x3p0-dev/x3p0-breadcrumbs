@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -30,10 +30,10 @@ final class PagedSingular extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post $post
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -42,7 +42,7 @@ final class PagedSingular extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::Paged),
+			$this->config->getLabel(BreadcrumbsLabel::Paged),
 			number_format_i18n(absint(get_query_var('page')))
 		);
 	}

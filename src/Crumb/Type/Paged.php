@@ -28,7 +28,7 @@ final class Paged extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::Paged),
+			$this->config->getLabel(BreadcrumbsLabel::Paged),
 			number_format_i18n(absint(get_query_var('paged')))
 		);
 	}

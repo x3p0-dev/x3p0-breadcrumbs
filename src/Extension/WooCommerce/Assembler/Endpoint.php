@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Assembler;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
+use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint as EndpointCrumb;
 
@@ -60,7 +60,7 @@ final class Endpoint extends Assembler
 	 * @inheritDoc
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		AssemblerContext $context,
 		private readonly string $endpoint
 	) {
 		parent::__construct(context: $context);

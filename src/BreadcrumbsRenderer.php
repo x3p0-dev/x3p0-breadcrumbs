@@ -28,10 +28,10 @@ use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
  * call. Between the two steps it dispatches the `MarkupRendering` event, so
  * listeners can retarget the markup type or config for the current request.
  *
- * This is the mirror image of `BreadcrumbsContext`: where the context is the
- * inside-out facade the build participants talk through, this is the outside-in
- * facade callers reach for. It is markup-agnostic — the output format is chosen
- * per call via the `$markupType` param.
+ * This is the mirror image of `AssemblerContext`/`QueryContext`: where those
+ * are the inside-out objects the build participants talk through, this is the
+ * outside-in facade callers reach for. It is markup-agnostic — the output
+ * format is chosen per call via the `$markupType` param.
  *
  * Not declared `final` so the deprecated `BreadcrumbsService` can extend it for
  * backward compatibility; treat it as effectively final otherwise.

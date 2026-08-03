@@ -28,7 +28,7 @@ final class Minute extends TimeArchive
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveMinute),
+			$this->config->getLabel(BreadcrumbsLabel::ArchiveMinute),
 			get_the_time(
 				esc_html_x('i', 'minute archives time format', 'x3p0-breadcrumbs'),
 				$this->post

@@ -13,21 +13,24 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
+use X3P0\Breadcrumbs\Crumb\CrumbBuilder;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
+use X3P0\Breadcrumbs\Query\QueryContext;
 use X3P0\Breadcrumbs\Query\QueryFactory;
 use X3P0\Breadcrumbs\Query\QueryResolver;
 
 /**
  * Builds a breadcrumb trail for the current request. It delegates to the
  * `QueryResolver` to detect which query matches the current WordPress request,
- * hands off to the query/assembler/crumb pipeline (via a `BreadcrumbsContext`),
- * and returns the accumulated crumb collection. This is the build half of the
- * breadcrumbs flow; rendering the collection to markup is handled separately by
- * `BreadcrumbsRenderer`.
+ * hands off to the query/assembler/crumb pipeline (via an `AssemblerContext`
+ * wrapped in a `QueryContext`), and returns the accumulated crumb collection.
+ * This is the build half of the breadcrumbs flow; rendering the collection to
+ * markup is handled separately by `BreadcrumbsRenderer`.
  */
 final class BreadcrumbsGenerator
 {
@@ -47,36 +50,36 @@ final class BreadcrumbsGenerator
 
 	/**
 	 * Builds and returns the crumb collection for the current request,
-	 * built according to the given config. Creates the shared context,
-	 * resolves the matching query type (which third parties can override),
-	 * runs that query to populate the trail, and returns the result.
+	 * built according to the given config. Creates the `AssemblerContext`
+	 * and wraps it in a `QueryContext`, resolves the matching query type
+	 * (which third parties can override), runs that query to populate the
+	 * trail, and returns the result.
 	 */
 	public function generate(BreadcrumbsConfig $config): CrumbCollection
 	{
-		// Create the shared context passed through the query, assembler,
-		// and crumb pipeline.
-		$context = new BreadcrumbsContext(
-			config:           $config,
-			crumbs:           new CrumbCollection(),
-			queryFactory:     $this->queryFactory,
-			assemblerFactory: $this->assemblerFactory,
-			crumbFactory:     $this->crumbFactory
+		$crumbs       = new CrumbCollection();
+		$crumbBuilder = new CrumbBuilder($this->crumbFactory, $config, $crumbs);
+
+		// Build the two tiers passed through the query/assembler/crumb
+		// pipeline: `Assembler` only ever sees `AssemblerContext`,
+		// `Query` gets the wider `QueryContext`, which composes it.
+		$context = new QueryContext(
+			$this->queryFactory,
+			new AssemblerContext($this->assemblerFactory, $crumbBuilder)
 		);
 
 		// Resolve the query type for the request, then run it to build
 		// the trail. Resolution is overridable via the `QueryTypeResolving`
 		// event and related hook.
-		if ($queryType = $this->queryResolver->resolve($context->config)) {
+		if ($queryType = $this->queryResolver->resolve($config)) {
 			$context->query($queryType);
 		}
 
 		// Let listeners adjust the finished crumbs before they are
 		// returned, then broadcast the same event to WordPress so
 		// `add_action()` callbacks can adjust them too.
-		$event = $this->events->dispatch(
-			new CrumbsBuilt($context, $context->crumbs)
-		)->broadcast();
-
-		return $event->crumbs;
+		return $this->events->dispatch(
+			new CrumbsBuilt($crumbs, $crumbBuilder)
+		)->broadcast()->crumbs;
 	}
 }

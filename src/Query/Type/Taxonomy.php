@@ -16,9 +16,9 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use WP_Exception;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\QueryContext;
 
 /**
  * Builds the trail for a taxonomy term archive (category, tag, or custom
@@ -34,7 +34,7 @@ final class Taxonomy extends Query
 	 *                      queried object when omitted.
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		QueryContext $context,
 		#[NoAutowire] private readonly ?WP_Term $term = null
 	) {
 		parent::__construct(context: $context);

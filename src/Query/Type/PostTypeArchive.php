@@ -16,10 +16,10 @@ namespace X3P0\Breadcrumbs\Query\Type;
 use WP_Post_Type;
 use WP_User;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\BreadcrumbsContext;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Query\Query;
+use X3P0\Breadcrumbs\Query\QueryContext;
 
 /**
  * Builds the trail for a post type archive. Adds the home and post-type steps,
@@ -39,7 +39,7 @@ final class PostTypeArchive extends Query
 	 *                               archive; falls back to the `author` query var.
 	 */
 	public function __construct(
-		BreadcrumbsContext $context,
+		QueryContext $context,
 		#[NoAutowire] private readonly ?WP_Post_Type $postType = null,
 		#[NoAutowire] private readonly ?WP_User $user = null
 	) {

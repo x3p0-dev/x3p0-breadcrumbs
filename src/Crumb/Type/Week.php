@@ -29,7 +29,7 @@ final class Week extends Crumb
 	public function getLabel(): string
 	{
 		return sprintf(
-			$this->context->config->getLabel(BreadcrumbsLabel::ArchiveWeek),
+			$this->config->getLabel(BreadcrumbsLabel::ArchiveWeek),
 			get_the_time(esc_html_x(
 				'W',
 				'weekly archives date format',

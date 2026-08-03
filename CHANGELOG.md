@@ -35,16 +35,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com), and this 
 - Building an ancestor trail no longer errors if a post's parent has been deleted; it now stops cleanly at that point instead.
 - A multi-page post's "page 2" breadcrumb could build its link from the wrong post; permalink, archive, and term-link lookups are also hardened against unexpected `WP_Error`/`false` returns.
 
-### Deprecated
-
-- `BreadcrumbsService` in favor of `BreadcrumbsRenderer`. The old class still works and forwards every call, but triggers a `_deprecated_class()` notice.
-
 ### Removed
 
 - The `x3p0/breadcrumbs/init` and `x3p0/breadcrumbs/boot` action hooks (added in 4.0.0) no longer fire. Move any code on either hook to `x3p0/breadcrumbs/register`.
 - The `x3p0/breadcrumbs/resolve/query-type` filter hook (added in 4.0.0). Use the `QueryTypeResolving` event, or its bridged `x3p0/breadcrumbs/query-type-resolving` action, instead.
 - `BreadcrumbsFactory` (folded into `BreadcrumbsGenerator`).
 - `BreadcrumbsContext` (split into `Assembler\AssemblerContext` and `Query\QueryContext`; see Changed).
+- `BreadcrumbsService` in favor of `BreadcrumbsRenderer`.
 
 ## [4.1.0] - 2026-02-23
 

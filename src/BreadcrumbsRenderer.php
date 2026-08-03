@@ -32,13 +32,8 @@ use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
  * are the inside-out objects the build participants talk through, this is the
  * outside-in facade callers reach for. It is markup-agnostic — the output
  * format is chosen per call via the `$markupType` param.
- *
- * Not declared `final` so the deprecated `BreadcrumbsService` can extend it for
- * backward compatibility; treat it as effectively final otherwise.
- *
- * @see BreadcrumbsService Deprecated alias retained for backward compatibility.
  */
-class BreadcrumbsRenderer
+final class BreadcrumbsRenderer
 {
 	/**
 	 * Sets up the initial renderer state with the breadcrumbs generator and

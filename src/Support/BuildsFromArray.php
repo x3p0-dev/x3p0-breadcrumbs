@@ -65,13 +65,20 @@ trait BuildsFromArray
 	 * both `fromArray()` and `with()` so their parameter mapping cannot
 	 * diverge.
 	 *
+	 * Keyed by `static::class` rather than relying on a bare static variable:
+	 * a subclass that inherits this method without redeclaring it (or the
+	 * trait's `use`) shares the same compiled method body as its parent, and
+	 * with it the same static storage. Without the explicit key, whichever
+	 * class calls first would populate the cache for both, and the other
+	 * would silently build from the wrong parameter list.
+	 *
 	 * @return list<string>
 	 */
 	private static function constructorParamNames(): array
 	{
-		static $paramNames;
+		static $cache = [];
 
-		return $paramNames ??= array_column(
+		return $cache[static::class] ??= array_column(
 			(new ReflectionMethod(static::class, '__construct'))->getParameters(),
 			'name'
 		);

@@ -49,7 +49,7 @@ final class BreadcrumbsConfig
 	 */
 	public function getLabel(BreadcrumbsLabel|string $label): string
 	{
-		$label = $label instanceof BreadcrumbsLabel ? $label : BreadcrumbsLabel::tryFrom($label);
+		$label = is_string($label) ? BreadcrumbsLabel::tryFrom($label) : $label;
 
 		if (! $label instanceof BreadcrumbsLabel) {
 			return '';

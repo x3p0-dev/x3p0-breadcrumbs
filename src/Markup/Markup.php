@@ -43,7 +43,7 @@ abstract class Markup
 	 * are allowed within a crumb label. Pass this to `wp_kses()` to strip any
 	 * other markup from a label before output.
 	 *
-	 * @var  array
+	 * @var  array<string, array<string, bool>>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const ALLOWED_HTML = [

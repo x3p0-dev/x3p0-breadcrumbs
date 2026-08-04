@@ -67,7 +67,7 @@ final class Microdata extends Html
 		}
 
 		return sprintf(
-			'<li class="%1s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
+			'<li class="%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
 				%s
 				<meta itemprop="position" content="%s"/>
 			</li>',

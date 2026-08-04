@@ -37,6 +37,14 @@ final class Author extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'author';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return get_the_author_meta('display_name', $this->user->ID);

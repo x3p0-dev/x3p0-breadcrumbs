@@ -40,6 +40,14 @@ final class User extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'user';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return get_the_author_meta('display_name', $this->user->ID);

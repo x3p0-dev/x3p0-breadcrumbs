@@ -20,18 +20,12 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
  * by a `Query` or `Assembler` and exposes everything needed to output the item:
  * a text label and, optionally, a URL. Concrete crumbs live under `Type` and
  * read shared config from the supplied `BreadcrumbsConfig`. This class is the
- * contract that the rest of the system typehints against; subclasses override
- * `getLabel()` (and `getUrl()` where the crumb links somewhere).
+ * contract that the rest of the system typehints against; subclasses must
+ * implement `getSlug()` and `getLabel()` (and override `getUrl()` where the
+ * crumb links somewhere).
  */
 abstract class Crumb
 {
-	/**
-	 * The crumb's type slug, assigned once by the context to the key the crumb
-	 * was built from. Left unset for crumbs built outside `makeCrumb()`, in
-	 * which case `getType()` derives a slug from the class name.
-	 */
-	protected const TYPE = '';
-
 	/**
 	 * Stores the shared, read-only config.
 	 */
@@ -39,22 +33,12 @@ abstract class Crumb
 	{}
 
 	/**
-	 * Returns the crumb's type slug, used for its `crumb--{type}` CSS class
-	 * and to match it in the collection. This is the context-assigned key
-	 * when set, otherwise a kebab-cased form of the class short name
-	 * (`PostType` becomes `post-type`) as a fallback for crumbs built
-	 * outside `makeCrumb()`.
+	 * Returns the crumb's type slug, used for its `crumb--{slug}` CSS class
+	 * and to match it in the collection. Every concrete crumb must return a
+	 * stable slug. Preferably, it would be kebab-cased (e.g., `post-type`).
+	 * And prefixed for third-party crumbs (e.g., `woocommerce-shop`).
 	 */
-	public function getType(): string
-	{
-		return static::TYPE !== ''
-			? static::TYPE
-			: strtolower(preg_replace(
-				'/(?<!^)(?:[A-Z]|(?<=[a-zA-Z])[0-9])/',
-				'-$0',
-				basename(str_replace('\\', '/', static::class))
-			));
-	}
+	abstract public function getSlug(): string;
 
 	/**
 	 * Returns the internationalized text label shown for the crumb.

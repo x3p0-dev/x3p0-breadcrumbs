@@ -26,6 +26,14 @@ final class Search extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'search';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return sprintf($this->config->getLabel(BreadcrumbsLabel::Search), get_search_query());

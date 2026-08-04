@@ -39,6 +39,14 @@ final class Quiz extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'sensei-quiz';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		$postType = get_post_type_object('quiz');

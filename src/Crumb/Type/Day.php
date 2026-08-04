@@ -38,6 +38,14 @@ final class Day extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'day';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return sprintf(

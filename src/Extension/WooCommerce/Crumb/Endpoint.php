@@ -37,6 +37,14 @@ final class Endpoint extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'woocommerce-endpoint';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return WC()->query?->get_endpoint_title($this->endpoint) ?? '';

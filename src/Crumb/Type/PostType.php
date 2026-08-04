@@ -37,6 +37,14 @@ final class PostType extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'post-type';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		if (is_post_type_archive($this->postType->name)) {

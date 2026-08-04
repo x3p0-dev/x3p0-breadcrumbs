@@ -26,6 +26,14 @@ final class Second extends TimeArchive
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'second';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return sprintf(

@@ -73,7 +73,7 @@ final class Microdata extends Html
 			</li>',
 			esc_attr($this->scopeClass([
 				'crumb',
-				'crumb--' . $crumb->getType()
+				'crumb--' . $crumb->getSlug()
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),

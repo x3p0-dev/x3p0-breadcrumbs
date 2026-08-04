@@ -338,7 +338,7 @@ The `CrumbsBuilt` event carries:
 - **`$event->crumbs`:** The finished `CrumbCollection` — the same mutable instance the caller receives, so changes you make here are what ultimately gets rendered.
 - **`$event->makeCrumb()` / `$event->addCrumb()`:** Build new crumbs through the plugin's factory (see below).
 
-Every crumb in the collection is a `Crumb` object exposing `getType()` (its type slug, e.g. `post`, used in the `crumb--{type}` CSS class), `getLabel()`, and `getUrl()`.
+Every crumb in the collection is a `Crumb` object exposing `getSlug()` (its type slug, e.g. `post`, used in the `crumb--{slug}` CSS class), `getLabel()`, and `getUrl()`.
 
 **Finding crumbs.** Every lookup method takes a callback matching the crumb itself. Match on the crumb's class — with `whereInstanceOf()`, an `instanceof` check inside a callback, or `replaceInstanceWhere()` (below) — rather than a string identifier. Your editor gets full type hinting this way, and you can safely read the crumb's typed properties (e.g. a `Term` crumb's `$term`, a `Post` crumb's `$post`):
 

@@ -25,6 +25,14 @@ final class Error404 extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'error-404';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return $this->config->getLabel(BreadcrumbsLabel::Error404);

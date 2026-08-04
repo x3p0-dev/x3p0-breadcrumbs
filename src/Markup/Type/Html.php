@@ -88,7 +88,7 @@ class Html extends Markup implements MarkupBlockOption
 			'<li class="%s"%s>%s</li>',
 			esc_attr($this->scopeClass([
 				'crumb',
-				'crumb--' . $crumb->getType()
+				'crumb--' . $crumb->getSlug()
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb)

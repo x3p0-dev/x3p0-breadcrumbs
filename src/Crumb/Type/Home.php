@@ -25,6 +25,14 @@ final class Home extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'home';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return $this->config->getLabel(BreadcrumbsLabel::Home);

@@ -20,7 +20,7 @@ use Iterator;
  * Ordered, iterable collection of the crumbs that make up a breadcrumb trail.
  * The collection stores only the crumbs themselves. Retrieval is entirely
  * predicate-based (`first()`, `contains()`, `filter()`, …) — there is no
- * separate type-slug API; match on `Crumb::getType()` inside the callback
+ * separate type-slug API; match on `Crumb::getSlug()` inside the callback
  * when you only know a crumb's registered type slug rather than its class.
  * Query methods leave the collection untouched; mutation methods (`push()`,
  * `removeWhere()`, `replace()`, …) act in place, since the collection is the
@@ -71,12 +71,12 @@ final class CrumbCollection implements Iterator, Countable
 	 * Returns the type slug of the current crumb without advancing the
 	 * iterator.
 	 *
-	 * @deprecated Read the type from the crumb directly via `Crumb::type()`.
+	 * @deprecated Read the slug from the crumb directly via `Crumb::getSlug()`.
 	 */
 	public function currentType(): ?string
 	{
-		_deprecated_function(__METHOD__, '5.0.0', Crumb::class . '::getType()');
-		return $this->current()?->getType();
+		_deprecated_function(__METHOD__, '5.0.0', Crumb::class . '::getSlug()');
+		return $this->current()?->getSlug();
 	}
 
 	/**

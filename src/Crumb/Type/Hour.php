@@ -24,6 +24,14 @@ final class Hour extends TimeArchive
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'hour';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return sprintf(

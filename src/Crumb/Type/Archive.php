@@ -25,6 +25,14 @@ final class Archive extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'archive';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return $this->config->getLabel(BreadcrumbsLabel::Archives);

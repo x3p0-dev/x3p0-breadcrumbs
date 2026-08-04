@@ -25,6 +25,14 @@ final class Network extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'network';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return $this->config->getLabel(BreadcrumbsLabel::Home);

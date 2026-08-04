@@ -39,6 +39,16 @@ final class Shop extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 0 < wc_get_page_id('shop')
+			? 'woocommerce-shop'
+			: $this->decoratedCrumb->getSlug();
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		$shopId = wc_get_page_id('shop');

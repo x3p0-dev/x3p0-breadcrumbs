@@ -25,6 +25,14 @@ final class Minute extends TimeArchive
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'minute';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return sprintf(

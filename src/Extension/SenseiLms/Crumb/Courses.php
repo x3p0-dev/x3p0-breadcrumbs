@@ -41,6 +41,14 @@ final class Courses extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function getSlug(): string
+	{
+		return 'sensei-courses';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		$pageId = (int) Sensei()->settings->get('course_page');

@@ -49,9 +49,9 @@ final class Post extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		$post_id = $this->post->ID;
+		$postId = $this->post->ID;
 
-		if (is_single($post_id) || is_page($post_id) || is_attachment($post_id)) {
+		if (is_single($postId) || is_page($postId) || is_attachment($postId)) {
 			return single_post_title('', false) ?: $this->config->getLabel(BreadcrumbsLabel::Untitled);
 		}
 

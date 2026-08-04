@@ -48,13 +48,13 @@ final class Term extends Crumb
 	 */
 	public function getLabel(): string
 	{
-		$tax     = $this->term->taxonomy;
-		$term_id = $this->term->term_id;
+		$tax    = $this->term->taxonomy;
+		$termId = $this->term->term_id;
 
 		if (
-			is_tax($tax, $term_id)
-			|| is_category($term_id)
-			|| is_tag($term_id)
+			is_tax($tax, $termId)
+			|| is_category($termId)
+			|| is_tag($termId)
 		) {
 			return single_term_title('', false);
 		}

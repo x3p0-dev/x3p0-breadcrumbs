@@ -71,8 +71,10 @@ final class RestRegistrar implements Bootable
 		// Get the post type object.
 		$type = get_post_type_object($data['slug']);
 
-		// Return the rewrite property if it is an array.
-		return $type->rewrite && is_array($type->rewrite)
+		// Return the rewrite property if it is an array. Note that
+		// `get_post_type_object()` can return `null`, so we also need
+		// to check it.
+		return $type && $type->rewrite && is_array($type->rewrite)
 			? $type->rewrite
 			: null;
 	}

@@ -15,8 +15,8 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**

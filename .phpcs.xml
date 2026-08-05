@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="X3P0">
+<ruleset name="X3P0Breadcrumbs">
 
 	<!-- Only check the PHP files. -->
 	<arg name="extensions" value="php"/>
@@ -56,6 +56,8 @@
 		<!-- Allow nicer even spacing for method parameters. -->
 		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpaceBeforeEquals"/>
 		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterHint"/>
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterVisbility"/>
+		<exclude name="Squiz.WhiteSpace.ScopeKeywordSpacing.Incorrect"/>
 
 		<!-- This is excluded because it catches empty constructors. -->
 		<exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore"/>

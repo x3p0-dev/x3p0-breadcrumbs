@@ -305,6 +305,21 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
+	 * Removes every crumb that is an instance of the given class and
+	 * satisfies the callback. The callback receives only crumbs of the
+	 * class, so it may typehint it directly.
+	 *
+	 * @param class-string<Crumb>   $class
+	 * @param callable(Crumb): bool $callback
+	 */
+	public function removeInstanceWhere(string $class, callable $callback): void
+	{
+		$this->removeWhere(
+			static fn (Crumb $crumb) => $crumb instanceof $class && $callback($crumb)
+		);
+	}
+
+	/**
 	 * Removes and returns the last crumb, or null when the collection is
 	 * empty.
 	 */

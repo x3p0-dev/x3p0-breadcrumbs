@@ -48,7 +48,7 @@ final class PostAncestors extends Assembler
 		$postId      = $post->post_parent;
 		$parents     = [];
 		$showOnFront = get_option('show_on_front');
-		$pageOnFront = get_option('page_on_front');
+		$pageOnFront = absint(get_option('page_on_front'));
 
 		while ($postId) {
 			// If we hit a post that's set as the front page, bail.

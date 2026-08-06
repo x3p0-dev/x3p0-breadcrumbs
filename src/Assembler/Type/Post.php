@@ -46,6 +46,15 @@ final class Post extends Assembler
 	 */
 	public function assemble(): void
 	{
+		$showOnFront = get_option('show_on_front');
+		$pageOnFront = absint(get_option('page_on_front'));
+
+		// A post set as the site's front page is already represented
+		// by the home crumb; never add it again.
+		if ('posts' !== $showOnFront && $this->post->ID === $pageOnFront) {
+			return;
+		}
+
 		// Bail early if the post exists in the crumb collection.
 		if ($this->postCrumbExists()) {
 			return;

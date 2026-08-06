@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
@@ -68,19 +69,37 @@ final class WooCommerce extends Extension
 	}
 
 	/**
-	 * Replaces the product post type archive crumb with the shop crumb
-	 * wherever it appears, so the archive reads as the shop without
+	 * When the shop page is the site's front page, first removes the
+	 * product post type archive crumb entirely, since the home crumb
+	 * already represents it. Otherwise, replaces that crumb with the shop
+	 * crumb wherever it appears, so the archive reads as the shop without
 	 * overriding the built-in post type crumb class.
 	 */
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
+		if ($this->shopIsFrontPage()) {
+			$event->crumbs->removeInstanceWhere(
+				PostTypeCrumb::class,
+				static fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name
+			);
+		}
+
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'product' === $crumb->postType->name,
 			static fn (PostTypeCrumb $crumb) => $event->makeCrumb(
-				Crumb\Shop::class,
+				ShopCrumb::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);
+	}
+
+	/**
+	 * Whether the shop page is configured as the site's static front page.
+	 */
+	private function shopIsFrontPage(): bool
+	{
+		return 'posts' !== get_option('show_on_front')
+			&& absint(wc_get_page_id('shop')) === absint(get_option('page_on_front'));
 	}
 }

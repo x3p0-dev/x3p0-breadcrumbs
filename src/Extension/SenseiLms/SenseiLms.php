@@ -17,6 +17,8 @@ use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Extension\SenseiLms\Crumb\Courses as CoursesCrumb;
+use X3P0\Breadcrumbs\Extension\SenseiLms\Crumb\Quiz as QuizCrumb;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
@@ -104,19 +106,29 @@ final class SenseiLms extends Extension
 	}
 
 	/**
-	 * Replaces the course post type archive crumb with the courses crumb
-	 * wherever it appears, so the archive reads as the configured courses
-	 * page without overriding the built-in post type crumb class, and
-	 * replaces a quiz's own crumb with one labeled from the quiz post type
-	 * instead of its Sensei-mirrored, lesson-duplicate title.
+	 * When the configured courses page is the site's front page, first
+	 * removes the course post type archive crumb entirely, since the home
+	 * crumb already represents it. Otherwise, replaces that crumb with the
+	 * courses crumb wherever it appears, so the archive reads as the
+	 * configured courses page without overriding the built-in post type
+	 * crumb class. Also replaces a quiz's own crumb with one labeled from
+	 * the quiz post type instead of its Sensei-mirrored, lesson-duplicate
+	 * title.
 	 */
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
+		if ($this->coursesShowOnFront()) {
+			$event->crumbs->removeInstanceWhere(
+				PostTypeCrumb::class,
+				static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name
+			);
+		}
+
 		$event->crumbs->replaceInstanceWhere(
 			PostTypeCrumb::class,
 			static fn (PostTypeCrumb $crumb) => 'course' === $crumb->postType->name,
 			static fn (PostTypeCrumb $crumb) => $event->makeCrumb(
-				Crumb\Courses::class,
+				CoursesCrumb::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);
@@ -125,7 +137,7 @@ final class SenseiLms extends Extension
 			PostCrumb::class,
 			static fn (PostCrumb $crumb) => 'quiz' === $crumb->post->post_type,
 			static fn (PostCrumb $crumb) => $event->makeCrumb(
-				Crumb\Quiz::class,
+				QuizCrumb::class,
 				['decoratedCrumb' => $crumb]
 			)
 		);
@@ -146,6 +158,15 @@ final class SenseiLms extends Extension
 				'showOnFront' => true
 			]);
 		}
+	}
+
+	/**
+	 * Whether the configured courses page is the site's static front page.
+	 */
+	private function coursesShowOnFront(): bool
+	{
+		return 'posts' !== get_option('show_on_front')
+			&& absint(Sensei()->settings->get('course_page')) === absint(get_option('page_on_front'));
 	}
 
 	/**

@@ -12,7 +12,7 @@ import LabelsPanel       from './LabelsPanel';
 import PostTaxonomyPanel from './PostTaxonomyPanel';
 import RewriteTagsPanel  from './RewriteTagsPanel';
 import SettingsPanel     from './SettingsPanel';
-import ColorControls     from './ColorControls';
+import SeparatorPanel    from './SeparatorPanel';
 
 // WordPress dependencies.
 import { InspectorControls } from '@wordpress/block-editor';
@@ -33,8 +33,8 @@ const BlockInspector = (props) => (
 			<RewriteTagsPanel {...props}/>
 			<PostTaxonomyPanel {...props}/>
 		</InspectorControls>
-		<InspectorControls group="color">
-			<ColorControls {...props}/>
+		<InspectorControls group="styles">
+			<SeparatorPanel {...props}/>
 		</InspectorControls>
 	</>
 );

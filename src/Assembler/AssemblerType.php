@@ -33,6 +33,7 @@ enum AssemblerType implements AssemblerDefinition
 	case RewriteFront;
 	case Term;
 	case TermAncestors;
+	case UserTerms;
 
 	/**
 	 * @inheritDoc
@@ -53,7 +54,8 @@ enum AssemblerType implements AssemblerDefinition
 			self::PostType        => Type\PostType::class,
 			self::RewriteFront    => Type\RewriteFront::class,
 			self::Term            => Type\Term::class,
-			self::TermAncestors   => Type\TermAncestors::class
+			self::TermAncestors   => Type\TermAncestors::class,
+			self::UserTerms       => Type\UserTerms::class
 		};
 	}
 }

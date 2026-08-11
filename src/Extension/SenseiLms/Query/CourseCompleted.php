@@ -17,7 +17,6 @@ use WP_Exception;
 use WP_Post;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Query\Query;
 
 /**
  * Builds the trail for the course completed page — Courses → Course → Course
@@ -27,10 +26,8 @@ use X3P0\Breadcrumbs\Query\Query;
  * at the course (which the `CrumbsBuilt` relabel roots at the courses page) and
  * adds the page itself as the leaf.
  */
-final class CourseCompleted extends Query
+final class CourseCompleted extends CourseScopedQuery
 {
-	use AssemblesCourseFromRequest;
-
 	/**
 	 * @inheritDoc
 	 * @throws WP_Exception

@@ -16,7 +16,6 @@ namespace X3P0\Breadcrumbs\Extension\SenseiLms\Query;
 use WP_Term;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Query\Query;
 
 /**
  * Builds the trail for a module taxonomy archive — Courses → Course → Module.
@@ -28,10 +27,8 @@ use X3P0\Breadcrumbs\Query\Query;
  * reads the course from that arg to root the trail and resolves the module
  * defensively from the request rather than the rewritten queried object.
  */
-final class Module extends Query
+final class Module extends CourseScopedQuery
 {
-	use AssemblesCourseFromRequest;
-
 	/**
 	 * @inheritDoc
 	 */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Assembles a course crumb from the request.
+ * Sensei LMS course-scoped query.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -15,16 +15,13 @@ namespace X3P0\Breadcrumbs\Extension\SenseiLms\Query;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
-use X3P0\Breadcrumbs\Query\QueryContext;
+use X3P0\Breadcrumbs\Query\Query;
 
 /**
- * Shared by the Sensei queries that scope themselves to a course passed as a
+ * Base for the Sensei queries that scope themselves to a course passed as a
  * `course_id` query arg — the module archive and the course completed page.
- * Assumes the composing class is a `Query`, reading its `$context` property.
- *
- * @property QueryContext $context
  */
-trait AssemblesCourseFromRequest
+abstract class CourseScopedQuery extends Query
 {
 	/**
 	 * Assembles the course named in the `course_id` request var into the

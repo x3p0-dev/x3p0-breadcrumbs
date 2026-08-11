@@ -50,6 +50,10 @@ final class Quiz extends Query
 					'lesson' => $lesson
 				]);
 
+				$this->context->assemble(AssemblerType::PostTerms, [
+					'post' => $lesson
+				]);
+
 				$this->context->addCrumb(CrumbType::Post, [
 					'post' => $lesson
 				]);

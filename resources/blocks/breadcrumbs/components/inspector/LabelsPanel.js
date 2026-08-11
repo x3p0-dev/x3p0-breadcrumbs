@@ -23,7 +23,7 @@ import {
  */
 const LabelsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(LabelsPanel);
-	const { labels = {}, showHomeLabel, showTrailStart } = attributes;
+	const { ariaLabel, labels = {}, showHomeLabel, showTrailStart } = attributes;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {...labels};
@@ -64,7 +64,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 	return (
 		<ToolsPanel
 			label={__('Labels', 'x3p0-breadcrumbs')}
-			resetAll={() => setAttributes({ labels: undefined })}
+			resetAll={() => setAttributes({ ariaLabel: undefined, labels: undefined })}
 			panelId={panelId}
 		>
 			{labelSettings.map((item) => (
@@ -87,6 +87,22 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 					/>
 				</ToolsPanelItem>
 			))}
+			<ToolsPanelItem
+				label={__('ARIA Label', 'x3p0-breadcrumbs')}
+				hasValue={() => !!ariaLabel}
+				onDeselect={() => setAttributes({ ariaLabel: undefined })}
+				panelId={panelId}
+			>
+				<TextControl
+					__next40pxDefaultSize
+					__nextHasNoMarginBottom
+					label={__('ARIA Label', 'x3p0-breadcrumbs')}
+					placeholder={__('Breadcrumbs', 'x3p0-breadcrumbs')}
+					value={ariaLabel || ''}
+					onChange={(value) => setAttributes({ ariaLabel: value })}
+					help={__('Describes the breadcrumb trail for screen reader users. Leave blank to use the default label.', 'x3p0-breadcrumbs')}
+				/>
+			</ToolsPanelItem>
 		</ToolsPanel>
 	);
 };

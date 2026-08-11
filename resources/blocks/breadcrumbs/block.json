@@ -110,6 +110,18 @@
 				"link": true
 			}
 		},
+		"dimensions": {
+			"height": true,
+			"minHeight": true,
+			"minWidth": true,
+			"width": true,
+			"__experimentalDefaultControls": {
+				"height": false,
+				"minHeight": false,
+				"minWidth": false,
+				"width": false
+			}
+		},
 		"layout": {
 			"allowCustomContentAndWideSize": false,
 			"allowEditing": false,

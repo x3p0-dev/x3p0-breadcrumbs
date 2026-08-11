@@ -81,6 +81,10 @@
 		"align": true,
 		"ariaLabel": true,
 		"html": false,
+		"background": {
+			"backgroundImage": true,
+			"backgroundSize": true
+		},
 		"__experimentalBorder": {
 			"radius": true,
 			"color": true,

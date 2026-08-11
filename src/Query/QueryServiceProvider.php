@@ -17,19 +17,17 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the query subsystem into the container: binds the factory and resolver
- * as shared singletons (only if not already bound) so extensions may replace
- * them, and binds each built-in `QueryType` case's class.
+ * as shared singletons, and binds each built-in `QueryType` case's class.
  */
 final class QueryServiceProvider extends ServiceProvider
 {
 	/**
-	 * The query factory and resolver, bound as shared singletons only if
-	 * not already bound so extensions may replace them.
+	 * The query factory and resolver, bound as shared singletons.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected const SINGLETONS_IF = [
+	protected const SINGLETONS = [
 		QueryFactory::class,
 		QueryResolver::class
 	];

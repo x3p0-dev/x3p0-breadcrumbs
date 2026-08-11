@@ -17,19 +17,17 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the assembler subsystem into the container: binds the factory as a
- * shared singleton (only if not already bound) so extensions may replace it,
- * and binds each built-in `AssemblerType` case's class.
+ * shared singleton, and binds each built-in `AssemblerType` case's class.
  */
 final class AssemblerServiceProvider extends ServiceProvider
 {
 	/**
-	 * The assembler factory, bound as a shared singleton only if not
-	 * already bound so extensions may replace it.
+	 * The assembler factory, bound as a shared singleton.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected const SINGLETONS_IF = [
+	protected const SINGLETONS = [
 		AssemblerFactory::class
 	];
 

@@ -17,19 +17,17 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
  * Wires the crumb subsystem into the container: binds the factory as a shared
- * singletons (only if not already bound) so extensions may replace it, and
- * binds each built-in `CrumbType` case's class.
+ * singleton, and binds each built-in `CrumbType` case's class.
  */
 final class CrumbServiceProvider extends ServiceProvider
 {
 	/**
-	 * The crumb factory, bound as a shared singleton only if not already
-	 * bound so extensions may replace it.
+	 * The crumb factory, bound as a shared singleton.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected const SINGLETONS_IF = [
+	protected const SINGLETONS = [
 		CrumbFactory::class
 	];
 

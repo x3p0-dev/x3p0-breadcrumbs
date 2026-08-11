@@ -18,19 +18,17 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the top-level breadcrumbs services into the container: the renderer
  * (the public entry point for building and rendering a trail) and the generator
- * it builds trails with. Both are bound as shared singletons, and only if not
- * already bound, so extensions may replace them.
+ * it builds trails with. Both are bound as shared singletons.
  */
 final class BreadcrumbsServiceProvider extends ServiceProvider
 {
 	/**
-	 * The generator and renderer, bound as shared singletons only if not
-	 * already bound so extensions may replace them.
+	 * The generator and renderer, bound as shared singletons.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	protected const SINGLETONS_IF = [
+	protected const SINGLETONS = [
 		BreadcrumbsGenerator::class,
 		BreadcrumbsRenderer::class
 	];

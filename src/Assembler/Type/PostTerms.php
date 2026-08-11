@@ -18,14 +18,18 @@ use WP_Taxonomy;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
+use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
- * Picks the first term assigned to the post in the given taxonomy and delegates
- * to the `Term` assembler so that term's full trail is built. Adds nothing when
- * the post has no terms in the taxonomy. When no taxonomy is passed explicitly,
- * resolves it from `BreadcrumbsConfig::getPostTaxonomy()` for the post's type
- * and does nothing if none is configured.
+ * Picks the first term assigned to the post in the given taxonomy and adds its
+ * ancestry (via `TermAncestors`) and its own crumb. Deliberately skips `Term`'s
+ * own anchor step (owning post type archive, rewrite front, rewrite path) since
+ * the post already has its own spine by the time this runs — reusing it here
+ * would build a second, competing one. Adds nothing when the post has no terms
+ * in the taxonomy. When no taxonomy is passed explicitly, resolves it from
+ * `BreadcrumbsConfig::getPostTaxonomy()` for the post's type and does nothing
+ * if none is configured.
  */
 final class PostTerms extends Assembler
 {
@@ -52,12 +56,24 @@ final class PostTerms extends Assembler
 		// Get the post terms for the given taxonomy.
 		$terms = get_the_terms($this->post->ID, $taxonomy->name);
 
-		// Check that terms were returned.
-		if ($terms && ! is_wp_error($terms)) {
-			$this->context->assemble(AssemblerType::Term, [
-				'term' => $terms[0]
+		// Bail if no terms were returned.
+		if (! $terms || is_wp_error($terms)) {
+			return;
+		}
+
+		$term = $terms[0];
+
+		// Add the term's own ancestry, if it has any.
+		if (0 < $term->parent) {
+			$this->context->assemble(AssemblerType::TermAncestors, [
+				'term' => $term
 			]);
 		}
+
+		// Add the term crumb.
+		$this->context->addCrumb(CrumbType::Term, [
+			'term' => $term
+		]);
 	}
 
 	/**

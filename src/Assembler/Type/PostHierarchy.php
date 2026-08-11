@@ -72,8 +72,7 @@ final class PostHierarchy extends Assembler
 
 			// Map the rewrite tags.
 			$this->context->assemble(AssemblerType::PostRewriteTags, [
-				'post' => $this->post,
-				'path' => get_option('permalink_structure')
+				'post' => $this->post
 			]);
 
 			return;
@@ -103,12 +102,9 @@ final class PostHierarchy extends Assembler
 			]);
 		}
 
-		// Map the rewrite tags if there's a `%` in the slug.
-		if ($rewrite && str_contains($rewrite['slug'], '%')) {
-			$this->context->assemble(AssemblerType::PostRewriteTags, [
-				'post' => $this->post,
-				'path' => $rewrite['slug']
-			]);
-		}
+		// Map the rewrite tags.
+		$this->context->assemble(AssemblerType::PostRewriteTags, [
+			'post' => $this->post
+		]);
 	}
 }

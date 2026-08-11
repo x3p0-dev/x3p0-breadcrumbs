@@ -22,8 +22,9 @@ use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
- * Maps the rewrite tags in a permalink structure to crumbs for a post. Walks the
- * path one segment at a time, translating the core WP `%year%`, `%monthnum%`,
+ * Maps the rewrite tags in a post type's permalink structure to crumbs for a
+ * post. Resolves that structure itself from the post's own type, then walks it
+ * one segment at a time, translating the core WP `%year%`, `%monthnum%`,
  * `%day%`, `%hour%`, `%minute%`, `%second%`, and `%author%` tags into date and
  * author crumbs, and any taxonomy tag into a `PostTerms` delegation. Works for
  * any post type and does nothing when rewrite-tag mapping is disabled in config.
@@ -35,8 +36,7 @@ final class PostRewriteTags extends Assembler
 	 */
 	public function __construct(
 		AssemblerContext $context,
-		#[NoAutowire] private readonly WP_Post $post,
-		private readonly string $path = ''
+		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
 	}
@@ -51,11 +51,29 @@ final class PostRewriteTags extends Assembler
 			return;
 		}
 
-		$segments = explode('/', trim($this->path, '/'));
+		$segments = explode('/', trim($this->resolvePath(), '/'));
 
 		foreach ($segments as $tag) {
 			$this->mapTag($tag);
 		}
+	}
+
+	/**
+	 * Resolves the permalink structure to walk for rewrite tags: the site's
+	 * general permalink structure for the built-in `post` type, or the post
+	 * type's own rewrite slug for everything else.
+	 */
+	private function resolvePath(): string
+	{
+		if (! $postType = get_post_type_object($this->post->post_type)) {
+			return '';
+		}
+
+		if ('post' === $postType->name) {
+			return (string) get_option('permalink_structure');
+		}
+
+		return is_array($postType->rewrite) ? (string) ($postType->rewrite['slug'] ?? '') : '';
 	}
 
 	/**

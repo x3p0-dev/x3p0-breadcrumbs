@@ -90,13 +90,10 @@ final class PostAncestors extends Assembler
 			'post' => $post
 		]);
 
-		// Display terms for specific post type taxonomy if requested.
-		if ($taxonomy = $this->context->config->getPostTaxonomy($post->post_type)) {
-			$this->context->assemble(AssemblerType::PostTerms, [
-				'post'     => $post,
-				'taxonomy' => get_taxonomy($taxonomy)
-			]);
-		}
+		// Display terms for the post type's configured taxonomy, if any.
+		$this->context->assemble(AssemblerType::PostTerms, [
+			'post' => $post
+		]);
 
 		// Reverse the parents and add their crumbs.
 		foreach (array_reverse($parents) as $parent) {

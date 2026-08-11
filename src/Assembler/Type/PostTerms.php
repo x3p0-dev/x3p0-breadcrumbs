@@ -23,7 +23,9 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 /**
  * Picks the first term assigned to the post in the given taxonomy and delegates
  * to the `Term` assembler so that term's full trail is built. Adds nothing when
- * the post has no terms in the taxonomy.
+ * the post has no terms in the taxonomy. When no taxonomy is passed explicitly,
+ * resolves it from `BreadcrumbsConfig::getPostTaxonomy()` for the post's type
+ * and does nothing if none is configured.
  */
 final class PostTerms extends Assembler
 {
@@ -33,7 +35,7 @@ final class PostTerms extends Assembler
 	public function __construct(
 		AssemblerContext $context,
 		#[NoAutowire] private readonly WP_Post $post,
-		#[NoAutowire] private readonly WP_Taxonomy $taxonomy
+		#[NoAutowire] private readonly ?WP_Taxonomy $taxonomy = null
 	) {
 		parent::__construct(context: $context);
 	}
@@ -43,8 +45,12 @@ final class PostTerms extends Assembler
 	 */
 	public function assemble(): void
 	{
+		if (! $taxonomy = $this->taxonomy ?? $this->resolveTaxonomy()) {
+			return;
+		}
+
 		// Get the post terms for the given taxonomy.
-		$terms = get_the_terms($this->post->ID, $this->taxonomy->name);
+		$terms = get_the_terms($this->post->ID, $taxonomy->name);
 
 		// Check that terms were returned.
 		if ($terms && ! is_wp_error($terms)) {
@@ -52,5 +58,16 @@ final class PostTerms extends Assembler
 				'term' => $terms[0]
 			]);
 		}
+	}
+
+	/**
+	 * Resolves the taxonomy configured as representative for the post's type,
+	 * or `null` if none is configured or the configured name doesn't resolve.
+	 */
+	private function resolveTaxonomy(): ?WP_Taxonomy
+	{
+		$name = $this->context->config->getPostTaxonomy($this->post->post_type);
+
+		return $name ? (get_taxonomy($name) ?: null) : null;
 	}
 }

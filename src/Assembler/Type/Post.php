@@ -74,13 +74,10 @@ final class Post extends Assembler
 			]);
 		}
 
-		// Display terms for specific post type taxonomy if requested.
-		if ($taxonomy = $this->context->config->getPostTaxonomy($this->post->post_type)) {
-			$this->context->assemble(AssemblerType::PostTerms, [
-				'post'     => $this->post,
-				'taxonomy' => get_taxonomy($taxonomy)
-			]);
-		}
+		// Display terms for the post type's configured taxonomy, if any.
+		$this->context->assemble(AssemblerType::PostTerms, [
+			'post' => $this->post
+		]);
 
 		// Assemble the post crumb.
 		$this->context->addCrumb(CrumbType::Post, [

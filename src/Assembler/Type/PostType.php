@@ -18,7 +18,6 @@ use WP_Rewrite;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -80,10 +79,9 @@ final class PostType extends Assembler
 	 */
 	private function postTypeCrumbExists(): bool
 	{
-		return $this->context->crumbs->contains(
-			fn (Crumb $crumb) =>
-				$crumb instanceof PostTypeCrumb
-				&& $crumb->postType->name === $this->postType->name
+		return $this->context->crumbs->containsInstanceWhere(
+			PostTypeCrumb::class,
+			fn (PostTypeCrumb $crumb) => $crumb->postType->name === $this->postType->name
 		);
 	}
 }

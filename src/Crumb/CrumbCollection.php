@@ -190,6 +190,32 @@ final class CrumbCollection implements Iterator, Countable
 	}
 
 	/**
+	 * Determines if any crumb in the collection is an instance of the given
+	 * class or interface.
+	 *
+	 * @param class-string<Crumb> $class
+	 */
+	public function containsInstanceOf(string $class): bool
+	{
+		return $this->contains(static fn (Crumb $crumb) => $crumb instanceof $class);
+	}
+
+	/**
+	 * Determines if any crumb that is an instance of the given class also
+	 * satisfies the callback. The callback receives only crumbs of the
+	 * class, so it may typehint it directly.
+	 *
+	 * @param class-string<Crumb>   $class
+	 * @param callable(Crumb): bool $callback
+	 */
+	public function containsInstanceWhere(string $class, callable $callback): bool
+	{
+		return $this->contains(
+			static fn (Crumb $crumb) => $crumb instanceof $class && $callback($crumb)
+		);
+	}
+
+	/**
 	 * Determines if every crumb satisfies the callback. Returns true for an
 	 * empty collection.
 	 *

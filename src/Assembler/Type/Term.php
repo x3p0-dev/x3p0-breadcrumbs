@@ -17,7 +17,6 @@ use WP_Term;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Term as TermCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -97,10 +96,9 @@ final class Term extends Assembler
 	 */
 	private function termCrumbExists(): bool
 	{
-		return $this->context->crumbs->contains(
-			fn (Crumb $crumb) =>
-				$crumb instanceof TermCrumb
-				&& $crumb->term->term_id === $this->term->term_id
+		return $this->context->crumbs->containsInstanceWhere(
+			TermCrumb::class,
+			fn (TermCrumb $crumb) => $crumb->term->term_id === $this->term->term_id
 		);
 	}
 }

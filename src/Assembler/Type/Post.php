@@ -17,7 +17,6 @@ use WP_Post;
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -90,10 +89,9 @@ final class Post extends Assembler
 	 */
 	private function postCrumbExists(): bool
 	{
-		return $this->context->crumbs->contains(
-			fn (Crumb $crumb) =>
-				$crumb instanceof PostCrumb
-				&& $crumb->post->ID === $this->post->ID
+		return $this->context->crumbs->containsInstanceWhere(
+			PostCrumb::class,
+			fn (PostCrumb $crumb) => $crumb->post->ID === $this->post->ID
 		);
 	}
 }

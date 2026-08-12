@@ -19,14 +19,20 @@ use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
+use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
+use X3P0\Breadcrumbs\Support\PostTypes;
 
 /**
  * Builds the trail leading up to a single post and adds the post's own crumb.
  * It delegates the ancestor/hierarchy portion to `PostAncestors` (when the post
  * has a parent) or `PostHierarchy` (when it does not), optionally inserts a
  * representative term crumb via `PostTerms`, and finally appends the post crumb.
- * Bails if the post is already in the collection.
+ * Bails if the post is already in the collection, or if its path already
+ * matches a post type archive crumb already in the collection (e.g. a
+ * WooCommerce-style shop page resolved by path) — the archive is registered
+ * ahead of the generic page rewrite rules, so it's the source of truth for
+ * that URL.
  */
 final class Post extends Assembler
 {
@@ -35,6 +41,7 @@ final class Post extends Assembler
 	 */
 	public function __construct(
 		AssemblerContext $context,
+		private readonly PostTypes $postTypes,
 		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
@@ -54,8 +61,12 @@ final class Post extends Assembler
 			return;
 		}
 
-		// Bail early if the post exists in the crumb collection.
-		if ($this->postCrumbExists()) {
+		// Bail early if the post exists in the crumb collection, or if
+		// its path matches a post type archive crumb already in the
+		// collection (e.g. a WooCommerce-style shop page) — the archive
+		// is registered ahead of the generic page rewrite rules, so it's
+		// the source of truth for that URL.
+		if ($this->postCrumbExists() || $this->postTypeCrumbExists()) {
 			return;
 		}
 
@@ -92,6 +103,24 @@ final class Post extends Assembler
 		return $this->context->crumbs->containsInstanceWhere(
 			PostCrumb::class,
 			fn (PostCrumb $crumb) => $crumb->post->ID === $this->post->ID
+		);
+	}
+
+	/**
+	 * Checks if a post type archive crumb already in the collection
+	 * resolves to the same path as the current post.
+	 */
+	private function postTypeCrumbExists(): bool
+	{
+		if (! $uri = (string) get_page_uri($this->post)) {
+			return false;
+		}
+
+		$types = $this->postTypes->withArchiveSlug($uri);
+
+		return $types && $this->context->crumbs->containsInstanceWhere(
+			PostTypeCrumb::class,
+			static fn (PostTypeCrumb $crumb) => in_array($crumb->postType, $types, true)
 		);
 	}
 }

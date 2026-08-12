@@ -20,6 +20,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
+use X3P0\Breadcrumbs\Support\PostTypes;
 
 /**
  * Walks a post's parent chain to its topmost ancestor, then builds the trail
@@ -39,6 +40,7 @@ final class PostAncestors extends Assembler
 	 */
 	public function __construct(
 		AssemblerContext $context,
+		private readonly PostTypes $postTypes,
 		#[NoAutowire] private readonly WP_Post $post
 	) {
 		parent::__construct(context: $context);
@@ -120,11 +122,15 @@ final class PostAncestors extends Assembler
 	 */
 	private function postTypeCrumbExists(WP_Post $post): bool
 	{
-		$path = wp_parse_url((string) get_permalink($post), PHP_URL_PATH);
+		if (! $uri = (string) get_page_uri($post)) {
+			return false;
+		}
 
-		return $path && $this->context->crumbs->containsInstanceWhere(
+		$types = $this->postTypes->withArchiveSlug($uri);
+
+		return $types && $this->context->crumbs->containsInstanceWhere(
 			PostTypeCrumb::class,
-			static fn (PostTypeCrumb $crumb) => wp_parse_url($crumb->getUrl(), PHP_URL_PATH) === $path
+			static fn (PostTypeCrumb $crumb) => in_array($crumb->postType, $types, true)
 		);
 	}
 }

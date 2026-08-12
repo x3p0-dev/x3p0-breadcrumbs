@@ -18,6 +18,7 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -26,6 +27,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
  * adding a crumb for each parent, ordered from the topmost ancestor down to the
  * post's immediate parent. The post itself is not added here. The walk stops if
  * it reaches the front page or a parent whose post type is no longer registered.
+ * A parent is skipped if its path already matches a post type archive crumb
+ * already in the collection (e.g. a WooCommerce-style shop page that is also a
+ * literal `post_parent` of the current post) — the archive is registered ahead
+ * of the generic page rewrite rules, so it's the source of truth for that URL.
  */
 final class PostAncestors extends Assembler
 {
@@ -95,11 +100,31 @@ final class PostAncestors extends Assembler
 			'post' => $post
 		]);
 
-		// Reverse the parents and add their crumbs.
+		// Reverse the parents and add their crumbs, skipping any parent
+		// whose path already matches a post type archive crumb in the
+		// collection.
 		foreach (array_reverse($parents) as $parent) {
+			if ($this->postTypeCrumbExists($parent)) {
+				continue;
+			}
+
 			$this->context->addCrumb(CrumbType::Post, [
 				'post' => $parent
 			]);
 		}
+	}
+
+	/**
+	 * Checks if a post type archive crumb already in the collection
+	 * resolves to the same path as the given post.
+	 */
+	private function postTypeCrumbExists(WP_Post $post): bool
+	{
+		$path = wp_parse_url((string) get_permalink($post), PHP_URL_PATH);
+
+		return $path && $this->context->crumbs->containsInstanceWhere(
+			PostTypeCrumb::class,
+			static fn (PostTypeCrumb $crumb) => wp_parse_url($crumb->getUrl(), PHP_URL_PATH) === $path
+		);
 	}
 }

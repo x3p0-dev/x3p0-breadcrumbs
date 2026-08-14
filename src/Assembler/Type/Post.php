@@ -19,7 +19,6 @@ use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
-use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Support\PostTypes;
 
@@ -28,11 +27,11 @@ use X3P0\Breadcrumbs\Support\PostTypes;
  * It delegates the ancestor/hierarchy portion to `PostAncestors` (when the post
  * has a parent) or `PostHierarchy` (when it does not), optionally inserts a
  * representative term crumb via `PostTerms`, and finally appends the post crumb.
- * Bails if the post is already in the collection, or if its path already
- * matches a post type archive crumb already in the collection (e.g. a
- * WooCommerce-style shop page resolved by path) — the archive is registered
- * ahead of the generic page rewrite rules, so it's the source of truth for
- * that URL.
+ * Bails if the post is already in the collection, or if its path matches a
+ * registered post type archive slug (e.g. a WooCommerce-style shop page
+ * resolved by path) — the archive is registered ahead of the generic page
+ * rewrite rules, so it's the source of truth for that URL. In the latter
+ * case, the call is forwarded to the `PostType` assembler instead.
  */
 final class Post extends Assembler
 {
@@ -62,11 +61,11 @@ final class Post extends Assembler
 		}
 
 		// Bail early if the post exists in the crumb collection, or if
-		// its path matches a post type archive crumb already in the
-		// collection (e.g. a WooCommerce-style shop page) — the archive
-		// is registered ahead of the generic page rewrite rules, so it's
-		// the source of truth for that URL.
-		if ($this->postCrumbExists() || $this->postTypeCrumbExists()) {
+		// its path matches a registered post type archive slug (e.g. a
+		// WooCommerce-style shop page) — the archive is registered ahead
+		// of the generic page rewrite rules, so it's the source of truth
+		// for that URL. The latter forwards to the `PostType` assembler.
+		if ($this->postCrumbExists() || $this->forwardsToPostType()) {
 			return;
 		}
 
@@ -107,20 +106,24 @@ final class Post extends Assembler
 	}
 
 	/**
-	 * Checks if a post type archive crumb already in the collection
-	 * resolves to the same path as the current post.
+	 * Checks if the current post's path matches a registered post type
+	 * archive slug and, if so, forwards the call to the `PostType`
+	 * assembler in its place.
 	 */
-	private function postTypeCrumbExists(): bool
+	private function forwardsToPostType(): bool
 	{
 		if (! $uri = (string) get_page_uri($this->post)) {
 			return false;
 		}
 
-		$types = $this->postTypes->withArchiveSlug($uri);
+		if (! $types = $this->postTypes->withArchiveSlug($uri)) {
+			return false;
+		}
 
-		return $types && $this->context->crumbs->containsInstanceWhere(
-			PostTypeCrumb::class,
-			static fn (PostTypeCrumb $crumb) => in_array($crumb->postType, $types, true)
-		);
+		$this->context->assemble(AssemblerType::PostType, [
+			'postType' => $types[0]
+		]);
+
+		return true;
 	}
 }

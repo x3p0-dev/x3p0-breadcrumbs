@@ -18,7 +18,6 @@ use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerType;
 use X3P0\Breadcrumbs\Crumb\CrumbType;
-use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 use X3P0\Breadcrumbs\Support\PostTypes;
 
@@ -28,10 +27,11 @@ use X3P0\Breadcrumbs\Support\PostTypes;
  * adding a crumb for each parent, ordered from the topmost ancestor down to the
  * post's immediate parent. The post itself is not added here. The walk stops if
  * it reaches the front page or a parent whose post type is no longer registered.
- * A parent is skipped if its path already matches a post type archive crumb
- * already in the collection (e.g. a WooCommerce-style shop page that is also a
- * literal `post_parent` of the current post) — the archive is registered ahead
- * of the generic page rewrite rules, so it's the source of truth for that URL.
+ * A parent whose path matches a registered post type archive slug (e.g. a
+ * WooCommerce-style shop page that is also a literal `post_parent` of the
+ * current post) is forwarded to the `PostType` assembler instead of being
+ * added as its own crumb — the archive is registered ahead of the generic
+ * page rewrite rules, so it's the source of truth for that URL.
  */
 final class PostAncestors extends Assembler
 {
@@ -102,12 +102,12 @@ final class PostAncestors extends Assembler
 			'post' => $post
 		]);
 
-		// Reverse the parents and add their crumbs, skipping any parent
-		// whose path already matches a post type archive crumb in the
-		// collection.
+		// Reverse the parents and add their crumbs, forwarding any parent
+		// whose path matches a registered post type archive slug to the
+		// `PostType` assembler instead. Also bails out of the loop.
 		foreach (array_reverse($parents) as $parent) {
-			if ($this->postTypeCrumbExists($parent)) {
-				continue;
+			if ($this->forwardsToPostType($parent)) {
+				return;
 			}
 
 			$this->context->addCrumb(CrumbType::Post, [
@@ -117,20 +117,24 @@ final class PostAncestors extends Assembler
 	}
 
 	/**
-	 * Checks if a post type archive crumb already in the collection
-	 * resolves to the same path as the given post.
+	 * Checks if the given post's path matches a registered post type
+	 * archive slug and, if so, forwards the call to the `PostType`
+	 * assembler in its place.
 	 */
-	private function postTypeCrumbExists(WP_Post $post): bool
+	private function forwardsToPostType(WP_Post $post): bool
 	{
 		if (! $uri = (string) get_page_uri($post)) {
 			return false;
 		}
 
-		$types = $this->postTypes->withArchiveSlug($uri);
+		if (! $types = $this->postTypes->withArchiveSlug($uri)) {
+			return false;
+		}
 
-		return $types && $this->context->crumbs->containsInstanceWhere(
-			PostTypeCrumb::class,
-			static fn (PostTypeCrumb $crumb) => in_array($crumb->postType, $types, true)
-		);
+		$this->context->assemble(AssemblerType::PostType, [
+			'postType' => $types[0]
+		]);
+
+		return true;
 	}
 }

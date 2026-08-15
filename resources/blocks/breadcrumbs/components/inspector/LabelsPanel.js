@@ -99,7 +99,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 					label={__('ARIA Label', 'x3p0-breadcrumbs')}
 					placeholder={__('Breadcrumbs', 'x3p0-breadcrumbs')}
 					value={ariaLabel || ''}
-					onChange={(value) => setAttributes({ ariaLabel: value })}
+					onChange={(value) => setAttributes({ ariaLabel: value || undefined })}
 					help={__('Describes the breadcrumb trail for screen reader users. Leave blank to use the default label.', 'x3p0-breadcrumbs')}
 				/>
 			</ToolsPanelItem>

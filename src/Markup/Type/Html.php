@@ -31,23 +31,6 @@ use X3P0\Breadcrumbs\Support\Pagination;
 class Html extends Markup implements MarkupBlockOption
 {
 	/**
-	 * Built-in text/glyph icon values mapped to their literal character.
-	 * These aren't SVG files and so can't be registered icons; anything
-	 * else falls through to {@see IconResolver} to fetch from the
-	 * registered icon library.
-	 *
-	 * @var  array<string, string>
-	 * @todo Type hint with PHP 8.3+ requirement.
-	 */
-	private const TEXT_ICONS = [
-		'text-slash'        => '/',
-		'text-bar'          => '|',
-		'text-middot'       => '·',
-		'text-black-circle' => '●',
-		'text-white-circle' => '○'
-	];
-
-	/**
 	 * Stores the crumb collection, config, and pagination inherited from
 	 * `Markup`, plus the resolver used to turn an icon attribute value into
 	 * real markup.
@@ -191,17 +174,15 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Resolves an icon attribute value to real markup — a built-in text/glyph
-	 * character from {@see self::TEXT_ICONS}, or an icon fetched from the
-	 * registered icon library via {@see IconResolver} — and wraps it in an
-	 * `aria-hidden` span scoped with the given BEM class. Returns an empty
-	 * string when the value is empty or does not resolve to an icon, so
-	 * there is nothing to render. Shared by the home and separator icons,
-	 * both of which are decorative.
+	 * Resolves an icon attribute value to real markup via {@see IconResolver}
+	 * and wraps it in an `aria-hidden` span scoped with the given BEM class.
+	 * Returns an empty string when the value is empty or does not resolve to
+	 * an icon, so there is nothing to render. Shared by the home and
+	 * separator icons, both of which are decorative.
 	 */
 	protected function renderIcon(string $value, string $class): string
 	{
-		$html = self::TEXT_ICONS[$value] ?? $this->iconResolver->resolve($value);
+		$html = $this->iconResolver->resolve($value);
 
 		if ('' === $html) {
 			return '';

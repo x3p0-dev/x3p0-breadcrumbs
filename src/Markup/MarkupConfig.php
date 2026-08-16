@@ -33,12 +33,15 @@ final class MarkupConfig
 	 * @param array<string, string> $containerAttr
 	 */
 	public function __construct(
-		private readonly string $namespace      = 'breadcrumbs',
-		private readonly array  $containerAttr  = [],
-		private readonly bool   $showOnFront    = false,
-		private readonly bool   $showFirstCrumb = true,
-		private readonly bool   $showLastCrumb  = true,
-		private readonly bool   $linkLastCrumb  = false
+		private readonly string $namespace             = 'breadcrumbs',
+		private readonly array  $containerAttr         = [],
+		private readonly bool   $showOnFront           = false,
+		private readonly bool   $showFirstCrumb        = true,
+		private readonly bool   $showLastCrumb         = true,
+		private readonly bool   $linkLastCrumb         = false,
+		private readonly string $homeIcon              = '',
+		private readonly string $separatorIcon         = '',
+		private readonly bool   $showTrailingSeparator = false
 	) {}
 
 	/**
@@ -93,5 +96,35 @@ final class MarkupConfig
 	public function linkLastCrumb(): bool
 	{
 		return $this->linkLastCrumb;
+	}
+
+	/**
+	 * Returns the home crumb's icon attribute value (e.g., a built-in
+	 * text/glyph key or a `{collection}/{name}` icon library reference),
+	 * left for the `Markup` layer to resolve to real markup. Empty when no
+	 * home icon is configured; this class does not fall back to a default.
+	 */
+	public function getHomeIcon(): string
+	{
+		return $this->homeIcon;
+	}
+
+	/**
+	 * Returns the separator icon's attribute value, left for the `Markup`
+	 * layer to resolve to real markup. Empty when no separator icon is
+	 * configured; this class does not fall back to a default.
+	 */
+	public function getSeparatorIcon(): string
+	{
+		return $this->separatorIcon;
+	}
+
+	/**
+	 * Determines whether the separator is also shown after the last crumb,
+	 * rather than only between crumbs.
+	 */
+	public function showTrailingSeparator(): bool
+	{
+		return $this->showTrailingSeparator;
 	}
 }

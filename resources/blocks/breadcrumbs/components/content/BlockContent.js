@@ -7,9 +7,15 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
+// Internal dependencies.
+import { SEPARATOR_ICONS } from '../../utils/constants';
+
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 import {RichText, useBlockProps, useInnerBlocksProps} from '@wordpress/block-editor';
+import { store as coreStore } from '@wordpress/core-data';
+import { safeHTML } from '@wordpress/dom';
+import { useSelect } from '@wordpress/data';
 
 // Third-party dependencies.
 import clsx from 'clsx';
@@ -32,6 +38,46 @@ const CrumbLink = ({ children }) => (
 		{children}
 	</a>
 );
+
+/**
+ * Renders a home or separator icon as real, `aria-hidden` markup — a
+ * built-in SVG/emoji from `options`, or an SVG fetched from the registered
+ * icon library (a `value` containing a `/`) — instead of driving it purely
+ * through a CSS class/mask, matching how WordPress core itself renders
+ * registered icons.
+ * @param props
+ * @returns {JSX.Element|null}
+ */
+const CrumbIcon = ({ value, options = [], className }) => {
+	const builtIn = value && options.find((option) => option.value === value);
+
+	const libraryIcon = useSelect(
+		(select) => ! builtIn && value?.includes('/')
+			? select(coreStore).getEntityRecord('root', 'icon', value)
+			: null,
+		[builtIn, value]
+	);
+
+	if (builtIn) {
+		return (
+			<span className={className} aria-hidden="true">
+				{builtIn.icon}
+			</span>
+		);
+	}
+
+	if (libraryIcon?.content) {
+		return (
+			<span
+				className={className}
+				aria-hidden="true"
+				dangerouslySetInnerHTML={{__html: safeHTML(libraryIcon.content)}}
+			/>
+		);
+	}
+
+	return null;
+};
 
 /**
  * Creates the Breadcrumbs block content to be rendered in the editor.
@@ -60,10 +106,7 @@ const BlockContent = ({
 }) => {
 	const blockProps = useBlockProps({
 		className: clsx({
-			[`has-home-${homeIcon}`] : showTrailStart && homeIcon,
 			'hide-home-label' : showTrailStart && ! showHomeLabel,
-			[`has-sep-${separatorIcon}`] : separatorIcon,
-			'show-trailing-separator' : showTrailingSeparator,
 			[`is-content-justification-${justifyContent}`] : justifyContent
 		}),
 		style: {
@@ -111,47 +154,79 @@ const BlockContent = ({
 		/>
 	);
 
+	// Built up as a list so the separator (rendered as real markup after
+	// every crumb but the last, unless `showTrailingSeparator` is on)
+	// can be inserted without repeating that condition at each crumb.
+	const crumbs = [
+		showTrailStart && {
+			key: 'home',
+			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--home',
+			content: (
+				<CrumbLink>
+					<CrumbIcon
+						value={homeIcon}
+						className="wp-block-x3p0-breadcrumbs__crumb-icon"
+					/>
+					{homeLabel}
+				</CrumbLink>
+			)
+		},
+		{
+			key: 'ancestor',
+			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
+			content: (
+				<CrumbLink>
+					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+						{__('Ancestor', 'x3p0-breadcrumbs')}
+					</span>
+				</CrumbLink>
+			)
+		},
+		{
+			key: 'parent',
+			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
+			content: (
+				<CrumbLink>
+					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+						{__('Parent', 'x3p0-breadcrumbs')}
+					</span>
+				</CrumbLink>
+			)
+		},
+		showTrailEnd && {
+			key: 'current',
+			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
+			content: linkTrailEnd ? (
+				<CrumbLink>
+					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+						{__('Current', 'x3p0-breadcrumbs')}
+					</span>
+				</CrumbLink>
+			) : (
+				<span className="wp-block-x3p0-breadcrumbs__crumb-content">
+					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+						{__('Current', 'x3p0-breadcrumbs')}
+					</span>
+				</span>
+			)
+		}
+	].filter(Boolean);
+
 	return (
 		<nav {...innerBlocksProps}>
 			<ol className="wp-block-x3p0-breadcrumbs__trail">
-				{showTrailStart && (
-					<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--home">
-						<CrumbLink>
-							{homeLabel}
-						</CrumbLink>
-					</li>
-				)}
-				<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
-					<CrumbLink>
-						<span className="wp-block-x3p0-breadcrumbs__crumb-label">
-							{__('Ancestor', 'x3p0-breadcrumbs')}
-						</span>
-					</CrumbLink>
-				</li>
-				<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
-					<CrumbLink>
-						<span className="wp-block-x3p0-breadcrumbs__crumb-label">
-							{__('Parent', 'x3p0-breadcrumbs')}
-						</span>
-					</CrumbLink>
-				</li>
-				{showTrailEnd && (
-					<li className="wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post">
-						{linkTrailEnd ? (
-							<CrumbLink>
-								<span className="wp-block-x3p0-breadcrumbs__crumb-label">
-									{__('Current', 'x3p0-breadcrumbs')}
-								</span>
-							</CrumbLink>
-						) : (
-							<span className="wp-block-x3p0-breadcrumbs__crumb-content">
-								<span className="wp-block-x3p0-breadcrumbs__crumb-label">
-									{__('Current', 'x3p0-breadcrumbs')}
-								</span>
-							</span>
+				{crumbs.map((crumb, index) => (
+					<li key={crumb.key} className={crumb.className}>
+						{crumb.content}
+						{(index < crumbs.length - 1 || showTrailingSeparator) && (
+							<CrumbIcon
+								value={separatorIcon}
+								options={SEPARATOR_ICONS}
+								className="wp-block-x3p0-breadcrumbs__crumb-separator"
+							/>
 						)}
 					</li>
-				)}
+				))}
 			</ol>
 		</nav>
 	);

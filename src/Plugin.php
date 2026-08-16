@@ -17,6 +17,7 @@ use X3P0\Breadcrumbs\Assembler\AssemblerServiceProvider;
 use X3P0\Breadcrumbs\Block\BlockServiceProvider;
 use X3P0\Breadcrumbs\Crumb\CrumbServiceProvider;
 use X3P0\Breadcrumbs\Extension\ExtensionServiceProvider;
+use X3P0\Breadcrumbs\Icon\IconServiceProvider;
 use X3P0\Breadcrumbs\Markup\MarkupServiceProvider;
 use X3P0\Breadcrumbs\Packages\Framework\Core\Application;
 use X3P0\Breadcrumbs\Query\QueryServiceProvider;
@@ -41,6 +42,7 @@ final class Plugin extends Application
 		BlockServiceProvider::class,
 		CrumbServiceProvider::class,
 		EventServiceProvider::class,
+		IconServiceProvider::class,
 		MarkupServiceProvider::class,
 		QueryServiceProvider::class,
 		RestServiceProvider::class,

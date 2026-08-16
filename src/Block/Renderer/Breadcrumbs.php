@@ -23,7 +23,8 @@ use X3P0\Breadcrumbs\Markup\MarkupOptions;
  * Server-renders the Breadcrumbs block. Translates the block's saved
  * attributes (remapping any deprecated ones) into breadcrumb and markup
  * configuration, then delegates building the trail markup to the injected
- * breadcrumbs renderer.
+ * breadcrumbs renderer. Icon attribute values are passed through as-is; the
+ * `Markup` layer resolves them to real markup at render time.
  */
 final class Breadcrumbs implements BlockRenderer
 {
@@ -49,12 +50,15 @@ final class Breadcrumbs implements BlockRenderer
 				'postTaxonomy'   => $attributes['postTaxonomy']   ?? []
 			],
 			markupConfig: [
-				'namespace'      => 'wp-block-x3p0-breadcrumbs',
-				'containerAttr'  => $this->getWrapperAttributes($attributes),
-				'showOnFront'    => $attributes['showOnHomepage'] ?? false,
-				'showFirstCrumb' => $attributes['showTrailStart'] ?? true,
-				'showLastCrumb'  => $attributes['showTrailEnd']   ?? true,
-				'linkLastCrumb'  => $attributes['linkTrailEnd']   ?? false
+				'namespace'             => 'wp-block-x3p0-breadcrumbs',
+				'containerAttr'         => $this->getWrapperAttributes($attributes),
+				'showOnFront'           => $attributes['showOnHomepage']       ?? false,
+				'showFirstCrumb'        => $attributes['showTrailStart']       ?? true,
+				'showLastCrumb'         => $attributes['showTrailEnd']         ?? true,
+				'linkLastCrumb'         => $attributes['linkTrailEnd']         ?? false,
+				'homeIcon'              => $attributes['homeIcon']      ?? '',
+				'separatorIcon'         => $attributes['separatorIcon'] ?? '',
+				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
@@ -75,30 +79,11 @@ final class Breadcrumbs implements BlockRenderer
 		// has any classes already.
 		$classes = isset($attr['class']) ? explode(' ', $attr['class']) : [];
 
-		// If there is a selected home icon, define the class. Also,
-		// potentially add the class for hiding the home label, which
-		// should only ever be triggered in the case of an icon.
-		if ($attributes['showTrailStart'] && $attributes['homeIcon']) {
-			$classes[] = sprintf(
-				'has-home-%s',
-				$attributes['homeIcon']
-			);
-
-			if (! $attributes['showHomeLabel']) {
-				$classes[] = 'hide-home-label';
-			}
-		}
-
-		// If there's a selected separator, define the class for it.
-		if ($attributes['separatorIcon']) {
-			$classes[] = sprintf(
-				'has-sep-%s',
-				$attributes['separatorIcon']
-			);
-		}
-
-		if ($attributes['showTrailingSeparator']) {
-			$classes[] = 'show-trailing-separator';
+		// Hide the home label when there's a home icon rendered in its
+		// place. The icon itself is real markup rendered by the `Markup`
+		// layer, not driven by a class here.
+		if ($attributes['showTrailStart'] && $attributes['homeIcon'] && ! $attributes['showHomeLabel']) {
+			$classes[] = 'hide-home-label';
 		}
 
 		// If there's a selected content justification, add a class.
@@ -141,7 +126,10 @@ final class Breadcrumbs implements BlockRenderer
 	}
 
 	/**
-	 * Maps deprecated attributes to new attributes.
+	 * Maps deprecated attributes to new attributes. Attribute names only —
+	 * a deprecated `homeIcon`/`separatorIcon` value produced here (e.g.,
+	 * `svg-arrow`) is remapped to its current icon library reference later,
+	 * by `Icon\IconResolver`, when the `Markup` layer resolves it.
 	 */
 	private function mapDeprecatedAttributes(array $attributes): array
 	{

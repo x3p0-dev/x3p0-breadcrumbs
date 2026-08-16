@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\Type\Home;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
@@ -70,6 +71,7 @@ final class Microdata extends Html
 			'<li class="%s" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"%s>
 				%s
 				<meta itemprop="position" content="%s"/>
+				%s
 			</li>',
 			esc_attr($this->scopeClass([
 				'crumb',
@@ -77,17 +79,23 @@ final class Microdata extends Html
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
-			esc_attr((string)$this->crumbs->position())
+			esc_attr((string)$this->crumbs->position()),
+			$this->shouldRenderSeparator() ? $this->renderSeparator() : ''
 		);
 	}
 
 	/**
-	 * Renders the crumb's content with microdata annotations: a `name`-labeled
-	 * span, output as an `item` link when linkable or as a `WebPage`-typed span
+	 * Renders the crumb's content with microdata annotations: an icon (for the
+	 * home crumb, when one is configured) followed by a `name`-labeled span,
+	 * output as an `item` link when linkable or as a `WebPage`-typed span
 	 * otherwise.
 	 */
 	private function renderCrumbContent(Crumb $crumb): string
 	{
+		$icon = $crumb instanceof Home
+			? $this->renderIcon($this->config->getHomeIcon(), 'crumb-icon')
+			: '';
+
 		// Filter out any unwanted HTML from the label.
 		$label = sprintf(
 			'<span class="%s" itemprop="name">%s</span>',
@@ -98,18 +106,20 @@ final class Microdata extends Html
 		// Return the linked content if the crumb has a URL.
 		if ($this->isCrumbLinkable($crumb)) {
 			return sprintf(
-				'<a href="%s" class="%s" itemprop="item">%s</a>',
+				'<a href="%s" class="%s" itemprop="item">%s%s</a>',
 				esc_url($crumb->getUrl()),
 				esc_attr($this->scopeClass('crumb-content')),
+				$icon,
 				$label
 			);
 		}
 
 		// Return an unlinked span if there's no URL.
 		return sprintf(
-			'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s</span>',
+			'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s%s</span>',
 			esc_attr($this->scopeClass('crumb-content')),
 			esc_url($crumb->getUrl()),
+			$icon,
 			$label
 		);
 	}

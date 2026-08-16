@@ -34,8 +34,10 @@ const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
  */
 const SettingsPanel = ({
 	attributes: {
+		homeIcon,
 		linkTrailEnd,
 		markup,
+		showHomeLabel,
 		showOnHomepage,
 		showTrailStart,
 		showTrailEnd,
@@ -59,6 +61,7 @@ const SettingsPanel = ({
 				markup: defaultMarkup,
 				showOnHomepage: false,
 				showTrailStart: false,
+				showHomeLabel: true,
 				showTrailEnd: false,
 				linkTrailEnd: false,
 				showTrailingSeparator: false
@@ -81,7 +84,6 @@ const SettingsPanel = ({
 					onChange={({ selectedItem }) => setAttributes({
 						markup: selectedItem.key
 					})}
-					__next40pxDefaultSize={true}
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
@@ -117,6 +119,28 @@ const SettingsPanel = ({
 					__nextHasNoMarginBottom={true}
 				/>
 			</ToolsPanelItem>
+			{showTrailStart && (
+				<ToolsPanelItem
+					label={__('Show home label', 'x3p0-breadcrumbs')}
+					hasValue={() => ! showHomeLabel}
+					onDeselect={() => setAttributes({ showHomeLabel: true })}
+					panelId={panelId}
+				>
+					<ToggleControl
+						label={__('Show home label', 'x3p0-breadcrumbs')}
+						checked={showHomeLabel}
+						onChange={() => setAttributes({
+							showHomeLabel: ! showHomeLabel
+						})}
+						disabled={! homeIcon}
+						help={! homeIcon
+							? __('Requires a home icon to hide the label.', 'x3p0-breadcrumbs')
+							: ''
+						}
+						__nextHasNoMarginBottom={true}
+					/>
+				</ToolsPanelItem>
+			)}
 			<ToolsPanelItem
 				label={__('Show current breadcrumb', 'x3p0-breadcrumbs')}
 				hasValue={() => !! showTrailEnd}

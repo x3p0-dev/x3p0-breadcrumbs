@@ -7,5 +7,5 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
-export { SymbolPicker }    from './SymbolPicker';
-export { ToolbarDropdown } from './ToolbarDropdown';
+export { IconGrid }         from './IconGrid';
+export { IconLibraryModal } from './IconLibraryModal';

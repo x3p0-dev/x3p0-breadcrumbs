@@ -67,7 +67,7 @@
 		},
 		"separatorIcon": {
 			"type": "string",
-			"default": "svg-chevron"
+			"default": "x3p0-breadcrumbs/chevron"
 		},
 		"separatorColor": {
 			"type": "string"

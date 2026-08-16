@@ -8,9 +8,122 @@
  */
 
 /**
+ * Maps the built-in `homeIcon`/`separatorIcon` values used before icons were
+ * registered with WordPress's icon API to their `{collection}/{name}`
+ * registered-icon equivalent. Mirrors
+ * `X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs::DEPRECATED_ICON_MAP` on the
+ * PHP side, which performs the same remap for content saved before this
+ * migration.
+ */
+const DEPRECATED_ICON_MAP = {
+	'svg-arrow':          'x3p0-breadcrumbs/arrow',
+	'svg-chevron':        'x3p0-breadcrumbs/chevron',
+	'svg-chevron-double': 'x3p0-breadcrumbs/chevron-double',
+	'svg-triangle':       'x3p0-breadcrumbs/triangle',
+	'text-🏠':            'x3p0-breadcrumbs/emoji-house',
+	'text-🏡':            'x3p0-breadcrumbs/emoji-house-garden',
+	'text-🏘':            'x3p0-breadcrumbs/emoji-houses',
+	'svg-outline':        'x3p0-breadcrumbs/home-outline',
+	'svg-fill':           'x3p0-breadcrumbs/home-fill',
+	'svg-house-outline':  'x3p0-breadcrumbs/house-outline',
+	'svg-house-fill':     'x3p0-breadcrumbs/house-fill'
+};
+
+/**
+ * Resolves a `homeIcon`/`separatorIcon` value to its registered-icon
+ * equivalent when it's one of the deprecated built-in keys, otherwise
+ * returns the value unchanged.
+ * @param {string} value
+ * @returns {string}
+ */
+const mapDeprecatedIcon = (value) => DEPRECATED_ICON_MAP[value] ?? value;
+
+/**
  * Returns an array for use in block deprecations.
  */
 export default [
+	{
+		"attributes" : {
+			"justifyContent": {
+				"type": "string",
+				"default": ""
+			},
+			"showHomeLabel": {
+				"type": "boolean",
+				"default": true
+			},
+			"showOnHomepage": {
+				"type": "boolean",
+				"default": false
+			},
+			"showTrailStart": {
+				"type": "boolean",
+				"default": true
+			},
+			"showTrailEnd": {
+				"type": "boolean",
+				"default": true
+			},
+			"homeIcon": {
+				"type": "string",
+				"default": ""
+			},
+			"labels": {
+				"type": "object",
+				"default": {},
+				"role": "content"
+			},
+			"linkTrailEnd": {
+				"type": "boolean",
+				"default": false
+			},
+			"mapRewriteTags": {
+				"type": "object",
+				"default": {
+					"post": true
+				}
+			},
+			"markup": {
+				"type": "string",
+				"default": "rdfa"
+			},
+			"postTaxonomy": {
+				"type": "object",
+				"default": {}
+			},
+			"showTrailingSeparator": {
+				"type": "boolean",
+				"default": false
+			},
+			"separatorIcon": {
+				"type": "string",
+				"default": "svg-chevron"
+			},
+			"separatorColor": {
+				"type": "string"
+			},
+			"customSeparatorColor": {
+				"type": "string"
+			}
+		},
+		isEligible(attributes) {
+			return (
+				DEPRECATED_ICON_MAP.hasOwnProperty(attributes.homeIcon) ||
+				DEPRECATED_ICON_MAP.hasOwnProperty(attributes.separatorIcon)
+			);
+		},
+		migrate(attributes) {
+			return {
+				...attributes,
+				...(attributes.homeIcon && {
+					homeIcon: mapDeprecatedIcon(attributes.homeIcon)
+				}),
+				...(attributes.separatorIcon && {
+					separatorIcon: mapDeprecatedIcon(attributes.separatorIcon)
+				})
+			};
+		}
+	},
 	{
 		"attributes" : {
 			"justifyContent": {
@@ -75,13 +188,13 @@ export default [
 			if (separator || separatorType) {
 				const type = 'mask' === separatorType ? 'svg' : (separatorType || 'svg');
 				const icon = separator || 'chevron';
-				separatorIcon = `${type}-${icon}`;
+				separatorIcon = mapDeprecatedIcon(`${type}-${icon}`);
 			}
 
 			let homeIcon;
 			if (homePrefix && homePrefixType) {
 				const type = 'mask' === homePrefixType ? 'svg' : homePrefixType;
-				homeIcon = `${type}-${homePrefix}`;
+				homeIcon = mapDeprecatedIcon(`${type}-${homePrefix}`);
 			}
 
 			return {

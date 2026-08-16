@@ -21,9 +21,11 @@ import { useSelect } from '@wordpress/data';
 import clsx from 'clsx';
 
 /**
- * Prevent breadcrumb link events when users click them.
- * @param event
- * @returns {*}
+ * Prevents navigation when a faux crumb link is clicked in the editor
+ * canvas — these links exist only to preview the trail's markup and have
+ * no real `href` to follow.
+ * @param {Event} event
+ * @returns {void}
  */
 const preventDefault = (event) => event.preventDefault();
 

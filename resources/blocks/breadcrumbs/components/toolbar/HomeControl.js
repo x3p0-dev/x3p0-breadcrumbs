@@ -37,6 +37,11 @@ const HomeControl = ({
 }) => {
 	const [isLibraryOpen, setLibraryOpen] = useState(false);
 
+	// A hidden home label requires a home icon to stand in for it (enforced
+	// by `SettingsPanel`'s toggle, which disables while there's no icon).
+	// This is the safety net for the other way the icon can disappear —
+	// resetting it here, via `onReset` below — so the label can't be left
+	// both hidden and iconless.
 	useEffect(() => {
 		if (! showHomeLabel && ! homeIcon) {
 			setAttributes({ showHomeLabel: true });

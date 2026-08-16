@@ -11,7 +11,7 @@
  * Maps the built-in `homeIcon`/`separatorIcon` values used before icons were
  * registered with WordPress's icon API to their `{collection}/{name}`
  * registered-icon equivalent. Mirrors
- * `X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs::DEPRECATED_ICON_MAP` on the
+ * `X3P0\Breadcrumbs\Icon\IconResolver::DEPRECATED_ICONS` on the
  * PHP side, which performs the same remap for content saved before this
  * migration.
  */
@@ -184,6 +184,13 @@ export default [
 				...otherAttributes
 			} = attributes;
 
+			// This version predates `DEPRECATED_ICON_MAP`'s `{type}-{icon}` key
+			// format, storing the same information as separate attributes
+			// instead. Rebuild that key here so it can be mapped the same way
+			// as the deprecation above. `mask` was this version's name for
+			// what's now the `svg` type, so it's normalized before mapping;
+			// an unset type defaults to `svg` and an unset icon to `chevron`,
+			// matching this version's own defaults.
 			let separatorIcon;
 			if (separator || separatorType) {
 				const type = 'mask' === separatorType ? 'svg' : (separatorType || 'svg');
@@ -191,6 +198,7 @@ export default [
 				separatorIcon = mapDeprecatedIcon(`${type}-${icon}`);
 			}
 
+			// Home icons had no default, so both parts must be present.
 			let homeIcon;
 			if (homePrefix && homePrefixType) {
 				const type = 'mask' === homePrefixType ? 'svg' : homePrefixType;

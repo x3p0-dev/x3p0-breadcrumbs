@@ -17,9 +17,11 @@ import { BlockControls, useBlockEditingMode } from '@wordpress/block-editor';
 
 /**
  * Wrapper around the WordPress `<BlockControls>` component for building the
- * block's custom toolbar (block) controls.
+ * block's custom toolbar (block) controls. Renders `false` (nothing) outside
+ * the default editing mode — e.g. when the block is content-locked or
+ * navigation-only — since those modes hide the block toolbar anyway.
  * @param props
- * @returns {JSX.Element}
+ * @returns {JSX.Element|boolean}
  */
 const BlockToolbar = (props) => 'default' === useBlockEditingMode() && (
 	<>

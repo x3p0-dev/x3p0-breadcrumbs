@@ -14,6 +14,12 @@ import {
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients
 } from '@wordpress/block-editor';
 
+/**
+ * Renders the block's color inspector controls, exposing the separator
+ * icon's color via WordPress's shared color/gradient settings dropdown.
+ * @param props
+ * @returns {JSX.Element}
+ */
 const ColorControls = ({
 	attributes: {
 		customSeparatorColor
@@ -27,6 +33,11 @@ const ColorControls = ({
 	// settings for our Color panel.
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
 
+	// `setSeparatorColor` (from `withColors`) resolves a theme palette slug
+	// alongside its hex value; `customSeparatorColor` is the plain attribute
+	// used when the picked color has no matching slug. Both are written
+	// together so the two stay in sync regardless of which one wins when
+	// rendering (see `BlockContent`'s `--x3p0-breadcrumbs--color--separator`).
 	const separatorSettings = {
 		label: __('Separator', 'x3p0-breadcrumbs'),
 		colorValue: separatorColor.color || customSeparatorColor,

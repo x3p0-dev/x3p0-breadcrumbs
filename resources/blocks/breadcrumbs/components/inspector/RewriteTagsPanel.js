@@ -18,9 +18,10 @@ import {
 } from '@wordpress/components';
 
 /**
- * Renders a `<ToolsPanel>` component with the block's rewrite tag controls.
+ * Renders a `<ToolsPanel>` component with the block's rewrite tag controls,
+ * or `null` when no viewable post type has a rewrite tag to map.
  * @param props
- * @returns {JSX.Element}
+ * @returns {JSX.Element|null}
  */
 const RewriteTagsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(RewriteTagsPanel);

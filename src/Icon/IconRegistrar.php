@@ -31,7 +31,7 @@ final class IconRegistrar implements Bootable
 		// Register the collection.
 		wp_register_icon_collection(Icon::COLLECTION, [
 			'label'       => __('Breadcrumbs', 'x3p0-breadcrumbs'),
-			'description' => __('TODO', 'x3p0-breadcrumbs')
+			'description' => __('Icons bundled specifically for use in breadcrumbs.', 'x3p0-breadcrumbs')
 		]);
 
 		// Register icons for the collection.

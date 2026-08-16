@@ -70,8 +70,19 @@ class Html extends Markup implements MarkupBlockOption
 		}
 
 		return sprintf(
-			'<nav %s><ol class="%s">%s</ol></nav>',
+			'<nav %s>%s</nav>',
 			$this->containerAttr(),
+			$this->renderTrail()
+		);
+	}
+
+	/**
+	 * Renders the ordered list of crumbs.
+	 */
+	protected function renderTrail(): string
+	{
+		return sprintf(
+			'<ol class="%s">%s</ol>',
 			esc_attr($this->scopeClass('trail')),
 			$this->renderCrumbs()
 		);
@@ -111,46 +122,69 @@ class Html extends Markup implements MarkupBlockOption
 			])),
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
-			$this->shouldRenderSeparator() ? $this->renderSeparator() : ''
+			$this->renderSeparator()
 		);
 	}
 
 	/**
 	 * Renders the inner content of a crumb: an icon (for the home crumb, when
-	 * one is configured) followed by the (kses-filtered) label wrapped in a
-	 * span, output as a link when the crumb is linkable and as a plain span
-	 * otherwise.
+	 * one is configured) followed by the (kses-filtered) label, output as a
+	 * link when the crumb is linkable and as a plain span otherwise.
 	 */
-	private function renderCrumbContent(Crumb $crumb): string
+	protected function renderCrumbContent(Crumb $crumb): string
 	{
-		$icon = $crumb instanceof Home
-			? $this->renderIcon($this->config->getHomeIcon(), 'crumb-icon')
-			: '';
+		return $this->isCrumbLinkable($crumb)
+			? $this->renderLinkedCrumbContent($crumb)
+			: $this->renderUnlinkedCrumbContent($crumb);
+	}
 
-		// Filter out any unwanted HTML from the label.
-		$label = sprintf(
-			'<span class="%s">%s</span>',
-			esc_attr($this->scopeClass('crumb-label')),
-			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
+	/**
+	 * Renders a linkable crumb's content as an anchor.
+	 */
+	protected function renderLinkedCrumbContent(Crumb $crumb): string
+	{
+		return sprintf(
+			'<a href="%s" class="%s">%s%s</a>',
+			esc_url($crumb->getUrl()),
+			esc_attr($this->scopeClass('crumb-content')),
+			$this->renderCrumbIcon($crumb),
+			$this->renderCrumbLabel($crumb)
 		);
+	}
 
-		// Return the linked content if the crumb has a URL.
-		if ($this->isCrumbLinkable($crumb)) {
-			return sprintf(
-				'<a href="%s" class="%s">%s%s</a>',
-				esc_url($crumb->getUrl()),
-				esc_attr($this->scopeClass('crumb-content')),
-				$icon,
-				$label
-			);
-		}
-
-		// Return an unlinked span if there's no URL.
+	/**
+	 * Renders a non-linkable crumb's content as a plain span.
+	 */
+	protected function renderUnlinkedCrumbContent(Crumb $crumb): string
+	{
 		return sprintf(
 			'<span class="%s">%s%s</span>',
 			esc_attr($this->scopeClass('crumb-content')),
-			$icon,
-			$label
+			$this->renderCrumbIcon($crumb),
+			$this->renderCrumbLabel($crumb)
+		);
+	}
+
+	/**
+	 * Renders a crumb's icon: the home icon (when configured) for the home
+	 * crumb, and nothing for any other crumb.
+	 */
+	protected function renderCrumbIcon(Crumb $crumb): string
+	{
+		return $crumb instanceof Home
+			? $this->renderIcon($this->config->getHomeIcon(), 'crumb-icon')
+			: '';
+	}
+
+	/**
+	 * Renders a crumb's label as a (kses-filtered) span.
+	 */
+	protected function renderCrumbLabel(Crumb $crumb): string
+	{
+		return sprintf(
+			'<span class="%s">%s</span>',
+			esc_attr($this->scopeClass('crumb-label')),
+			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 	}
 
@@ -165,12 +199,14 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders the configured separator icon, or an empty string when none is
-	 * configured.
+	 * Renders the configured separator icon, or an empty string when the
+	 * separator should not be rendered for this crumb or none is configured.
 	 */
 	protected function renderSeparator(): string
 	{
-		return $this->renderIcon($this->config->getSeparatorIcon(), 'crumb-separator');
+		return $this->shouldRenderSeparator()
+			? $this->renderIcon($this->config->getSeparatorIcon(), 'crumb-separator')
+			: '';
 	}
 
 	/**

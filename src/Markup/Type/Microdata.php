@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\Type\Home;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 
 /**
@@ -43,15 +42,10 @@ final class Microdata extends Html
 	/**
 	 * @inheritDoc
 	 */
-	public function render(): string
+	protected function renderTrail(): string
 	{
-		if (! $this->isRenderable()) {
-			return '';
-		}
-
 		return sprintf(
-			'<nav %s><ol class="%s" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol></nav>',
-			$this->containerAttr(),
+			'<ol class="%s" itemscope itemtype="https://schema.org/BreadcrumbList">%s</ol>',
 			esc_attr($this->scopeClass('trail')),
 			$this->renderCrumbs()
 		);
@@ -80,47 +74,47 @@ final class Microdata extends Html
 			$this->crumbs->isLast() ? ' aria-current="page"' : '',
 			$this->renderCrumbContent($crumb),
 			esc_attr((string)$this->crumbs->position()),
-			$this->shouldRenderSeparator() ? $this->renderSeparator() : ''
+			$this->renderSeparator()
 		);
 	}
 
 	/**
-	 * Renders the crumb's content with microdata annotations: an icon (for the
-	 * home crumb, when one is configured) followed by a `name`-labeled span,
-	 * output as an `item` link when linkable or as a `WebPage`-typed span
-	 * otherwise.
+	 * Renders a linkable crumb's content as an `item` link.
 	 */
-	private function renderCrumbContent(Crumb $crumb): string
+	protected function renderLinkedCrumbContent(Crumb $crumb): string
 	{
-		$icon = $crumb instanceof Home
-			? $this->renderIcon($this->config->getHomeIcon(), 'crumb-icon')
-			: '';
-
-		// Filter out any unwanted HTML from the label.
-		$label = sprintf(
-			'<span class="%s" itemprop="name">%s</span>',
-			esc_attr($this->scopeClass('crumb-label')),
-			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
+		return sprintf(
+			'<a href="%s" class="%s" itemprop="item">%s%s</a>',
+			esc_url($crumb->getUrl()),
+			esc_attr($this->scopeClass('crumb-content')),
+			$this->renderCrumbIcon($crumb),
+			$this->renderCrumbLabel($crumb)
 		);
+	}
 
-		// Return the linked content if the crumb has a URL.
-		if ($this->isCrumbLinkable($crumb)) {
-			return sprintf(
-				'<a href="%s" class="%s" itemprop="item">%s%s</a>',
-				esc_url($crumb->getUrl()),
-				esc_attr($this->scopeClass('crumb-content')),
-				$icon,
-				$label
-			);
-		}
-
-		// Return an unlinked span if there's no URL.
+	/**
+	 * Renders a non-linkable crumb's content as a `WebPage`-typed `item` span.
+	 */
+	protected function renderUnlinkedCrumbContent(Crumb $crumb): string
+	{
 		return sprintf(
 			'<span class="%s" itemscope itemid="%s" itemtype="https://schema.org/WebPage" itemprop="item">%s%s</span>',
 			esc_attr($this->scopeClass('crumb-content')),
 			esc_url($crumb->getUrl()),
-			$icon,
-			$label
+			$this->renderCrumbIcon($crumb),
+			$this->renderCrumbLabel($crumb)
+		);
+	}
+
+	/**
+	 * Renders a crumb's label as a (kses-filtered) `name`-labeled span.
+	 */
+	protected function renderCrumbLabel(Crumb $crumb): string
+	{
+		return sprintf(
+			'<span class="%s" itemprop="name">%s</span>',
+			esc_attr($this->scopeClass('crumb-label')),
+			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 	}
 }

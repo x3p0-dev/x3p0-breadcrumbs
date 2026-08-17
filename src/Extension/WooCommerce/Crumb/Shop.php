@@ -26,6 +26,11 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 final class Shop extends Crumb
 {
 	/**
+	 * @inheritDoc
+	 */
+	protected const ICON = 'core/store';
+
+	/**
 	 * Wraps the crumb this decorates so the label and URL can fall back to it
 	 * when no shop page is configured.
 	 */

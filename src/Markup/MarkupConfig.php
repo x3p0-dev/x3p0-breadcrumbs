@@ -33,15 +33,17 @@ final class MarkupConfig
 	 * @param array<string, string> $containerAttr
 	 */
 	public function __construct(
-		private readonly string $namespace             = 'breadcrumbs',
-		private readonly array  $containerAttr         = [],
-		private readonly bool   $showOnFront           = false,
-		private readonly bool   $showFirstCrumb        = true,
-		private readonly bool   $showLastCrumb         = true,
-		private readonly bool   $linkLastCrumb         = false,
-		private readonly string $firstCrumbIcon        = '',
-		private readonly string $separatorIcon         = '',
-		private readonly bool   $showTrailingSeparator = false
+		private readonly string          $namespace             = 'breadcrumbs',
+		private readonly array           $containerAttr         = [],
+		private readonly bool            $showOnFront           = false,
+		private readonly bool            $showFirstCrumb        = true,
+		private readonly bool            $showLastCrumb         = true,
+		private readonly bool            $linkLastCrumb         = false,
+		private readonly IconVisibility  $iconVisibility        = IconVisibility::None,
+		private readonly LabelVisibility $labelVisibility       = LabelVisibility::All,
+		private readonly string          $separatorIcon         = '',
+		private readonly bool            $showSeparator         = true,
+		private readonly bool            $showTrailingSeparator = false
 	) {}
 
 	/**
@@ -99,14 +101,20 @@ final class MarkupConfig
 	}
 
 	/**
-	 * Returns the first crumb's icon attribute value (e.g., a built-in
-	 * text/glyph key or a `{collection}/{name}` icon library reference),
-	 * left for the `Markup` layer to resolve to real markup. Empty when no
-	 * icon is configured; this class does not fall back to a default.
+	 * Returns which crumbs in the trail should render their icon.
 	 */
-	public function getFirstCrumbIcon(): string
+	public function iconVisibility(): IconVisibility
 	{
-		return $this->firstCrumbIcon;
+		return IconVisibility::All;
+		return $this->iconVisibility;
+	}
+
+	/**
+	 * Returns which crumbs in the trail should render their label.
+	 */
+	public function labelVisibility(): LabelVisibility
+	{
+		return $this->labelVisibility;
 	}
 
 	/**
@@ -117,6 +125,15 @@ final class MarkupConfig
 	public function getSeparatorIcon(): string
 	{
 		return $this->separatorIcon;
+	}
+
+	/**
+	 * Determines whether the separator is rendered at all, independent of
+	 * whether a separator icon value is configured.
+	 */
+	public function showSeparator(): bool
+	{
+		return $this->showSeparator;
 	}
 
 	/**

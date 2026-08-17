@@ -108,12 +108,20 @@ final class Microdata extends Html
 
 	/**
 	 * Renders a crumb's label as a (kses-filtered) `name`-labeled span.
+	 *
+	 * @inheritDoc
 	 */
 	protected function renderCrumbLabel(Crumb $crumb): string
 	{
+		$classes = ['crumb-label'];
+
+		if ($this->isCrumbLabelHidden()) {
+			$classes[] = 'crumb-label--hidden';
+		}
+
 		return sprintf(
 			'<span class="%s" itemprop="name">%s</span>',
-			esc_attr($this->scopeClass('crumb-label')),
+			esc_attr($this->scopeClass($classes)),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
 	}

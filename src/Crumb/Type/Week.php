@@ -26,6 +26,11 @@ final class Week extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'core/calendar';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getSlug(): string
 	{
 		return 'week';

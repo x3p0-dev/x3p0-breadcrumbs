@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Term;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Meta\MetaKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -25,6 +26,11 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
  */
 final class Term extends Crumb
 {
+	/**
+	 * @inheritDoc
+	 */
+	protected const ICON = 'core/tag';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -72,5 +78,23 @@ final class Term extends Crumb
 		// `get_term_link()` returns a `WP_Error` for an invalid term;
 		// fall back to an empty string.
 		return is_wp_error($link) ? '' : $link;
+	}
+
+	/**
+	 * Returns this term's own icon override (term meta) when one is set,
+	 * otherwise the taxonomy's configured default, otherwise the shared
+	 * fallback from `Crumb::DEFAULT_ICON`.
+	 *
+	 * @inheritDoc
+	 */
+	public function getIcon(): string
+	{
+		$icon = get_term_meta($this->term->term_id, MetaKey::Icon->value, true);
+
+		if ('' !== $icon) {
+			return $icon;
+		}
+
+		return $this->config->getTaxonomyIcon($this->term->taxonomy) ?: self::ICON;
 	}
 }

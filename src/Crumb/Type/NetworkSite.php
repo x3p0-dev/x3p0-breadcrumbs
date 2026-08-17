@@ -24,6 +24,11 @@ final class NetworkSite extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'core/desktop';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getSlug(): string
 	{
 		return 'network-site';

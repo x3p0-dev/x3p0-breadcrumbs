@@ -25,6 +25,11 @@ final class Paged extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'x3p0-breadcrumbs/description';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getSlug(): string
 	{
 		return 'paged';

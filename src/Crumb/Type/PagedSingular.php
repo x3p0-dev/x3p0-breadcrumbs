@@ -29,6 +29,11 @@ final class PagedSingular extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'x3p0-breadcrumbs/description';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post $post

@@ -27,6 +27,17 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 abstract class Crumb
 {
 	/**
+	 * Icon attribute value used when neither a config nor a meta override
+	 * resolves one, so a crumb never renders with no icon at all once icons
+	 * are shown for it. References a core-registered icon (available since
+	 * WordPress ships its own `core` icon collection), so it needs no
+	 * bundling by the plugin. Concrete types redeclare this constant with an
+	 * icon fitting their own semantics (e.g., `Home` uses `core/home`); this
+	 * generic value is the fallback for types that don't.
+	 */
+	protected const ICON = 'x3p0-breadcrumbs/article';
+
+	/**
 	 * Stores the shared, read-only config.
 	 */
 	public function __construct(protected readonly BreadcrumbsConfig $config)
@@ -51,5 +62,21 @@ abstract class Crumb
 	public function getUrl(): string
 	{
 		return '';
+	}
+
+	/**
+	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
+	 * key or a `{collection}/{name}` icon library reference), left for the
+	 * `Markup` layer to resolve to real markup. Looks up the config's
+	 * per-slug default (see `BreadcrumbsConfig::getIcon()`), falling back to
+	 * `DEFAULT_ICON` when nothing is configured — resolved via `static::` so
+	 * a concrete type's own redeclared constant is used, not this class's.
+	 * Never returns an empty string — whether a crumb's icon is actually
+	 * shown is controlled separately, by the `Markup` layer's icon
+	 * visibility setting.
+	 */
+	public function getIcon(): string
+	{
+		return $this->config->getIcon($this->getSlug()) ?: static::ICON;
 	}
 }

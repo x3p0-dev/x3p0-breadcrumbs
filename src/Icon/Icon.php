@@ -16,8 +16,10 @@ use const X3P0\Breadcrumbs\PLUGIN_DIR;
 enum Icon: string
 {
 	case Arrow            = 'arrow';
+	case Article          = 'article';
 	case Chevron          = 'chevron';
 	case ChevronDouble    = 'chevron-double';
+	case Description      = 'description';
 	case EmojiHouse       = 'emoji-house';
 	case EmojiHouses      = 'emoji-houses';
 	case EmojiHouseGarden = 'emoji-house-garden';
@@ -25,6 +27,7 @@ enum Icon: string
 	case HomeOutline      = 'home-outline';
 	case HouseFill        = 'house-fill';
 	case HouseOutline     = 'house-outline';
+	case Package          = 'package';
 	case Triangle         = 'triangle';
 
 	/**
@@ -52,16 +55,19 @@ enum Icon: string
 	{
 		return match ($this) {
 			self::Arrow            => __('Arrow', 'x3p0-breadcrumbs'),
+			self::Article          => __('Article', 'x3p0-breadcrumbs'),
 			self::Chevron          => __('Chevron', 'x3p0-breadcrumbs'),
 			self::ChevronDouble    => __('Chevron Double', 'x3p0-breadcrumbs'),
+			self::Description      => __('Description', 'x3p0-breadcrumbs'),
 			self::EmojiHouse       => __('Emoji: House', 'x3p0-breadcrumbs'),
 			self::EmojiHouseGarden => __('Emoji: House With Garden', 'x3p0-breadcrumbs'),
 			self::EmojiHouses      => __('Emoji: Houses', 'x3p0-breadcrumbs'),
-			self::Triangle         => __('Triangle', 'x3p0-breadcrumbs'),
 			self::HomeFill         => __('Home: Filled', 'x3p0-breadcrumbs'),
 			self::HomeOutline      => __('Home: Outlined', 'x3p0-breadcrumbs'),
 			self::HouseFill        => __('House: Filled', 'x3p0-breadcrumbs'),
-			self::HouseOutline     => __('House: Outlined', 'x3p0-breadcrumbs')
+			self::HouseOutline     => __('House: Outlined', 'x3p0-breadcrumbs'),
+			self::Package          => __('Package', 'x3p0-breadcrumbs'),
+			self::Triangle         => __('Triangle', 'x3p0-breadcrumbs')
 		};
 	}
 

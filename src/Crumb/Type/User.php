@@ -29,6 +29,11 @@ final class User extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'core/people';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_User $user,

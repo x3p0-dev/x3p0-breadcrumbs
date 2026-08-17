@@ -26,12 +26,13 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 final class Custom extends Crumb
 {
 	/**
-	 * Stores the crumb's label and optional URL.
+	 * Stores the crumb's label and optional URL and icon.
 	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		public readonly string $label,
-		public readonly string $url = ''
+		public readonly string $url  = '',
+		public readonly string $icon = ''
 	) {
 		parent::__construct(config: $config);
 	}
@@ -58,5 +59,19 @@ final class Custom extends Crumb
 	public function getUrl(): string
 	{
 		return $this->url;
+	}
+
+	/**
+	 * Returns this crumb's own icon when one was passed in, otherwise falls
+	 * through to the normal config/default chain (see `Crumb::getIcon()`).
+	 * Unlike the other crumb types, `Custom` has no queried object or fixed
+	 * semantics to derive a sensible default from, so the caller is the only
+	 * source of a meaningful icon.
+	 *
+	 * @inheritDoc
+	 */
+	public function getIcon(): string
+	{
+		return $this->icon ?: parent::getIcon();
 	}
 }

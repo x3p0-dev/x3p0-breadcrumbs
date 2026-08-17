@@ -27,6 +27,11 @@ final class PostType extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'core/category';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post_Type $postType

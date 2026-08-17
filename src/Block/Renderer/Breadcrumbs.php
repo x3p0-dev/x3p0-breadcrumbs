@@ -17,6 +17,8 @@ use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
+use X3P0\Breadcrumbs\Markup\IconVisibility;
+use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
 
 /**
@@ -47,7 +49,8 @@ final class Breadcrumbs implements BlockRenderer
 			breadcrumbsConfig: [
 				'labels'         => $attributes['labels']         ?? [],
 				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
-				'postTaxonomy'   => $attributes['postTaxonomy']   ?? []
+				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],
+				'icons'          => ['home' => $attributes['homeIcon'] ?? '']
 			],
 			markupConfig: [
 				'namespace'             => 'wp-block-x3p0-breadcrumbs',
@@ -56,12 +59,27 @@ final class Breadcrumbs implements BlockRenderer
 				'showFirstCrumb'        => $attributes['showTrailStart']        ?? true,
 				'showLastCrumb'         => $attributes['showTrailEnd']          ?? true,
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
-				'firstCrumbIcon'        => $attributes['homeIcon']              ?? '',
+				'iconVisibility'        => empty($attributes['homeIcon']) ? IconVisibility::None : IconVisibility::First,
+				'labelVisibility'       => $this->getLabelVisibility($attributes),
 				'separatorIcon'         => $attributes['separatorIcon']         ?? '',
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
+	}
+
+	/**
+	 * Derives label visibility from the same condition that already drives
+	 * the `hide-home-label` wrapper class (see `getWrapperAttributes()`):
+	 * hide the first/home crumb's label only when its icon is showing in
+	 * its place and the "show home label" option is off. There's no block
+	 * attribute yet for the other `LabelVisibility` cases (`Last`, `None`).
+	 */
+	private function getLabelVisibility(array $attributes): LabelVisibility
+	{
+		return $attributes['showTrailStart'] && $attributes['homeIcon'] && ! $attributes['showHomeLabel']
+			? LabelVisibility::AllButFirst
+			: LabelVisibility::All;
 	}
 
 	/**

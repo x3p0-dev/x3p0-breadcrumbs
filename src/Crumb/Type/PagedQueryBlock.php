@@ -28,6 +28,11 @@ final class PagedQueryBlock extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'x3p0-breadcrumbs/description';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		private readonly Pagination $pagination

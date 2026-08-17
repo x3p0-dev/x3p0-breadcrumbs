@@ -27,6 +27,12 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 abstract class TimeArchive extends Crumb
 {
 	/**
+	 * Shared by every sub-day time archive (`Hour`, `Minute`, `Second`); none
+	 * of them needs a finer-grained icon than a plain clock face.
+	 */
+	protected const ICON = 'core/scheduled';
+
+	/**
 	 * @inheritDoc
 	 */
 	public function __construct(

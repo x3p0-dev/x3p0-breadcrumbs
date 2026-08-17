@@ -16,6 +16,8 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Icon\IconResolver;
+use X3P0\Breadcrumbs\Markup\IconVisibility;
+use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\Markup;
 use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
@@ -166,28 +168,73 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders a crumb's icon: the home icon (when configured) for the crumb
-	 * at the start of the trail, and nothing for any other crumb. Whatever
-	 * occupies that position — `Home` on a normal site, `Network` on a
-	 * multisite subsite — is treated as the trail's home anchor.
+	 * Renders a crumb's own icon (see `Crumb::getIcon()`), gated by
+	 * `isCrumbIconVisible()`. Whatever occupies the first position — `Home`
+	 * on a normal site, `Network` on a multisite subsite — is treated as the
+	 * trail's home anchor.
 	 */
 	protected function renderCrumbIcon(Crumb $crumb): string
 	{
-		return $this->crumbs->isFirst()
-			? $this->renderIcon($this->config->getFirstCrumbIcon(), 'crumb-icon')
-			: '';
+		return $this->isCrumbIconVisible() ? $this->renderIcon($crumb->getIcon(), 'crumb-icon') : '';
 	}
 
 	/**
-	 * Renders a crumb's label as a (kses-filtered) span.
+	 * Determines whether the crumb currently being rendered shows its icon:
+	 * every crumb, only the crumb at the start of the trail, only the crumbs
+	 * before the last, or none. Shared with `isCrumbLabelHidden()`, which
+	 * needs to know whether a hidden label would leave the crumb with
+	 * nothing visible at all.
+	 */
+	protected function isCrumbIconVisible(): bool
+	{
+		return match ($this->config->iconVisibility()) {
+			IconVisibility::All        => true,
+			IconVisibility::AllButLast => ! $this->crumbs->isLast(),
+			IconVisibility::First      => $this->crumbs->isFirst(),
+			IconVisibility::None       => false
+		};
+	}
+
+	/**
+	 * Renders a crumb's label as a (kses-filtered) span. The label always
+	 * renders in the markup — even when `isCrumbLabelHidden()` says to hide
+	 * it, it stays accessible to assistive tech via a visually-hidden
+	 * modifier class rather than being omitted, the same technique the
+	 * block's own `hide-home-label` option already uses.
 	 */
 	protected function renderCrumbLabel(Crumb $crumb): string
 	{
+		$classes = ['crumb-label'];
+
+		if ($this->isCrumbLabelHidden()) {
+			$classes[] = 'crumb-label--hidden';
+		}
+
 		return sprintf(
 			'<span class="%s">%s</span>',
-			esc_attr($this->scopeClass('crumb-label')),
+			esc_attr($this->scopeClass($classes)),
 			wp_kses($crumb->getLabel(), self::ALLOWED_HTML)
 		);
+	}
+
+	/**
+	 * Determines whether the crumb currently being rendered should hide its
+	 * label: every crumb but the first, only the last, or none — per the
+	 * config's label visibility. A label is only ever actually hidden when
+	 * the same crumb's icon is visible (`isCrumbIconVisible()`); otherwise
+	 * the crumb would have nothing visible or accessible standing in for it,
+	 * so the label is forced to show regardless of the configured setting.
+	 */
+	protected function isCrumbLabelHidden(): bool
+	{
+		$hide = match ($this->config->labelVisibility()) {
+			LabelVisibility::All         => false,
+			LabelVisibility::AllButFirst => $this->crumbs->isFirst(),
+			LabelVisibility::Last        => ! $this->crumbs->isLast(),
+			LabelVisibility::None        => true
+		};
+
+		return $hide && $this->isCrumbIconVisible();
 	}
 
 	/**
@@ -202,13 +249,16 @@ class Html extends Markup implements MarkupBlockOption
 
 	/**
 	 * Renders the configured separator icon, or an empty string when the
-	 * separator should not be rendered for this crumb or none is configured.
+	 * separator is turned off, should not be rendered for this crumb, or
+	 * none is configured.
 	 */
 	protected function renderSeparator(): string
 	{
-		return $this->shouldRenderSeparator()
-			? $this->renderIcon($this->config->getSeparatorIcon(), 'crumb-separator')
-			: '';
+		if (! $this->config->showSeparator() || ! $this->shouldRenderSeparator()) {
+			return '';
+		}
+
+		return $this->renderIcon($this->config->getSeparatorIcon(), 'crumb-separator');
 	}
 
 	/**

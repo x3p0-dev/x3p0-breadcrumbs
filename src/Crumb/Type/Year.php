@@ -29,6 +29,11 @@ final class Year extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	protected const ICON = 'core/calendar';
+
+	/**
+	 * @inheritDoc
+	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly ?WP_Post $post = null

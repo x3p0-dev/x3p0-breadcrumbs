@@ -17,6 +17,7 @@ use WP_Post;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Meta\MetaKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -26,6 +27,11 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
  */
 final class Post extends Crumb
 {
+	/**
+	 * @inheritDoc
+	 */
+	protected const ICON = 'core/pencil';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -64,5 +70,43 @@ final class Post extends Crumb
 	public function getUrl(): string
 	{
 		return (string) get_permalink($this->post->ID);
+	}
+
+	/**
+	 * Returns this post's own icon override (post meta) when one is set;
+	 * otherwise, for an attachment, a media-type-aware icon when its mime
+	 * type matches one; otherwise the post type's configured default;
+	 * otherwise the shared fallback from `Crumb::DEFAULT_ICON`.
+	 *
+	 * @inheritDoc
+	 */
+	public function getIcon(): string
+	{
+		$icon = get_post_meta($this->post->ID, MetaKey::Icon->value, true);
+
+		if ('' !== $icon) {
+			return $icon;
+		}
+
+		if ('attachment' === $this->post->post_type && $icon = $this->attachmentIcon()) {
+			return $icon;
+		}
+
+		return $this->config->getPostTypeIcon($this->post->post_type) ?: self::ICON;
+	}
+
+	/**
+	 * Returns an icon matching this attachment's mime type, or an empty
+	 * string when none of the checked types match — leaving the caller to
+	 * fall back to the generic `attachment` post type default.
+	 */
+	private function attachmentIcon(): string
+	{
+		return match (true) {
+			wp_attachment_is('image', $this->post) => 'core/image',
+			wp_attachment_is('audio', $this->post) => 'core/audio',
+			wp_attachment_is('video', $this->post) => 'core/capture-video',
+			default                                => ''
+		};
 	}
 }

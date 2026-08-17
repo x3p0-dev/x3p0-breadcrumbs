@@ -52,12 +52,12 @@ final class Breadcrumbs implements BlockRenderer
 			markupConfig: [
 				'namespace'             => 'wp-block-x3p0-breadcrumbs',
 				'containerAttr'         => $this->getWrapperAttributes($attributes),
-				'showOnFront'           => $attributes['showOnHomepage']       ?? false,
-				'showFirstCrumb'        => $attributes['showTrailStart']       ?? true,
-				'showLastCrumb'         => $attributes['showTrailEnd']         ?? true,
-				'linkLastCrumb'         => $attributes['linkTrailEnd']         ?? false,
-				'homeIcon'              => $attributes['homeIcon']      ?? '',
-				'separatorIcon'         => $attributes['separatorIcon'] ?? '',
+				'showOnFront'           => $attributes['showOnHomepage']        ?? false,
+				'showFirstCrumb'        => $attributes['showTrailStart']        ?? true,
+				'showLastCrumb'         => $attributes['showTrailEnd']          ?? true,
+				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
+				'firstCrumbIcon'        => $attributes['homeIcon']              ?? '',
+				'separatorIcon'         => $attributes['separatorIcon']         ?? '',
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()

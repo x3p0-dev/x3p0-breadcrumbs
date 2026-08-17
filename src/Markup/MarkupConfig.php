@@ -39,7 +39,7 @@ final class MarkupConfig
 		private readonly bool   $showFirstCrumb        = true,
 		private readonly bool   $showLastCrumb         = true,
 		private readonly bool   $linkLastCrumb         = false,
-		private readonly string $homeIcon              = '',
+		private readonly string $firstCrumbIcon        = '',
 		private readonly string $separatorIcon         = '',
 		private readonly bool   $showTrailingSeparator = false
 	) {}
@@ -99,14 +99,14 @@ final class MarkupConfig
 	}
 
 	/**
-	 * Returns the home crumb's icon attribute value (e.g., a built-in
+	 * Returns the first crumb's icon attribute value (e.g., a built-in
 	 * text/glyph key or a `{collection}/{name}` icon library reference),
 	 * left for the `Markup` layer to resolve to real markup. Empty when no
-	 * home icon is configured; this class does not fall back to a default.
+	 * icon is configured; this class does not fall back to a default.
 	 */
-	public function getHomeIcon(): string
+	public function getFirstCrumbIcon(): string
 	{
-		return $this->homeIcon;
+		return $this->firstCrumbIcon;
 	}
 
 	/**

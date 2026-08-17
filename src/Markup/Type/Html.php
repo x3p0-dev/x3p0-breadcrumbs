@@ -15,7 +15,6 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Crumb\Type\Home;
 use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\Markup;
 use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
@@ -127,9 +126,10 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders the inner content of a crumb: an icon (for the home crumb, when
-	 * one is configured) followed by the (kses-filtered) label, output as a
-	 * link when the crumb is linkable and as a plain span otherwise.
+	 * Renders the inner content of a crumb: the home icon (for the crumb at
+	 * the start of the trail, when one is configured) followed by the
+	 * (kses-filtered) label, output as a link when the crumb is linkable and
+	 * as a plain span otherwise.
 	 */
 	protected function renderCrumbContent(Crumb $crumb): string
 	{
@@ -166,13 +166,15 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders a crumb's icon: the home icon (when configured) for the home
-	 * crumb, and nothing for any other crumb.
+	 * Renders a crumb's icon: the home icon (when configured) for the crumb
+	 * at the start of the trail, and nothing for any other crumb. Whatever
+	 * occupies that position — `Home` on a normal site, `Network` on a
+	 * multisite subsite — is treated as the trail's home anchor.
 	 */
 	protected function renderCrumbIcon(Crumb $crumb): string
 	{
-		return $crumb instanceof Home
-			? $this->renderIcon($this->config->getHomeIcon(), 'crumb-icon')
+		return $this->crumbs->isFirst()
+			? $this->renderIcon($this->config->getFirstCrumbIcon(), 'crumb-icon')
 			: '';
 	}
 

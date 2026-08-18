@@ -79,4 +79,17 @@ abstract class Crumb
 	{
 		return $this->config->getIcon($this->getSlug()) ?: static::ICON;
 	}
+
+	/**
+	 * Returns the crumb type's built-in default icon — `static::ICON`,
+	 * resolved via late static binding so a concrete type's own redeclared
+	 * constant is used — without needing an instance (and, therefore,
+	 * config) to get it. For contexts that want a type's default ahead of
+	 * any per-slug config override, such as the block editor's canvas
+	 * preview.
+	 */
+	public static function defaultIcon(): string
+	{
+		return static::ICON;
+	}
 }

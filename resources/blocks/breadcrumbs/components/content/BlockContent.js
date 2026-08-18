@@ -135,6 +135,14 @@ const BlockContent = ({
 	// noinspection JSUnresolvedVariable
 	const pageIcon = postTypeIcons?.page?.single || window.x3p0Breadcrumbs?.defaultPageIcon || '';
 
+	// Mirrors `Crumb::getIcon()`: the home crumb falls back to its type's
+	// built-in default icon (passed from PHP via `Home::defaultIcon()`)
+	// when the user hasn't chosen one. Whether it actually renders is
+	// controlled separately by `iconVisibility`, not by this value.
+	//
+	// noinspection JSUnresolvedVariable
+	const homeIconValue = homeIcon || window.x3p0Breadcrumbs?.defaultHomeIcon || '';
+
 	// Mirrors `Html::isCrumbIconVisible()`: which crumbs show an icon depends
 	// on their position in the *rendered* trail, not on their kind — e.g., if
 	// the home crumb is hidden, "Ancestor" becomes the first crumb and is
@@ -230,7 +238,7 @@ const BlockContent = ({
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
-							value={homeIcon}
+							value={homeIconValue}
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}

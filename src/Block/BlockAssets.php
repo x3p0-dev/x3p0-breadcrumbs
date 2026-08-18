@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Crumb\Type\Home;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
@@ -25,9 +26,10 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
  * visibility options come from the {@see IconVisibility} and
  * {@see LabelVisibility} enums, all handed to the editor script so the
  * JavaScript never has to recreate (and risk desyncing) any of the lists. The
- * default page icon is likewise read from {@see BreadcrumbsConfig} so the
- * editor's Ancestor/Parent/Current preview crumbs stay in sync with the real
- * default rather than hardcoding it.
+ * default page icon and default home icon are likewise read from
+ * {@see BreadcrumbsConfig} and {@see Home::defaultIcon()} so the editor's
+ * canvas preview crumbs stay in sync with the real defaults rather than
+ * hardcoding them.
  */
 final class BlockAssets implements Bootable
 {
@@ -85,7 +87,8 @@ final class BlockAssets implements Bootable
 							],
 							LabelVisibility::cases()
 						),
-						'defaultPageIcon' => (new BreadcrumbsConfig())->getPostTypeIcon('page')
+						'defaultPageIcon' => (new BreadcrumbsConfig())->getPostTypeIcon('page'),
+						'defaultHomeIcon' => Home::defaultIcon()
 					],
 					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
 				)

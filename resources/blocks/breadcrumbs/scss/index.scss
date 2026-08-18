@@ -9,17 +9,68 @@
 // using the core UI units and values.
 //
 // @link https://github.com/WordPress/gutenberg/tree/trunk/packages/base-styles
+@use '~@wordpress/base-styles/colors';
 @use '~@wordpress/base-styles/variables';
 @use '~@wordpress/base-styles/mixins';
 
-.x3p0-breadcrumbs-toolbar-button__icon {
-	svg {
+// Icon settings row, used by `IconPickerButton` (home and separator icon
+// controls). Mirrors the Background Image panel's row design in Global
+// Styles — a bordered preview box with a toggle button and a reset button
+// that's hidden until hovered or focused.
+.x3p0-breadcrumbs-icon-control {
+
+	&__preview {
+		position: relative;
+		border: variables.$border-width solid colors.$gray-300;
+		border-radius: variables.$radius-small;
+	}
+
+	&__toggle {
+		cursor: pointer;
+		background: transparent;
+		border: none;
+		height: 40px;
+		width: 100%;
+		justify-content: flex-start;
+		padding-left: variables.$grid-unit-15;
+		padding-right: variables.$grid-unit-40;
+		color: colors.$gray-900;
+
+		&:hover {
+			color: var(--wp-admin-theme-color);
+		}
+
+		&:focus {
+			box-shadow: inset 0 0 0 var(--wp-admin-border-width-focus) var(--wp-admin-theme-color);
+		}
+	}
+
+	&__toggle-inner {
+		display: flex;
+		align-items: center;
+		gap: variables.$grid-unit-10;
+		width: 100%;
+		min-width: 0; // allows Truncate to work correctly
+	}
+
+	&__icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: variables.$icon-size;
+		height: variables.$icon-size;
+		border-radius: variables.$radius-small;
+	}
+
+	&__icon-svg svg {
+		display: block;
 		width: variables.$icon-size;
 		height: variables.$icon-size;
 		fill: currentColor;
 	}
 
-	&--text {
+	&__icon-text {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -27,6 +78,60 @@
 		height: variables.$icon-size;
 		font-size: calc(#{variables.$icon-size} * 0.7);
 		line-height: 1;
+	}
+
+	// The "not allowed" icon standing in for an unset icon — a light gray
+	// rather than the toggle's usual near-black, so it reads as empty.
+	// Double-classed to outweigh core's `.components-button svg { fill:
+	// currentColor; }`, which otherwise wins on specificity regardless of
+	// stylesheet order.
+	&__toggle &__empty-icon {
+		fill: colors.$gray-300;
+	}
+
+	&__reset {
+		position: absolute;
+		right: 0;
+		top: variables.$grid-unit;
+		margin: auto variables.$grid-unit auto;
+		opacity: 0;
+
+		@media not ( prefers-reduced-motion ) {
+			transition: opacity 0.1s ease-in-out;
+		}
+
+		.x3p0-breadcrumbs-icon-control__toggle:hover + &,
+		&:focus,
+		&:hover {
+			opacity: 1;
+		}
+
+		@media ( hover: none ) {
+			opacity: 1;
+		}
+	}
+}
+
+// Presents adjacent icon `ToolsPanelItem`s (each tagged with this class —
+// see `IconsPanel`) as one flush block, mirroring Global Styles' "Elements"
+// list — no gap between rows, and only the outer corners rounded, with
+// adjacent rows sharing a single border rather than doubling it up. The
+// items themselves stay fully independent, separately-togglable panel
+// items; this is presentation only.
+.x3p0-breadcrumbs-icon-control-item {
+	& + & {
+		margin-top: calc(-1 * #{variables.$grid-unit-20});
+
+		.x3p0-breadcrumbs-icon-control__preview {
+			border-top: none;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+	}
+
+	&:has(+ &) .x3p0-breadcrumbs-icon-control__preview {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
 }
 

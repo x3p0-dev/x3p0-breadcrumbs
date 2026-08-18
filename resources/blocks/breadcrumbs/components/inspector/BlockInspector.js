@@ -12,6 +12,7 @@ import LabelsPanel       from './LabelsPanel';
 import PostTaxonomyPanel from './PostTaxonomyPanel';
 import RewriteTagsPanel  from './RewriteTagsPanel';
 import SettingsPanel     from './SettingsPanel';
+import IconsPanel        from './IconsPanel';
 import ColorControls     from './ColorControls';
 
 // WordPress dependencies.
@@ -30,6 +31,7 @@ const BlockInspector = (props) => (
 		</InspectorControls>
 		<InspectorControls group="settings">
 			<SettingsPanel {...props}/>
+			<IconsPanel {...props}/>
 			<RewriteTagsPanel {...props}/>
 			<PostTaxonomyPanel {...props}/>
 		</InspectorControls>

@@ -1,5 +1,5 @@
 /**
- * Separator control component.
+ * Separator icon control component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -8,18 +8,16 @@
  */
 
 // Internal dependencies.
-import { IconLibraryModal } from '../ui';
+import { IconLibraryModal, IconPickerButton } from '../ui';
 import { SEPARATOR_ICONS } from '../../utils/constants';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 import { next as controlIcon } from '@wordpress/icons';
-import { getBlockType } from '@wordpress/blocks';
 import { store as coreStore } from '@wordpress/core-data';
 import { safeHTML } from '@wordpress/dom';
-import { useMemo, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { ToolbarButton } from '@wordpress/components';
 
 /**
  * Renders the separator icon control. Unlike the home icon, the separator
@@ -30,18 +28,14 @@ import { ToolbarButton } from '@wordpress/components';
  * @param props
  * @returns {JSX.Element}
  */
-const SeparatorControl = ({ attributes: { separatorIcon }, setAttributes }) => {
+const SeparatorIconControl = ({
+	attributes: { separatorIcon },
+	setAttributes,
+	defaultSeparatorIcon
+}) => {
 	const [isLibraryOpen, setLibraryOpen] = useState(false);
 
-	// Prefer the (possibly filtered) PHP-supplied default, which should be
-	// set for the block metadata; fall back to a literal as a last resort.
-	const defaultSeparatorIcon = useMemo(
-		() => getBlockType('x3p0/breadcrumbs')?.attributes?.separatorIcon?.default
-			?? 'x3p0-breadcrumbs/chevron',
-		[]
-	);
-
-	// Mirrors the selected icon on the toolbar button itself: a built-in
+	// Mirrors the selected icon on the preview button itself: a built-in
 	// text/glyph option, one fetched from the registered icon library, or
 	// (while nothing is selected, or its content is still resolving) the
 	// generic separator icon.
@@ -54,24 +48,27 @@ const SeparatorControl = ({ attributes: { separatorIcon }, setAttributes }) => {
 		[builtIn, separatorIcon]
 	);
 
-	const toolbarIcon = builtIn ? (
-		<span className="x3p0-breadcrumbs-toolbar-button__icon x3p0-breadcrumbs-toolbar-button__icon--text">
+	const preview = builtIn ? (
+		<span className="x3p0-breadcrumbs-icon-control__icon-text">
 			{builtIn.icon}
 		</span>
 	) : selectedIcon?.content ? (
 		<span
-			className="x3p0-breadcrumbs-toolbar-button__icon"
+			className="x3p0-breadcrumbs-icon-control__icon-svg"
 			dangerouslySetInnerHTML={{__html: safeHTML(selectedIcon.content)}}
 		/>
 	) : controlIcon;
 
 	return (
 		<>
-			<ToolbarButton
-				icon={toolbarIcon}
-				label={__('Separator Icon', 'x3p0-breadcrumbs')}
-				onClick={() => setLibraryOpen(true)}
-				isPressed={!! separatorIcon}
+			<IconPickerButton
+				value={separatorIcon}
+				icon={preview}
+				label={__('Separator', 'x3p0-breadcrumbs')}
+				onOpen={() => setLibraryOpen(true)}
+				onReset={() => setAttributes({ separatorIcon: defaultSeparatorIcon })}
+				openLabel={__('Replace separator icon', 'x3p0-breadcrumbs')}
+				resetLabel={__('Reset separator icon', 'x3p0-breadcrumbs')}
 			/>
 			{isLibraryOpen && (
 				<IconLibraryModal
@@ -95,4 +92,4 @@ const SeparatorControl = ({ attributes: { separatorIcon }, setAttributes }) => {
 	);
 };
 
-export default SeparatorControl;
+export default SeparatorIconControl;

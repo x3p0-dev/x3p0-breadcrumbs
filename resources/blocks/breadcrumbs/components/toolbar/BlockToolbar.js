@@ -8,9 +8,7 @@
  */
 
 // Internal dependencies.
-import JustifyControl   from './JustifyControl';
-import HomeControl      from './HomeControl';
-import SeparatorControl from './SeparatorControl';
+import JustifyControl from './JustifyControl';
 
 // WordPress dependencies.
 import { BlockControls, useBlockEditingMode } from '@wordpress/block-editor';
@@ -24,15 +22,9 @@ import { BlockControls, useBlockEditingMode } from '@wordpress/block-editor';
  * @returns {JSX.Element|boolean}
  */
 const BlockToolbar = (props) => 'default' === useBlockEditingMode() && (
-	<>
-		<BlockControls group="block">
-			<JustifyControl {...props}/>
-		</BlockControls>
-		<BlockControls group="other">
-			<HomeControl {...props}/>
-			<SeparatorControl {...props}/>
-		</BlockControls>
-	</>
+	<BlockControls group="block">
+		<JustifyControl {...props}/>
+	</BlockControls>
 );
 
 export default BlockToolbar;

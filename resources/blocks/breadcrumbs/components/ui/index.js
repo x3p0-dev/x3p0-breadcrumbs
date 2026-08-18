@@ -9,3 +9,4 @@
 
 export { IconGrid }         from './IconGrid';
 export { IconLibraryModal } from './IconLibraryModal';
+export { IconPickerButton } from './IconPickerButton';

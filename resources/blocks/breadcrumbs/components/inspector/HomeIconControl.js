@@ -1,5 +1,5 @@
 /**
- * Home control component.
+ * Home icon control component.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -8,7 +8,7 @@
  */
 
 // Internal dependencies.
-import { IconLibraryModal } from '../ui';
+import { IconLibraryModal, IconPickerButton } from '../ui';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -17,21 +17,19 @@ import { store as coreStore } from '@wordpress/core-data';
 import { safeHTML } from '@wordpress/dom';
 import { useEffect, useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
-import { ToolbarButton } from '@wordpress/components';
 
 /**
- * Renders the home icon and related controls. The home icon only ever comes
- * from the registered icon library — there's no text/emoji option, as there
- * is for the separator — so the toolbar button opens the library directly
- * rather than through an intermediate dropdown.
+ * Renders the home icon control. The home icon only ever comes from the
+ * registered icon library — there's no text/emoji option, as there is for
+ * the separator — so the preview button opens the library directly rather
+ * than through an intermediate dropdown.
  * @param props
- * @returns {JSX.Element|null}
+ * @returns {JSX.Element}
  */
-const HomeControl = ({
+const HomeIconControl = ({
 	attributes: {
 		homeIcon,
-		showHomeLabel,
-		showTrailStart
+		showHomeLabel
 	},
 	setAttributes
 }) => {
@@ -48,7 +46,7 @@ const HomeControl = ({
 		}
 	}, [ homeIcon, showHomeLabel ]);
 
-	// Mirrors the selected icon on the toolbar button itself, falling back
+	// Mirrors the selected icon on the preview button itself, falling back
 	// to the generic home icon while nothing is selected (or its content is
 	// still resolving).
 	const selectedIcon = useSelect(
@@ -58,24 +56,23 @@ const HomeControl = ({
 		[homeIcon]
 	);
 
-	const toolbarIcon = selectedIcon?.content ? (
+	const preview = selectedIcon?.content ? (
 		<span
-			className="x3p0-breadcrumbs-toolbar-button__icon"
+			className="x3p0-breadcrumbs-icon-control__icon-svg"
 			dangerouslySetInnerHTML={{__html: safeHTML(selectedIcon.content)}}
 		/>
 	) : controlIcon;
 
-	if (! showTrailStart) {
-		return null;
-	}
-
 	return (
 		<>
-			<ToolbarButton
-				icon={toolbarIcon}
-				label={__('Home Icon', 'x3p0-breadcrumbs')}
-				onClick={() => setLibraryOpen(true)}
-				isPressed={!! homeIcon}
+			<IconPickerButton
+				value={homeIcon}
+				icon={preview}
+				label={__('Home', 'x3p0-breadcrumbs')}
+				onOpen={() => setLibraryOpen(true)}
+				onReset={() => setAttributes({ homeIcon: '' })}
+				openLabel={__('Replace home icon', 'x3p0-breadcrumbs')}
+				resetLabel={__('Remove home icon', 'x3p0-breadcrumbs')}
 			/>
 			{isLibraryOpen && (
 				<IconLibraryModal
@@ -97,4 +94,4 @@ const HomeControl = ({
 	);
 };
 
-export default HomeControl;
+export default HomeIconControl;

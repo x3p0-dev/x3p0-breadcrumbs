@@ -32,7 +32,7 @@ enum LabelVisibility: string
 	 * first/home crumb already has an icon standing in for its label (e.g.,
 	 * a house icon for "Home").
 	 */
-	case AllButFirst = 'all_but_first';
+	case AllButFirst = 'all-but-first';
 
 	/**
 	 * Only the last crumb in the trail renders its label — the rest show

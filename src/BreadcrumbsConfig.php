@@ -28,20 +28,23 @@ final class BreadcrumbsConfig
 
 	/**
 	 * Built-in icon defaults for WordPress's own core post types, used by
-	 * `getPostTypeIcon()` beneath any caller override. `post` isn't listed
-	 * here because it already resolves through `Crumb\Type\Post::DEFAULT_ICON`;
-	 * `page` gets its own entry since no core icon distinguishes it from a
-	 * generic post. `attachment`'s generic default is superseded by a
-	 * media-type-aware icon (image, audio) resolved in `Post::getIcon()`
-	 * where a matching one exists.
+	 * `getPostTypeIcon()`/`getPostTypeArchiveIcon()` beneath any caller
+	 * override. Each entry may set a `single` icon (the post type's single-post
+	 * crumb), an `archive` icon (its post type archive crumb), or both. `post`
+	 * isn't listed here because it already resolves through
+	 * `Crumb\Type\Post::DEFAULT_ICON`; `page` gets its own `single` entry since
+	 * no core icon distinguishes it from a generic post (pages have no
+	 * archive). `attachment`'s generic `single` default is superseded by a
+	 * media-type-aware icon (image, audio) resolved in `Post::getIcon()` where
+	 * a matching one exists.
 	 *
-	 * @var  array<string, string>
+	 * @var  array<string, array{single?: string, archive?: string}>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const DEFAULT_POST_TYPE_ICONS = [
-		'attachment' => 'core/file',
-		'page'       => 'x3p0-breadcrumbs/article',
-		'product'    => 'x3p0-breadcrumbs/package'
+		'attachment' => ['single' => 'core/file'],
+		'page'       => ['single' => 'x3p0-breadcrumbs/article'],
+		'product'    => ['single' => 'x3p0-breadcrumbs/package']
 	];
 
 	/**
@@ -63,11 +66,11 @@ final class BreadcrumbsConfig
 	 * live on `BreadcrumbsLabel` (labels) and in the `mapRewriteTags()`
 	 * accessor (which defaults to `true`), so callers pass only what differs.
 	 *
-	 * @param array<string, bool>   $mapRewriteTags
-	 * @param array<string, string> $labels
-	 * @param array<string, string> $icons
-	 * @param array<string, string> $postTypeIcons
-	 * @param array<string, string> $taxonomyIcons
+	 * @param array<string, bool>                                      $mapRewriteTags
+	 * @param array<string, string>                                    $labels
+	 * @param array<string, string>                                    $icons
+	 * @param array<string, array{single?: string, archive?: string}>  $postTypeIcons
+	 * @param array<string, string>                                    $taxonomyIcons
 	 */
 	public function __construct(
 		private readonly array $mapRewriteTags = [],
@@ -117,13 +120,27 @@ final class BreadcrumbsConfig
 	}
 
 	/**
-	 * Returns the icon attribute value for the given post type: a caller
-	 * override if one is set, otherwise the built-in default from
-	 * `DEFAULT_POST_TYPE_ICONS`, otherwise an empty string.
+	 * Returns the icon attribute value for the given post type's single-post
+	 * crumb: a caller override if one is set, otherwise the built-in default
+	 * from `DEFAULT_POST_TYPE_ICONS`, otherwise an empty string.
 	 */
 	public function getPostTypeIcon(string $postType): string
 	{
-		return $this->postTypeIcons[$postType] ?? self::DEFAULT_POST_TYPE_ICONS[$postType] ?? '';
+		return $this->postTypeIcons[$postType]['single']
+			?? self::DEFAULT_POST_TYPE_ICONS[$postType]['single']
+			?? '';
+	}
+
+	/**
+	 * Returns the icon attribute value for the given post type's archive
+	 * crumb: a caller override if one is set, otherwise the built-in default
+	 * from `DEFAULT_POST_TYPE_ICONS`, otherwise an empty string.
+	 */
+	public function getPostTypeArchiveIcon(string $postType): string
+	{
+		return $this->postTypeIcons[$postType]['archive']
+			?? self::DEFAULT_POST_TYPE_ICONS[$postType]['archive']
+			?? '';
 	}
 
 	/**

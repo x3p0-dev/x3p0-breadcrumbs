@@ -38,6 +38,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"iconVisibility": {
+			"type": "string",
+			"default": "none"
+		},
 		"labels": {
 			"type": "object",
 			"default": {},
@@ -58,6 +62,14 @@
 			"default": "rdfa"
 		},
 		"postTaxonomy": {
+			"type": "object",
+			"default": {}
+		},
+		"postTypeIcons": {
+			"type": "object",
+			"default": {}
+		},
+		"taxonomyIcons": {
 			"type": "object",
 			"default": {}
 		},

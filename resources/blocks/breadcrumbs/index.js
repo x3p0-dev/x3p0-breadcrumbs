@@ -34,5 +34,12 @@ if (window.x3p0Breadcrumbs?.defaultMarkup) {
 	metadata.attributes.markup.default = window.x3p0Breadcrumbs.defaultMarkup;
 }
 
+// Keep the accepted icon visibility values in sync with the server-defined
+// enum (`IconVisibility`), passed in on the `x3p0Breadcrumbs` global.
+//
+// noinspection JSUnresolvedVariable
+metadata.attributes.iconVisibility.enum =
+	(window.x3p0Breadcrumbs?.iconVisibilityOptions ?? []).map(({key}) => key);
+
 // Register the block type.
 registerBlockType(metadata, { edit, icon, deprecated, transforms });

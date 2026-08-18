@@ -35,10 +35,25 @@ enum IconVisibility: string
 	 * Every crumb except the last renders its icon. Common where the last
 	 * crumb is the current page.
 	 */
-	case AllButLast = 'all_but_last';
+	case AllButLast = 'all-but-last';
 
 	/**
 	 * Every crumb in the trail renders its icon.
 	 */
 	case All = 'all';
+
+	/**
+	 * Returns the default, translated label text for the case, used as the
+	 * block editor's select control option label.
+	 */
+	public function label(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return match ($this) {
+			self::None       => __('None', 'x3p0-breadcrumbs'),
+			self::First      => __('First Crumb Only', 'x3p0-breadcrumbs'),
+			self::AllButLast => __('All Except Last', 'x3p0-breadcrumbs'),
+			self::All        => __('All Crumbs', 'x3p0-breadcrumbs')
+		};
+	}
 }

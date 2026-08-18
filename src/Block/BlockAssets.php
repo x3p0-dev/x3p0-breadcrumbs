@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
  * Passes server-side data to the block editor. The selectable markup types are
- * defined once in PHP (captured via {@see MarkupOptions}) and handed to the
- * editor script so the JavaScript never has to recreate (and risk desyncing)
- * the list.
+ * defined once in PHP (captured via {@see MarkupOptions}) and the icon
+ * visibility options come from the {@see IconVisibility} enum, both handed to
+ * the editor script so the JavaScript never has to recreate (and risk
+ * desyncing) either list. The default page icon is likewise read from
+ * {@see BreadcrumbsConfig} so the editor's Ancestor/Parent/Current preview
+ * crumbs stay in sync with the real default rather than hardcoding it.
  */
 final class BlockAssets implements Bootable
 {
@@ -62,8 +67,16 @@ final class BlockAssets implements Bootable
 				self::SCRIPT_GLOBAL,
 				wp_json_encode(
 					[
-						'markupTypes'   => $this->markupOptions->forBlock(),
-						'defaultMarkup' => $this->markupOptions->getBlockDefaultKey()
+						'markupTypes'           => $this->markupOptions->forBlock(),
+						'defaultMarkup'         => $this->markupOptions->getBlockDefaultKey(),
+						'iconVisibilityOptions' => array_map(
+							static fn (IconVisibility $case) => [
+								'key'  => $case->value,
+								'name' => $case->label()
+							],
+							IconVisibility::cases()
+						),
+						'defaultPageIcon' => (new BreadcrumbsConfig())->getPostTypeIcon('page')
 					],
 					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
 				)

@@ -66,4 +66,15 @@ final class PostType extends Crumb
 	{
 		return (string) get_post_type_archive_link($this->postType->name);
 	}
+
+	/**
+	 * Returns this post type's configured archive icon, falling back to the
+	 * shared default from `Crumb::ICON` when none is set.
+	 *
+	 * @inheritDoc
+	 */
+	public function getIcon(): string
+	{
+		return $this->config->getPostTypeArchiveIcon($this->postType->name) ?: self::ICON;
+	}
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
+use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
@@ -21,9 +22,11 @@ use const X3P0\Breadcrumbs\PLUGIN_DIR;
 /**
  * Registers the plugin's block types with WordPress from their built metadata
  * and adjusts that metadata at registration time: rewrite-tag post types are
- * marked to map by default, and the `markup` attribute's accepted values are
+ * marked to map by default, the `markup` attribute's accepted values are
  * synced from the registered markup options so the enum never drifts from the
- * registry. Wired into WordPress on boot.
+ * registry, and the `iconVisibility` attribute's accepted values are synced
+ * from the `IconVisibility` enum so it never drifts from its cases. Wired
+ * into WordPress on boot.
  */
 final class BlockRegistrar implements Bootable
 {
@@ -84,8 +87,10 @@ final class BlockRegistrar implements Bootable
 	/**
 	 * Adjusts the block metadata at registration time. It enables mapping
 	 * by default for all publicly queryable post types with a `%tagname%`
-	 * (rewrite tag) in their slug, and derives the accepted `markup` values
-	 * from the registered block options so they never drift from the registry.
+	 * (rewrite tag) in their slug, derives the accepted `markup` values from
+	 * the registered block options so they never drift from the registry, and
+	 * derives the accepted `iconVisibility` values from the `IconVisibility`
+	 * enum so they never drift from its cases.
 	 */
 	private function setMetadata(array $metadata): array
 	{
@@ -115,6 +120,13 @@ final class BlockRegistrar implements Bootable
 		$metadata['attributes']['markup']['enum'] = array_column(
 			$this->markupOptions->forBlock(),
 			'key'
+		);
+
+		// Keep the accepted icon visibility values in sync with the enum's
+		// cases so the attribute enum and the enum never drift apart.
+		$metadata['attributes']['iconVisibility']['enum'] = array_map(
+			static fn (IconVisibility $case) => $case->value,
+			IconVisibility::cases()
 		);
 
 		return $metadata;

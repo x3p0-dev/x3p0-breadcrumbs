@@ -50,6 +50,8 @@ final class Breadcrumbs implements BlockRenderer
 				'labels'         => $attributes['labels']         ?? [],
 				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
 				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],
+				'postTypeIcons'  => $attributes['postTypeIcons']  ?? [],
+				'taxonomyIcons'  => $attributes['taxonomyIcons']  ?? [],
 				'icons'          => ['home' => $attributes['homeIcon'] ?? '']
 			],
 			markupConfig: [
@@ -59,7 +61,7 @@ final class Breadcrumbs implements BlockRenderer
 				'showFirstCrumb'        => $attributes['showTrailStart']        ?? true,
 				'showLastCrumb'         => $attributes['showTrailEnd']          ?? true,
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
-				'iconVisibility'        => empty($attributes['homeIcon']) ? IconVisibility::None : IconVisibility::First,
+				'iconVisibility'        => IconVisibility::tryFrom($attributes['iconVisibility'] ?? '') ?? IconVisibility::None,
 				'labelVisibility'       => $this->getLabelVisibility($attributes),
 				'separatorIcon'         => $attributes['separatorIcon']         ?? '',
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
@@ -77,9 +79,21 @@ final class Breadcrumbs implements BlockRenderer
 	 */
 	private function getLabelVisibility(array $attributes): LabelVisibility
 	{
-		return $attributes['showTrailStart'] && $attributes['homeIcon'] && ! $attributes['showHomeLabel']
+		return $this->homeIconShowing($attributes) && ! $attributes['showHomeLabel']
 			? LabelVisibility::AllButFirst
 			: LabelVisibility::All;
+	}
+
+	/**
+	 * Determines whether the home crumb's icon will actually render, given
+	 * both the home icon attribute and the icon visibility setting — every
+	 * `IconVisibility` case but `None` includes the first (home) crumb.
+	 */
+	private function homeIconShowing(array $attributes): bool
+	{
+		return $attributes['showTrailStart']
+			&& $attributes['homeIcon']
+			&& 'none' !== ($attributes['iconVisibility'] ?? 'none');
 	}
 
 	/**
@@ -100,7 +114,7 @@ final class Breadcrumbs implements BlockRenderer
 		// Hide the home label when there's a home icon rendered in its
 		// place. The icon itself is real markup rendered by the `Markup`
 		// layer, not driven by a class here.
-		if ($attributes['showTrailStart'] && $attributes['homeIcon'] && ! $attributes['showHomeLabel']) {
+		if ($this->homeIconShowing($attributes) && ! $attributes['showHomeLabel']) {
 			$classes[] = 'hide-home-label';
 		}
 

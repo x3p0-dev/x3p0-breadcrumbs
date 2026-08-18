@@ -33,6 +33,7 @@ enum Endpoint: string
 	case LostPassword   = 'lost-password';
 	case OrderPay       = 'order-pay';
 	case OrderReceived  = 'order-received';
+	case Wishlist      = 'wishlist';
 
 	/**
 	 * Returns the icon matching this endpoint.
@@ -47,7 +48,8 @@ enum Endpoint: string
 			self::PaymentMethods, self::OrderPay => 'core/payment',
 			self::EditAccount                    => 'core/pencil',
 			self::LostPassword                   => 'core/key',
-			self::OrderReceived                  => 'core/check'
+			self::OrderReceived                  => 'core/check',
+			self::Wishlist                       => 'core/star-filled'
 		};
 	}
 }

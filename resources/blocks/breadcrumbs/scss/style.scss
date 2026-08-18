@@ -47,26 +47,7 @@
 	&.is-content-justification-left   { justify-content: flex-start; }
 	&.is-content-justification-center { justify-content: center;     }
 
-	// Hides the home crumb label.
-	&.hide-home-label :where(
-		.wp-block-x3p0-breadcrumbs__crumb--home,
-		.wp-block-x3p0-breadcrumbs__crumb--network
-	) .wp-block-x3p0-breadcrumbs__crumb-label {
-		clip: rect(1px, 1px, 1px, 1px);
-		word-wrap: normal !important;
-		border: 0;
-		clip-path: inset(50%);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		width: 1px;
-	}
-
-	// Visually hides any crumb's label per `LabelVisibility`, same
-	// technique as `.hide-home-label` above but per-crumb rather than
-	// scoped to a fixed home/network position.
+	// Visually hides any crumb's label per `LabelVisibility`.
 	&__crumb-label--hidden {
 		clip: rect(1px, 1px, 1px, 1px);
 		word-wrap: normal !important;

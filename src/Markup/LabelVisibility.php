@@ -45,4 +45,19 @@ enum LabelVisibility: string
 	 * No crumb renders its label; the trail is icon-only.
 	 */
 	case None = 'none';
+
+	/**
+	 * Returns the default, translated label text for the case, used as the
+	 * block editor's select control option label.
+	 */
+	public function label(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return match ($this) {
+			self::All         => __('All Crumbs', 'x3p0-breadcrumbs'),
+			self::AllButFirst => __('All Except First', 'x3p0-breadcrumbs'),
+			self::Last        => __('Last Crumb Only', 'x3p0-breadcrumbs'),
+			self::None        => __('None', 'x3p0-breadcrumbs')
+		};
+	}
 }

@@ -15,17 +15,19 @@ namespace X3P0\Breadcrumbs\Block;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
+use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
  * Passes server-side data to the block editor. The selectable markup types are
- * defined once in PHP (captured via {@see MarkupOptions}) and the icon
- * visibility options come from the {@see IconVisibility} enum, both handed to
- * the editor script so the JavaScript never has to recreate (and risk
- * desyncing) either list. The default page icon is likewise read from
- * {@see BreadcrumbsConfig} so the editor's Ancestor/Parent/Current preview
- * crumbs stay in sync with the real default rather than hardcoding it.
+ * defined once in PHP (captured via {@see MarkupOptions}) and the icon/label
+ * visibility options come from the {@see IconVisibility} and
+ * {@see LabelVisibility} enums, all handed to the editor script so the
+ * JavaScript never has to recreate (and risk desyncing) any of the lists. The
+ * default page icon is likewise read from {@see BreadcrumbsConfig} so the
+ * editor's Ancestor/Parent/Current preview crumbs stay in sync with the real
+ * default rather than hardcoding it.
  */
 final class BlockAssets implements Bootable
 {
@@ -75,6 +77,13 @@ final class BlockAssets implements Bootable
 								'name' => $case->label()
 							],
 							IconVisibility::cases()
+						),
+						'labelVisibilityOptions' => array_map(
+							static fn (LabelVisibility $case) => [
+								'key'  => $case->value,
+								'name' => $case->label()
+							],
+							LabelVisibility::cases()
 						),
 						'defaultPageIcon' => (new BreadcrumbsConfig())->getPostTypeIcon('page')
 					],

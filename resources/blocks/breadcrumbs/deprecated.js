@@ -39,177 +39,196 @@ const DEPRECATED_ICON_MAP = {
 const mapDeprecatedIcon = (value) => DEPRECATED_ICON_MAP[value] ?? value;
 
 /**
- * Returns an array for use in block deprecations.
+ * Content saved before 5.0.0 (i.e., up through 4.1.0). Its `homeIcon`/
+ * `separatorIcon` values may still use the built-in `svg-chevron`-style keys
+ * that predate WordPress's icon registration API, and it may still carry the
+ * `showHomeLabel` boolean that predates the `labelVisibility` attribute.
+ * Mirrors `X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs::mapDeprecatedAttributes()`
+ * on the PHP side, which performs the same migrations for content rendered
+ * without ever passing through the editor.
  */
-export default [
-	{
-		"attributes" : {
-			"justifyContent": {
-				"type": "string",
-				"default": ""
-			},
-			"showHomeLabel": {
-				"type": "boolean",
-				"default": true
-			},
-			"showOnHomepage": {
-				"type": "boolean",
-				"default": false
-			},
-			"showTrailStart": {
-				"type": "boolean",
-				"default": true
-			},
-			"showTrailEnd": {
-				"type": "boolean",
-				"default": true
-			},
-			"homeIcon": {
-				"type": "string",
-				"default": ""
-			},
-			"labels": {
-				"type": "object",
-				"default": {},
-				"role": "content"
-			},
-			"linkTrailEnd": {
-				"type": "boolean",
-				"default": false
-			},
-			"mapRewriteTags": {
-				"type": "object",
-				"default": {
-					"post": true
-				}
-			},
-			"markup": {
-				"type": "string",
-				"default": "rdfa"
-			},
-			"postTaxonomy": {
-				"type": "object",
-				"default": {}
-			},
-			"showTrailingSeparator": {
-				"type": "boolean",
-				"default": false
-			},
-			"separatorIcon": {
-				"type": "string",
-				"default": "svg-chevron"
-			},
-			"separatorColor": {
-				"type": "string"
-			},
-			"customSeparatorColor": {
-				"type": "string"
+const v5_0_0 = {
+	"attributes" : {
+		"justifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"showHomeLabel": {
+			"type": "boolean",
+			"default": true
+		},
+		"showOnHomepage": {
+			"type": "boolean",
+			"default": false
+		},
+		"showTrailStart": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTrailEnd": {
+			"type": "boolean",
+			"default": true
+		},
+		"homeIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"labels": {
+			"type": "object",
+			"default": {},
+			"role": "content"
+		},
+		"linkTrailEnd": {
+			"type": "boolean",
+			"default": false
+		},
+		"mapRewriteTags": {
+			"type": "object",
+			"default": {
+				"post": true
 			}
 		},
-		isEligible(attributes) {
-			return (
-				DEPRECATED_ICON_MAP.hasOwnProperty(attributes.homeIcon) ||
-				DEPRECATED_ICON_MAP.hasOwnProperty(attributes.separatorIcon)
-			);
+		"markup": {
+			"type": "string",
+			"default": "rdfa"
 		},
-		migrate(attributes) {
-			return {
-				...attributes,
-				...(attributes.homeIcon && {
-					homeIcon: mapDeprecatedIcon(attributes.homeIcon)
-				}),
-				...(attributes.separatorIcon && {
-					separatorIcon: mapDeprecatedIcon(attributes.separatorIcon)
-				})
-			};
+		"postTaxonomy": {
+			"type": "object",
+			"default": {}
+		},
+		"showTrailingSeparator": {
+			"type": "boolean",
+			"default": false
+		},
+		"separatorIcon": {
+			"type": "string",
+			"default": "svg-chevron"
+		},
+		"separatorColor": {
+			"type": "string"
+		},
+		"customSeparatorColor": {
+			"type": "string"
 		}
 	},
-	{
-		"attributes" : {
-			"justifyContent": {
-				"type": "string",
-				"default": ""
-			},
-			"showHomeLabel": {
-				"type": "boolean",
-				"default": true
-			},
-			"showOnHomepage": {
-				"type": "boolean",
-				"default": false
-			},
-			"showTrailStart": {
-				"type": "boolean",
-				"default": true
-			},
-			"showTrailEnd": {
-				"type": "boolean",
-				"default": true
-			},
-			"homePrefix": {
-				"type": "string",
-				"default": ""
-			},
-			"homePrefixType": {
-				"type": "string",
-				"default": ""
-			},
-			"markup": {
-				"type": "string",
-				"default": "rdfa"
-			},
-			"separator": {
-				"type": "string",
-				"default": "chevron"
-			},
-			"separatorType": {
-				"type": "string",
-				"default": "mask"
-			}
-		},
-		isEligible(attributes) {
-			return (
-				attributes.hasOwnProperty('separator') ||
-				attributes.hasOwnProperty('separatorType') ||
-				attributes.hasOwnProperty('homePrefix') ||
-				attributes.hasOwnProperty('homePrefixType')
-			);
-		},
-		migrate(attributes) {
-			const {
-				separator,
-				separatorType,
-				homePrefix,
-				homePrefixType,
-				...otherAttributes
-			} = attributes;
+	isEligible(attributes) {
+		return (
+			DEPRECATED_ICON_MAP.hasOwnProperty(attributes.homeIcon) ||
+			DEPRECATED_ICON_MAP.hasOwnProperty(attributes.separatorIcon) ||
+			attributes.hasOwnProperty('showHomeLabel')
+		);
+	},
+	migrate(attributes) {
+		const { showHomeLabel, ...otherAttributes } = attributes;
 
-			// This version predates `DEPRECATED_ICON_MAP`'s `{type}-{icon}` key
-			// format, storing the same information as separate attributes
-			// instead. Rebuild that key here so it can be mapped the same way
-			// as the deprecation above. `mask` was this version's name for
-			// what's now the `svg` type, so it's normalized before mapping;
-			// an unset type defaults to `svg` and an unset icon to `chevron`,
-			// matching this version's own defaults.
-			let separatorIcon;
-			if (separator || separatorType) {
-				const type = 'mask' === separatorType ? 'svg' : (separatorType || 'svg');
-				const icon = separator || 'chevron';
-				separatorIcon = mapDeprecatedIcon(`${type}-${icon}`);
-			}
-
-			// Home icons had no default, so both parts must be present.
-			let homeIcon;
-			if (homePrefix && homePrefixType) {
-				const type = 'mask' === homePrefixType ? 'svg' : homePrefixType;
-				homeIcon = mapDeprecatedIcon(`${type}-${homePrefix}`);
-			}
-
-			return {
-				...otherAttributes,
-				...(separatorIcon && { separatorIcon }),
-				...(homeIcon && { homeIcon }),
-			};
-		}
+		return {
+			...otherAttributes,
+			...(attributes.homeIcon && {
+				homeIcon: mapDeprecatedIcon(attributes.homeIcon)
+			}),
+			...(attributes.separatorIcon && {
+				separatorIcon: mapDeprecatedIcon(attributes.separatorIcon)
+			}),
+			...(! showHomeLabel && { labelVisibility: 'all-but-first' })
+		};
 	}
-];
+};
+
+/**
+ * Content saved before 4.0.0, when the icon-related attributes were merged
+ * into single attributes: `separator`/`separatorType` → `separatorIcon`,
+ * `homePrefix`/`homePrefixType` → `homeIcon`.
+ */
+const v4_0_0 = {
+	"attributes" : {
+		"justifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"showHomeLabel": {
+			"type": "boolean",
+			"default": true
+		},
+		"showOnHomepage": {
+			"type": "boolean",
+			"default": false
+		},
+		"showTrailStart": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTrailEnd": {
+			"type": "boolean",
+			"default": true
+		},
+		"homePrefix": {
+			"type": "string",
+			"default": ""
+		},
+		"homePrefixType": {
+			"type": "string",
+			"default": ""
+		},
+		"markup": {
+			"type": "string",
+			"default": "rdfa"
+		},
+		"separator": {
+			"type": "string",
+			"default": "chevron"
+		},
+		"separatorType": {
+			"type": "string",
+			"default": "mask"
+		}
+	},
+	isEligible(attributes) {
+		return (
+			attributes.hasOwnProperty('separator') ||
+			attributes.hasOwnProperty('separatorType') ||
+			attributes.hasOwnProperty('homePrefix') ||
+			attributes.hasOwnProperty('homePrefixType')
+		);
+	},
+	migrate(attributes) {
+		const {
+			separator,
+			separatorType,
+			homePrefix,
+			homePrefixType,
+			...otherAttributes
+		} = attributes;
+
+		// This version predates `DEPRECATED_ICON_MAP`'s `{type}-{icon}` key
+		// format, storing the same information as separate attributes
+		// instead. Rebuild that key here so it can be mapped the same way
+		// as the deprecation above. `mask` was this version's name for
+		// what's now the `svg` type, so it's normalized before mapping;
+		// an unset type defaults to `svg` and an unset icon to `chevron`,
+		// matching this version's own defaults.
+		let separatorIcon;
+		if (separator || separatorType) {
+			const type = 'mask' === separatorType ? 'svg' : (separatorType || 'svg');
+			const icon = separator || 'chevron';
+			separatorIcon = mapDeprecatedIcon(`${type}-${icon}`);
+		}
+
+		// Home icons had no default, so both parts must be present.
+		let homeIcon;
+		if (homePrefix && homePrefixType) {
+			const type = 'mask' === homePrefixType ? 'svg' : homePrefixType;
+			homeIcon = mapDeprecatedIcon(`${type}-${homePrefix}`);
+		}
+
+		return {
+			...otherAttributes,
+			...(separatorIcon && { separatorIcon }),
+			...(homeIcon && { homeIcon }),
+		};
+	}
+};
+
+/**
+ * Returns an array for use in block deprecations.
+ */
+export default [v5_0_0, v4_0_0];

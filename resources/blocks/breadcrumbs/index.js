@@ -41,5 +41,12 @@ if (window.x3p0Breadcrumbs?.defaultMarkup) {
 metadata.attributes.iconVisibility.enum =
 	(window.x3p0Breadcrumbs?.iconVisibilityOptions ?? []).map(({key}) => key);
 
+// Keep the accepted label visibility values in sync with the server-defined
+// enum (`LabelVisibility`), passed in on the `x3p0Breadcrumbs` global.
+//
+// noinspection JSUnresolvedVariable
+metadata.attributes.labelVisibility.enum =
+	(window.x3p0Breadcrumbs?.labelVisibilityOptions ?? []).map(({key}) => key);
+
 // Register the block type.
 registerBlockType(metadata, { edit, icon, deprecated, transforms });

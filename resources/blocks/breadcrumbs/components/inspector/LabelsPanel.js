@@ -23,7 +23,13 @@ import {
  */
 const LabelsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(LabelsPanel);
-	const { ariaLabel, labels = {}, showHomeLabel, showTrailStart } = attributes;
+	const { ariaLabel, labels = {}, labelVisibility, showTrailStart } = attributes;
+
+	// A coarse approximation of `Html::isCrumbLabelHidden()` for the home
+	// crumb specifically: since it's always first in the trail, its label is
+	// visually hidden by every `LabelVisibility` case but `all` (ignoring the
+	// edge case where Home is also the trail's only/last crumb).
+	const homeLabelHidden = 'all' !== labelVisibility;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {...labels};
@@ -44,7 +50,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 			showTrailStart ? [{
 				name: 'home',
 				label: __('Home', 'x3p0-breadcrumbs'),
-				help: ! showHomeLabel
+				help: homeLabelHidden
 					? __('Label is visually hidden but is readable to users with assistive technology.', 'x3p0-breadcrumbs')
 					: ''
 			}] : []

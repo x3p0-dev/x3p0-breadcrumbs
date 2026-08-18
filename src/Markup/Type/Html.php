@@ -199,8 +199,7 @@ class Html extends Markup implements MarkupBlockOption
 	 * Renders a crumb's label as a (kses-filtered) span. The label always
 	 * renders in the markup — even when `isCrumbLabelHidden()` says to hide
 	 * it, it stays accessible to assistive tech via a visually-hidden
-	 * modifier class rather than being omitted, the same technique the
-	 * block's own `hide-home-label` option already uses.
+	 * modifier class rather than being omitted.
 	 */
 	protected function renderCrumbLabel(Crumb $crumb): string
 	{

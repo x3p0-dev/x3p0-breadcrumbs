@@ -18,10 +18,6 @@
 			"enum": [ "left", "center", "right" ],
 			"default": ""
 		},
-		"showHomeLabel": {
-			"type": "boolean",
-			"default": true
-		},
 		"showOnHomepage": {
 			"type": "boolean",
 			"default": false
@@ -41,6 +37,10 @@
 		"iconVisibility": {
 			"type": "string",
 			"default": "none"
+		},
+		"labelVisibility": {
+			"type": "string",
+			"default": "all"
 		},
 		"labels": {
 			"type": "object",

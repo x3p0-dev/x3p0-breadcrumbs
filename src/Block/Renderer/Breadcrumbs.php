@@ -62,38 +62,12 @@ final class Breadcrumbs implements BlockRenderer
 				'showLastCrumb'         => $attributes['showTrailEnd']          ?? true,
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
 				'iconVisibility'        => IconVisibility::tryFrom($attributes['iconVisibility'] ?? '') ?? IconVisibility::None,
-				'labelVisibility'       => $this->getLabelVisibility($attributes),
+				'labelVisibility'       => LabelVisibility::tryFrom($attributes['labelVisibility'] ?? '') ?? LabelVisibility::All,
 				'separatorIcon'         => $attributes['separatorIcon']         ?? '',
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
-	}
-
-	/**
-	 * Derives label visibility from the same condition that already drives
-	 * the `hide-home-label` wrapper class (see `getWrapperAttributes()`):
-	 * hide the first/home crumb's label only when its icon is showing in
-	 * its place and the "show home label" option is off. There's no block
-	 * attribute yet for the other `LabelVisibility` cases (`Last`, `None`).
-	 */
-	private function getLabelVisibility(array $attributes): LabelVisibility
-	{
-		return $this->homeIconShowing($attributes) && ! $attributes['showHomeLabel']
-			? LabelVisibility::AllButFirst
-			: LabelVisibility::All;
-	}
-
-	/**
-	 * Determines whether the home crumb's icon will actually render, given
-	 * both the home icon attribute and the icon visibility setting — every
-	 * `IconVisibility` case but `None` includes the first (home) crumb.
-	 */
-	private function homeIconShowing(array $attributes): bool
-	{
-		return $attributes['showTrailStart']
-			&& $attributes['homeIcon']
-			&& 'none' !== ($attributes['iconVisibility'] ?? 'none');
 	}
 
 	/**
@@ -110,13 +84,6 @@ final class Breadcrumbs implements BlockRenderer
 		// Define the classes array, pulling from block supports if it
 		// has any classes already.
 		$classes = isset($attr['class']) ? explode(' ', $attr['class']) : [];
-
-		// Hide the home label when there's a home icon rendered in its
-		// place. The icon itself is real markup rendered by the `Markup`
-		// layer, not driven by a class here.
-		if ($this->homeIconShowing($attributes) && ! $attributes['showHomeLabel']) {
-			$classes[] = 'hide-home-label';
-		}
 
 		// If there's a selected content justification, add a class.
 		if (! empty($attributes['justifyContent'])) {
@@ -158,10 +125,14 @@ final class Breadcrumbs implements BlockRenderer
 	}
 
 	/**
-	 * Maps deprecated attributes to new attributes. Attribute names only —
-	 * a deprecated `homeIcon`/`separatorIcon` value produced here (e.g.,
-	 * `svg-arrow`) is remapped to its current icon library reference later,
-	 * by `Icon\IconResolver`, when the `Markup` layer resolves it.
+	 * Maps deprecated attributes to new attributes. A deprecated
+	 * `homeIcon`/`separatorIcon` value produced here (e.g., `svg-arrow`) is
+	 * remapped to its current icon library reference later, by
+	 * `Icon\IconResolver`, when the `Markup` layer resolves it. The
+	 * deprecated `showHomeLabel` boolean maps onto `LabelVisibility::AllButFirst`
+	 * when it was turned off — mirrored on the JS side by `deprecated.js`'s
+	 * block deprecation, which performs the same migration for content
+	 * opened in the editor.
 	 */
 	private function mapDeprecatedAttributes(array $attributes): array
 	{
@@ -179,6 +150,10 @@ final class Breadcrumbs implements BlockRenderer
 		if ($homePrefix && $homePrefixType) {
 			$type = 'mask' === $homePrefixType ? 'svg' : $homePrefixType;
 			$attributes['homeIcon'] = "{$type}-{$homePrefix}";
+		}
+
+		if (array_key_exists('showHomeLabel', $attributes) && ! $attributes['showHomeLabel']) {
+			$attributes['labelVisibility'] = LabelVisibility::AllButFirst->value;
 		}
 
 		return $attributes;

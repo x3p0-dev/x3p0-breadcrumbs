@@ -42,6 +42,25 @@ const CrumbLink = ({ children }) => (
 );
 
 /**
+ * Faux crumb label for the content canvas. Mirrors `Html::renderCrumbLabel()`
+ * — the label always renders, but gains a visually-hidden modifier class
+ * when `hidden` is true rather than being omitted.
+ * @param children
+ * @param hidden
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const CrumbLabel = ({ children, hidden }) => (
+	<span
+		className={clsx('wp-block-x3p0-breadcrumbs__crumb-label', {
+			'wp-block-x3p0-breadcrumbs__crumb-label--hidden': hidden
+		})}
+	>
+		{children}
+	</span>
+);
+
+/**
  * Renders a home or separator icon as real, `aria-hidden` markup — a
  * built-in SVG/emoji from `options`, or an SVG fetched from the registered
  * icon library (a `value` containing a `/`) — instead of driving it purely
@@ -94,9 +113,9 @@ const BlockContent = ({
 		homeIcon,
 		iconVisibility,
 		justifyContent,
+		labelVisibility,
 		linkTrailEnd,
 		postTypeIcons = {},
-		showHomeLabel,
 		showTrailEnd,
 		showTrailStart,
 		showTrailingSeparator,
@@ -128,9 +147,26 @@ const BlockContent = ({
 			default:             return false;
 		}
 	};
+
+	// Mirrors `Html::isCrumbLabelHidden()`: a crumb's label is only ever
+	// actually hidden when its icon is showing in its place — otherwise the
+	// crumb would have nothing visible or accessible standing in for it, so
+	// the label is forced to show regardless of `labelVisibility`.
+	const isCrumbLabelHidden = (index, total, iconVisible) => {
+		const hide = (() => {
+			switch (labelVisibility) {
+				case 'all-but-first': return 0 === index;
+				case 'last':          return index !== total - 1;
+				case 'none':          return true;
+				default:              return false;
+			}
+		})();
+
+		return hide && iconVisible;
+	};
+
 	const blockProps = useBlockProps({
 		className: clsx({
-			'hide-home-label' : showTrailStart && ! showHomeLabel,
 			[`is-content-justification-${justifyContent}`] : justifyContent
 		}),
 		style: {
@@ -153,10 +189,12 @@ const BlockContent = ({
 		? labels.home
 		: isSelected ? '' : __('Home', 'x3p0-breadcrumbs')
 
-	const homeLabel = (
+	const renderHomeLabel = (hidden) => (
 		<RichText
 			tagName="span"
-			className="wp-block-x3p0-breadcrumbs__crumb-label"
+			className={clsx('wp-block-x3p0-breadcrumbs__crumb-label', {
+				'wp-block-x3p0-breadcrumbs__crumb-label--hidden': hidden
+			})}
 			aria-label={__('Home breadcrumb label', 'x3p0-breadcrumbs')}
 			placeholder={__('Home', 'x3p0-breadcrumbs')}
 			value={homeValue}
@@ -188,7 +226,7 @@ const BlockContent = ({
 		showTrailStart && {
 			key: 'home',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--home',
-			content: (showIcon) => (
+			content: (showIcon, labelHidden) => (
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
@@ -196,14 +234,14 @@ const BlockContent = ({
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
-					{homeLabel}
+					{renderHomeLabel(labelHidden)}
 				</CrumbLink>
 			)
 		},
 		{
 			key: 'ancestor',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
-			content: (showIcon) => (
+			content: (showIcon, labelHidden) => (
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
@@ -211,16 +249,16 @@ const BlockContent = ({
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
-					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+					<CrumbLabel hidden={labelHidden}>
 						{__('Ancestor', 'x3p0-breadcrumbs')}
-					</span>
+					</CrumbLabel>
 				</CrumbLink>
 			)
 		},
 		{
 			key: 'parent',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
-			content: (showIcon) => (
+			content: (showIcon, labelHidden) => (
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
@@ -228,16 +266,16 @@ const BlockContent = ({
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
-					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+					<CrumbLabel hidden={labelHidden}>
 						{__('Parent', 'x3p0-breadcrumbs')}
-					</span>
+					</CrumbLabel>
 				</CrumbLink>
 			)
 		},
 		showTrailEnd && {
 			key: 'current',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
-			content: (showIcon) => linkTrailEnd ? (
+			content: (showIcon, labelHidden) => linkTrailEnd ? (
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
@@ -245,9 +283,9 @@ const BlockContent = ({
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
-					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+					<CrumbLabel hidden={labelHidden}>
 						{__('Current', 'x3p0-breadcrumbs')}
-					</span>
+					</CrumbLabel>
 				</CrumbLink>
 			) : (
 				<span className="wp-block-x3p0-breadcrumbs__crumb-content">
@@ -257,9 +295,9 @@ const BlockContent = ({
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
-					<span className="wp-block-x3p0-breadcrumbs__crumb-label">
+					<CrumbLabel hidden={labelHidden}>
 						{__('Current', 'x3p0-breadcrumbs')}
-					</span>
+					</CrumbLabel>
 				</span>
 			)
 		}
@@ -268,18 +306,23 @@ const BlockContent = ({
 	return (
 		<nav {...innerBlocksProps}>
 			<ol className="wp-block-x3p0-breadcrumbs__trail">
-				{crumbs.map((crumb, index) => (
-					<li key={crumb.key} className={crumb.className}>
-						{crumb.content(isCrumbIconVisible(index, crumbs.length))}
-						{(index < crumbs.length - 1 || showTrailingSeparator) && (
-							<CrumbIcon
-								value={separatorIcon}
-								options={SEPARATOR_ICONS}
-								className="wp-block-x3p0-breadcrumbs__crumb-separator"
-							/>
-						)}
-					</li>
-				))}
+				{crumbs.map((crumb, index) => {
+					const iconVisible = isCrumbIconVisible(index, crumbs.length);
+					const labelHidden = isCrumbLabelHidden(index, crumbs.length, iconVisible);
+
+					return (
+						<li key={crumb.key} className={crumb.className}>
+							{crumb.content(iconVisible, labelHidden)}
+							{(index < crumbs.length - 1 || showTrailingSeparator) && (
+								<CrumbIcon
+									value={separatorIcon}
+									options={SEPARATOR_ICONS}
+									className="wp-block-x3p0-breadcrumbs__crumb-separator"
+								/>
+							)}
+						</li>
+					);
+				})}
 			</ol>
 		</nav>
 	);

@@ -15,7 +15,7 @@ import { __ } from '@wordpress/i18n';
 import { home as controlIcon } from '@wordpress/icons';
 import { store as coreStore } from '@wordpress/core-data';
 import { safeHTML } from '@wordpress/dom';
-import { useEffect, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -28,23 +28,11 @@ import { useSelect } from '@wordpress/data';
  */
 const HomeIconControl = ({
 	attributes: {
-		homeIcon,
-		showHomeLabel
+		homeIcon
 	},
 	setAttributes
 }) => {
 	const [isLibraryOpen, setLibraryOpen] = useState(false);
-
-	// A hidden home label requires a home icon to stand in for it (enforced
-	// by `SettingsPanel`'s toggle, which disables while there's no icon).
-	// This is the safety net for the other way the icon can disappear —
-	// resetting it here, via `onReset` below — so the label can't be left
-	// both hidden and iconless.
-	useEffect(() => {
-		if (! showHomeLabel && ! homeIcon) {
-			setAttributes({ showHomeLabel: true });
-		}
-	}, [ homeIcon, showHomeLabel ]);
 
 	// Mirrors the selected icon on the preview button itself, falling back
 	// to the generic home icon while nothing is selected (or its content is

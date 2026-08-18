@@ -31,12 +31,16 @@ import {
 // way WordPress groups its own Background or Color panel rows.
 const ITEM_CLASS_NAME = 'x3p0-breadcrumbs-icon-control-item';
 
-// Icon visibility options are defined once in PHP via `IconVisibility` and
-// passed in on the `x3p0Breadcrumbs` global, so the editor never recreates
-// the list. Labels arrive pre-translated from the server.
+// Icon/label visibility options are defined once in PHP via `IconVisibility`
+// and `LabelVisibility` and passed in on the `x3p0Breadcrumbs` global, so the
+// editor never recreates either list. Labels arrive pre-translated from the
+// server.
 //
 // noinspection JSUnresolvedVariable
 const ICON_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.iconVisibilityOptions ?? [];
+
+// noinspection JSUnresolvedVariable
+const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
 
 /**
  * Returns the first candidate label not already claimed within this panel,
@@ -71,7 +75,7 @@ const uniqueLabel = (usedLabels, ...candidates) => {
  */
 const IconsPanel = (props) => {
 	const {
-		attributes: { homeIcon, separatorIcon, showTrailStart, postTypeIcons = {}, taxonomyIcons = {}, iconVisibility },
+		attributes: { homeIcon, separatorIcon, showTrailStart, postTypeIcons = {}, taxonomyIcons = {}, iconVisibility, labelVisibility },
 		setAttributes
 	} = props;
 
@@ -87,6 +91,11 @@ const IconsPanel = (props) => {
 
 	const defaultIconVisibility = useMemo(
 		() => getBlockType('x3p0/breadcrumbs')?.attributes?.iconVisibility?.default ?? 'none',
+		[]
+	);
+
+	const defaultLabelVisibility = useMemo(
+		() => getBlockType('x3p0/breadcrumbs')?.attributes?.labelVisibility?.default ?? 'all',
 		[]
 	);
 
@@ -155,7 +164,8 @@ const IconsPanel = (props) => {
 				separatorIcon: defaultSeparatorIcon,
 				postTypeIcons: undefined,
 				taxonomyIcons: undefined,
-				iconVisibility: defaultIconVisibility
+				iconVisibility: defaultIconVisibility,
+				labelVisibility: defaultLabelVisibility
 			})}
 			panelId={panelId}
 		>
@@ -177,6 +187,26 @@ const IconsPanel = (props) => {
 					})}
 				/>
 			</ToolsPanelItem>
+			{! iconsHidden && (
+				<ToolsPanelItem
+					label={__('Label Visibility', 'x3p0-breadcrumbs')}
+					hasValue={() => labelVisibility !== defaultLabelVisibility}
+					onDeselect={() => setAttributes({ labelVisibility: defaultLabelVisibility })}
+					panelId={panelId}
+					isShownByDefault
+				>
+					<CustomSelectControl
+						label={__('Label Visibility', 'x3p0-breadcrumbs')}
+						options={LABEL_VISIBILITY_OPTIONS}
+						value={LABEL_VISIBILITY_OPTIONS.find(
+							(option) => option.key === labelVisibility
+						)}
+						onChange={({ selectedItem }) => setAttributes({
+							labelVisibility: selectedItem.key
+						})}
+					/>
+				</ToolsPanelItem>
+			)}
 			<ToolsPanelItem
 				className={ITEM_CLASS_NAME}
 				label={__('Separator', 'x3p0-breadcrumbs')}

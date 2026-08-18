@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
@@ -37,6 +38,21 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
  */
 final class WooCommerce extends Extension
 {
+	/**
+	 * Icons for the store pages (Cart, Checkout, My Account), keyed by the
+	 * page type `wc_get_page_id()` accepts. These are ordinary `page`-type
+	 * posts with no post-type-level signal of their own, so the icon has to
+	 * be attached here rather than resolved from a post-type default.
+	 *
+	 * @var  array<string, string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const PAGE_ICONS = [
+		'cart'      => 'core/cart',
+		'checkout'  => 'core/payment',
+		'myaccount' => 'core/people'
+	];
+
 	/**
 	 * @inheritDoc
 	 */
@@ -73,7 +89,12 @@ final class WooCommerce extends Extension
 	 * product post type archive crumb entirely, since the home crumb
 	 * already represents it. Otherwise, replaces that crumb with the shop
 	 * crumb wherever it appears, so the archive reads as the shop without
-	 * overriding the built-in post type crumb class.
+	 * overriding the built-in post type crumb class. Then attaches icons to
+	 * the store pages, which — unlike a product or its taxonomy terms — are
+	 * ordinary `page`-type posts with no post-type-level signal to derive a
+	 * default icon from. Endpoint crumbs need no such step; `Endpoint` is
+	 * WooCommerce's own class and resolves its own icon from its endpoint
+	 * key directly, the same way it already resolves its own label.
 	 */
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
@@ -92,6 +113,33 @@ final class WooCommerce extends Extension
 				['decoratedCrumb' => $crumb]
 			)
 		);
+
+		$this->applyPageIcons($event);
+	}
+
+	/**
+	 * Attaches an icon to the Cart, Checkout, and My Account page crumbs —
+	 * matched by post ID, since each is just an ordinary `page`-type post
+	 * the site owner configured under WooCommerce's settings.
+	 */
+	private function applyPageIcons(CrumbsBuilt $event): void
+	{
+		foreach (self::PAGE_ICONS as $page => $icon) {
+			$pageId = absint(wc_get_page_id($page));
+
+			if (0 >= $pageId) {
+				continue;
+			}
+
+			$event->crumbs->replaceInstanceWhere(
+				PostCrumb::class,
+				static fn (PostCrumb $crumb) => $crumb->post->ID === $pageId,
+				static fn (PostCrumb $crumb) => $event->makeCrumb(PostCrumb::class, [
+					'post' => $crumb->post,
+					'icon' => $icon
+				])
+			);
+		}
 	}
 
 	/**

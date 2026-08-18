@@ -33,11 +33,18 @@ final class Post extends Crumb
 	protected const ICON = 'core/pencil';
 
 	/**
-	 * @inheritDoc
+	 * Stores the post and an optional icon override — a domain-specific
+	 * default for a page with no post-type-level signal of its own, such as
+	 * WooCommerce's Cart or Checkout page (ordinary `page`-type posts), set
+	 * by a `CrumbsBuilt` listener that rebuilds the crumb via
+	 * `replaceInstanceWhere()` (see `Extension\WooCommerce::onCrumbsBuilt()`
+	 * for the pattern). Never set by the assembler that builds this crumb in
+	 * the first place — trail assembly shouldn't need to know about icons.
 	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
-		#[NoAutowire] public readonly WP_Post $post
+		#[NoAutowire] public readonly WP_Post $post,
+		private readonly string $icon = ''
 	) {
 		parent::__construct(config: $config);
 	}
@@ -73,10 +80,13 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns this post's own icon override (post meta) when one is set;
-	 * otherwise, for an attachment, a media-type-aware icon when its mime
-	 * type matches one; otherwise the post type's configured default;
-	 * otherwise the shared fallback from `Crumb::DEFAULT_ICON`.
+	 * Returns this post's own icon override (post meta) when one is set —
+	 * the site owner's explicit editorial choice, so it wins over everything
+	 * else; otherwise this crumb's own instance-level override, if one was
+	 * set (e.g., WooCommerce's Cart page); otherwise, for an attachment, a
+	 * media-type-aware icon when its mime type matches one; otherwise the
+	 * post type's configured default; otherwise the shared fallback from
+	 * `Crumb::ICON`.
 	 *
 	 * @inheritDoc
 	 */
@@ -86,6 +96,10 @@ final class Post extends Crumb
 
 		if ('' !== $icon) {
 			return $icon;
+		}
+
+		if ('' !== $this->icon) {
+			return $this->icon;
 		}
 
 		if ('attachment' === $this->post->post_type && $icon = $this->attachmentIcon()) {

@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 
 /**
  * Crumb representing a WooCommerce account or checkout endpoint (orders,
@@ -25,11 +26,19 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 final class Endpoint extends Crumb
 {
 	/**
-	 * Stores the WooCommerce endpoint key (e.g. `orders` or `edit-address`).
+	 * Fallback for any endpoint not in the {@see EndpointSlug} enum.
+	 */
+	protected const ICON = 'core/more-vertical';
+
+	/**
+	 * Stores the WooCommerce endpoint key (e.g. `orders` or `edit-address`)
+	 * and an optional icon override, for a caller that wants to bypass
+	 * `endpointIcon()`'s own mapping entirely.
 	 */
 	public function __construct(
 		BreadcrumbsConfig $config,
-		public readonly string $endpoint
+		public readonly string $endpoint,
+		private readonly string $icon = ''
 	) {
 		parent::__construct(config: $config);
 	}
@@ -56,5 +65,19 @@ final class Endpoint extends Crumb
 	public function getUrl(): string
 	{
 		return wc_get_endpoint_url($this->endpoint);
+	}
+
+	/**
+	 * Returns this endpoint's own icon override when one was explicitly set,
+	 * otherwise the {@see EndpointSlug} enum's icon for this endpoint's key,
+	 * otherwise the config's generic `woocommerce-endpoint` override (if a
+	 * site owner set one) and then `self::ICON` — every endpoint shares the
+	 * same slug, so that config key applies uniformly to all of them.
+	 *
+	 * @inheritDoc
+	 */
+	public function getIcon(): string
+	{
+		return $this->icon ?: (EndpointSlug::tryFrom($this->endpoint)?->icon() ?: parent::getIcon());
 	}
 }

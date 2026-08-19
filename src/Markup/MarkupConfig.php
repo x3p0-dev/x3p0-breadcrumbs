@@ -105,7 +105,6 @@ final class MarkupConfig
 	 */
 	public function iconVisibility(): IconVisibility
 	{
-		return IconVisibility::All;
 		return $this->iconVisibility;
 	}
 

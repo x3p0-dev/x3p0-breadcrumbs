@@ -41,9 +41,11 @@ const mapDeprecatedIcon = (value) => DEPRECATED_ICON_MAP[value] ?? value;
 /**
  * Content saved before 5.0.0 (i.e., up through 4.1.0). Its `homeIcon`/
  * `separatorIcon` values may still use the built-in `svg-chevron`-style keys
- * that predate WordPress's icon registration API, and it may still carry the
- * `showHomeLabel` boolean that predates the `labelVisibility` attribute.
- * Mirrors `X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs::mapDeprecatedAttributes()`
+ * that predate WordPress's icon registration API, it may still carry the
+ * `showHomeLabel` boolean that predates the `labelVisibility` attribute, and
+ * its `homeIcon` still needs folding into the generic `icons` map (keyed by
+ * crumb slug) that replaced it. Mirrors
+ * `X3P0\Breadcrumbs\Block\Renderer\Breadcrumbs::mapDeprecatedAttributes()`
  * on the PHP side, which performs the same migrations for content rendered
  * without ever passing through the editor.
  */
@@ -113,21 +115,21 @@ const v5_0_0 = {
 	},
 	isEligible(attributes) {
 		return (
-			DEPRECATED_ICON_MAP.hasOwnProperty(attributes.homeIcon) ||
+			attributes.hasOwnProperty('homeIcon') ||
 			DEPRECATED_ICON_MAP.hasOwnProperty(attributes.separatorIcon) ||
 			attributes.hasOwnProperty('showHomeLabel')
 		);
 	},
 	migrate(attributes) {
-		const { showHomeLabel, ...otherAttributes } = attributes;
+		const { showHomeLabel, homeIcon, ...otherAttributes } = attributes;
 
 		return {
 			...otherAttributes,
-			...(attributes.homeIcon && {
-				homeIcon: mapDeprecatedIcon(attributes.homeIcon)
-			}),
 			...(attributes.separatorIcon && {
 				separatorIcon: mapDeprecatedIcon(attributes.separatorIcon)
+			}),
+			...(homeIcon && {
+				icons: { home: mapDeprecatedIcon(homeIcon) }
 			}),
 			...(! showHomeLabel && { labelVisibility: 'all-but-first' })
 		};

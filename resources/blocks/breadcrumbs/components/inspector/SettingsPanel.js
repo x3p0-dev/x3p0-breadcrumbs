@@ -34,7 +34,7 @@ const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
  */
 const SettingsPanel = ({
 	attributes: {
-		homeIcon,
+		icons = {},
 		linkTrailEnd,
 		markup,
 		showOnHomepage,
@@ -109,10 +109,14 @@ const SettingsPanel = ({
 				<ToggleControl
 					label={__('Show home breadcrumb', 'x3p0-breadcrumbs')}
 					checked={showTrailStart}
-					onChange={() => setAttributes({
-						homeIcon:       '',
-						showTrailStart: ! showTrailStart
-					})}
+					onChange={() => {
+						const { home, ...remainingIcons } = icons;
+
+						setAttributes({
+							icons:          remainingIcons,
+							showTrailStart: ! showTrailStart
+						});
+					}}
 					__nextHasNoMarginBottom={true}
 				/>
 			</ToolsPanelItem>

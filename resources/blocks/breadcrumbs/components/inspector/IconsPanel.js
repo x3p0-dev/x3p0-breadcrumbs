@@ -8,7 +8,6 @@
  */
 
 // Internal dependencies.
-import HomeIconControl      from './HomeIconControl';
 import IconControl          from './IconControl';
 import SeparatorIconControl from './SeparatorIconControl';
 
@@ -18,7 +17,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { useEntityRecords } from '@wordpress/core-data';
 import { useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { archive as archiveIcon, post as postIcon, tag as tagIcon } from '@wordpress/icons';
+import { archive as archiveIcon, home as homeControlIcon, post as postIcon, tag as tagIcon } from '@wordpress/icons';
 import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
@@ -75,7 +74,7 @@ const uniqueLabel = (usedLabels, ...candidates) => {
  */
 const IconsPanel = (props) => {
 	const {
-		attributes: { homeIcon, separatorIcon, showTrailStart, postTypeIcons = {}, taxonomyIcons = {}, iconVisibility, labelVisibility },
+		attributes: { icons = {}, separatorIcon, showTrailStart, postTypeIcons = {}, taxonomyIcons = {}, iconVisibility, labelVisibility },
 		setAttributes
 	} = props;
 
@@ -138,6 +137,20 @@ const IconsPanel = (props) => {
 		setAttributes({ postTypeIcons: updatedPostTypeIcons });
 	};
 
+	// Updates a single crumb slug's icon in the generic `icons` map, dropping
+	// empty entries from the attribute so it only ever stores real overrides.
+	const onIconChange = (slug, value) => {
+		const updatedIcons = {...icons};
+
+		if (value) {
+			updatedIcons[slug] = value;
+		} else {
+			delete updatedIcons[slug];
+		}
+
+		setAttributes({ icons: updatedIcons });
+	};
+
 	// Updates a taxonomy's icon, dropping empty entries from the attribute
 	// so it only ever stores real overrides.
 	const onTaxonomyIconChange = (taxonomy, value) => {
@@ -160,7 +173,7 @@ const IconsPanel = (props) => {
 		<ToolsPanel
 			label={__('Icons', 'x3p0-breadcrumbs')}
 			resetAll={() => setAttributes({
-				homeIcon: '',
+				icons: undefined,
 				separatorIcon: defaultSeparatorIcon,
 				postTypeIcons: undefined,
 				taxonomyIcons: undefined,
@@ -221,12 +234,21 @@ const IconsPanel = (props) => {
 				<ToolsPanelItem
 					className={ITEM_CLASS_NAME}
 					label={__('Home', 'x3p0-breadcrumbs')}
-					hasValue={() => !! homeIcon}
-					onDeselect={() => setAttributes({ homeIcon: '' })}
+					hasValue={() => !! icons.home}
+					onDeselect={() => onIconChange('home', '')}
 					panelId={panelId}
 					isShownByDefault
 				>
-					<HomeIconControl {...props} />
+					<IconControl
+						value={icons.home || ''}
+						onChange={(value) => onIconChange('home', value)}
+						label={__('Home', 'x3p0-breadcrumbs')}
+						controlIcon={homeControlIcon}
+						openLabel={__('Replace home icon', 'x3p0-breadcrumbs')}
+						resetLabel={__('Remove home icon', 'x3p0-breadcrumbs')}
+						modalTitle={__('Home Icon', 'x3p0-breadcrumbs')}
+						modalDescription={__('Pick an icon for the home breadcrumb item.', 'x3p0-breadcrumbs')}
+					/>
 				</ToolsPanelItem>
 			)}
 			{! iconsHidden && postTypes.flatMap((postType) => {

@@ -29,7 +29,7 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 	// crumb specifically: since it's always first in the trail, its label is
 	// visually hidden by every `LabelVisibility` case but `all` (ignoring the
 	// edge case where Home is also the trail's only/last crumb).
-	const homeLabelHidden = 'all' !== labelVisibility;
+	const homeLabelHidden = ! labelVisibility || 'all' !== labelVisibility;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {...labels};

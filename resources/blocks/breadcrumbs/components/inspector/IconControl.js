@@ -18,11 +18,11 @@ import { useSelect } from '@wordpress/data';
 
 /**
  * Renders a single icon control for a value that doesn't live on its own
- * top-level block attribute — a post type's single-post/archive icon, or a
- * taxonomy's term icon — but inside a map keyed by slug. Unlike
- * `HomeIconControl`/`SeparatorIconControl`, it takes its value/change handler
- * as props rather than reading/writing `attributes`/`setAttributes` itself;
- * the panel that renders it owns that mapping.
+ * top-level block attribute — the home crumb's icon, a post type's
+ * single-post/archive icon, or a taxonomy's term icon — but inside a map
+ * keyed by slug. Unlike `SeparatorIconControl`, it takes its value/change
+ * handler as props rather than reading/writing `attributes`/`setAttributes`
+ * itself; the panel that renders it owns that mapping.
  * @param props
  * @returns {JSX.Element}
  */

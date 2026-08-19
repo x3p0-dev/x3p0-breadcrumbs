@@ -110,7 +110,7 @@ const BlockContent = ({
 	attributes: {
 		customSeparatorColor,
 		labels = {},
-		homeIcon,
+		icons = {},
 		iconVisibility,
 		justifyContent,
 		labelVisibility,
@@ -141,7 +141,7 @@ const BlockContent = ({
 	// controlled separately by `iconVisibility`, not by this value.
 	//
 	// noinspection JSUnresolvedVariable
-	const homeIconValue = homeIcon || window.x3p0Breadcrumbs?.defaultHomeIcon || '';
+	const homeIconValue = icons.home || window.x3p0Breadcrumbs?.defaultHomeIcon || '';
 
 	// Mirrors `Html::isCrumbIconVisible()`: which crumbs show an icon depends
 	// on their position in the *rendered* trail, not on their kind — e.g., if

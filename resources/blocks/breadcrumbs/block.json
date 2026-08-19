@@ -30,9 +30,9 @@
 			"type": "boolean",
 			"default": true
 		},
-		"homeIcon": {
-			"type": "string",
-			"default": ""
+		"icons": {
+			"type": "object",
+			"default": {}
 		},
 		"iconVisibility": {
 			"type": "string",

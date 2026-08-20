@@ -7,6 +7,19 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
+// Internal dependencies.
+import metadata from './block.json';
+
+/**
+ * Every deprecation must declare the block supports its era had — a
+ * deprecation with no `supports` parses the saved block without the
+ * support-derived attributes (`align`, `anchor`, `ariaLabel`, …), so a
+ * migration would silently strip them. The old versions' supports match the
+ * current ones for every support that registers an attribute, so the
+ * current metadata is reused rather than snapshotting a stale copy.
+ */
+const { supports } = metadata;
+
 /**
  * Maps the built-in `homeIcon`/`separatorIcon` values used before icons were
  * registered with WordPress's icon API to their `{collection}/{name}`
@@ -50,6 +63,7 @@ const mapDeprecatedIcon = (value) => DEPRECATED_ICON_MAP[value] ?? value;
  * without ever passing through the editor.
  */
 const v5_0_0 = {
+	supports,
 	"attributes" : {
 		"justifyContent": {
 			"type": "string",
@@ -114,23 +128,36 @@ const v5_0_0 = {
 		}
 	},
 	isEligible(attributes) {
+		// Positive presence checks only: these attributes are retired, so
+		// a block that saved any of them needs migrating, and one that
+		// didn't must not match — a looser check (e.g., comparing
+		// `separatorIcon` against its old default) fires on every block,
+		// whose attributes are then rebuilt from this deprecation's own
+		// schema, silently dropping everything it doesn't declare.
 		return (
 			attributes.hasOwnProperty('homeIcon') ||
-			DEPRECATED_ICON_MAP.hasOwnProperty(attributes.separatorIcon) ||
+			attributes.hasOwnProperty('separatorIcon') ||
 			attributes.hasOwnProperty('showHomeLabel')
 		);
 	},
 	migrate(attributes) {
-		const { showHomeLabel, homeIcon, ...otherAttributes } = attributes;
+		const { showHomeLabel, homeIcon, separatorIcon, ...otherAttributes } = attributes;
+
+		// Both retired scalar attributes fold into the `icons` map. A
+		// separator matching this version's default is skipped rather than
+		// stored: the registered `separator` icon option's default renders
+		// the same icon, and an explicit entry is indistinguishable from
+		// the attribute default WordPress fills in during parsing anyway.
+		const icons = {
+			...(homeIcon && { home: mapDeprecatedIcon(homeIcon) }),
+			...(separatorIcon && 'svg-chevron' !== separatorIcon && {
+				separator: mapDeprecatedIcon(separatorIcon)
+			})
+		};
 
 		return {
 			...otherAttributes,
-			...(attributes.separatorIcon && {
-				separatorIcon: mapDeprecatedIcon(attributes.separatorIcon)
-			}),
-			...(homeIcon && {
-				icons: { home: mapDeprecatedIcon(homeIcon) }
-			}),
+			...(Object.keys(icons).length && { icons }),
 			...(! showHomeLabel && { labelVisibility: 'all-but-first' })
 		};
 	}
@@ -142,6 +169,7 @@ const v5_0_0 = {
  * `homePrefix`/`homePrefixType` → `homeIcon`.
  */
 const v4_0_0 = {
+	supports,
 	"attributes" : {
 		"justifyContent": {
 			"type": "string",
@@ -207,7 +235,9 @@ const v4_0_0 = {
 		// as the deprecation above. `mask` was this version's name for
 		// what's now the `svg` type, so it's normalized before mapping;
 		// an unset type defaults to `svg` and an unset icon to `chevron`,
-		// matching this version's own defaults.
+		// matching this version's own defaults. Like the deprecation
+		// above, a separator matching the current default is skipped —
+		// the registered `separator` icon option already renders it.
 		let separatorIcon;
 		if (separator || separatorType) {
 			const type = 'mask' === separatorType ? 'svg' : (separatorType || 'svg');
@@ -222,10 +252,16 @@ const v4_0_0 = {
 			homeIcon = mapDeprecatedIcon(`${type}-${homePrefix}`);
 		}
 
+		const icons = {
+			...(homeIcon && { home: homeIcon }),
+			...(separatorIcon && 'x3p0-breadcrumbs/chevron' !== separatorIcon && {
+				separator: separatorIcon
+			})
+		};
+
 		return {
 			...otherAttributes,
-			...(separatorIcon && { separatorIcon }),
-			...(homeIcon && { homeIcon }),
+			...(Object.keys(icons).length && { icons })
 		};
 	}
 };

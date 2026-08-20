@@ -49,10 +49,7 @@ final class Breadcrumbs implements BlockRenderer
 			breadcrumbsConfig: [
 				'labels'         => $attributes['labels']         ?? [],
 				'mapRewriteTags' => $attributes['mapRewriteTags'] ?? [],
-				'postTaxonomy'   => $attributes['postTaxonomy']   ?? [],
-				'postTypeIcons'  => $attributes['postTypeIcons']  ?? [],
-				'taxonomyIcons'  => $attributes['taxonomyIcons']  ?? [],
-				'icons'          => $attributes['icons']          ?? []
+				'postTaxonomy'   => $attributes['postTaxonomy']   ?? []
 			],
 			markupConfig: [
 				'namespace'             => 'wp-block-x3p0-breadcrumbs',
@@ -63,8 +60,10 @@ final class Breadcrumbs implements BlockRenderer
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
 				'iconVisibility'        => IconVisibility::tryFrom($attributes['iconVisibility'] ?? '') ?? IconVisibility::None,
 				'labelVisibility'       => LabelVisibility::tryFrom($attributes['labelVisibility'] ?? '') ?? LabelVisibility::All,
-				'separatorIcon'         => $attributes['separatorIcon']         ?? '',
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
+			],
+			iconConfig: [
+				'icons' => $attributes['icons'] ?? []
 			],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
@@ -129,8 +128,9 @@ final class Breadcrumbs implements BlockRenderer
 	 * `homeIcon`/`separatorIcon` value produced here (e.g., `svg-arrow`) is
 	 * remapped to its current icon library reference later, by
 	 * `Icon\IconResolver`, when the `Markup` layer resolves it. The
-	 * deprecated `homeIcon` attribute itself is folded into the generic
-	 * `icons` map (keyed by crumb slug) that replaced it. The deprecated
+	 * deprecated `homeIcon` and `separatorIcon` attributes themselves are
+	 * folded into the generic `icons` map (keyed by icon option key) that
+	 * replaced them. The deprecated
 	 * `showHomeLabel` boolean maps onto `LabelVisibility::AllButFirst` when
 	 * it was turned off — mirrored on the JS side by `deprecated.js`'s block
 	 * deprecation, which performs the same migrations for content opened in
@@ -156,6 +156,10 @@ final class Breadcrumbs implements BlockRenderer
 
 		if (! empty($attributes['homeIcon'])) {
 			$attributes['icons']['home'] = $attributes['homeIcon'];
+		}
+
+		if (! empty($attributes['separatorIcon'])) {
+			$attributes['icons']['separator'] = $attributes['separatorIcon'];
 		}
 
 		if (array_key_exists('showHomeLabel', $attributes) && ! $attributes['showHomeLabel']) {

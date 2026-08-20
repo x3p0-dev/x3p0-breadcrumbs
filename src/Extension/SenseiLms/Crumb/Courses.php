@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\SenseiLms\Crumb;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 
 use function Sensei;
 
@@ -32,10 +32,10 @@ final class Courses extends Crumb
 	 * it when no courses page is configured.
 	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		private readonly Crumb $decoratedCrumb
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

@@ -67,6 +67,7 @@ final class ExtensionServiceProvider extends ServiceProvider
 		#[Tagged(Extension::TAG)] Extension ...$extensions
 	): void {
 		foreach ($extensions as $extension) {
+			$extension->boot();
 			$registry->subscribe($extension);
 		}
 	}

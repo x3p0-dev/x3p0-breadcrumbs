@@ -14,20 +14,14 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
  * Crumb representing a weekly time archive. Its label is the configured
  * "archive_week" string filled with the week number, and its URL is the
  * week archive built from the year and week query args.
  */
-final class Week extends Crumb
+final class Week extends Date
 {
-	/**
-	 * @inheritDoc
-	 */
-	protected const ICON = 'core/calendar';
-
 	/**
 	 * @inheritDoc
 	 */
@@ -43,11 +37,10 @@ final class Week extends Crumb
 	{
 		return sprintf(
 			$this->config->getLabel(BreadcrumbsLabel::ArchiveWeek),
-			get_the_time(esc_html_x(
-				'W',
-				'weekly archives date format',
-				'x3p0-breadcrumbs'
-			))
+			get_the_time(
+				esc_html_x('W', 'weekly archives date format', 'x3p0-breadcrumbs'),
+				$this->post
+			)
 		);
 	}
 
@@ -57,8 +50,8 @@ final class Week extends Crumb
 	public function getUrl(): string
 	{
 		return add_query_arg([
-			'm' => get_the_time('Y'),
-			'w' => get_the_time('W')
+			'm' => get_the_time('Y', $this->post),
+			'w' => get_the_time('W', $this->post)
 		], user_trailingslashit(home_url()));
 	}
 }

@@ -26,11 +26,6 @@ final class Search extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'core/search';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getSlug(): string
 	{
 		return 'search';

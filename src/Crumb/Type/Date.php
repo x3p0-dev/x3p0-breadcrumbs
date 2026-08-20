@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Author crumb class.
+ * Date crumb base class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -13,23 +13,26 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use WP_User;
+use WP_Post;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
- * Crumb for an author archive. Labels with the user's display name and links
- * to their posts archive URL.
+ * Base for the date-based archive crumbs (`Day`, `Week`, `Month`, `Year`,
+ * and — one level further specialized, for sub-day precision — the
+ * `TimeArchive` types). Carries the `$post` a concrete type resolves its
+ * date/time from and points every subclass at the shared `date` icon option,
+ * so all date archives are configured with one setting.
  */
-final class Author extends Crumb
+abstract class Date extends Crumb
 {
 	/**
 	 * @inheritDoc
 	 */
 	public function __construct(
 		CrumbContext $context,
-		#[NoAutowire] public readonly WP_User $user
+		#[NoAutowire] public readonly ?WP_Post $post = null
 	) {
 		parent::__construct(context: $context);
 	}
@@ -37,24 +40,8 @@ final class Author extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getSlug(): string
+	public function iconKey(): string
 	{
-		return 'author';
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getLabel(): string
-	{
-		return get_the_author_meta('display_name', $this->user->ID);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function getUrl(): string
-	{
-		return get_author_posts_url($this->user->ID);
+		return 'date';
 	}
 }

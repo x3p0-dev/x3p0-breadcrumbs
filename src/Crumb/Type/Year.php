@@ -13,34 +13,15 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb representing a yearly time archive. Its label is the configured
  * "archive_year" string filled with the year, and its URL is the year
  * archive link.
  */
-final class Year extends Crumb
+final class Year extends Date
 {
-	/**
-	 * @inheritDoc
-	 */
-	protected const ICON = 'core/calendar';
-
-	/**
-	 * @inheritDoc
-	 */
-	public function __construct(
-		BreadcrumbsConfig $config,
-		#[NoAutowire] public readonly ?WP_Post $post = null
-	) {
-		parent::__construct(config: $config);
-	}
-
 	/**
 	 * @inheritDoc
 	 */

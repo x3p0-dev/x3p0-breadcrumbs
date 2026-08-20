@@ -42,4 +42,13 @@ abstract class Extension implements ListenerSubscriber
 	 */
 	public function subscribeTo(Listenable $registry): void
 	{}
+
+	/**
+	 * Boots the extension. Runs once, before the extension's listeners are
+	 * subscribed, for wiring that isn't an event subscription — registering
+	 * the platform's icon options, hooking WordPress actions, and the like.
+	 * A no-op by default; concrete extensions override as needed.
+	 */
+	public function boot(): void
+	{}
 }

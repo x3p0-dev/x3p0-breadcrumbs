@@ -20,32 +20,39 @@ import { useState } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
- * Renders the separator icon control. Unlike the home icon, the separator
- * also offers built-in plain-text/glyph options that aren't registrable SVG
- * icons (see `SEPARATOR_ICONS`), so those are passed to the library modal
- * as `extraOptions` to surface alongside the registered icons on the
- * plugin's own collection tab.
+ * Renders the separator icon control for the `separator` slot of the `icons`
+ * map. Like `IconControl`, it takes its value/change handler as props rather
+ * than reading/writing `attributes`/`setAttributes` itself; unlike it, the
+ * separator also offers built-in plain-text/glyph options that aren't
+ * registrable SVG icons (see `SEPARATOR_ICONS`), so those are passed to the
+ * library modal as `extraOptions` to surface alongside the registered icons
+ * on the plugin's own collection tab. An empty value means the registered
+ * default (passed via `defaultIcon`) renders, so the preview shows that
+ * default rather than an empty state, and picking it stores nothing.
  * @param props
  * @returns {JSX.Element}
  */
 const SeparatorIconControl = ({
-	attributes: { separatorIcon },
-	setAttributes,
-	defaultSeparatorIcon
+	value,
+	onChange,
+	defaultIcon
 }) => {
 	const [isLibraryOpen, setLibraryOpen] = useState(false);
 
-	// Mirrors the selected icon on the preview button itself: a built-in
-	// text/glyph option, one fetched from the registered icon library, or
-	// (while nothing is selected, or its content is still resolving) the
-	// generic separator icon.
-	const builtIn = SEPARATOR_ICONS.find((option) => option.value === separatorIcon);
+	// What actually renders on the front end: the user's choice, else the
+	// registered default.
+	const resolved = value || defaultIcon;
+
+	// Mirrors the resolved icon on the preview button itself: a built-in
+	// text/glyph option, or one fetched from the registered icon library,
+	// falling back to a generic glyph while its content is still resolving.
+	const builtIn = SEPARATOR_ICONS.find((option) => option.value === resolved);
 
 	const selectedIcon = useSelect(
-		(select) => (! builtIn && separatorIcon?.includes('/'))
-			? select(coreStore).getEntityRecord('root', 'icon', separatorIcon)
+		(select) => (! builtIn && resolved?.includes('/'))
+			? select(coreStore).getEntityRecord('root', 'icon', resolved)
 			: null,
-		[builtIn, separatorIcon]
+		[builtIn, resolved]
 	);
 
 	const preview = builtIn ? (
@@ -59,32 +66,36 @@ const SeparatorIconControl = ({
 		/>
 	) : controlIcon;
 
+	// Picking the default stores nothing — the registered default already
+	// renders it, so the attribute only ever holds real overrides.
+	const pick = (next) => onChange(next === defaultIcon ? '' : next);
+
 	return (
 		<>
 			<IconPickerButton
-				value={separatorIcon}
+				value={resolved}
 				icon={preview}
 				label={__('Separator', 'x3p0-breadcrumbs')}
 				onOpen={() => setLibraryOpen(true)}
-				onReset={() => setAttributes({ separatorIcon: defaultSeparatorIcon })}
+				onReset={() => onChange('')}
 				openLabel={__('Replace separator icon', 'x3p0-breadcrumbs')}
 				resetLabel={__('Reset separator icon', 'x3p0-breadcrumbs')}
 			/>
 			{isLibraryOpen && (
 				<IconLibraryModal
-					value={separatorIcon}
+					value={resolved}
 					title={__('Separator Icon', 'x3p0-breadcrumbs')}
 					description={__('Pick an icon or symbol that sits in between and separates breadcrumb items.', 'x3p0-breadcrumbs')}
 					extraOptions={SEPARATOR_ICONS}
-					onSelect={(value) => {
-						setAttributes({ separatorIcon: value });
+					onSelect={(next) => {
+						pick(next);
 						setLibraryOpen(false);
 					}}
 					onReset={() => {
-						setAttributes({ separatorIcon: defaultSeparatorIcon });
+						onChange('');
 						setLibraryOpen(false);
 					}}
-					resetValue={defaultSeparatorIcon}
+					resetValue={defaultIcon}
 					onRequestClose={() => setLibraryOpen(false)}
 				/>
 			)}

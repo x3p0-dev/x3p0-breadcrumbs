@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 
 /**
  * An open-ended crumb built entirely from the values passed to it: a label and
@@ -29,12 +29,12 @@ final class Custom extends Crumb
 	 * Stores the crumb's label and optional URL and icon.
 	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		public readonly string $label,
 		public readonly string $url  = '',
 		public readonly string $icon = ''
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

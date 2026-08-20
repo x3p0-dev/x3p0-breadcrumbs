@@ -13,33 +13,14 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
  * Crumb for a daily archive. Labels with the day of the month and links to the
  * day archive URL.
  */
-final class Day extends Crumb
+final class Day extends Date
 {
-	/**
-	 * @inheritDoc
-	 */
-	protected const ICON = 'core/calendar';
-
-	/**
-	 * @inheritDoc
-	 */
-	public function __construct(
-		BreadcrumbsConfig $config,
-		#[NoAutowire] public readonly ?WP_Post $post = null
-	) {
-		parent::__construct(config: $config);
-	}
-
 	/**
 	 * @inheritDoc
 	 */

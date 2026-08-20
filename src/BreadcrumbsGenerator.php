@@ -17,8 +17,11 @@ use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
 use X3P0\Breadcrumbs\Crumb\CrumbBuilder;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconOptions;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Query\QueryContext;
 use X3P0\Breadcrumbs\Query\QueryFactory;
@@ -35,30 +38,38 @@ use X3P0\Breadcrumbs\Query\QueryResolver;
 final class BreadcrumbsGenerator
 {
 	/**
-	 * Sets up the build with the dispatcher, the query resolver, and the
-	 * query, assembler, and crumb factories used to build the pipeline
-	 * participants. The config that controls how the trail is built is
-	 * supplied per call to `generate()`.
+	 * Sets up the build with the dispatcher, the query resolver, the query,
+	 * assembler, and crumb factories used to build the pipeline
+	 * participants, and the icon options registry handed to every crumb via
+	 * the `CrumbContext`. The configs that control how the trail is built
+	 * are supplied per call to `generate()`.
 	 */
 	public function __construct(
 		private readonly Dispatcher       $events,
 		private readonly QueryResolver    $queryResolver,
 		private readonly QueryFactory     $queryFactory,
 		private readonly AssemblerFactory $assemblerFactory,
-		private readonly CrumbFactory     $crumbFactory
+		private readonly CrumbFactory     $crumbFactory,
+		private readonly IconOptions      $iconOptions
 	) {}
 
 	/**
 	 * Builds and returns the crumb collection for the current request,
-	 * built according to the given config. Creates the `AssemblerContext`
+	 * built according to the given configs. Creates the `AssemblerContext`
 	 * and wraps it in a `QueryContext`, resolves the matching query type
 	 * (which third parties can override), runs that query to populate the
 	 * trail, and returns the result.
 	 */
-	public function generate(BreadcrumbsConfig $config): CrumbCollection
-	{
+	public function generate(
+		BreadcrumbsConfig $config,
+		IconConfig $iconConfig = new IconConfig()
+	): CrumbCollection {
 		$crumbs       = new CrumbCollection();
-		$crumbBuilder = new CrumbBuilder($this->crumbFactory, $config, $crumbs);
+		$crumbBuilder = new CrumbBuilder(
+			$this->crumbFactory,
+			new CrumbContext($config, $iconConfig, $this->iconOptions),
+			$crumbs
+		);
 
 		// Build the two tiers passed through the query/assembler/crumb
 		// pipeline: `Assembler` only ever sees `AssemblerContext`,

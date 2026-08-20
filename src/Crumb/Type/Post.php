@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Meta\MetaKey;
+use X3P0\Breadcrumbs\Icon\IconOption;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -28,11 +29,6 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 final class Post extends Crumb
 {
 	/**
-	 * @inheritDoc
-	 */
-	protected const ICON = 'core/pencil';
-
-	/**
 	 * Stores the post and an optional icon override — a domain-specific
 	 * default for a page with no post-type-level signal of its own, such as
 	 * WooCommerce's Cart or Checkout page (ordinary `page`-type posts), set
@@ -42,11 +38,11 @@ final class Post extends Crumb
 	 * the first place — trail assembly shouldn't need to know about icons.
 	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		#[NoAutowire] public readonly WP_Post $post,
 		private readonly string $icon = ''
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**
@@ -80,13 +76,22 @@ final class Post extends Crumb
 	}
 
 	/**
+	 * Resolves this post's icon option per post type.
+	 *
+	 * @inheritDoc
+	 */
+	public function iconKey(): string
+	{
+		return IconOption::postTypeKey($this->post->post_type);
+	}
+
+	/**
 	 * Returns this post's own icon override (post meta) when one is set —
 	 * the site owner's explicit editorial choice, so it wins over everything
 	 * else; otherwise this crumb's own instance-level override, if one was
 	 * set (e.g., WooCommerce's Cart page); otherwise, for an attachment, a
 	 * media-type-aware icon when its mime type matches one; otherwise the
-	 * post type's configured default; otherwise the shared fallback from
-	 * `Crumb::ICON`.
+	 * post type's icon option resolved by the parent.
 	 *
 	 * @inheritDoc
 	 */
@@ -106,7 +111,7 @@ final class Post extends Crumb
 			return $icon;
 		}
 
-		return $this->config->getPostTypeIcon($this->post->post_type) ?: self::ICON;
+		return parent::getIcon();
 	}
 
 	/**

@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
  * Abstract base for a single item in the breadcrumb trail. A crumb is created
  * by a `Query` or `Assembler` and exposes everything needed to output the item:
  * a text label and, optionally, a URL. Concrete crumbs live under `Type` and
- * read shared config from the supplied `BreadcrumbsConfig`. This class is the
+ * read shared state from the supplied `CrumbContext`. This class is the
  * contract that the rest of the system typehints against; subclasses must
  * implement `getSlug()` and `getLabel()` (and override `getUrl()` where the
  * crumb links somewhere).
@@ -27,21 +27,21 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 abstract class Crumb
 {
 	/**
-	 * Icon attribute value used when neither a config nor a meta override
-	 * resolves one, so a crumb never renders with no icon at all once icons
-	 * are shown for it. References a core-registered icon (available since
-	 * WordPress ships its own `core` icon collection), so it needs no
-	 * bundling by the plugin. Concrete types redeclare this constant with an
-	 * icon fitting their own semantics (e.g., `Home` uses `core/home`); this
-	 * generic value is the fallback for types that don't.
+	 * Read-only trail config, re-exposed from the context so concrete types
+	 * can read the thing they reach for most (labels and the like) directly,
+	 * without going through `$this->context` — mirroring how
+	 * `AssemblerContext` re-exposes it from `CrumbBuilder`.
 	 */
-	protected const ICON = 'x3p0-breadcrumbs/article';
+	protected readonly BreadcrumbsConfig $config;
 
 	/**
-	 * Stores the shared, read-only config.
+	 * Stores the shared context every crumb reads from, then re-exposes its
+	 * trail config for direct access.
 	 */
-	public function __construct(protected readonly BreadcrumbsConfig $config)
-	{}
+	public function __construct(protected readonly CrumbContext $context)
+	{
+		$this->config = $context->config;
+	}
 
 	/**
 	 * Returns the crumb's type slug, used for its `crumb--{slug}` CSS class
@@ -65,31 +65,34 @@ abstract class Crumb
 	}
 
 	/**
+	 * Returns the key of the icon option this crumb pulls its icon from —
+	 * the lookup key for both a site-owner override and a registered default
+	 * (see `BreadcrumbsConfig::getIcon()`). Defaults to the crumb's own
+	 * slug, so most types declare nothing; a family sharing one option
+	 * overrides this once on its base class (e.g., `Date` returns `date`),
+	 * and the dynamically-keyed types compute it (e.g., `Post` returns
+	 * `post-type:{$type}`).
+	 */
+	public function iconKey(): string
+	{
+		return $this->getSlug();
+	}
+
+	/**
 	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
 	 * key or a `{collection}/{name}` icon library reference), left for the
-	 * `Markup` layer to resolve to real markup. Looks up the config's
-	 * per-slug default (see `BreadcrumbsConfig::getIcon()`), falling back to
-	 * `DEFAULT_ICON` when nothing is configured — resolved via `static::` so
-	 * a concrete type's own redeclared constant is used, not this class's.
-	 * Never returns an empty string — whether a crumb's icon is actually
+	 * `Markup` layer to resolve to real markup. The crumb's icon key first
+	 * resolves to the caller's choice from the icon config, then to the
+	 * default registered for it in the icon options registry; the generic
+	 * value here is the last resort, so a crumb never renders with no icon
+	 * at all once icons are shown for it. Whether a crumb's icon is actually
 	 * shown is controlled separately, by the `Markup` layer's icon
 	 * visibility setting.
 	 */
 	public function getIcon(): string
 	{
-		return $this->config->getIcon($this->getSlug()) ?: static::ICON;
-	}
-
-	/**
-	 * Returns the crumb type's built-in default icon — `static::ICON`,
-	 * resolved via late static binding so a concrete type's own redeclared
-	 * constant is used — without needing an instance (and, therefore,
-	 * config) to get it. For contexts that want a type's default ahead of
-	 * any per-slug config override, such as the block editor's canvas
-	 * preview.
-	 */
-	public static function defaultIcon(): string
-	{
-		return static::ICON;
+		return $this->context->iconConfig->getIcon($this->iconKey())
+			?: $this->context->iconOptions->icon($this->iconKey())
+			?: 'x3p0-breadcrumbs/article';
 	}
 }

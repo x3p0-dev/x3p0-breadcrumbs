@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\SenseiLms\Crumb;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 
 /**
  * Crumb representing a single quiz. Sensei copies the parent lesson's
@@ -30,10 +30,10 @@ final class Quiz extends Crumb
 	 * Wraps the crumb this decorates so the URL can fall back to it.
 	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		private readonly Crumb $decoratedCrumb
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

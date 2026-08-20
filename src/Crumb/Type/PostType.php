@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post_Type;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
+use X3P0\Breadcrumbs\Icon\IconOption;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -27,16 +28,11 @@ final class PostType extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'core/category';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		#[NoAutowire] public readonly WP_Post_Type $postType
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**
@@ -68,13 +64,12 @@ final class PostType extends Crumb
 	}
 
 	/**
-	 * Returns this post type's configured archive icon, falling back to the
-	 * shared default from `Crumb::ICON` when none is set.
+	 * Resolves this archive's icon option per post type.
 	 *
 	 * @inheritDoc
 	 */
-	public function getIcon(): string
+	public function iconKey(): string
 	{
-		return $this->config->getPostTypeArchiveIcon($this->postType->name) ?: self::ICON;
+		return IconOption::postTypeArchiveKey($this->postType->name);
 	}
 }

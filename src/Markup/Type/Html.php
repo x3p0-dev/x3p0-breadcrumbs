@@ -15,6 +15,8 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconOptions;
 use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
@@ -32,17 +34,20 @@ use X3P0\Breadcrumbs\Support\Pagination;
 class Html extends Markup implements MarkupBlockOption
 {
 	/**
-	 * Stores the crumb collection, config, and pagination inherited from
+	 * Stores the crumb collection, configs, and pagination inherited from
 	 * `Markup`, plus the resolver used to turn an icon attribute value into
-	 * real markup.
+	 * real markup and the icon options registry supplying the default for
+	 * the markup layer's own icon option keys (e.g., `separator`).
 	 */
 	public function __construct(
 		CrumbCollection $crumbs,
 		MarkupConfig $config,
 		Pagination $pagination,
-		private readonly IconResolver $iconResolver
+		IconConfig $iconConfig,
+		private readonly IconResolver $iconResolver,
+		private readonly IconOptions $iconOptions
 	) {
-		parent::__construct($crumbs, $config, $pagination);
+		parent::__construct($crumbs, $config, $pagination, $iconConfig);
 	}
 
 	/**
@@ -247,9 +252,10 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders the configured separator icon, or an empty string when the
-	 * separator is turned off, should not be rendered for this crumb, or
-	 * none is configured.
+	 * Renders the separator icon — the caller's choice from the icon config,
+	 * falling back to the registered `separator` option default — or an
+	 * empty string when the separator is turned off or should not be
+	 * rendered for this crumb.
 	 */
 	protected function renderSeparator(): string
 	{
@@ -257,7 +263,10 @@ class Html extends Markup implements MarkupBlockOption
 			return '';
 		}
 
-		return $this->renderIcon($this->config->getSeparatorIcon(), 'crumb-separator');
+		return $this->renderIcon(
+			$this->iconConfig->getIcon('separator') ?: $this->iconOptions->icon('separator'),
+			'crumb-separator'
+		);
 	}
 
 	/**

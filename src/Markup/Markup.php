@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
+use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -66,13 +67,15 @@ abstract class Markup
 	];
 
 	/**
-	 * Stores the crumb collection to render and the config that governs how the
-	 * trail is displayed.
+	 * Stores the crumb collection to render, the config that governs how the
+	 * trail is displayed, and the caller's icon choices for the markup
+	 * layer's own icon option keys (e.g., `separator`).
 	 */
 	public function __construct(
 		protected readonly CrumbCollection $crumbs,
 		protected readonly MarkupConfig    $config,
-		protected readonly Pagination      $pagination
+		protected readonly Pagination      $pagination,
+		protected readonly IconConfig      $iconConfig = new IconConfig()
 	) {}
 
 	/**

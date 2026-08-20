@@ -25,11 +25,6 @@ final class Error404 extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'core/error';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getSlug(): string
 	{
 		return 'error-404';

@@ -13,33 +13,24 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
-use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
-
 /**
  * Base for the sub-day time archives (Hour, Minute, Second), which WordPress
  * has no permastruct function for. Builds the archive URL from the date
  * permastruct extended with the concrete class's own date/time formats,
  * falling back to a `?m=` query URL when pretty permalinks are off.
  */
-abstract class TimeArchive extends Crumb
+abstract class TimeArchive extends Date
 {
 	/**
-	 * Shared by every sub-day time archive (`Hour`, `Minute`, `Second`); none
-	 * of them needs a finer-grained icon than a plain clock face.
-	 */
-	protected const ICON = 'core/scheduled';
-
-	/**
+	 * Points every sub-day time archive (`Hour`, `Minute`, `Second`) at the
+	 * shared `time` icon option, so all of them are configured with one
+	 * setting, separately from the broader date archives.
+	 *
 	 * @inheritDoc
 	 */
-	public function __construct(
-		BreadcrumbsConfig $config,
-		#[NoAutowire] public readonly ?WP_Post $post = null
-	) {
-		parent::__construct(config: $config);
+	public function iconKey(): string
+	{
+		return 'time';
 	}
 
 	/**

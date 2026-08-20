@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_User;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -29,17 +29,12 @@ final class User extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'core/people';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		#[NoAutowire] public readonly WP_User $user,
 		public readonly string $url = ''
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

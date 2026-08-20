@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 
 /**
  * Crumb representing the WooCommerce shop. It replaces the product post type
@@ -26,19 +26,14 @@ use X3P0\Breadcrumbs\Crumb\Crumb;
 final class Shop extends Crumb
 {
 	/**
-	 * @inheritDoc
-	 */
-	protected const ICON = 'core/store';
-
-	/**
 	 * Wraps the crumb this decorates so the label and URL can fall back to it
 	 * when no shop page is configured.
 	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		private readonly Crumb $decoratedCrumb
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**
@@ -49,6 +44,20 @@ final class Shop extends Crumb
 		return 0 < wc_get_page_id('shop')
 			? 'woocommerce-shop'
 			: $this->decoratedCrumb->getSlug();
+	}
+
+	/**
+	 * Resolves the `woocommerce-shop` icon option when a shop page is
+	 * configured, otherwise the decorated crumb's own option — mirroring how
+	 * the slug, label, and URL fall back.
+	 *
+	 * @inheritDoc
+	 */
+	public function iconKey(): string
+	{
+		return 0 < wc_get_page_id('shop')
+			? 'woocommerce-shop'
+			: $this->decoratedCrumb->iconKey();
 	}
 
 	/**

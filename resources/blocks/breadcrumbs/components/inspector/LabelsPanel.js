@@ -23,13 +23,20 @@ import {
  */
 const LabelsPanel = ({ attributes, setAttributes }) => {
 	const panelId = useInstanceId(LabelsPanel);
-	const { ariaLabel, labels = {}, labelVisibility, showTrailStart } = attributes;
+	const { ariaLabel, iconVisibility, labels = {}, labelVisibility, showTrailStart } = attributes;
 
-	// A coarse approximation of `Html::isCrumbLabelHidden()` for the home
-	// crumb specifically: since it's always first in the trail, its label is
-	// visually hidden by every `LabelVisibility` case but `all` (ignoring the
-	// edge case where Home is also the trail's only/last crumb).
-	const homeLabelHidden = ! labelVisibility || 'all' !== labelVisibility;
+	// A coarse approximation of `Html::isCrumbLabelHidden()` per trail
+	// position: a label is only ever actually hidden when its icon renders
+	// in its place, so both visibility settings matter. The home crumb is
+	// always first in the trail; the search/404 crumbs are the trail's
+	// current (last) item. (Single-crumb-trail edge cases are ignored.)
+	const hiddenLabelHelp = __('Label is visually hidden but is readable to users with assistive technology.', 'x3p0-breadcrumbs');
+
+	const firstIconVisible = ['all', 'all-but-last', 'first'].includes(iconVisibility);
+	const lastIconVisible  = 'all' === iconVisibility;
+
+	const homeLabelHidden = firstIconVisible && 'all' !== labelVisibility;
+	const lastLabelHidden = lastIconVisible && 'none' === labelVisibility;
 
 	const onLabelChange = (type, value) => {
 		const updatedLabels = {...labels};
@@ -50,20 +57,20 @@ const LabelsPanel = ({ attributes, setAttributes }) => {
 			showTrailStart ? [{
 				name: 'home',
 				label: __('Home', 'x3p0-breadcrumbs'),
-				help: homeLabelHidden
-					? __('Label is visually hidden but is readable to users with assistive technology.', 'x3p0-breadcrumbs')
-					: ''
+				help: homeLabelHidden ? hiddenLabelHelp : ''
 			}] : []
 		),
 		{
 			name: 'search',
 			label: __('Search Results', 'x3p0-breadcrumbs'),
-			placeholder: __('Search results for: %s', 'x3p0-breadcrumbs')
+			placeholder: __('Search results for: %s', 'x3p0-breadcrumbs'),
+			help: lastLabelHidden ? hiddenLabelHelp : ''
 		},
 		{
 			name: 'error_404',
 			label: __('404 Not Found', 'x3p0-breadcrumbs'),
-			placeholder: __('Page not found', 'x3p0-breadcrumbs')
+			placeholder: __('Page not found', 'x3p0-breadcrumbs'),
+			help: lastLabelHidden ? hiddenLabelHelp : ''
 		}
 	];
 

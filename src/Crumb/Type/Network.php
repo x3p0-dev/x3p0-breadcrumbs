@@ -25,11 +25,6 @@ final class Network extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'core/home';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getSlug(): string
 	{
 		return 'network';

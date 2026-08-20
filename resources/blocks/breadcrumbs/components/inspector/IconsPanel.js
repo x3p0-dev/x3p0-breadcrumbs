@@ -14,10 +14,9 @@ import SeparatorIconControl from './SeparatorIconControl';
 // WordPress dependencies.
 import { getBlockType } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
-import { useEntityRecords } from '@wordpress/core-data';
 import { useMemo } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
-import { archive as archiveIcon, home as homeControlIcon, post as postIcon, tag as tagIcon } from '@wordpress/icons';
+import { post as fallbackControlIcon } from '@wordpress/icons';
 import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
@@ -41,40 +40,31 @@ const ICON_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.iconVisibilityOptions ??
 // noinspection JSUnresolvedVariable
 const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
 
-/**
- * Returns the first candidate label not already claimed within this panel,
- * claiming it in `usedLabels` as it goes. `ToolsPanelItem` tracks (and
- * displays, in its "+" menu) items by their `label` — not by a separate id —
- * so two post types/taxonomies sharing a label (e.g. core's `post_tag` and
- * WooCommerce's `product_tag`, both "Tag") would otherwise collide there.
- * Falls through singular name -> plural name -> a slug-qualified label
- * (always unique), so the common case never shows the slug at all — only
- * an actual collision does.
- */
-const uniqueLabel = (usedLabels, ...candidates) => {
-	const label = candidates.find((candidate) => candidate && ! usedLabels.has(candidate))
-		?? candidates[candidates.length - 1];
+// The registered icon options, as `{key, icon, name}` triples — see
+// `IconOptions::forBlock()` on the PHP side. PHP enumerates everything,
+// including one option per viewable post type and public taxonomy (via
+// `IconOptionRegistrar`), so the editor renders one `IconControl` row per
+// entry with no client-side enumeration; a newly registered option appears
+// here automatically with no JS change needed.
+//
+// noinspection JSUnresolvedVariable
+const ICON_OPTIONS = window.x3p0Breadcrumbs?.iconOptions ?? [];
 
-	usedLabels.add(label);
-
-	return label;
-};
+// The option rows shown in the panel by default; every other row starts
+// hidden behind the panel's "+" menu.
+const SHOWN_BY_DEFAULT = [ 'separator', 'home', 'post-type:post', 'post-type:page' ];
 
 /**
  * Renders a `<ToolsPanel>` component with the block's icon controls: the
- * home and separator icons, one row per viewable post type's single-post
- * icon (and a second for its archive icon, when it has one), and one row per
- * public taxonomy's term icon. Post types and taxonomies are read live via
- * `core-data`, so a new one gets a row automatically — no JS change needed.
- * Unlike the Post/Page post type rows, no taxonomy row is shown by default;
- * every one starts hidden behind the panel's "+" menu. More icon settings
- * will join as additional panel items as they're added.
+ * icon/label visibility selects, the separator icon, and one row per
+ * registered icon option, all reading and writing the block's single `icons`
+ * map keyed by option key.
  * @param props
  * @returns {JSX.Element}
  */
 const IconsPanel = (props) => {
 	const {
-		attributes: { icons = {}, separatorIcon, showTrailStart, postTypeIcons = {}, taxonomyIcons = {}, iconVisibility, labelVisibility },
+		attributes: { icons = {}, iconVisibility, labelVisibility },
 		setAttributes
 	} = props;
 
@@ -82,12 +72,6 @@ const IconsPanel = (props) => {
 
 	// Prefer the (possibly filtered) PHP-supplied default, which should be
 	// set for the block metadata; fall back to a literal as a last resort.
-	const defaultSeparatorIcon = useMemo(
-		() => getBlockType('x3p0/breadcrumbs')?.attributes?.separatorIcon?.default
-			?? 'x3p0-breadcrumbs/chevron',
-		[]
-	);
-
 	const defaultIconVisibility = useMemo(
 		() => getBlockType('x3p0/breadcrumbs')?.attributes?.iconVisibility?.default ?? 'none',
 		[]
@@ -98,85 +82,36 @@ const IconsPanel = (props) => {
 		[]
 	);
 
-	// Every crumb's icon (home, post type single/archive) is hidden while
-	// icon visibility is "none" — only the separator is unaffected, since
-	// it isn't a crumb icon.
-	const iconsHidden = 'none' === iconVisibility;
+	// Every crumb's icon is hidden while icon visibility is "none" — only
+	// the separator is unaffected, since it isn't a crumb icon. An absent
+	// attribute means the default applies, so it must gate the same way
+	// the default value would.
+	const iconsHidden = 'none' === (iconVisibility ?? defaultIconVisibility);
 
-	const { records: allPostTypes } = useEntityRecords('root', 'postType', {
-		per_page: -1
-	});
-
-	const postTypes = allPostTypes?.filter(type => type.viewable) || [];
-
-	const { records: allTaxonomies } = useEntityRecords('root', 'taxonomy', {
-		per_page: -1
-	});
-
-	const taxonomies = allTaxonomies?.filter(tax => tax.visibility?.publicly_queryable) || [];
-
-	// Updates a single icon slot ('single' or 'archive') for a post type,
-	// dropping empty slots and empty post type entries from the attribute so
-	// it only ever stores real overrides.
-	const onPostTypeIconChange = (postType, slot, value) => {
-		const updatedPostTypeIcons = {...postTypeIcons};
-		const entry = {...(updatedPostTypeIcons[postType] || {})};
-
-		if (value) {
-			entry[slot] = value;
-		} else {
-			delete entry[slot];
-		}
-
-		if (Object.keys(entry).length) {
-			updatedPostTypeIcons[postType] = entry;
-		} else {
-			delete updatedPostTypeIcons[postType];
-		}
-
-		setAttributes({ postTypeIcons: updatedPostTypeIcons });
-	};
-
-	// Updates a single crumb slug's icon in the generic `icons` map, dropping
-	// empty entries from the attribute so it only ever stores real overrides.
-	const onIconChange = (slug, value) => {
+	// Updates a single option key's icon in the `icons` map, dropping empty
+	// entries from the attribute so it only ever stores real overrides.
+	const onIconChange = (key, value) => {
 		const updatedIcons = {...icons};
 
 		if (value) {
-			updatedIcons[slug] = value;
+			updatedIcons[key] = value;
 		} else {
-			delete updatedIcons[slug];
+			delete updatedIcons[key];
 		}
 
 		setAttributes({ icons: updatedIcons });
 	};
 
-	// Updates a taxonomy's icon, dropping empty entries from the attribute
-	// so it only ever stores real overrides.
-	const onTaxonomyIconChange = (taxonomy, value) => {
-		const updatedTaxonomyIcons = {...taxonomyIcons};
-
-		if (value) {
-			updatedTaxonomyIcons[taxonomy] = value;
-		} else {
-			delete updatedTaxonomyIcons[taxonomy];
-		}
-
-		setAttributes({ taxonomyIcons: updatedTaxonomyIcons });
-	};
-
-	// Shared across the post type and taxonomy rows below (in render order)
-	// so a label is only ever disambiguated against what's already claimed.
-	const usedLabels = new Set();
-
 	return (
 		<ToolsPanel
+			// Remounting when the visibility gate flips rebuilds the
+			// panel's item and dropdown-menu registration from scratch, so
+			// the crumb icon rows that unmount can't linger as selectable
+			// entries in the panel's own menu.
+			key={iconsHidden ? 'icons-hidden' : 'icons-visible'}
 			label={__('Icons', 'x3p0-breadcrumbs')}
 			resetAll={() => setAttributes({
 				icons: undefined,
-				separatorIcon: defaultSeparatorIcon,
-				postTypeIcons: undefined,
-				taxonomyIcons: undefined,
 				iconVisibility: defaultIconVisibility,
 				labelVisibility: defaultLabelVisibility
 			})}
@@ -220,122 +155,41 @@ const IconsPanel = (props) => {
 					/>
 				</ToolsPanelItem>
 			)}
-			<ToolsPanelItem
-				className={ITEM_CLASS_NAME}
-				label={__('Separator', 'x3p0-breadcrumbs')}
-				hasValue={() => separatorIcon !== defaultSeparatorIcon}
-				onDeselect={() => setAttributes({ separatorIcon: defaultSeparatorIcon })}
-				panelId={panelId}
-				isShownByDefault
-			>
-				<SeparatorIconControl {...props} defaultSeparatorIcon={defaultSeparatorIcon} />
-			</ToolsPanelItem>
-			{! iconsHidden && showTrailStart && (
+			{ICON_OPTIONS.filter(
+				// Crumb icon rows are hidden while icon visibility is
+				// "none"; the separator row stays, since it isn't a crumb
+				// icon and renders regardless.
+				(option) => 'separator' === option.key || ! iconsHidden
+			).map((option) => (
 				<ToolsPanelItem
+					key={option.key}
 					className={ITEM_CLASS_NAME}
-					label={__('Home', 'x3p0-breadcrumbs')}
-					hasValue={() => !! icons.home}
-					onDeselect={() => onIconChange('home', '')}
+					label={option.name}
+					hasValue={() => !! icons[option.key]}
+					onDeselect={() => onIconChange(option.key, '')}
 					panelId={panelId}
-					isShownByDefault
+					isShownByDefault={SHOWN_BY_DEFAULT.includes(option.key)}
 				>
-					<IconControl
-						value={icons.home || ''}
-						onChange={(value) => onIconChange('home', value)}
-						label={__('Home', 'x3p0-breadcrumbs')}
-						controlIcon={homeControlIcon}
-						openLabel={__('Replace home icon', 'x3p0-breadcrumbs')}
-						resetLabel={__('Remove home icon', 'x3p0-breadcrumbs')}
-						modalTitle={__('Home Icon', 'x3p0-breadcrumbs')}
-						modalDescription={__('Pick an icon for the home breadcrumb item.', 'x3p0-breadcrumbs')}
-					/>
+					{'separator' === option.key ? (
+						<SeparatorIconControl
+							value={icons[option.key] || ''}
+							onChange={(value) => onIconChange(option.key, value)}
+							defaultIcon={option.icon}
+						/>
+					) : (
+						<IconControl
+							value={icons[option.key] || ''}
+							onChange={(value) => onIconChange(option.key, value)}
+							label={option.name}
+							controlIcon={fallbackControlIcon}
+							openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), option.name)}
+							resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), option.name)}
+							modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), option.name)}
+							modalDescription={sprintf(__('Pick an icon for the %s breadcrumb item.', 'x3p0-breadcrumbs'), option.name)}
+						/>
+					)}
 				</ToolsPanelItem>
-			)}
-			{! iconsHidden && postTypes.flatMap((postType) => {
-				const entry = postTypeIcons[postType.slug] || {};
-
-				const rows = [{
-					slot: 'single',
-					label: uniqueLabel(
-						usedLabels,
-						postType.labels.singular_name,
-						postType.labels.template_name,
-						sprintf('%1$s (%2$s)', postType.labels.singular_name, postType.slug)
-					),
-					controlIcon: postIcon,
-					description: __('Pick an icon for this post type’s single post breadcrumb item.', 'x3p0-breadcrumbs'),
-					isShownByDefault: 'post' === postType.slug || 'page' === postType.slug
-				}];
-
-				if (postType.has_archive) {
-					rows.push({
-						slot: 'archive',
-						label: uniqueLabel(
-							usedLabels,
-							postType.labels.archives,
-							postType.labels.name,
-							sprintf('%1$s (%2$s)', postType.labels.archives, postType.slug)
-						),
-						controlIcon: archiveIcon,
-						description: __('Pick an icon for this post type’s archive breadcrumb item.', 'x3p0-breadcrumbs'),
-						isShownByDefault: false
-					});
-				}
-
-				return rows.map((row) => (
-					<ToolsPanelItem
-						key={`${postType.slug}-${row.slot}`}
-						className={ITEM_CLASS_NAME}
-						label={row.label}
-						hasValue={() => !! entry[row.slot]}
-						onDeselect={() => onPostTypeIconChange(postType.slug, row.slot, '')}
-						panelId={panelId}
-						isShownByDefault={row.isShownByDefault}
-					>
-						<IconControl
-							value={entry[row.slot] || ''}
-							onChange={(value) => onPostTypeIconChange(postType.slug, row.slot, value)}
-							label={row.label}
-							controlIcon={row.controlIcon}
-							openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), row.label)}
-							resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), row.label)}
-							modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), row.label)}
-							modalDescription={row.description}
-						/>
-					</ToolsPanelItem>
-				));
-			})}
-			{! iconsHidden && taxonomies.map((taxonomy) => {
-				const label = uniqueLabel(
-					usedLabels,
-					taxonomy.labels.singular_name,
-					taxonomy.labels.name,
-					taxonomy.labels.template_name,
-					sprintf('%1$s (%2$s)', taxonomy.labels.singular_name, taxonomy.slug)
-				);
-
-				return (
-					<ToolsPanelItem
-						key={taxonomy.slug}
-						className={ITEM_CLASS_NAME}
-						label={label}
-						hasValue={() => !! taxonomyIcons[taxonomy.slug]}
-						onDeselect={() => onTaxonomyIconChange(taxonomy.slug, '')}
-						panelId={panelId}
-					>
-						<IconControl
-							value={taxonomyIcons[taxonomy.slug] || ''}
-							onChange={(value) => onTaxonomyIconChange(taxonomy.slug, value)}
-							label={label}
-							controlIcon={tagIcon}
-							openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), label)}
-							resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), label)}
-							modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), label)}
-							modalDescription={__('Pick an icon for this taxonomy’s term breadcrumb item.', 'x3p0-breadcrumbs')}
-						/>
-					</ToolsPanelItem>
-				);
-			})}
+			))}
 		</ToolsPanel>
 	);
 };

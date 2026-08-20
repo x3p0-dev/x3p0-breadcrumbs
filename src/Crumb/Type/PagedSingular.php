@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -29,16 +29,11 @@ final class PagedSingular extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'x3p0-breadcrumbs/description';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		#[NoAutowire] public readonly WP_Post $post
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

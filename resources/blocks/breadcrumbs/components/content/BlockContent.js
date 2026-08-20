@@ -115,11 +115,9 @@ const BlockContent = ({
 		justifyContent,
 		labelVisibility,
 		linkTrailEnd,
-		postTypeIcons = {},
 		showTrailEnd,
 		showTrailStart,
-		showTrailingSeparator,
-		separatorIcon
+		showTrailingSeparator
 	},
 	separatorColor,
 	setSeparatorColor,
@@ -127,21 +125,24 @@ const BlockContent = ({
 	setAttributes,
 	isSelected
 }) => {
-	// The generic Ancestor/Parent/Current placeholder crumbs stand in for a
-	// post, so they default to the real Page single-post icon (passed from
-	// PHP to avoid hardcoding it here) unless the user has configured their
-	// own override for the Page post type.
+	// Mirrors `Crumb::getIcon()`: an option key resolves to the user's
+	// chosen icon from the `icons` attribute, falling back to the option's
+	// registered default (passed from PHP via `IconOptions::forBlock()`).
+	// Whether an icon actually renders is controlled separately by
+	// `iconVisibility`, not by these values.
 	//
 	// noinspection JSUnresolvedVariable
-	const pageIcon = postTypeIcons?.page?.single || window.x3p0Breadcrumbs?.defaultPageIcon || '';
+	const resolveIcon = (key) => icons[key]
+		|| window.x3p0Breadcrumbs?.iconOptions?.find((option) => key === option.key)?.icon
+		|| '';
 
-	// Mirrors `Crumb::getIcon()`: the home crumb falls back to its type's
-	// built-in default icon (passed from PHP via `Home::defaultIcon()`)
-	// when the user hasn't chosen one. Whether it actually renders is
-	// controlled separately by `iconVisibility`, not by this value.
-	//
-	// noinspection JSUnresolvedVariable
-	const homeIconValue = icons.home || window.x3p0Breadcrumbs?.defaultHomeIcon || '';
+	// The generic Ancestor/Parent/Current placeholder crumbs stand in for a
+	// post, so they use the real Page single-post icon.
+	const pageIcon = resolveIcon('post-type:page');
+
+	const homeIconValue = resolveIcon('home');
+
+	const separatorIconValue = resolveIcon('separator');
 
 	// Mirrors `Html::isCrumbIconVisible()`: which crumbs show an icon depends
 	// on their position in the *rendered* trail, not on their kind — e.g., if
@@ -323,7 +324,7 @@ const BlockContent = ({
 							{crumb.content(iconVisible, labelHidden)}
 							{(index < crumbs.length - 1 || showTrailingSeparator) && (
 								<CrumbIcon
-									value={separatorIcon}
+									value={separatorIconValue}
 									options={SEPARATOR_ICONS}
 									className="wp-block-x3p0-breadcrumbs__crumb-separator"
 								/>

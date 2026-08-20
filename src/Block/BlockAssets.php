@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
-use X3P0\Breadcrumbs\Crumb\Type\Home;
+use X3P0\Breadcrumbs\Icon\IconOptions;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
@@ -26,10 +25,11 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
  * visibility options come from the {@see IconVisibility} and
  * {@see LabelVisibility} enums, all handed to the editor script so the
  * JavaScript never has to recreate (and risk desyncing) any of the lists. The
- * default page icon and default home icon are likewise read from
- * {@see BreadcrumbsConfig} and {@see Home::defaultIcon()} so the editor's
- * canvas preview crumbs stay in sync with the real defaults rather than
- * hardcoding them.
+ * icon options — including one per viewable post type and public taxonomy,
+ * enumerated by `IconOptionRegistrar` late on `init` — likewise come from the
+ * {@see IconOptions} registry, so the editor's icon controls and canvas
+ * preview crumbs stay in sync with the real defaults rather than recreating
+ * the lookups client-side.
  */
 final class BlockAssets implements Bootable
 {
@@ -42,9 +42,10 @@ final class BlockAssets implements Bootable
 	private const SCRIPT_GLOBAL = 'x3p0Breadcrumbs';
 
 	/**
-	 * Stores the markup options passed to the editor.
+	 * Stores the icon and markup options passed to the editor.
 	 */
 	public function __construct(
+		private readonly IconOptions   $iconOptions,
 		private readonly MarkupOptions $markupOptions
 	) {}
 
@@ -87,8 +88,7 @@ final class BlockAssets implements Bootable
 							],
 							LabelVisibility::cases()
 						),
-						'defaultPageIcon' => (new BreadcrumbsConfig())->getPostTypeIcon('page'),
-						'defaultHomeIcon' => Home::defaultIcon()
+						'iconOptions' => $this->iconOptions->forBlock()
 					],
 					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
 				)

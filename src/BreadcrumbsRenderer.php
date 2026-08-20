@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
@@ -56,8 +57,9 @@ final class BreadcrumbsRenderer
 	 * the markup type cannot be created, it will return an empty string.
 	 */
 	public function render(
-		BreadcrumbsConfig|array $breadcrumbsConfig = new BreadcrumbsConfig(),
-		MarkupConfig|array      $markupConfig      = new MarkupConfig(),
+		BreadcrumbsConfig|array $breadcrumbsConfig = [],
+		MarkupConfig|array      $markupConfig      = [],
+		IconConfig|array        $iconConfig        = [],
 		MarkupDefinition|string $markupType        = MarkupType::Html
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
@@ -68,19 +70,24 @@ final class BreadcrumbsRenderer
 			? MarkupConfig::fromArray($markupConfig)
 			: $markupConfig;
 
+		$iconConfig = is_array($iconConfig)
+			? IconConfig::fromArray($iconConfig)
+			: $iconConfig;
+
 		// Let listeners retarget the markup type or config for this
 		// request, then broadcast the same event to WordPress unless a
 		// listener stopped propagation, so `add_action()` callbacks can
 		// retarget it alongside the typed listeners.
 		$event = $this->events->dispatch(new MarkupRendering(
-			crumbs:     $this->generator->generate($breadcrumbsConfig),
+			crumbs:     $this->generator->generate($breadcrumbsConfig, $iconConfig),
 			markupType: $markupType,
 			config:     $markupConfig
 		))->broadcast();
 
 		$markup = $this->markupFactory->make($event->markupType, [
-			'crumbs' => $event->crumbs,
-			'config' => $event->config
+			'crumbs'     => $event->crumbs,
+			'config'     => $event->config,
+			'iconConfig' => $iconConfig
 		]);
 
 		return $markup?->render() ?? '';

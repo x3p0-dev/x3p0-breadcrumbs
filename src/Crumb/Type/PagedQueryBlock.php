@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -28,16 +28,11 @@ final class PagedQueryBlock extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'x3p0-breadcrumbs/description';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function __construct(
-		BreadcrumbsConfig $config,
+		CrumbContext $context,
 		private readonly Pagination $pagination
 	) {
-		parent::__construct(config: $config);
+		parent::__construct(context: $context);
 	}
 
 	/**

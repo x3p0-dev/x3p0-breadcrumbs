@@ -65,21 +65,9 @@
 			"type": "object",
 			"default": {}
 		},
-		"postTypeIcons": {
-			"type": "object",
-			"default": {}
-		},
-		"taxonomyIcons": {
-			"type": "object",
-			"default": {}
-		},
 		"showTrailingSeparator": {
 			"type": "boolean",
 			"default": false
-		},
-		"separatorIcon": {
-			"type": "string",
-			"default": "x3p0-breadcrumbs/chevron"
 		},
 		"separatorColor": {
 			"type": "string"

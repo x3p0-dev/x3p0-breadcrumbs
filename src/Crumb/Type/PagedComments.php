@@ -26,11 +26,6 @@ final class PagedComments extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected const ICON = 'x3p0-breadcrumbs/description';
-
-	/**
-	 * @inheritDoc
-	 */
 	public function getSlug(): string
 	{
 		return 'paged-comments';

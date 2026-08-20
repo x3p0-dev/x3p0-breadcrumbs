@@ -20,6 +20,7 @@ enum Icon: string
 	case Article           = 'article';
 	case Box               = 'box';
 	case BrandingWatermark = 'branding-watermark';
+	case Category          = 'category';
 	case Chevron           = 'chevron';
 	case ChevronDouble     = 'chevron-double';
 	case Color             = 'color';
@@ -68,6 +69,7 @@ enum Icon: string
 			self::Article           => __('Article', 'x3p0-breadcrumbs'),
 			self::Box               => __('Box', 'x3p0-breadcrumbs'),
 			self::BrandingWatermark => __('Branding Watermark', 'x3p0-breadcrumbs'),
+			self::Category          => __('Category', 'x3p0-breadcrumbs'),
 			self::Chevron           => __('Chevron', 'x3p0-breadcrumbs'),
 			self::ChevronDouble     => __('Chevron Double', 'x3p0-breadcrumbs'),
 			self::Color             => __('Color', 'x3p0-breadcrumbs'),

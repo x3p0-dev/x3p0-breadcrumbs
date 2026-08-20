@@ -28,9 +28,10 @@ use X3P0\Breadcrumbs\Packages\Event\NamedEvent;
  *
  * Listeners receive the registry itself — the same shared instance every
  * consumer resolves, so changes made here are what the block editor lists and
- * what crumbs resolve against. Use `add()` to register an option outright and
- * `setIcon()` to change a built-in's icon while keeping the label the registrar
- * derived for it.
+ * what crumbs resolve against. Use `add()` to register an option outright,
+ * `addGroup()` to open a group of one's own for a family of them, and
+ * `update()` to change a built-in's icon, label, or group while keeping the
+ * parts the registrar derived for it.
  */
 final class IconOptionsRegistered implements BroadcastableEvent, NamedEvent
 {

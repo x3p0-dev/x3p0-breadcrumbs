@@ -50,6 +50,32 @@ enum Endpoint: string
 	}
 
 	/**
+	 * Returns the label for this endpoint, matching the wording WooCommerce
+	 * uses for its own default endpoint titles, so a store owner reads the
+	 * same name in the block editor that their customers read on the page.
+	 * The endpoint crumb itself takes its label from WooCommerce at render
+	 * time — a store may have retitled its endpoints — but that needs the
+	 * query for the view being rendered, which there is none of when the icon
+	 * options are registered.
+	 */
+	public function label(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return match ($this) {
+			self::Orders         => __('Orders', 'x3p0-breadcrumbs'),
+			self::ViewOrder      => __('View order', 'x3p0-breadcrumbs'),
+			self::EditAddress    => __('Addresses', 'x3p0-breadcrumbs'),
+			self::Downloads      => __('Downloads', 'x3p0-breadcrumbs'),
+			self::PaymentMethods => __('Payment methods', 'x3p0-breadcrumbs'),
+			self::EditAccount    => __('Account details', 'x3p0-breadcrumbs'),
+			self::LostPassword   => __('Lost password', 'x3p0-breadcrumbs'),
+			self::OrderPay       => __('Pay for order', 'x3p0-breadcrumbs'),
+			self::OrderReceived  => __('Order received', 'x3p0-breadcrumbs'),
+			self::Wishlist       => __('Wishlist', 'x3p0-breadcrumbs')
+		};
+	}
+
+	/**
 	 * Returns the default icon registered for this endpoint's option key.
 	 */
 	public function icon(): string

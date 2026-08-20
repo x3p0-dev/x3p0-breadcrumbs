@@ -27,11 +27,16 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 abstract class Crumb
 {
 	/**
-	 * The default crumb icon.
+	 * Key of the option holding the icon a crumb falls back on when nothing
+	 * more specific resolves — a crumb whose own key nothing is registered
+	 * under, such as the archive crumb of a post type that declares no
+	 * archive. Held in the registry like every other icon the plugin renders,
+	 * rather than as a literal here, so it is retargetable on the same terms
+	 * and there is one place to read what a trail can put on screen.
 	 *
 	 * @var string
 	 */
-	private const DEFAULT_ICON = 'x3p0-breadcrumbs/article';
+	private const FALLBACK_OPTION = 'fallback';
 
 	/**
 	 * Read-only trail config, re-exposed from the context so concrete types
@@ -101,7 +106,8 @@ abstract class Crumb
 	 * 3. `fallbackIcon()` — a type-specific guess better than the registered
 	 *    default, but still only a guess, so it yields to the configured icon.
 	 * 4. The default registered for the option key.
-	 * 5. The generic icon here, so a crumb never renders without one.
+	 * 5. The default registered for the generic fallback option, so a crumb
+	 *    whose key nothing is registered under still renders with something.
 	 *
 	 * Subclasses contribute through the two seams rather than overriding this
 	 * method: a type that reorders the chain locally puts its own defaults
@@ -114,7 +120,7 @@ abstract class Crumb
 			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
 			?: $this->fallbackIcon()
 			?: $this->context->iconOptions->icon($this->iconOptionKey())
-			?: self::DEFAULT_ICON;
+			?: $this->context->iconOptions->icon(self::FALLBACK_OPTION);
 	}
 
 	/**

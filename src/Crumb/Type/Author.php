@@ -57,4 +57,12 @@ final class Author extends Crumb
 	{
 		return get_author_posts_url($this->user->ID);
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function iconOptionKey(): string
+	{
+		return 'user';
+	}
 }

@@ -88,7 +88,8 @@ final class BlockAssets implements Bootable
 							],
 							LabelVisibility::cases()
 						),
-						'iconOptions' => $this->iconOptions->forBlock()
+						'iconOptions'      => $this->iconOptions->forBlock(),
+						'iconOptionGroups' => $this->iconOptions->groupsForBlock()
 					],
 					JSON_HEX_TAG | JSON_UNESCAPED_SLASHES
 				)

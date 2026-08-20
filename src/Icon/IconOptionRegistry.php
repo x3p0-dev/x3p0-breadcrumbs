@@ -20,6 +20,12 @@ namespace X3P0\Breadcrumbs\Icon;
  * (or retargets) options with the same single `add()` call, so there is one
  * mechanism for everyone. `add()` is last-write-wins, letting an extension
  * replace a built-in default by re-registering its key.
+ *
+ * The registry also holds the groups the block editor sorts those options
+ * into. A group is a key and a translated label; options name their group by
+ * key. Extensions register groups of their own with the same `addGroup()` the
+ * built-ins use, so an extension with a family of its own options can gather
+ * them under its own heading instead of scattering them through the catch-all.
  */
 final class IconOptionRegistry
 {
@@ -29,6 +35,14 @@ final class IconOptionRegistry
 	 * @var array<string, IconOption>
 	 */
 	private array $options = [];
+
+	/**
+	 * Stores the registered group labels by group key, in the order the block
+	 * editor lists them.
+	 *
+	 * @var array<string, string>
+	 */
+	private array $groups = [];
 
 	/**
 	 * Adds one or more options to the registry. Re-adding an existing key
@@ -42,21 +56,60 @@ final class IconOptionRegistry
 	}
 
 	/**
-	 * Retargets the icon for the given key, carrying the registered option's
-	 * label through unchanged, or registers an unlabeled option when the key
-	 * is new. This is the partial override `add()` cannot express: `add()`
-	 * replaces an option wholesale, which would drop a label the registrar
-	 * derived from a post type or taxonomy object. Extensions retargeting a
-	 * built-in default on `IconOptionsRegistered` want exactly this. The icon
-	 * is passed straight through to the option, so it takes an {@see Icon}
-	 * case or a raw reference string on the same terms.
+	 * Registers the translated label for a group of options, or relabels an
+	 * existing group in place. Groups are listed in the block editor in the
+	 * order they were first registered, which needs no explicit ordering to
+	 * come out right: the built-ins are seeded before the
+	 * `IconOptionsRegistered` event, so an extension's own group — a
+	 * WooCommerce group holding its shop and endpoint options, say — lands
+	 * after them.
 	 */
-	public function setIcon(string $key, Icon|string $icon): void
+	public function addGroup(string $key, string $label): void
 	{
-		$this->add(
-			$this->get($key)?->with(['icon' => $icon])
-				?? new IconOption($key, $icon)
-		);
+		$this->groups[$key] = $label;
+	}
+
+	/**
+	 * Changes one or more parts of a registered option, leaving the rest as
+	 * they are. This is the partial override `add()` cannot express: `add()`
+	 * replaces an option wholesale, which would drop the label and slug the
+	 * registrar derived from a post type or taxonomy object. Retargeting a
+	 * built-in default, renaming an option to suit the vocabulary of the
+	 * plugin that owns the thing it names, and gathering options into an
+	 * extension's own group are all the same operation on different parts, so
+	 * they share one method and read as what they are at the call site:
+	 *
+	 *     $options->update($key, icon: Icon::Package);
+	 *     $options->update($key, label: __('Shop', 'my-plugin'));
+	 *     $options->update($key, group: 'woocommerce');
+	 *
+	 * An argument left null is left alone. The icon is passed straight through
+	 * to the option, so it takes an {@see Icon} case or a raw reference string
+	 * on the same terms as the constructor.
+	 *
+	 * Updating a key nothing is registered under does nothing, deliberately:
+	 * an extension speaking for objects that may or may not exist on a given
+	 * site — WooCommerce naming product attribute taxonomies a store need not
+	 * have — would otherwise conjure an option for a thing that isn't there.
+	 * Registering is `add()`'s job.
+	 */
+	public function update(
+		string $key,
+		Icon|string|null $icon = null,
+		?string $label = null,
+		?string $group = null
+	): void {
+		$option = $this->get($key);
+
+		if (null === $option) {
+			return;
+		}
+
+		$this->add($option->with(array_filter([
+			'icon'  => $icon,
+			'label' => $label,
+			'group' => $group
+		], static fn ($value) => null !== $value)));
 	}
 
 	/**
@@ -86,11 +139,13 @@ final class IconOptionRegistry
 
 	/**
 	 * Returns the options offered as block editor controls — those with a
-	 * label — as `key`/`icon`/`name` triples in registration order. This is
-	 * the single source the editor script consumes; unlabeled options are
-	 * default-carriers only and are omitted.
+	 * label — in registration order. This is the single source the editor
+	 * script consumes; unlabeled options are default-carriers only and are
+	 * omitted. An option naming a group nobody registered falls back to the
+	 * catch-all rather than disappearing, since the editor renders its rows
+	 * group by group and would have nowhere to put it.
 	 *
-	 * @return array<int, array{key: string, icon: string, name: string}>
+	 * @return array<int, array{key: string, icon: string, name: string, group: string, slug: string}>
 	 */
 	public function forBlock(): array
 	{
@@ -99,13 +154,39 @@ final class IconOptionRegistry
 		foreach ($this->options as $option) {
 			if ('' !== $option->label) {
 				$options[] = [
-					'key'  => $option->key,
-					'icon' => $option->icon,
-					'name' => $option->label
+					'key'   => $option->key,
+					'icon'  => $option->icon,
+					'name'  => $option->label,
+					'group' => isset($this->groups[$option->group])
+						? $option->group
+						: IconOption::GROUP_GENERAL,
+					'slug'  => $option->slug
 				];
 			}
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Returns the registered groups as `key`/`name` pairs in registration
+	 * order, for the editor to lay its option controls out under. Groups with
+	 * no labeled options in them are left for the editor to skip, since only
+	 * it knows which options are still on offer at any moment.
+	 *
+	 * @return array<int, array{key: string, name: string}>
+	 */
+	public function groupsForBlock(): array
+	{
+		$groups = [];
+
+		foreach ($this->groups as $key => $label) {
+			$groups[] = [
+				'key'  => $key,
+				'name' => $label
+			];
+		}
+
+		return $groups;
 	}
 }

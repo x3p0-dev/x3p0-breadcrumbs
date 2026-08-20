@@ -20,8 +20,13 @@ import { notAllowed, reset as resetIcon } from '@wordpress/icons';
  * beside the control's own label (not the icon's name), opening `onOpen`
  * (typically `IconLibraryModal`) on click. Mirrors the row design WordPress
  * uses for the Background Image panel in Global Styles. While `value` is
- * empty, the core "not allowed" icon stands in for the preview and the
- * reset button is omitted, since there's nothing to reset.
+ * empty, the core "not allowed" icon stands in for the preview.
+ *
+ * The reset button rides on `onReset` alone rather than on there being a
+ * value to clear: a caller may have something to reset beyond the value
+ * itself — `IconControl` uses it to take the whole row out of the panel —
+ * and is the only one in a position to know. Callers with nothing to reset
+ * pass no handler.
  * @param props
  * @returns {JSX.Element}
  */
@@ -52,7 +57,7 @@ export const IconPickerButton = ({
 					</Truncate>
 				</span>
 			</Button>
-			{value && onReset && (
+			{onReset && (
 				<Button
 					className="x3p0-breadcrumbs-icon-control__reset"
 					label={resetLabel}

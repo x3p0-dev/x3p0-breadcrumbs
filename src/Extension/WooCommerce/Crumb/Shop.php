@@ -47,17 +47,20 @@ final class Shop extends Crumb
 	}
 
 	/**
-	 * Resolves the `woocommerce-shop` icon option when a shop page is
-	 * configured, otherwise the decorated crumb's own option — mirroring how
-	 * the slug, label, and URL fall back.
+	 * Resolves the decorated crumb's own option, always. Unlike the slug,
+	 * label, and URL — which come from the configured shop page when there is
+	 * one — the icon has nothing to fall back *from*: this crumb only ever
+	 * decorates the product post type archive crumb, so the shop and that
+	 * archive are the same thing wearing the store's name, and one option
+	 * covers both. Two would put a Shop control and a Products control in the
+	 * block editor that silently trade places depending on whether a shop page
+	 * is set.
 	 *
 	 * @inheritDoc
 	 */
 	public function iconOptionKey(): string
 	{
-		return 0 < wc_get_page_id('shop')
-			? 'woocommerce-shop'
-			: $this->decoratedCrumb->iconOptionKey();
+		return $this->decoratedCrumb->iconOptionKey();
 	}
 
 	/**

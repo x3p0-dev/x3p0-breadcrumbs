@@ -18,7 +18,6 @@ use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Meta\MetaKey;
-use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconOption;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -70,13 +69,33 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Resolves this post's icon option per post type.
+	 * Resolves this post's icon option per post type, except where the site
+	 * owner restricted access to it or it is a piece of media. Being private,
+	 * locked, an image, or a video is a state any post of its type can be in
+	 * rather than a fact about a particular one, so none of them can be named
+	 * per-post and each gets an option to be configured for all of them at
+	 * once.
+	 *
+	 * Restricted access is checked before the kind of file: whether the post
+	 * is reachable at all matters more to the person reading the trail than
+	 * what sort of place it is. Both of those checks report the state that
+	 * reader is in, so a locked post stops reading as locked once they unlock
+	 * it, and the private check leads.
+	 *
+	 * The pages WordPress assigns a role to under its settings are not here.
+	 * Each is one particular page, which its own icon meta names directly, so
+	 * they only carry a derived default — see `fallbackIcon()`.
 	 *
 	 * @inheritDoc
 	 */
 	public function iconOptionKey(): string
 	{
-		return IconOption::postTypeKey($this->post->post_type);
+		return match (true) {
+			'private' === get_post_status($this->post) => 'private-post',
+			post_password_required($this->post)        => 'protected-post',
+			'attachment' === $this->post->post_type    => $this->mediaOptionKey(),
+			default => IconOption::postTypeKey($this->post->post_type)
+		};
 	}
 
 	/**
@@ -92,43 +111,28 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns an icon for the posts this crumb can say something more useful
-	 * about than the generic post type default: one the site owner restricted
-	 * access to, the pages WordPress assigns a role to under its settings, and
-	 * an attachment whose mime type is one of the media types checked below.
-	 * None of them is something an option could be registered against — a post
-	 * status, a password, two single pages named in an option, and a mime type
-	 * — so all are derived here rather than resolved from the registry. All
-	 * stay behind the icon config, since a site owner who picked an icon for
-	 * pages or media meant it.
+	 * Returns an icon for the pages WordPress assigns a role to under its
+	 * settings. Each is one particular page, so it gets no block control of
+	 * its own — a page's icon belongs to that page's own icon meta — and
+	 * resolving here rather than through `iconOptionKey()` is what keeps them
+	 * behind the icon config, since a site owner who picked an icon for pages
+	 * meant it. The icons themselves are read from the registry like every
+	 * other icon the plugin renders, under options registered without a label.
 	 *
-	 * Restricted access is checked first: whether the post is reachable at all
-	 * matters more to the person reading the trail than what kind of place it
-	 * is. Both checks report the state that reader is in, so a locked post
-	 * stops reading as locked once they unlock it.
+	 * Nothing else resolves here. Restricted access and the kind of file a
+	 * piece of media is are states any post can be in, so they get options of
+	 * their own — see `iconOptionKey()`.
 	 *
 	 * @inheritDoc
 	 */
 	protected function fallbackIcon(): string
 	{
-		if ('private' === get_post_status($this->post)) {
-			return Icon::Unseen->name();
-		}
-
-		if (post_password_required($this->post)) {
-			return 'core/key';
-		}
-
 		if ($this->isPrivacyPolicy()) {
-			return 'core/shield';
+			return $this->context->iconOptions->icon('privacy-policy');
 		}
 
 		if ($this->isPostsPage()) {
-			return Icon::Archive->name();
-		}
-
-		if ('attachment' === $this->post->post_type) {
-			return $this->attachmentIcon();
+			return $this->context->iconOptions->icon('posts-page');
 		}
 
 		return '';
@@ -168,17 +172,20 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns an icon matching this attachment's mime type, or an empty
-	 * string when none of the checked types match — leaving the generic
-	 * `attachment` post type default to apply.
+	 * Returns the option key for the kind of media this attachment is, or the
+	 * attachment post type's own key when it is none of them — a PDF, an
+	 * archive — which is the catch-all the media group carries for exactly
+	 * that. Mime types are matched with `wp_attachment_is()` rather than read
+	 * off `post_mime_type`, so the same rules WordPress applies elsewhere
+	 * decide what counts as an image, an audio file, or a video.
 	 */
-	private function attachmentIcon(): string
+	private function mediaOptionKey(): string
 	{
 		return match (true) {
-			wp_attachment_is('image', $this->post) => 'core/image',
-			wp_attachment_is('audio', $this->post) => 'core/audio',
-			wp_attachment_is('video', $this->post) => 'core/capture-video',
-			default                                => ''
+			wp_attachment_is('image', $this->post) => 'media-image',
+			wp_attachment_is('audio', $this->post) => 'media-audio',
+			wp_attachment_is('video', $this->post) => 'media-video',
+			default => IconOption::postTypeKey('attachment')
 		};
 	}
 }

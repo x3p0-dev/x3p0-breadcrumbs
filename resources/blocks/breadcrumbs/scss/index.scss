@@ -112,26 +112,112 @@
 	}
 }
 
-// Presents adjacent icon `ToolsPanelItem`s (each tagged with this class —
-// see `IconsPanel`) as one flush block, mirroring Global Styles' "Elements"
-// list — no gap between rows, and only the outer corners rounded, with
-// adjacent rows sharing a single border rather than doubling it up. The
-// items themselves stay fully independent, separately-togglable panel
-// items; this is presentation only.
-.x3p0-breadcrumbs-icon-control-item {
-	& + & {
-		margin-top: calc(-1 * #{variables.$grid-unit-20});
+// The icon rows and their "Add an icon" button, wrapped in a plain element
+// rather than being `ToolsPanelItem`s (see `IconsPanel` for why). A
+// `ToolsPanel` lays its children out on a two-column grid, so the wrapper
+// has to claim the full width the panel items get for themselves.
+.x3p0-breadcrumbs-icons-panel {
+	&__overrides {
+		grid-column: 1 / -1;
+	}
 
-		.x3p0-breadcrumbs-icon-control__preview {
-			border-top: none;
-			border-top-left-radius: 0;
-			border-top-right-radius: 0;
-		}
+	// `Dropdown` renders its toggle inside a wrapper element of its own, so
+	// stretching the button alone isn't enough — the wrapper it sits in has
+	// to span the panel too.
+	&__add {
+		display: block;
+		width: 100%;
+		margin-top: variables.$grid-unit-15;
+	}
+
+	// Compounded past core's `.components-button.has-icon.has-text`, which
+	// is three classes deep and otherwise wins on specificity, pinning the
+	// icon and label to the start of the stretched button.
+	&__add-toggle.components-button.has-icon.has-text {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+// Presents adjacent icon rows (each tagged with this class — see
+// `IconsPanel`) as one flush block, mirroring Global Styles' "Elements"
+// list — no gap between rows, and only the outer corners rounded, with
+// adjacent rows sharing a single border rather than doubling it up. This is
+// presentation only; the rows themselves stay fully independent.
+.x3p0-breadcrumbs-icon-control-item {
+	& + & .x3p0-breadcrumbs-icon-control__preview {
+		border-top: none;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
 	}
 
 	&:has(+ &) .x3p0-breadcrumbs-icon-control__preview {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
+	}
+}
+
+// The "Add an icon" dropdown: a search field pinned above a scrolling list
+// of grouped options, so a site with a long tail of post types and
+// taxonomies stays navigable.
+.x3p0-breadcrumbs-icon-option-picker {
+
+	// `MenuItem`'s two-line layout stacks its label and info in a column and
+	// gives the label a 160px floor, which in an inspector-width popover
+	// stretches the label across the row and drops the slug onto a line of
+	// its own. Here the two belong on one line — name at the start, slug at
+	// the end — so the wrapper is turned back into a row and the label's
+	// floor removed so it sizes to its own text.
+	.components-menu-item__info-wrapper {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		gap: variables.$grid-unit-10;
+		width: 100%;
+	}
+
+	// The name claims the row and the slug holds its size beside it, so the
+	// two sit at opposite ends however short the name is. Core's 160px floor
+	// goes, since it would keep short names from shrinking below it.
+	.components-menu-item__item {
+		width: 100%;
+		min-width: 0;
+		margin-right: 0;
+	}
+
+	.components-menu-item__info {
+		flex-shrink: 0;
+		margin-top: 0;
+		white-space: nowrap;
+	}
+
+	&__search {
+		padding: variables.$grid-unit-10 variables.$grid-unit-10 0;
+		margin-bottom: 0;
+	}
+
+	// The popover box sizes itself to its content, and `contentClassName`
+	// lands on the wrapper around it rather than on the box, so the width
+	// floor has to come from the content itself. Without core's 160px label
+	// floor (removed above) the menu would otherwise collapse to the width
+	// of the longest option name.
+	&__menu {
+		min-width: 300px;
+		max-height: 320px;
+		overflow-y: auto;
+
+		// The last group in the list draws a bottom border that doubles up
+		// with the popover's own edge.
+		.components-menu-group:last-child {
+			border-bottom: none;
+		}
+	}
+
+	&__no-results {
+		padding: variables.$grid-unit-20 variables.$grid-unit-15;
+		margin: 0;
+		color: colors.$gray-700;
 	}
 }
 

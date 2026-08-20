@@ -9,12 +9,14 @@
 
 // Internal dependencies.
 import IconControl          from './IconControl';
+import IconOptionPicker     from './IconOptionPicker';
 import SeparatorIconControl from './SeparatorIconControl';
+import { ICON_OPTIONS }     from '../../utils/icon-options';
 
 // WordPress dependencies.
 import { getBlockType } from '@wordpress/blocks';
 import { useInstanceId } from '@wordpress/compose';
-import { useMemo } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import { post as fallbackControlIcon } from '@wordpress/icons';
 import {
@@ -23,11 +25,10 @@ import {
 	CustomSelectControl
 } from '@wordpress/components';
 
-// Shared by every icon `ToolsPanelItem` below purely for CSS purposes: it
-// lets adjacent items present as one flush block (see `_index.scss`) while
-// remaining fully independent, separately-togglable panel items — the same
-// way WordPress groups its own Background or Color panel rows.
-const ITEM_CLASS_NAME = 'x3p0-breadcrumbs-icon-control-item';
+// Shared by every icon row below purely for CSS purposes: it lets adjacent
+// rows present as one flush block (see `_index.scss`), the way WordPress
+// presents its own Global Styles "Elements" list.
+const ROW_CLASS_NAME = 'x3p0-breadcrumbs-icon-control-item';
 
 // Icon/label visibility options are defined once in PHP via `IconVisibility`
 // and `LabelVisibility` and passed in on the `x3p0Breadcrumbs` global, so the
@@ -40,62 +41,19 @@ const ICON_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.iconVisibilityOptions ??
 // noinspection JSUnresolvedVariable
 const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
 
-// Reduces an option key to the bare slug shown to disambiguate a label. The
-// `post-type:`, `post-type-archive:`, and `taxonomy:` prefixes namespace the
-// registry and mean nothing to whoever reads the panel, so "Tag" becomes
-// "Tag (product_tag)" rather than "Tag (taxonomy:product_tag)". A key with no
-// prefix (`home`, `separator`) passes through untouched.
-const optionSlug = (key) => key.replace(/^(?:post-type-archive|post-type|taxonomy):/, '');
-
-// Qualifies any repeated option name with its own slug, so no two rows below
-// share a label. `ToolsPanel` tracks its items by label — two options
-// declaring the same one (core's `post_tag` and WooCommerce's `product_tag`
-// are both "Tag") would otherwise collide in the panel's "+" menu and reset
-// handling. This is the editor's problem alone, so PHP registers whatever
-// label each post type or taxonomy declares and leaves the disambiguation
-// here.
-const withUniqueNames = (options) => {
-	const claimed = new Set();
-
-	return options.map((option) => {
-		// An unlabeled option is a default-carrier PHP shouldn't have
-		// sent (`forBlock()` omits them) and has no name to qualify.
-		const isDuplicate = option.name && claimed.has(option.name);
-
-		claimed.add(option.name);
-
-		return isDuplicate ? {
-			...option,
-			name: sprintf(
-				// translators: 1: icon option label, 2: post type or taxonomy slug.
-				__('%1$s (%2$s)', 'x3p0-breadcrumbs'),
-				option.name,
-				optionSlug(option.key)
-			)
-		} : option;
-	});
-};
-
-// The registered icon options, as `{key, icon, name}` triples — see
-// `IconOptionRegistry::forBlock()` on the PHP side. PHP enumerates everything,
-// including one option per viewable post type and public taxonomy (via
-// `IconOptionRegistrar`), so the editor renders one `IconControl` row per
-// entry with no client-side enumeration; a newly registered option appears
-// here automatically with no JS change needed. Names are made unique once,
-// here at the source, so every label derived from one below inherits it.
-//
-// noinspection JSUnresolvedVariable
-const ICON_OPTIONS = withUniqueNames(window.x3p0Breadcrumbs?.iconOptions ?? []);
-
-// The option rows shown in the panel by default; every other row starts
-// hidden behind the panel's "+" menu.
-const SHOWN_BY_DEFAULT = [ 'separator', 'home', 'post-type:post', 'post-type:page' ];
+// The options that always have a row, listed ahead of every other one: the
+// separator, which renders on every trail regardless of the icon settings,
+// and the home crumb, which all but the most unusual trails open with. Every
+// other option is added on demand from `IconOptionPicker`, so the panel's
+// length tracks what the user actually configured rather than how many
+// options happen to be registered.
+const PINNED_KEYS = ['separator', 'home'];
 
 /**
  * Renders a `<ToolsPanel>` component with the block's icon controls: the
- * icon/label visibility selects, the separator icon, and one row per
- * registered icon option, all reading and writing the block's single `icons`
- * map keyed by option key.
+ * icon/label visibility selects, then one row per icon option the user is
+ * configuring, all reading and writing the block's single `icons` map keyed
+ * by option key.
  * @param props
  * @returns {JSX.Element}
  */
@@ -106,6 +64,13 @@ const IconsPanel = (props) => {
 	} = props;
 
 	const panelId = useInstanceId(IconsPanel);
+
+	// Options the user added a row for without picking an icon yet. A row is
+	// otherwise implied by the presence of a key in `icons`, but an option
+	// only lands there once it holds a real override, so a freshly added row
+	// needs somewhere to live until then. Deliberately not persisted: an
+	// empty row is a step in the middle of making a choice, not a choice.
+	const [addedKeys, setAddedKeys] = useState([]);
 
 	// Prefer the (possibly filtered) PHP-supplied default, which should be
 	// set for the block metadata; fall back to a literal as a last resort.
@@ -125,6 +90,33 @@ const IconsPanel = (props) => {
 	// the default value would.
 	const iconsHidden = 'none' === (iconVisibility ?? defaultIconVisibility);
 
+	// The options with a row, pinned ones first and the rest in registry
+	// order, so a row holds its place no matter when it was added.
+	const rows = useMemo(() => {
+		const shown = new Set([...PINNED_KEYS, ...Object.keys(icons), ...addedKeys]);
+
+		return [
+			...PINNED_KEYS.map(
+				(key) => ICON_OPTIONS.find((option) => key === option.key)
+			),
+			...ICON_OPTIONS.filter(
+				(option) => shown.has(option.key) && ! PINNED_KEYS.includes(option.key)
+			)
+		].filter(Boolean).filter(
+			// Crumb icon rows are hidden while icon visibility is "none";
+			// the separator row stays, since it isn't a crumb icon and
+			// renders regardless.
+			(option) => 'separator' === option.key || ! iconsHidden
+		);
+	}, [icons, addedKeys, iconsHidden]);
+
+	// Everything left for `IconOptionPicker` to offer.
+	const available = useMemo(() => {
+		const shown = new Set(rows.map((option) => option.key));
+
+		return ICON_OPTIONS.filter((option) => ! shown.has(option.key));
+	}, [rows]);
+
 	// Updates a single option key's icon in the `icons` map, dropping empty
 	// entries from the attribute so it only ever stores real overrides.
 	const onIconChange = (key, value) => {
@@ -139,19 +131,30 @@ const IconsPanel = (props) => {
 		setAttributes({ icons: updatedIcons });
 	};
 
+	// Clears an option's override and, unless it's a pinned row, takes the
+	// row away with it: an added row exists to hold an override, so there's
+	// nothing left for it to do once that override is gone.
+	const onIconReset = (key) => {
+		onIconChange(key, '');
+		setAddedKeys((keys) => keys.filter((added) => key !== added));
+	};
+
 	return (
 		<ToolsPanel
 			// Remounting when the visibility gate flips rebuilds the
 			// panel's item and dropdown-menu registration from scratch, so
-			// the crumb icon rows that unmount can't linger as selectable
-			// entries in the panel's own menu.
+			// the label visibility item that unmounts can't linger as a
+			// selectable entry in the panel's own menu.
 			key={iconsHidden ? 'icons-hidden' : 'icons-visible'}
 			label={__('Icons', 'x3p0-breadcrumbs')}
-			resetAll={() => setAttributes({
-				icons: undefined,
-				iconVisibility: defaultIconVisibility,
-				labelVisibility: defaultLabelVisibility
-			})}
+			resetAll={() => {
+				setAttributes({
+					icons: undefined,
+					iconVisibility: defaultIconVisibility,
+					labelVisibility: defaultLabelVisibility
+				});
+				setAddedKeys([]);
+			}}
 			panelId={panelId}
 		>
 			<ToolsPanelItem
@@ -192,41 +195,48 @@ const IconsPanel = (props) => {
 					/>
 				</ToolsPanelItem>
 			)}
-			{ICON_OPTIONS.filter(
-				// Crumb icon rows are hidden while icon visibility is
-				// "none"; the separator row stays, since it isn't a crumb
-				// icon and renders regardless.
-				(option) => 'separator' === option.key || ! iconsHidden
-			).map((option) => (
-				<ToolsPanelItem
-					key={option.key}
-					className={ITEM_CLASS_NAME}
-					label={option.name}
-					hasValue={() => !! icons[option.key]}
-					onDeselect={() => onIconChange(option.key, '')}
-					panelId={panelId}
-					isShownByDefault={SHOWN_BY_DEFAULT.includes(option.key)}
-				>
-					{'separator' === option.key ? (
-						<SeparatorIconControl
-							value={icons[option.key] || ''}
-							onChange={(value) => onIconChange(option.key, value)}
-							defaultIcon={option.icon}
-						/>
-					) : (
-						<IconControl
-							value={icons[option.key] || ''}
-							onChange={(value) => onIconChange(option.key, value)}
-							label={option.name}
-							controlIcon={fallbackControlIcon}
-							openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), option.name)}
-							resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), option.name)}
-							modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), option.name)}
-							modalDescription={sprintf(__('Pick an icon for the %s breadcrumb item.', 'x3p0-breadcrumbs'), option.name)}
-						/>
-					)}
-				</ToolsPanelItem>
-			))}
+			{/*
+				The icon rows are plain children rather than
+				`ToolsPanelItem`s: the panel's own "+" menu is built for a
+				fixed, curated set of controls, and the icon options are an
+				open-ended list that grows with every post type and taxonomy
+				registered on the site. `IconOptionPicker` takes over that
+				job with a searchable, grouped menu instead. Panel children
+				are laid out on a two-column grid, hence the wrapper's
+				`grid-column` span in `_index.scss`.
+			*/}
+			<div className="x3p0-breadcrumbs-icons-panel__overrides">
+				{rows.map((option) => (
+					<div className={ROW_CLASS_NAME} key={option.key}>
+						{'separator' === option.key ? (
+							<SeparatorIconControl
+								value={icons[option.key] || ''}
+								onChange={(value) => onIconChange(option.key, value)}
+								defaultIcon={option.icon}
+							/>
+						) : (
+							<IconControl
+								value={icons[option.key] || ''}
+								onChange={(value) => onIconChange(option.key, value)}
+								onReset={() => onIconReset(option.key)}
+								defaultIcon={option.icon}
+								label={option.name}
+								controlIcon={fallbackControlIcon}
+								openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), option.name)}
+								resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), option.name)}
+								modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), option.name)}
+								modalDescription={sprintf(__('Pick an icon for the %s breadcrumb item.', 'x3p0-breadcrumbs'), option.name)}
+							/>
+						)}
+					</div>
+				))}
+				{! iconsHidden && available.length > 0 && (
+					<IconOptionPicker
+						options={available}
+						onSelect={(key) => setAddedKeys((keys) => [...keys, key])}
+					/>
+				)}
+			</div>
 		</ToolsPanel>
 	);
 };

@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
+use X3P0\Breadcrumbs\Crumb\Type\PagedArchive;
 use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\CatalogOrder as CatalogOrderCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\StorePage as StorePageCrumb;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\CatalogOrder as CatalogOrderSlug;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
 use X3P0\Breadcrumbs\Icon\Icon;
@@ -31,9 +35,11 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
  * trails for the shop, single products, and product taxonomies, since a product
  * is a public post type with an archive and the product taxonomies are ordinary
  * taxonomies — so the extension only relabels the product post type archive
- * crumb to read as the shop. It does this on the `CrumbsBuilt` event rather than
- * by replacing the built-in crumb class, so other extensions can relabel their
- * own crumbs on the same event without one overriding the others.
+ * crumb to read as the shop and adds the crumb for the sorting a product
+ * listing is under, which core has no equivalent of. It does both on the
+ * `CrumbsBuilt` event rather than by replacing the built-in crumb class, so
+ * other extensions can relabel their own crumbs on the same event without one
+ * overriding the others.
  *
  * The rest is the part core has no concept of: the cart, checkout, and My
  * Account pages, whose endpoints (orders, view-order, order-received, and the
@@ -96,10 +102,12 @@ final class WooCommerce extends Extension
 			new IconOption('woocommerce-cart',             'core/cart'),
 			new IconOption('woocommerce-checkout',         'core/payment'),
 			new IconOption('woocommerce-myaccount',        'core/people'),
-			new IconOption('woocommerce-terms',            Icon::List)
+			new IconOption('woocommerce-terms',            Icon::List),
+			new IconOption('woocommerce-orderby',          'core/chevron-up-down')
 		);
 
 		$this->addEndpointIconOptions($event);
+		$this->addCatalogOrderIconOptions($event);
 	}
 
 	/**
@@ -114,6 +122,21 @@ final class WooCommerce extends Extension
 		foreach (EndpointSlug::cases() as $endpoint) {
 			$event->options->add(
 				new IconOption($endpoint->optionKey(), $endpoint->icon())
+			);
+		}
+	}
+
+	/**
+	 * Registers an option per sorting option the plugin names, keyed under
+	 * the shared `woocommerce-orderby` option so each carries its own default
+	 * without the crumb hardcoding one. Sorting options a third party adds
+	 * have no key of their own and resolve the shared option instead.
+	 */
+	private function addCatalogOrderIconOptions(IconOptionsRegistered $event): void
+	{
+		foreach (CatalogOrderSlug::cases() as $order) {
+			$event->options->add(
+				new IconOption($order->optionKey(), $order->icon())
 			);
 		}
 	}
@@ -171,6 +194,56 @@ final class WooCommerce extends Extension
 		);
 
 		$this->replaceStorePages($event);
+		$this->addCatalogOrderCrumb($event);
+	}
+
+	/**
+	 * Adds the crumb for the sorting a product listing is under — the shop,
+	 * a product taxonomy archive, or a product search, all of which
+	 * WooCommerce sorts by the same `orderby` request var. Without it, a
+	 * sorted listing reads exactly as the unsorted one does.
+	 *
+	 * The crumb goes in ahead of the pagination crumb, since a page number
+	 * is a position within the sorted listing rather than a step of its own,
+	 * and is appended when the listing is unpaged.
+	 */
+	private function addCatalogOrderCrumb(CrumbsBuilt $event): void
+	{
+		if (! is_shop() && ! is_product_taxonomy()) {
+			return;
+		}
+
+		$orderby = CatalogOrderSlug::requested();
+
+		// The default sorting is what the listing already shows without
+		// an `orderby` var at all, so it is not a step in the trail.
+		if ('' === $orderby || CatalogOrderSlug::MenuOrder->value === $orderby) {
+			return;
+		}
+
+		// A value the store offers no sorting option for — one a plugin
+		// removed, or one that was never valid — has no label to show.
+		if (! isset(CatalogOrderSlug::labels()[$orderby])) {
+			return;
+		}
+
+		$crumb = $event->makeCrumb(CatalogOrderCrumb::class, [
+			'orderby' => $orderby
+		]);
+
+		if (! $crumb) {
+			return;
+		}
+
+		$paged = $event->crumbs->first(
+			static fn (Crumb $item) => $item instanceof PagedArchive
+		);
+
+		if ($paged) {
+			$event->crumbs->insertBefore($paged, $crumb);
+		} else {
+			$event->crumbs->push($crumb);
+		}
 	}
 
 	/**

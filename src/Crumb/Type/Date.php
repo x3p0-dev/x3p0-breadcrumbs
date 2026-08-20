@@ -40,7 +40,7 @@ abstract class Date extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconKey(): string
+	public function iconOptionKey(): string
 	{
 		return 'date';
 	}

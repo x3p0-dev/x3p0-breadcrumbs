@@ -15,6 +15,7 @@ use const X3P0\Breadcrumbs\PLUGIN_DIR;
  */
 enum Icon: string
 {
+	case Archive          = 'archive';
 	case Arrow            = 'arrow';
 	case Article          = 'article';
 	case Chevron          = 'chevron';
@@ -54,6 +55,7 @@ enum Icon: string
 	public function label(): string
 	{
 		return match ($this) {
+			self::Archive          => __('Archive', 'x3p0-breadcrumbs'),
 			self::Arrow            => __('Arrow', 'x3p0-breadcrumbs'),
 			self::Article          => __('Article', 'x3p0-breadcrumbs'),
 			self::Chevron          => __('Chevron', 'x3p0-breadcrumbs'),

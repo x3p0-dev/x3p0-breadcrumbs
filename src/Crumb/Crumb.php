@@ -27,6 +27,13 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 abstract class Crumb
 {
 	/**
+	 * The default crumb icon.
+	 *
+	 * @var string
+	 */
+	private const DEFAULT_ICON = 'x3p0-breadcrumbs/article';
+
+	/**
 	 * Read-only trail config, re-exposed from the context so concrete types
 	 * can read the thing they reach for most (labels and the like) directly,
 	 * without going through `$this->context` — mirroring how
@@ -73,7 +80,7 @@ abstract class Crumb
 	 * and the dynamically-keyed types compute it (e.g., `Post` returns
 	 * `post-type:{$type}`).
 	 */
-	public function iconKey(): string
+	public function iconOptionKey(): string
 	{
 		return $this->getSlug();
 	}
@@ -91,8 +98,8 @@ abstract class Crumb
 	 */
 	public function getIcon(): string
 	{
-		return $this->context->iconConfig->getIcon($this->iconKey())
-			?: $this->context->iconOptions->icon($this->iconKey())
-			?: 'x3p0-breadcrumbs/article';
+		return $this->context->iconConfig->getIcon($this->iconOptionKey())
+			?: $this->context->iconOptions->icon($this->iconOptionKey())
+			?: self::DEFAULT_ICON;
 	}
 }

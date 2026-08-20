@@ -13,15 +13,26 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Icon;
 
+use X3P0\Breadcrumbs\Support\BuildsFromArray;
+
 /**
  * A named icon slot: the unit of icon configuration, defaults, and UI. An
  * option is deliberately not tied to a crumb type — crumbs *consume* options
  * by key (see `Crumb::iconKey()`), several crumbs may share one option (the
  * date archives all pull from `date`), and an option may exist that no
- * built-in crumb uses. Options are collected in the `IconOptions` registry.
+ * built-in crumb uses. Options are collected in the `IconOptionRegistry`.
+ *
+ * Options with a key derived from a WordPress object have a named constructor
+ * apiece — `postType()`, `postTypeArchive()`, `taxonomy()` — so the key is
+ * built and the option constructed in one call. Options with a flat key of
+ * their own (`home`, `separator`, an extension's `woocommerce-shop`) are built
+ * with the constructor directly; there is no named alias for it, since nothing
+ * about the key needs deriving.
  */
 final class IconOption
 {
+	use BuildsFromArray;
+
 	/**
 	 * Sets up the option. The `$key` is the config lookup key (e.g., `home`,
 	 * `date`, `post-type:page`, `taxonomy:category`). The `$icon` is the
@@ -39,7 +50,36 @@ final class IconOption
 	) {}
 
 	/**
-	 * Builds the option key for a post type's single-post crumbs.
+	 * Builds the option for a post type's single-post crumbs, keyed by
+	 * `postTypeKey()`.
+	 */
+	public static function forPostType(string $postType, string $icon = '', string $label = ''): self
+	{
+		return new self(self::postTypeKey($postType), $icon, $label);
+	}
+
+	/**
+	 * Builds the option for a post type's archive crumb, keyed by
+	 * `postTypeArchiveKey()`.
+	 */
+	public static function forPostTypeArchive(string $postType, string $icon = '', string $label = ''): self
+	{
+		return new self(self::postTypeArchiveKey($postType), $icon, $label);
+	}
+
+	/**
+	 * Builds the option for a taxonomy's term crumbs, keyed by
+	 * `taxonomyKey()`.
+	 */
+	public static function forTaxonomy(string $taxonomy, string $icon = '', string $label = ''): self
+	{
+		return new self(self::taxonomyKey($taxonomy), $icon, $label);
+	}
+
+	/**
+	 * Builds the option key for a post type's single-post crumbs. Consumers
+	 * resolving an icon need the key alone (see `Crumb::iconKey()`), so this
+	 * stays separate from the `forPostType()` constructor that uses it.
 	 */
 	public static function postTypeKey(string $postType): string
 	{

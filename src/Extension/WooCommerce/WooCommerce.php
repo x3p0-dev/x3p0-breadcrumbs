@@ -18,8 +18,8 @@ use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
+use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
 use X3P0\Breadcrumbs\Icon\IconOption;
-use X3P0\Breadcrumbs\Icon\IconOptions;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
@@ -56,40 +56,35 @@ final class WooCommerce extends Extension
 	];
 
 	/**
-	 * Stores the icon options registry the extension seeds its own icon
-	 * defaults into.
-	 */
-	public function __construct(private readonly IconOptions $iconOptions)
-	{}
-
-	/**
-	 * Registers the default icons for WooCommerce's own icon option keys:
-	 * the product post type, its taxonomies, and the extension's own crumb
-	 * types. All unlabeled — the post type/taxonomy keys get their labels
-	 * from `IconOptionRegistrar`'s late-`init` enumeration (which preserves
-	 * these icons), and the crumb-type keys carry defaults only. Runs before
-	 * that enumeration, so these win as the registrar only fills blanks.
-	 *
-	 * @inheritDoc
-	 */
-	public function boot(): void
-	{
-		$this->iconOptions->add(
-			new IconOption(IconOption::postTypeKey('product'), 'x3p0-breadcrumbs/package'),
-			new IconOption(IconOption::taxonomyKey('product_cat'), 'core/category'),
-			new IconOption(IconOption::taxonomyKey('product_tag'), 'core/tag'),
-			new IconOption('woocommerce-shop', 'core/store'),
-			new IconOption('woocommerce-endpoint', 'core/more-vertical')
-		);
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public function subscribeTo(Listenable $registry): void
 	{
+		$registry->listenTo($this->onIconOptionsRegistered(...));
 		$registry->listenTo($this->onQueryTypeResolving(...));
 		$registry->listenTo($this->onCrumbsBuilt(...));
+	}
+
+	/**
+	 * Registers the default icons for WooCommerce's own icon option keys. The
+	 * product post type and its taxonomies are already registered by the time
+	 * this runs — they are an ordinary public post type and taxonomies — so
+	 * they are retargeted with `setIcon()`, which swaps the icon and leaves
+	 * the label the registrar derived from each object in place. The
+	 * extension's own crumb types have no such counterpart and are registered
+	 * outright, unlabeled: they carry a default icon only and are not offered
+	 * as block controls.
+	 */
+	public function onIconOptionsRegistered(IconOptionsRegistered $event): void
+	{
+		$event->options->setIcon(IconOption::postTypeKey('product'), 'x3p0-breadcrumbs/package');
+		$event->options->setIcon(IconOption::taxonomyKey('product_cat'), 'core/category');
+		$event->options->setIcon(IconOption::taxonomyKey('product_tag'), 'core/tag');
+
+		$event->options->add(
+			new IconOption('woocommerce-shop', 'core/store'),
+			new IconOption('woocommerce-endpoint', 'core/more-vertical')
+		);
 	}
 
 	/**

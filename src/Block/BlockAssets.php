@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\Icon\IconOptions;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
@@ -27,7 +27,7 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
  * JavaScript never has to recreate (and risk desyncing) any of the lists. The
  * icon options — including one per viewable post type and public taxonomy,
  * enumerated by `IconOptionRegistrar` late on `init` — likewise come from the
- * {@see IconOptions} registry, so the editor's icon controls and canvas
+ * {@see IconOptionRegistry} registry, so the editor's icon controls and canvas
  * preview crumbs stay in sync with the real defaults rather than recreating
  * the lookups client-side.
  */
@@ -45,8 +45,8 @@ final class BlockAssets implements Bootable
 	 * Stores the icon and markup options passed to the editor.
 	 */
 	public function __construct(
-		private readonly IconOptions   $iconOptions,
-		private readonly MarkupOptions $markupOptions
+		private readonly IconOptionRegistry $iconOptions,
+		private readonly MarkupOptions      $markupOptions
 	) {}
 
 	/**

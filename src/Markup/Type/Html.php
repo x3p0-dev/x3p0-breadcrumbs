@@ -16,7 +16,7 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Icon\IconConfig;
-use X3P0\Breadcrumbs\Icon\IconOptions;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
@@ -45,7 +45,7 @@ class Html extends Markup implements MarkupBlockOption
 		Pagination $pagination,
 		IconConfig $iconConfig,
 		private readonly IconResolver $iconResolver,
-		private readonly IconOptions $iconOptions
+		private readonly IconOptionRegistry $iconOptions
 	) {
 		parent::__construct($crumbs, $config, $pagination, $iconConfig);
 	}

@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Icon\IconConfig;
-use X3P0\Breadcrumbs\Icon\IconOptions;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 
 /**
  * Everything a `Crumb` reads its shared state from: the trail config, the
@@ -34,6 +34,6 @@ final class CrumbContext
 	public function __construct(
 		public readonly BreadcrumbsConfig $config,
 		public readonly IconConfig        $iconConfig,
-		public readonly IconOptions       $iconOptions
+		public readonly IconOptionRegistry $iconOptions
 	) {}
 }

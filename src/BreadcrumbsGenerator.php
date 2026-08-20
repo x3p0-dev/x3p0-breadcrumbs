@@ -21,7 +21,7 @@ use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Crumb\CrumbFactory;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Icon\IconConfig;
-use X3P0\Breadcrumbs\Icon\IconOptions;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Query\QueryContext;
 use X3P0\Breadcrumbs\Query\QueryFactory;
@@ -50,7 +50,7 @@ final class BreadcrumbsGenerator
 		private readonly QueryFactory     $queryFactory,
 		private readonly AssemblerFactory $assemblerFactory,
 		private readonly CrumbFactory     $crumbFactory,
-		private readonly IconOptions      $iconOptions
+		private readonly IconOptionRegistry $iconOptions
 	) {}
 
 	/**

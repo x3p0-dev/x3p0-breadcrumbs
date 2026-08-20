@@ -130,11 +130,10 @@ final class Breadcrumbs implements BlockRenderer
 	 * `Icon\IconResolver`, when the `Markup` layer resolves it. The
 	 * deprecated `homeIcon` and `separatorIcon` attributes themselves are
 	 * folded into the generic `icons` map (keyed by icon option key) that
-	 * replaced them. The deprecated
-	 * `showHomeLabel` boolean maps onto `LabelVisibility::AllButFirst` when
-	 * it was turned off — mirrored on the JS side by `deprecated.js`'s block
-	 * deprecation, which performs the same migrations for content opened in
-	 * the editor.
+	 * replaced them. The deprecated `showHomeLabel` boolean maps onto
+	 * `LabelVisibility::AllButFirst` when it was turned off — mirrored on
+	 * the JS side by `deprecated.js`'s block deprecation, which performs
+	 * the same migrations for content opened in the editor.
 	 */
 	private function mapDeprecatedAttributes(array $attributes): array
 	{

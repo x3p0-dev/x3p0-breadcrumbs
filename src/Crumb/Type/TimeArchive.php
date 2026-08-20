@@ -28,7 +28,7 @@ abstract class TimeArchive extends Date
 	 *
 	 * @inheritDoc
 	 */
-	public function iconKey(): string
+	public function iconOptionKey(): string
 	{
 		return 'time';
 	}

@@ -21,7 +21,7 @@ namespace X3P0\Breadcrumbs\Icon;
  * mechanism for everyone. `add()` is last-write-wins, letting an extension
  * replace a built-in default by re-registering its key.
  */
-final class IconOptions
+final class IconOptionRegistry
 {
 	/**
 	 * Stores the registered options by key.
@@ -39,6 +39,22 @@ final class IconOptions
 		foreach ($options as $option) {
 			$this->options[$option->key] = $option;
 		}
+	}
+
+	/**
+	 * Retargets the icon for the given key, carrying the registered option's
+	 * label through unchanged, or registers an unlabeled option when the key
+	 * is new. This is the partial override `add()` cannot express: `add()`
+	 * replaces an option wholesale, which would drop a label the registrar
+	 * derived from a post type or taxonomy object. Extensions retargeting a
+	 * built-in default on `IconOptionsRegistered` want exactly this.
+	 */
+	public function setIcon(string $key, string $icon): void
+	{
+		$this->add(
+			$this->get($key)?->with(['icon' => $icon])
+				?? new IconOption($key, $icon)
+		);
 	}
 
 	/**

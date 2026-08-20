@@ -40,15 +40,52 @@ const ICON_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.iconVisibilityOptions ??
 // noinspection JSUnresolvedVariable
 const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
 
+// Reduces an option key to the bare slug shown to disambiguate a label. The
+// `post-type:`, `post-type-archive:`, and `taxonomy:` prefixes namespace the
+// registry and mean nothing to whoever reads the panel, so "Tag" becomes
+// "Tag (product_tag)" rather than "Tag (taxonomy:product_tag)". A key with no
+// prefix (`home`, `separator`) passes through untouched.
+const optionSlug = (key) => key.replace(/^(?:post-type-archive|post-type|taxonomy):/, '');
+
+// Qualifies any repeated option name with its own slug, so no two rows below
+// share a label. `ToolsPanel` tracks its items by label — two options
+// declaring the same one (core's `post_tag` and WooCommerce's `product_tag`
+// are both "Tag") would otherwise collide in the panel's "+" menu and reset
+// handling. This is the editor's problem alone, so PHP registers whatever
+// label each post type or taxonomy declares and leaves the disambiguation
+// here.
+const withUniqueNames = (options) => {
+	const claimed = new Set();
+
+	return options.map((option) => {
+		// An unlabeled option is a default-carrier PHP shouldn't have
+		// sent (`forBlock()` omits them) and has no name to qualify.
+		const isDuplicate = option.name && claimed.has(option.name);
+
+		claimed.add(option.name);
+
+		return isDuplicate ? {
+			...option,
+			name: sprintf(
+				// translators: 1: icon option label, 2: post type or taxonomy slug.
+				__('%1$s (%2$s)', 'x3p0-breadcrumbs'),
+				option.name,
+				optionSlug(option.key)
+			)
+		} : option;
+	});
+};
+
 // The registered icon options, as `{key, icon, name}` triples — see
-// `IconOptions::forBlock()` on the PHP side. PHP enumerates everything,
+// `IconOptionRegistry::forBlock()` on the PHP side. PHP enumerates everything,
 // including one option per viewable post type and public taxonomy (via
 // `IconOptionRegistrar`), so the editor renders one `IconControl` row per
 // entry with no client-side enumeration; a newly registered option appears
-// here automatically with no JS change needed.
+// here automatically with no JS change needed. Names are made unique once,
+// here at the source, so every label derived from one below inherits it.
 //
 // noinspection JSUnresolvedVariable
-const ICON_OPTIONS = window.x3p0Breadcrumbs?.iconOptions ?? [];
+const ICON_OPTIONS = withUniqueNames(window.x3p0Breadcrumbs?.iconOptions ?? []);
 
 // The option rows shown in the panel by default; every other row starts
 // hidden behind the panel's "+" menu.

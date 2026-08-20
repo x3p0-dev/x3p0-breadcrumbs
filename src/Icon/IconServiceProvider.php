@@ -33,7 +33,7 @@ final class IconServiceProvider extends ServiceProvider
 	 */
 	protected const SINGLETONS = [
 		IconResolver::class,
-		IconOptions::class
+		IconOptionRegistry::class
 	];
 
 	/**

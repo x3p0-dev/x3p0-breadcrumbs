@@ -53,11 +53,11 @@ final class Shop extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconKey(): string
+	public function iconOptionKey(): string
 	{
 		return 0 < wc_get_page_id('shop')
 			? 'woocommerce-shop'
-			: $this->decoratedCrumb->iconKey();
+			: $this->decoratedCrumb->iconOptionKey();
 	}
 
 	/**

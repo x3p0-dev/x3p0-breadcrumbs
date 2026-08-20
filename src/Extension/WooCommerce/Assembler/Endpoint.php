@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Assembler;
 
 use X3P0\Breadcrumbs\Assembler\Assembler;
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
-use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Address as AddressCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Endpoint as EndpointCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 
@@ -66,15 +66,17 @@ final class Endpoint extends Assembler
 	/**
 	 * The edit-address endpoint has billing and shipping sub-views. Add the
 	 * endpoint crumb as a linked ancestor, then append the specific address
-	 * type as the leaf.
+	 * type as the leaf. The address crumb takes the raw query var value and
+	 * normalizes it itself, since the slug WooCommerce puts in the URL is
+	 * localized.
 	 */
 	private function assembleEditAddress(): void
 	{
 		$this->addEndpointCrumb($this->endpoint);
 
 		if ($type = get_query_var(EndpointSlug::EditAddress->value)) {
-			$this->context->addCrumb(CrumbType::Custom, [
-				'label' => $this->addressTitle($type)
+			$this->context->addCrumb(AddressCrumb::class, [
+				'type' => $type
 			]);
 		}
 	}
@@ -88,29 +90,5 @@ final class Endpoint extends Assembler
 		$this->context->addCrumb(EndpointCrumb::class, [
 			'endpoint' => $endpoint
 		]);
-	}
-
-	/**
-	 * Returns the localized title for a billing or shipping address
-	 * sub-view, matching the heading WooCommerce shows on the edit-address
-	 * form.
-	 *
-	 * Note that we must recreate WooCommerce strings and its filter hook
-	 * here because it doesn't have a function in its public API for getting
-	 * the address title.
-	 *
-	 * @link https://github.com/woocommerce/woocommerce/issues/66565
-	 */
-	private function addressTitle(string $type): string
-	{
-		$type = wc_edit_address_i18n(sanitize_key($type), true);
-
-		return apply_filters(
-			'woocommerce_my_account_edit_address_title',
-			'shipping' === $type
-				? __('Shipping address', 'x3p0-breadcrumbs')
-				: __('Billing address', 'x3p0-breadcrumbs'),
-			$type
-		);
 	}
 }

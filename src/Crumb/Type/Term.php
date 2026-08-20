@@ -87,16 +87,14 @@ final class Term extends Crumb
 	}
 
 	/**
-	 * Returns this term's own icon override (term meta) when one is set —
-	 * the site owner's explicit editorial choice — otherwise the taxonomy's
-	 * icon option resolved by the parent.
+	 * Returns the icon stored in this term's own meta — the site owner's
+	 * editorial choice for this exact term, so it outranks the icon they
+	 * configured for the taxonomy.
 	 *
 	 * @inheritDoc
 	 */
-	public function getIcon(): string
+	protected function explicitIcon(): string
 	{
-		$icon = get_term_meta($this->term->term_id, MetaKey::Icon->value, true);
-
-		return '' !== $icon ? $icon : parent::getIcon();
+		return (string) get_term_meta($this->term->term_id, MetaKey::Icon->value, true);
 	}
 }

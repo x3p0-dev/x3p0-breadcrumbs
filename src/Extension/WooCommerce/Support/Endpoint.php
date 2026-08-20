@@ -17,8 +17,9 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
  * WooCommerce uses magic strings instead of a constant or enum to reference
  * its own account/checkout endpoints. This is the single source of truth for
  * the ones this plugin specifically references, shared by the `Assembler`
- * (which decides trail structure) and `Crumb` (which decides its own icon)
- * `Endpoint` classes, so the slugs live in exactly one place. Not every
+ * (which decides trail structure) and `Crumb` (which decides which icon option
+ * it resolves) `Endpoint` classes and by the extension registering those
+ * options, so the slugs live in exactly one place. Not every
  * WooCommerce endpoint needs a case here — only the ones this plugin's code
  * branches on or has an opinion about.
  */
@@ -36,7 +37,20 @@ enum Endpoint: string
 	case Wishlist      = 'wishlist';
 
 	/**
-	 * Returns the icon matching this endpoint.
+	 * Returns the icon option key for this endpoint. Every endpoint crumb
+	 * shares the one `woocommerce-endpoint` slug, which is all an unrecognized
+	 * endpoint has to resolve an icon from; the endpoints named here get a key
+	 * apiece under it, so each carries its own registered default rather than
+	 * the crumb hardcoding one.
+	 */
+	public function optionKey(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return 'woocommerce-endpoint:' . $this->value;
+	}
+
+	/**
+	 * Returns the default icon registered for this endpoint's option key.
 	 */
 	public function icon(): string
 	{

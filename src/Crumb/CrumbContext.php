@@ -32,8 +32,8 @@ final class CrumbContext
 	 * and the icon options registry.
 	 */
 	public function __construct(
-		public readonly BreadcrumbsConfig $config,
-		public readonly IconConfig        $iconConfig,
+		public readonly BreadcrumbsConfig  $config,
+		public readonly IconConfig         $iconConfig,
 		public readonly IconOptionRegistry $iconOptions
 	) {}
 }

@@ -37,18 +37,18 @@ final class IconOptionRegistrar implements Bootable
 	 * Icon every enumerated post type's single-post option gets, absent a
 	 * better one from `setCoreObjectIcons()` or a listener.
 	 *
-	 * @var  string
+	 * @var  Icon
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	private const POST_TYPE_ICON = 'x3p0-breadcrumbs/article';
+	private const POST_TYPE_ICON = Icon::Article;
 
 	/**
 	 * Icon every enumerated post type's archive option gets.
 	 *
-	 * @var  string
+	 * @var  Icon
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	private const POST_TYPE_ARCHIVE_ICON = 'x3p0-breadcrumbs/archive';
+	private const POST_TYPE_ARCHIVE_ICON = Icon::Archive;
 
 	/**
 	 * Icon every enumerated taxonomy's term option gets.
@@ -106,23 +106,23 @@ final class IconOptionRegistrar implements Bootable
 	private function registerStaticOptions(): void
 	{
 		$this->options->add(
-			new IconOption('separator', 'x3p0-breadcrumbs/chevron', __('Separator', 'x3p0-breadcrumbs')),
-			new IconOption('home', 'core/home', __('Home', 'x3p0-breadcrumbs')),
-			new IconOption('date', 'core/calendar', __('Date archives', 'x3p0-breadcrumbs')),
-			new IconOption('time', 'core/scheduled', __('Time archives', 'x3p0-breadcrumbs')),
-			new IconOption('author', 'core/people', __('Author', 'x3p0-breadcrumbs')),
-			new IconOption('search', 'core/search', __('Search', 'x3p0-breadcrumbs')),
-			new IconOption('error-404', 'core/error', __('Page not found', 'x3p0-breadcrumbs')),
+			new IconOption('separator', Icon::Chevron,    __('Separator', 'x3p0-breadcrumbs')),
+			new IconOption('home',      'core/home',      __('Home', 'x3p0-breadcrumbs')),
+			new IconOption('date',      'core/calendar',  __('Date archives', 'x3p0-breadcrumbs')),
+			new IconOption('time',      'core/scheduled', __('Time archives', 'x3p0-breadcrumbs')),
+			new IconOption('author',    'core/people',    __('Author', 'x3p0-breadcrumbs')),
+			new IconOption('search',    'core/search',    __('Search', 'x3p0-breadcrumbs')),
+			new IconOption('error-404', 'core/error',     __('Page not found', 'x3p0-breadcrumbs')),
 			// Unlabeled default-carriers: resolvable, no block control.
 			// The `archive` icon is a placeholder pending a purpose-picked
 			// one; it deliberately has no label for now, since archive
 			// views are covered by the date/time/post type/taxonomy
 			// options above and below.
-			new IconOption('archive', 'core/calendar'),
-			new IconOption('paged', 'x3p0-breadcrumbs/description'),
-			new IconOption('network', 'core/home'),
+			new IconOption('archive',      'core/calendar'),
+			new IconOption('network',      'core/home'),
 			new IconOption('network-site', 'core/desktop'),
-			new IconOption('user', 'core/people')
+			new IconOption('paged',        Icon::Description),
+			new IconOption('user',         'core/people')
 		);
 	}
 
@@ -167,7 +167,10 @@ final class IconOptionRegistrar implements Bootable
 	 */
 	private function registerTaxonomyOptions(): void
 	{
-		$taxonomies = get_taxonomies(['publicly_queryable' => true], 'objects');
+		$taxonomies = array_filter(
+			get_taxonomies([], 'objects'),
+			'is_taxonomy_viewable'
+		);
 
 		foreach ($taxonomies as $taxonomy) {
 			$this->options->add(IconOption::forTaxonomy(
@@ -188,8 +191,8 @@ final class IconOptionRegistrar implements Bootable
 	 */
 	private function setCoreObjectIcons(): void
 	{
-		$this->options->setIcon(IconOption::postTypeKey('post'), 'core/pencil');
+		$this->options->setIcon(IconOption::postTypeKey('post'),       'core/pencil');
 		$this->options->setIcon(IconOption::postTypeKey('attachment'), 'core/file');
-		$this->options->setIcon(IconOption::taxonomyKey('category'), 'core/category');
+		$this->options->setIcon(IconOption::taxonomyKey('category'),   'core/category');
 	}
 }

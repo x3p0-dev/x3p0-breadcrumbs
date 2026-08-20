@@ -88,18 +88,55 @@ abstract class Crumb
 	/**
 	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
 	 * key or a `{collection}/{name}` icon library reference), left for the
-	 * `Markup` layer to resolve to real markup. The crumb's icon key first
-	 * resolves to the caller's choice from the icon config, then to the
-	 * default registered for it in the icon options registry; the generic
-	 * value here is the last resort, so a crumb never renders with no icon
-	 * at all once icons are shown for it. Whether a crumb's icon is actually
-	 * shown is controlled separately, by the `Markup` layer's icon
+	 * `Markup` layer to resolve to real markup. Whether a crumb's icon is
+	 * actually shown is controlled separately, by the `Markup` layer's icon
 	 * visibility setting.
+	 *
+	 * This states the resolution order once, for every crumb type, in
+	 * descending order of how explicit each source is:
+	 *
+	 * 1. `explicitIcon()` — a choice the site owner made against this exact
+	 *    crumb, which outranks even their configured option.
+	 * 2. The icon configured for this crumb's option key.
+	 * 3. `fallbackIcon()` — a type-specific guess better than the registered
+	 *    default, but still only a guess, so it yields to the configured icon.
+	 * 4. The default registered for the option key.
+	 * 5. The generic icon here, so a crumb never renders without one.
+	 *
+	 * Subclasses contribute through the two seams rather than overriding this
+	 * method: a type that reorders the chain locally puts its own defaults
+	 * ahead of the site owner's, and a decorating crumb cannot inherit steps
+	 * buried in an override (see `Extension\WooCommerce\Crumb\StorePage`).
 	 */
-	public function getIcon(): string
+	final public function getIcon(): string
 	{
-		return $this->context->iconConfig->getIcon($this->iconOptionKey())
+		return $this->explicitIcon()
+			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
+			?: $this->fallbackIcon()
 			?: $this->context->iconOptions->icon($this->iconOptionKey())
 			?: self::DEFAULT_ICON;
+	}
+
+	/**
+	 * Returns an icon the site owner set against this specific crumb — the
+	 * only thing that outranks the icon they configured for its option (e.g.,
+	 * `Post` returns the icon stored in the post's own meta). Empty for most
+	 * types, which have no such per-instance choice to read.
+	 */
+	protected function explicitIcon(): string
+	{
+		return '';
+	}
+
+	/**
+	 * Returns a type-specific icon to use ahead of the option's registered
+	 * default, for a crumb that can derive something better than the generic
+	 * default but has nothing an option key could be registered against
+	 * (e.g., `Post` derives one from an attachment's mime type). Sits behind
+	 * the icon config, since it is still only a derived guess.
+	 */
+	protected function fallbackIcon(): string
+	{
+		return '';
 	}
 }

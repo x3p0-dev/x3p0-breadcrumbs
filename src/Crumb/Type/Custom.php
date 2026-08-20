@@ -62,16 +62,17 @@ final class Custom extends Crumb
 	}
 
 	/**
-	 * Returns this crumb's own icon when one was passed in, otherwise falls
-	 * through to the normal config/default chain (see `Crumb::getIcon()`).
-	 * Unlike the other crumb types, `Custom` has no queried object or fixed
-	 * semantics to derive a sensible default from, so the caller is the only
-	 * source of a meaningful icon.
+	 * Returns the icon passed in with the crumb's other values. Unlike the
+	 * other crumb types, `Custom` has no queried object or fixed semantics to
+	 * derive anything from, so whoever built it is the only source of a
+	 * meaningful icon — which makes it an explicit choice rather than a
+	 * derived default, and the caller has no option key to configure against
+	 * anyway (every `Custom` shares the one `custom` key).
 	 *
 	 * @inheritDoc
 	 */
-	public function getIcon(): string
+	protected function explicitIcon(): string
 	{
-		return $this->icon ?: parent::getIcon();
+		return $this->icon;
 	}
 }

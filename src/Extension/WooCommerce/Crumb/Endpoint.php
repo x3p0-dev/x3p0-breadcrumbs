@@ -26,14 +26,11 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 final class Endpoint extends Crumb
 {
 	/**
-	 * Stores the WooCommerce endpoint key (e.g. `orders` or `edit-address`)
-	 * and an optional icon override, for a caller that wants to bypass
-	 * `endpointIcon()`'s own mapping entirely.
+	 * Stores the WooCommerce endpoint key (e.g. `orders` or `edit-address`).
 	 */
 	public function __construct(
 		CrumbContext $context,
-		public readonly string $endpoint,
-		private readonly string $icon = ''
+		public readonly string $endpoint
 	) {
 		parent::__construct(context: $context);
 	}
@@ -63,16 +60,16 @@ final class Endpoint extends Crumb
 	}
 
 	/**
-	 * Returns this endpoint's own icon override when one was explicitly set,
-	 * otherwise the {@see EndpointSlug} enum's icon for this endpoint's key,
-	 * otherwise the shared `woocommerce-endpoint` icon option resolved by
-	 * the parent — every endpoint shares the same slug, so that option key
-	 * applies uniformly to all of them.
+	 * Resolves the option registered for this specific endpoint when it is one
+	 * the plugin has an opinion about, so each carries its own default and can
+	 * be configured on its own. Every other endpoint falls back to the slug —
+	 * the shared `woocommerce-endpoint` option, which applies uniformly to all
+	 * of them.
 	 *
 	 * @inheritDoc
 	 */
-	public function getIcon(): string
+	public function iconOptionKey(): string
 	{
-		return $this->icon ?: (EndpointSlug::tryFrom($this->endpoint)?->icon() ?: parent::getIcon());
+		return EndpointSlug::tryFrom($this->endpoint)?->optionKey() ?? $this->getSlug();
 	}
 }

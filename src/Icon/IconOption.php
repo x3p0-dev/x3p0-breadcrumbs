@@ -34,26 +34,36 @@ final class IconOption
 	use BuildsFromArray;
 
 	/**
+	 * The default icon attribute value, normalized to a string. Declared
+	 * rather than promoted because the constructor also accepts an {@see Icon}
+	 * case for it, which is resolved to its registered name on the way in.
+	 */
+	public readonly string $icon;
+
+	/**
 	 * Sets up the option. The `$key` is the config lookup key (e.g., `home`,
 	 * `date`, `post-type:page`, `taxonomy:category`). The `$icon` is the
-	 * default icon attribute value (e.g., a `{collection}/{name}` icon
-	 * library reference) rendered when the site owner hasn't chosen one, and
-	 * the value previewed for the option's block control. An option with a
-	 * translated `$label` is offered as a control in the block editor; one
-	 * without is a pure default-carrier — resolvable, but invisible in the
-	 * UI.
+	 * default icon rendered when the site owner hasn't chosen one, and the
+	 * value previewed for the option's block control: either an {@see Icon}
+	 * case, for an icon this plugin ships, or a `{collection}/{name}` icon
+	 * library reference as a string, for anyone else's — core's `core/home`,
+	 * say, which has no case here. An option with a translated `$label` is
+	 * offered as a control in the block editor; one without is a pure
+	 * default-carrier — resolvable, but invisible in the UI.
 	 */
 	public function __construct(
 		public readonly string $key,
-		public readonly string $icon = '',
+		Icon|string $icon = '',
 		public readonly string $label = ''
-	) {}
+	) {
+		$this->icon = $icon instanceof Icon ? $icon->name() : $icon;
+	}
 
 	/**
 	 * Builds the option for a post type's single-post crumbs, keyed by
 	 * `postTypeKey()`.
 	 */
-	public static function forPostType(string $postType, string $icon = '', string $label = ''): self
+	public static function forPostType(string $postType, Icon|string $icon = '', string $label = ''): self
 	{
 		return new self(self::postTypeKey($postType), $icon, $label);
 	}
@@ -62,7 +72,7 @@ final class IconOption
 	 * Builds the option for a post type's archive crumb, keyed by
 	 * `postTypeArchiveKey()`.
 	 */
-	public static function forPostTypeArchive(string $postType, string $icon = '', string $label = ''): self
+	public static function forPostTypeArchive(string $postType, Icon|string $icon = '', string $label = ''): self
 	{
 		return new self(self::postTypeArchiveKey($postType), $icon, $label);
 	}
@@ -71,7 +81,7 @@ final class IconOption
 	 * Builds the option for a taxonomy's term crumbs, keyed by
 	 * `taxonomyKey()`.
 	 */
-	public static function forTaxonomy(string $taxonomy, string $icon = '', string $label = ''): self
+	public static function forTaxonomy(string $taxonomy, Icon|string $icon = '', string $label = ''): self
 	{
 		return new self(self::taxonomyKey($taxonomy), $icon, $label);
 	}

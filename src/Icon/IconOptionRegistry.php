@@ -47,9 +47,11 @@ final class IconOptionRegistry
 	 * is new. This is the partial override `add()` cannot express: `add()`
 	 * replaces an option wholesale, which would drop a label the registrar
 	 * derived from a post type or taxonomy object. Extensions retargeting a
-	 * built-in default on `IconOptionsRegistered` want exactly this.
+	 * built-in default on `IconOptionsRegistered` want exactly this. The icon
+	 * is passed straight through to the option, so it takes an {@see Icon}
+	 * case or a raw reference string on the same terms.
 	 */
-	public function setIcon(string $key, string $icon): void
+	public function setIcon(string $key, Icon|string $icon): void
 	{
 		$this->add(
 			$this->get($key)?->with(['icon' => $icon])

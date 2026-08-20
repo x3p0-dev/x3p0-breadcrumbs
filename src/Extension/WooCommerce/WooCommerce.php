@@ -18,7 +18,10 @@ use X3P0\Breadcrumbs\Crumb\Type\Post as PostCrumb;
 use X3P0\Breadcrumbs\Crumb\Type\PostType as PostTypeCrumb;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Shop as ShopCrumb;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\StorePage as StorePageCrumb;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
+use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconOption;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
@@ -41,19 +44,15 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 final class WooCommerce extends Extension
 {
 	/**
-	 * Icons for the store pages (Cart, Checkout, My Account), keyed by the
-	 * page type `wc_get_page_id()` accepts. These are ordinary `page`-type
-	 * posts with no post-type-level signal of their own, so the icon has to
-	 * be attached here rather than resolved from a post-type default.
+	 * The store pages that get a crumb of their own, as `wc_get_page_id()`
+	 * accepts them. Each corresponds to a `woocommerce-{page}` icon option
+	 * registered below and to the slug {@see StorePageCrumb} builds from the
+	 * same key.
 	 *
-	 * @var  array<string, string>
+	 * @var  array<int, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	private const PAGE_ICONS = [
-		'cart'      => 'core/cart',
-		'checkout'  => 'core/payment',
-		'myaccount' => 'core/people'
-	];
+	private const STORE_PAGES = ['cart', 'checkout', 'myaccount', 'terms'];
 
 	/**
 	 * @inheritDoc
@@ -74,17 +73,49 @@ final class WooCommerce extends Extension
 	 * extension's own crumb types have no such counterpart and are registered
 	 * outright, unlabeled: they carry a default icon only and are not offered
 	 * as block controls.
+	 *
+	 * Every key here is a crumb slug from this extension, which is what those
+	 * crumbs resolve their icons through — the defaults belong in the registry
+	 * rather than in a crumb's own `getIcon()`, so a site owner's configured
+	 * icon still outranks them and another extension can retarget them.
 	 */
 	public function onIconOptionsRegistered(IconOptionsRegistered $event): void
 	{
-		$event->options->setIcon(IconOption::postTypeKey('product'), 'x3p0-breadcrumbs/package');
-		$event->options->setIcon(IconOption::taxonomyKey('product_cat'), 'core/category');
-		$event->options->setIcon(IconOption::taxonomyKey('product_tag'), 'core/tag');
+		$event->options->setIcon(IconOption::postTypeKey('product'),       Icon::Package);
+		$event->options->setIcon(IconOption::taxonomyKey('product_brand'), Icon::BrandingWatermark);
+		$event->options->setIcon(IconOption::taxonomyKey('product_cat'),   'core/category');
+		$event->options->setIcon(IconOption::taxonomyKey('product_tag'),   'core/tag');
+		$event->options->setIcon(IconOption::taxonomyKey('pa_color'),      Icon::Color);
+		$event->options->setIcon(IconOption::taxonomyKey('pa_size'),       Icon::Straighten);
 
 		$event->options->add(
-			new IconOption('woocommerce-shop', 'core/store'),
-			new IconOption('woocommerce-endpoint', 'core/more-vertical')
+			new IconOption('woocommerce-shop',             'core/store'),
+			new IconOption('woocommerce-endpoint',         'core/more-vertical'),
+			new IconOption('woocommerce-shipping-address', Icon::Shipping),
+			new IconOption('woocommerce-billing-address',  Icon::ReceiptLong),
+			new IconOption('woocommerce-cart',             'core/cart'),
+			new IconOption('woocommerce-checkout',         'core/payment'),
+			new IconOption('woocommerce-myaccount',        'core/people'),
+			new IconOption('woocommerce-terms',            Icon::List)
 		);
+
+		$this->addEndpointIconOptions($event);
+	}
+
+	/**
+	 * Registers an option per endpoint the plugin names, keyed under the
+	 * shared `woocommerce-endpoint` option so each carries its own default
+	 * without the crumb hardcoding one. Endpoints WooCommerce or a third party
+	 * adds that aren't named in {@see EndpointSlug} have no key of their own
+	 * and resolve the shared option instead.
+	 */
+	private function addEndpointIconOptions(IconOptionsRegistered $event): void
+	{
+		foreach (EndpointSlug::cases() as $endpoint) {
+			$event->options->add(
+				new IconOption($endpoint->optionKey(), $endpoint->icon())
+			);
+		}
 	}
 
 	/**
@@ -114,12 +145,12 @@ final class WooCommerce extends Extension
 	 * product post type archive crumb entirely, since the home crumb
 	 * already represents it. Otherwise, replaces that crumb with the shop
 	 * crumb wherever it appears, so the archive reads as the shop without
-	 * overriding the built-in post type crumb class. Then attaches icons to
+	 * overriding the built-in post type crumb class. Then does the same for
 	 * the store pages, which — unlike a product or its taxonomy terms — are
-	 * ordinary `page`-type posts with no post-type-level signal to derive a
-	 * default icon from. Endpoint crumbs need no such step; `Endpoint` is
-	 * WooCommerce's own class and resolves its own icon from its endpoint
-	 * key directly, the same way it already resolves its own label.
+	 * ordinary `page`-type posts that nothing else marks out as a distinct
+	 * kind of place. Endpoint crumbs need no such step; `Endpoint` is
+	 * WooCommerce's own class already and names its own icon option, the same
+	 * way it already resolves its own label.
 	 */
 	public function onCrumbsBuilt(CrumbsBuilt $event): void
 	{
@@ -139,17 +170,18 @@ final class WooCommerce extends Extension
 			)
 		);
 
-		$this->applyPageIcons($event);
+		$this->replaceStorePages($event);
 	}
 
 	/**
-	 * Attaches an icon to the Cart, Checkout, and My Account page crumbs —
-	 * matched by post ID, since each is just an ordinary `page`-type post
-	 * the site owner configured under WooCommerce's settings.
+	 * Replaces the Cart, Checkout, and My Account page crumbs with the store
+	 * page crumb — matched by post ID, since each is just an ordinary
+	 * `page`-type post the site owner configured under WooCommerce's
+	 * settings, and nothing about the post itself says which one it is.
 	 */
-	private function applyPageIcons(CrumbsBuilt $event): void
+	private function replaceStorePages(CrumbsBuilt $event): void
 	{
-		foreach (self::PAGE_ICONS as $page => $icon) {
+		foreach (self::STORE_PAGES as $page) {
 			$pageId = absint(wc_get_page_id($page));
 
 			if (0 >= $pageId) {
@@ -159,9 +191,9 @@ final class WooCommerce extends Extension
 			$event->crumbs->replaceInstanceWhere(
 				PostCrumb::class,
 				static fn (PostCrumb $crumb) => $crumb->post->ID === $pageId,
-				static fn (PostCrumb $crumb) => $event->makeCrumb(PostCrumb::class, [
-					'post' => $crumb->post,
-					'icon' => $icon
+				static fn (PostCrumb $crumb) => $event->makeCrumb(StorePageCrumb::class, [
+					'decoratedCrumb' => $crumb,
+					'page'           => $page
 				])
 			);
 		}

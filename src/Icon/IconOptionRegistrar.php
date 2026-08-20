@@ -120,9 +120,6 @@ final class IconOptionRegistrar implements Bootable
 			// options above and below.
 			new IconOption('archive', 'core/calendar'),
 			new IconOption('paged', 'x3p0-breadcrumbs/description'),
-			new IconOption('paged-comments', 'x3p0-breadcrumbs/description'),
-			new IconOption('paged-singular', 'x3p0-breadcrumbs/description'),
-			new IconOption('paged-query-block', 'x3p0-breadcrumbs/description'),
 			new IconOption('network', 'core/home'),
 			new IconOption('network-site', 'core/desktop'),
 			new IconOption('user', 'core/people')

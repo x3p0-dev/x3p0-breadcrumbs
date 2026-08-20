@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 
 /**
  * Crumb for a paginated comments page on a singular post. Labels with the
  * current comment page number and links to that page (with the #comments
  * fragment stripped).
  */
-final class PagedComments extends Crumb
+final class PagedComments extends PagedArchive
 {
 	/**
 	 * @inheritDoc
@@ -32,14 +31,22 @@ final class PagedComments extends Crumb
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * Comment pages get their own copy, since they're a page of comments
+	 * rather than a page of the view itself.
+	 */
+	protected function labelKey(): BreadcrumbsLabel
+	{
+		return BreadcrumbsLabel::PagedComments;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
-	public function getLabel(): string
+	protected function pageNumber(): int
 	{
-		return sprintf(
-			$this->config->getLabel(BreadcrumbsLabel::PagedComments),
-			number_format_i18n(absint(get_query_var('cpage')))
-		);
+		return absint(get_query_var('cpage')) ?: 1;
 	}
 
 	/**
@@ -48,7 +55,7 @@ final class PagedComments extends Crumb
 	public function getUrl(): string
 	{
 		return str_replace('#comments', '', get_comments_pagenum_link(
-			get_query_var('cpage') ? absint(get_query_var('cpage')) : 1
+			$this->pageNumber()
 		));
 	}
 }

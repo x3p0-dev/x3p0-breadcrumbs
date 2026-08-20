@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
-use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -24,7 +22,7 @@ use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
  * `<!--nextpage-->` tag). Its label is the configured "paged" string filled
  * with the current page number, and its URL is the permalink to that page.
  */
-final class PagedSingular extends Crumb
+final class PagedSingular extends PagedArchive
 {
 	/**
 	 * @inheritDoc
@@ -47,12 +45,9 @@ final class PagedSingular extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getLabel(): string
+	protected function pageNumber(): int
 	{
-		return sprintf(
-			$this->config->getLabel(BreadcrumbsLabel::Paged),
-			number_format_i18n(absint(get_query_var('page')))
-		);
+		return absint(get_query_var('page')) ?: 1;
 	}
 
 	/**
@@ -63,7 +58,7 @@ final class PagedSingular extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		$page      = get_query_var('page') ? absint(get_query_var('page')) : 1;
+		$page      = $this->pageNumber();
 		$permalink = (string) get_permalink($this->post);
 
 		if (

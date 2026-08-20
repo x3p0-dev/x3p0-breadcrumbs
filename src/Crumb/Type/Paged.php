@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
-
 /**
  * Crumb for a paginated archive page. Labels with the current page number and
  * links to that page's URL.
  */
-final class Paged extends Crumb
+final class Paged extends PagedArchive
 {
 	/**
 	 * @inheritDoc
@@ -33,12 +30,9 @@ final class Paged extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getLabel(): string
+	protected function pageNumber(): int
 	{
-		return sprintf(
-			$this->config->getLabel(BreadcrumbsLabel::Paged),
-			number_format_i18n(absint(get_query_var('paged')))
-		);
+		return absint(get_query_var('paged')) ?: 1;
 	}
 
 	/**
@@ -46,8 +40,6 @@ final class Paged extends Crumb
 	 */
 	public function getUrl(): string
 	{
-		return get_pagenum_link(
-			get_query_var('paged') ? absint(get_query_var('paged')) : 1
-		);
+		return get_pagenum_link($this->pageNumber());
 	}
 }

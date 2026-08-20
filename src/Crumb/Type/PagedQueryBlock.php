@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\BreadcrumbsLabel;
-use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Support\Pagination;
 
@@ -23,7 +21,7 @@ use X3P0\Breadcrumbs\Support\Pagination;
  * label is the configured "paged" string filled with the block's page number,
  * and its URL points back to the current request.
  */
-final class PagedQueryBlock extends Crumb
+final class PagedQueryBlock extends PagedArchive
 {
 	/**
 	 * @inheritDoc
@@ -46,12 +44,9 @@ final class PagedQueryBlock extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getLabel(): string
+	protected function pageNumber(): int
 	{
-		return sprintf(
-			$this->config->getLabel(BreadcrumbsLabel::Paged),
-			number_format_i18n(absint($this->pagination->getQueryBlockPage()))
-		);
+		return absint($this->pagination->getQueryBlockPage()) ?: 1;
 	}
 
 	/**

@@ -86,10 +86,30 @@ abstract class Markup
 	/**
 	 * Flattens the configured container attributes into an escaped, space-
 	 * separated `name="value"` string for inclusion in the container tag.
+	 *
+	 * The Interactivity API router region ID is the key the router files a
+	 * region's content under, shared by every element naming it, so trails
+	 * that share one are collected under the same key — where the last in the
+	 * document wins — and all of them then re-render with that one's content
+	 * on the next client-side navigation. Suffixing with a per-prefix counter
+	 * keeps whatever name the region was configured with while giving each
+	 * trail its own, and it stays stable across requests: only this plugin's
+	 * trails advance the counter. That stability is what the router needs,
+	 * since it matches the regions of the page it fetched against those
+	 * already on the page by ID, and empties any left unmatched.
 	 */
 	protected function containerAttr(): string
 	{
 		$attr = $this->config->getContainerAttr();
+
+		// Each rendered trail should have a unique router region. This
+		// ensures they render correctly when client-side navigation
+		// is enabled.
+		if (! empty($attr['data-wp-router-region'])) {
+			$attr['data-wp-router-region'] = wp_unique_prefixed_id(
+				$attr['data-wp-router-region'] . '-'
+			);
+		}
 
 		return implode(' ', array_map(
 			static fn($name, $value) => sprintf('%s="%s"', esc_attr($name), esc_attr($value)),

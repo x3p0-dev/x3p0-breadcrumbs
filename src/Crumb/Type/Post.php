@@ -70,21 +70,25 @@ final class Post extends Crumb
 
 	/**
 	 * Resolves this post's icon option per post type, except where the site
-	 * owner restricted access to it or it is a piece of media. Being private,
-	 * locked, an image, or a video is a state any post of its type can be in
-	 * rather than a fact about a particular one, so none of them can be named
-	 * per-post and each gets an option to be configured for all of them at
-	 * once.
+	 * owner restricted access to it, WordPress assigned the page a role under
+	 * its settings, or it is a piece of media. Being private, locked, the
+	 * privacy policy, an image, or a video is a state a post can be in rather
+	 * than a fact about a particular one, so none of them can be named per-post
+	 * and each gets an option covering all of them at once.
 	 *
-	 * Restricted access is checked before the kind of file: whether the post
-	 * is reachable at all matters more to the person reading the trail than
-	 * what sort of place it is. Both of those checks report the state that
-	 * reader is in, so a locked post stops reading as locked once they unlock
-	 * it, and the private check leads.
+	 * The arms read top to bottom as precedence. Restricted access leads:
+	 * whether the post is reachable at all matters more to the person reading
+	 * the trail than what sort of place it is. Both of those checks report the
+	 * state that reader is in, so a locked post stops reading as locked once
+	 * they unlock it, and the private check leads.
 	 *
-	 * The pages WordPress assigns a role to under its settings are not here.
-	 * Each is one particular page, which its own icon meta names directly, so
-	 * they only carry a derived default — see `fallbackIcon()`.
+	 * The privacy policy and posts page resolve here, which is what puts them
+	 * ahead of the icon config: the icon implied by the role WordPress gave the
+	 * page should beat a generic `page` icon the site owner configured. Their
+	 * options carry no label and so no control, since a page's icon belongs to
+	 * that page — a site owner wanting something else for one of them sets it
+	 * on the page itself, where `explicitIcon()` reads it, and it outranks
+	 * everything here.
 	 *
 	 * @inheritDoc
 	 */
@@ -93,8 +97,10 @@ final class Post extends Crumb
 		return match (true) {
 			'private' === get_post_status($this->post) => IconOptionKey::PrivatePost,
 			post_password_required($this->post)        => IconOptionKey::ProtectedPost,
+			$this->isPrivacyPolicy()                   => IconOptionKey::PrivacyPolicy,
+			$this->isPostsPage()                       => IconOptionKey::PostsPage,
 			'attachment' === $this->post->post_type    => $this->mediaOptionKey(),
-			default => IconOptionKey::postType($this->post->post_type)
+			default                                    => IconOptionKey::postType($this->post->post_type)
 		};
 	}
 
@@ -108,34 +114,6 @@ final class Post extends Crumb
 	protected function explicitIcon(): string
 	{
 		return (string) get_post_meta($this->post->ID, MetaKey::Icon->value, true);
-	}
-
-	/**
-	 * Returns an icon for the pages WordPress assigns a role to under its
-	 * settings. Each is one particular page, so it gets no block control of
-	 * its own — a page's icon belongs to that page's own icon meta — and
-	 * resolving here rather than through `iconOptionKey()` is what keeps them
-	 * behind the icon config, since a site owner who picked an icon for pages
-	 * meant it. The icons themselves are read from the registry like every
-	 * other icon the plugin renders, under options registered without a label.
-	 *
-	 * Nothing else resolves here. Restricted access and the kind of file a
-	 * piece of media is are states any post can be in, so they get options of
-	 * their own — see `iconOptionKey()`.
-	 *
-	 * @inheritDoc
-	 */
-	protected function fallbackIcon(): string
-	{
-		if ($this->isPrivacyPolicy()) {
-			return $this->context->iconOptions->icon(IconOptionKey::PrivacyPolicy);
-		}
-
-		if ($this->isPostsPage()) {
-			return $this->context->iconOptions->icon(IconOptionKey::PostsPage);
-		}
-
-		return '';
 	}
 
 	/**
@@ -158,8 +136,8 @@ final class Post extends Crumb
 	 * value when the front page is switched back to showing posts, at which
 	 * point the page is just a page again.
 	 *
-	 * The page stays an ordinary page as far as the icon option goes, which is
-	 * what WordPress makes it; it only borrows the archive icon as a default,
+	 * The page is an ordinary page everywhere else, which is what WordPress
+	 * makes it; the option it resolves here only borrows the archive icon,
 	 * since listing posts is what it does.
 	 */
 	private function isPostsPage(): bool
@@ -185,7 +163,7 @@ final class Post extends Crumb
 			wp_attachment_is('image', $this->post) => IconOptionKey::MediaImage,
 			wp_attachment_is('audio', $this->post) => IconOptionKey::MediaAudio,
 			wp_attachment_is('video', $this->post) => IconOptionKey::MediaVideo,
-			default => IconOptionKey::postType('attachment')
+			default                                => IconOptionKey::postType('attachment')
 		};
 	}
 }

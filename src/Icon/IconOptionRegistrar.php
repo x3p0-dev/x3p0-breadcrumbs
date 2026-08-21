@@ -137,7 +137,7 @@ final class IconOptionRegistrar implements Bootable
 	 *   crumb whose own key nothing is registered under.
 	 * - `privacy-policy` and `posts-page` each name one particular page, and a
 	 *   page's icon belongs to that page's own icon meta. They carry the
-	 *   default `Post::fallbackIcon()` resolves for those two pages.
+	 *   default `Post::iconOptionKey()` resolves for those two pages.
 	 *
 	 * The `network-site` option is registered only on a multisite network,
 	 * since nowhere else can a trail contain the crumb that resolves it. The

@@ -129,7 +129,7 @@ enum CatalogOrder: string
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return match ($this) {
 			self::MenuOrder  => 'core/menu',
-			self::Popularity,
+			self::Popularity => 'core/chart-bar',
 			self::Rating     => 'core/star-filled',
 			self::Date       => 'core/scheduled',
 			self::Price      => 'core/arrow-up',

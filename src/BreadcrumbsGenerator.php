@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Assembler\AssemblerContext;
 use X3P0\Breadcrumbs\Assembler\AssemblerFactory;
+use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbBuilder;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
@@ -86,11 +87,20 @@ final class BreadcrumbsGenerator
 			$context->query($queryType);
 		}
 
-		// Let listeners adjust the finished crumbs before they are
-		// returned, then broadcast the same event to WordPress so
-		// `add_action()` callbacks can adjust them too.
-		return $this->events->dispatch(
+		// Let listeners adjust the finished crumbs, then broadcast the
+		// same event to WordPress so `add_action()` callbacks can adjust
+		// them too.
+		$crumbs = $this->events->dispatch(
 			new CrumbsBuilt($crumbs, $crumbBuilder)
 		)->broadcast()->crumbs;
+
+		// Filters out crumbs without a label. Dropping them here keeps
+		// them from taking a position in the trail: first, last, and
+		// visibility rules are written against renderable crumbs. An
+		// unrenderable crumb holding any of those slots would push
+		// those rules onto a crumb nobody sees.
+		return $crumbs->reject(
+			static fn (Crumb $crumb) => '' === $crumb->getLabel()
+		);
 	}
 }

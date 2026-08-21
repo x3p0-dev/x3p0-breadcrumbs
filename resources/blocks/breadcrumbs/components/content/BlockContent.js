@@ -116,6 +116,7 @@ const BlockContent = ({
 		justifyContent,
 		labelVisibility,
 		linkTrailEnd,
+		showSeparator = true,
 		showTrailEnd,
 		showTrailStart,
 		showTrailingSeparator
@@ -146,9 +147,13 @@ const BlockContent = ({
 	const separatorIconValue = resolveIcon(ICON_OPTION_KEYS.SEPARATOR);
 
 	// Mirrors `Html::isCrumbIconVisible()`: which crumbs show an icon depends
-	// on their position in the *rendered* trail, not on their kind — e.g., if
-	// the home crumb is hidden, "Ancestor" becomes the first crumb and is
-	// treated as such.
+	// on their position in the trail as accumulated, not on their kind and
+	// not on what survives to the output. Hiding the home crumb suppresses
+	// its output without taking it out of the trail, so "Ancestor" stays the
+	// second crumb and "first" keeps pointing at the home crumb that is no
+	// longer drawn — matching `CrumbCollection::isFirst()`/`isLast()`, which
+	// report position in the accumulated collection regardless of whether
+	// `Markup::isCrumbRenderable()` goes on to skip the crumb.
 	const isCrumbIconVisible = (index, total) => {
 		switch (iconVisibility) {
 			case 'all':          return true;
@@ -226,14 +231,18 @@ const BlockContent = ({
 		/>
 	);
 
-	// Built up as a list so the separator (rendered as real markup after
-	// every crumb but the last, unless `showTrailingSeparator` is on)
-	// can be inserted without repeating that condition at each crumb. Each
-	// crumb's `content` is a function of whether its icon is visible, since
-	// that depends on the crumb's position in the final, filtered list (see
+	// The whole trail, including the crumbs the block is configured to hide:
+	// `showTrailStart`/`showTrailEnd` keep a crumb out of the output without
+	// taking it out of the trail, so every crumb keeps its place here and
+	// carries a `visible` flag instead — the editor equivalent of PHP
+	// iterating the full `CrumbCollection` and letting
+	// `Markup::isCrumbRenderable()` skip crumbs as it goes. Each crumb's
+	// `content` is a function of whether its icon is visible, since that
+	// depends on the crumb's position in the trail (see
 	// `isCrumbIconVisible()`) rather than being knowable up front.
 	const crumbs = [
-		showTrailStart && {
+		{
+			visible: showTrailStart,
 			key: 'home',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--home',
 			content: (showIcon, labelHidden) => (
@@ -249,6 +258,7 @@ const BlockContent = ({
 			)
 		},
 		{
+			visible: true,
 			key: 'ancestor',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
 			content: (showIcon, labelHidden) => (
@@ -266,6 +276,7 @@ const BlockContent = ({
 			)
 		},
 		{
+			visible: true,
 			key: 'parent',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
 			content: (showIcon, labelHidden) => (
@@ -282,7 +293,8 @@ const BlockContent = ({
 				</CrumbLink>
 			)
 		},
-		showTrailEnd && {
+		{
+			visible: showTrailEnd,
 			key: 'current',
 			className: 'wp-block-x3p0-breadcrumbs__crumb wp-block-x3p0-breadcrumbs__crumb--post',
 			content: (showIcon, labelHidden) => linkTrailEnd ? (
@@ -311,19 +323,31 @@ const BlockContent = ({
 				</span>
 			)
 		}
-	].filter(Boolean);
+	];
 
 	return (
 		<nav {...innerBlocksProps}>
 			<ol className="wp-block-x3p0-breadcrumbs__trail">
 				{crumbs.map((crumb, index) => {
+					if (! crumb.visible) {
+						return null;
+					}
+
 					const iconVisible = isCrumbIconVisible(index, crumbs.length);
 					const labelHidden = isCrumbLabelHidden(index, crumbs.length, iconVisible);
+
+					// Mirrors `Markup::isLastRenderedCrumb()`: the
+					// separator closes off every crumb but the last one
+					// that actually renders, which is not necessarily the
+					// last crumb in the trail.
+					const isLastRendered = ! crumbs.slice(index + 1).some(
+						(next) => next.visible
+					);
 
 					return (
 						<li key={crumb.key} className={crumb.className}>
 							{crumb.content(iconVisible, labelHidden)}
-							{(index < crumbs.length - 1 || showTrailingSeparator) && (
+							{showSeparator && (! isLastRendered || showTrailingSeparator) && (
 								<CrumbIcon
 									value={separatorIconValue}
 									options={SEPARATOR_ICONS}

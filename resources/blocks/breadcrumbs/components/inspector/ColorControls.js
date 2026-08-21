@@ -16,13 +16,18 @@ import {
 
 /**
  * Renders the block's color inspector controls, exposing the separator
- * icon's color via WordPress's shared color/gradient settings dropdown.
+ * icon's color via WordPress's shared color/gradient settings dropdown. The
+ * separator is the only thing this panel colors, so the panel steps aside
+ * entirely while `showSeparator` is off rather than offering a color for
+ * something that cannot render. Any color already picked is left on the
+ * block, so turning the separator back on restores it.
  * @param props
- * @returns {JSX.Element}
+ * @returns {JSX.Element|null}
  */
 const ColorControls = ({
 	attributes: {
-		customSeparatorColor
+		customSeparatorColor,
+		showSeparator = true
 	},
 	setAttributes,
 	separatorColor,
@@ -30,8 +35,13 @@ const ColorControls = ({
 	clientId
 }) => {
 	// Get the base color and gradient options to pass into individual color
-	// settings for our Color panel.
+	// settings for our Color panel. Called ahead of the `showSeparator` gate
+	// below so the hook order holds across renders.
 	const colorGradientOptions = useMultipleOriginColorsAndGradients();
+
+	if (! showSeparator) {
+		return null;
+	}
 
 	// `setSeparatorColor` (from `withColors`) resolves a theme palette slug
 	// alongside its hex value; `customSeparatorColor` is the plain attribute

@@ -16,6 +16,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
+	BaseControl,
 	CustomSelectControl,
 	ToggleControl
 } from '@wordpress/components';
@@ -27,6 +28,11 @@ import {
 // noinspection JSUnresolvedVariable
 const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
 
+// Label visibility options come from PHP the same way, via `LabelVisibility`.
+//
+// noinspection JSUnresolvedVariable
+const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
+
 /**
  * Renders a `<ToolsPanel>` component with the block's primary setting controls.
  * @param props
@@ -35,12 +41,12 @@ const MARKUP_OPTIONS = window.x3p0Breadcrumbs?.markupTypes ?? [];
 const SettingsPanel = ({
 	attributes: {
 		icons = {},
+		labelVisibility,
 		linkTrailEnd,
 		markup,
 		showOnHomepage,
 		showTrailStart,
-		showTrailEnd,
-		showTrailingSeparator
+		showTrailEnd
 	},
 	setAttributes
 }) => {
@@ -53,16 +59,21 @@ const SettingsPanel = ({
 		[]
 	);
 
+	const defaultLabelVisibility = useMemo(
+		() => getBlockType('x3p0/breadcrumbs')?.attributes?.labelVisibility?.default ?? 'all',
+		[]
+	);
+
 	return (
 		<ToolsPanel
 			label={__('Settings', 'x3p0-breadcrumbs')}
 			resetAll={() => setAttributes({
 				markup: defaultMarkup,
+				labelVisibility: defaultLabelVisibility,
 				showOnHomepage: false,
 				showTrailStart: false,
 				showTrailEnd: false,
-				linkTrailEnd: false,
-				showTrailingSeparator: false
+				linkTrailEnd: false
 			})}
 			panelId={panelId}
 		>
@@ -101,13 +112,13 @@ const SettingsPanel = ({
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={__('Show home breadcrumb', 'x3p0-breadcrumbs')}
+				label={__('Show first breadcrumb', 'x3p0-breadcrumbs')}
 				hasValue={() => !! showTrailStart}
 				onDeselect={() => setAttributes({ showTrailStart: false })}
 				panelId={panelId}
 			>
 				<ToggleControl
-					label={__('Show home breadcrumb', 'x3p0-breadcrumbs')}
+					label={__('Show first breadcrumb', 'x3p0-breadcrumbs')}
 					checked={showTrailStart}
 					onChange={() => {
 						const { home, ...remainingIcons } = icons;
@@ -121,13 +132,13 @@ const SettingsPanel = ({
 				/>
 			</ToolsPanelItem>
 			<ToolsPanelItem
-				label={__('Show current breadcrumb', 'x3p0-breadcrumbs')}
+				label={__('Show last breadcrumb', 'x3p0-breadcrumbs')}
 				hasValue={() => !! showTrailEnd}
 				onDeselect={() => setAttributes({ showTrailEnd: false })}
 				panelId={panelId}
 			>
 				<ToggleControl
-					label={__('Show current breadcrumb', 'x3p0-breadcrumbs')}
+					label={__('Show last breadcrumb', 'x3p0-breadcrumbs')}
 					checked={showTrailEnd }
 					onChange={() => setAttributes({
 						showTrailEnd: ! showTrailEnd
@@ -137,7 +148,7 @@ const SettingsPanel = ({
 			</ToolsPanelItem>
 			{showTrailEnd && (
 				<ToolsPanelItem
-					label={__('Link current breadcrumb', 'x3p0-breadcrumbs')}
+					label={__('Link last breadcrumb', 'x3p0-breadcrumbs')}
 					hasValue={() => !! linkTrailEnd}
 					onDeselect={() => setAttributes({
 						linkTrailEnd: false
@@ -145,7 +156,7 @@ const SettingsPanel = ({
 					panelId={panelId}
 				>
 					<ToggleControl
-						label={__('Link current breadcrumb', 'x3p0-breadcrumbs')}
+						label={__('Link last breadcrumb', 'x3p0-breadcrumbs')}
 						checked={linkTrailEnd}
 						onChange={() => setAttributes({
 							linkTrailEnd: ! linkTrailEnd
@@ -155,21 +166,33 @@ const SettingsPanel = ({
 				</ToolsPanelItem>
 			)}
 			<ToolsPanelItem
-				label={__('Show trailing separator', 'x3p0-breadcrumbs')}
-				hasValue={() => !! showTrailingSeparator}
+				label={__('Label visibility', 'x3p0-breadcrumbs')}
+				hasValue={() => labelVisibility !== defaultLabelVisibility}
 				onDeselect={() => setAttributes({
-					showTrailingSeparator: false
+					labelVisibility: defaultLabelVisibility
 				})}
 				panelId={panelId}
 			>
-				<ToggleControl
-					label={__('Show trailing separator', 'x3p0-breadcrumbs')}
-					checked={showTrailingSeparator}
-					onChange={() => setAttributes({
-						showTrailingSeparator: ! showTrailingSeparator
-					})}
-					__nextHasNoMarginBottom={true}
-				/>
+				{/*
+					`CustomSelectControl` has no `help` prop of its own, and
+					its `describedBy` would replace the "Currently selected:
+					…" announcement rather than add to it, so the help text
+					is rendered by a wrapping `BaseControl` instead.
+				*/}
+				<BaseControl
+					help={__('Which breadcrumbs show their text label. A label is only ever hidden when the same breadcrumb shows an icon in its place, and it stays readable to assistive technology either way.', 'x3p0-breadcrumbs')}
+				>
+					<CustomSelectControl
+						label={__('Label visibility', 'x3p0-breadcrumbs')}
+						options={LABEL_VISIBILITY_OPTIONS}
+						value={LABEL_VISIBILITY_OPTIONS.find(
+							(option) => option.key === labelVisibility
+						)}
+						onChange={({ selectedItem }) => setAttributes({
+							labelVisibility: selectedItem.key
+						})}
+					/>
+				</BaseControl>
 			</ToolsPanelItem>
 		</ToolsPanel>
 	);

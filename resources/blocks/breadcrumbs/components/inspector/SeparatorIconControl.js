@@ -28,7 +28,11 @@ import { useSelect } from '@wordpress/data';
  * library modal as `extraOptions` to surface alongside the registered icons
  * on the plugin's own collection tab. An empty value means the registered
  * default (passed via `defaultIcon`) renders, so the preview shows that
- * default rather than an empty state, and picking it stores nothing.
+ * default rather than an empty state, and picking it stores nothing — which
+ * also means there is nothing to reset until the user picks something else,
+ * hence no reset button on the row while the default is what renders. The
+ * separator row is pinned, so unlike `IconControl` there is never a row to
+ * take away along with the override.
  * @param props
  * @returns {JSX.Element}
  */
@@ -77,7 +81,7 @@ const SeparatorIconControl = ({
 				icon={preview}
 				label={__('Separator', 'x3p0-breadcrumbs')}
 				onOpen={() => setLibraryOpen(true)}
-				onReset={() => onChange('')}
+				onReset={value ? () => onChange('') : undefined}
 				openLabel={__('Replace separator icon', 'x3p0-breadcrumbs')}
 				resetLabel={__('Reset separator icon', 'x3p0-breadcrumbs')}
 			/>

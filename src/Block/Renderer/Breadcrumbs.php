@@ -61,6 +61,7 @@ final class Breadcrumbs implements BlockRenderer
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
 				'iconVisibility'        => IconVisibility::tryFrom($attributes['iconVisibility'] ?? '') ?? IconVisibility::None,
 				'labelVisibility'       => LabelVisibility::tryFrom($attributes['labelVisibility'] ?? '') ?? LabelVisibility::All,
+				'showSeparator'         => $attributes['showSeparator']         ?? true,
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
 			iconConfig: [

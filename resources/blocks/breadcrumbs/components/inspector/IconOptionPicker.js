@@ -115,7 +115,7 @@ const IconOptionPicker = ({ options, onSelect }) => {
 						{0 === groups.length && (
 							<p className="x3p0-breadcrumbs-icon-option-picker__no-results">
 								{sprintf(
-									// translators: %s: search term.
+									// Translators: %s: search term.
 									__('No icon settings found for "%s".', 'x3p0-breadcrumbs'),
 									search.trim()
 								)}

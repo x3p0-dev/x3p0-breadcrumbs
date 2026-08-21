@@ -65,6 +65,10 @@
 			"type": "object",
 			"default": {}
 		},
+		"showSeparator": {
+			"type": "boolean",
+			"default": true
+		},
 		"showTrailingSeparator": {
 			"type": "boolean",
 			"default": false

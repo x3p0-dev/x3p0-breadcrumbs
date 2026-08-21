@@ -23,10 +23,11 @@ import { notAllowed, reset as resetIcon } from '@wordpress/icons';
  * empty, the core "not allowed" icon stands in for the preview.
  *
  * The reset button rides on `onReset` alone rather than on there being a
- * value to clear: a caller may have something to reset beyond the value
- * itself — `IconControl` uses it to take the whole row out of the panel —
- * and is the only one in a position to know. Callers with nothing to reset
- * pass no handler.
+ * `value` to clear, since `value` here is what the row previews — which is
+ * the registered default when nothing overrides it, and so is never empty
+ * for a row that has one. Whether there is anything to undo is the caller's
+ * question to answer; a caller with nothing to reset passes no handler and
+ * gets no button.
  * @param props
  * @returns {JSX.Element}
  */

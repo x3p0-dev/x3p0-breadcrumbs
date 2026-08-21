@@ -29,8 +29,20 @@ import { useSelect } from '@wordpress/data';
  * preview shows that default (passed via `defaultIcon`) rather than an empty
  * state, and picking it back stores nothing. Showing what actually renders
  * keeps the row honest — the same reason crumbs resolve a single option key
- * instead of cascading through several — and it means the reset button is
- * always there, which is what removes an unwanted row from the panel.
+ * instead of cascading through several.
+ *
+ * What the row's "-" button offers depends on whether the row can be taken
+ * out of the panel. A removable row (`onRemove`) always offers that, whether
+ * or not it currently holds an override — removing takes any override with
+ * it, and the row is on screen because the user asked for it, so putting it
+ * back away is the thing they are most likely to want. A row that cannot be
+ * removed, such as a pinned one, passes no `onRemove` and offers a reset
+ * instead, and only while there is an override to undo.
+ *
+ * Resetting to the default is therefore the modal's job for a removable row,
+ * via its own "Reset Icon" button — which stays put and disables itself at
+ * the default, so a modal opened on a default row isn't missing a control it
+ * has everywhere else.
  * @param props
  * @returns {JSX.Element}
  */
@@ -38,11 +50,13 @@ const IconControl = ({
 	value,
 	onChange,
 	onReset,
+	onRemove,
 	defaultIcon,
 	label,
 	controlIcon,
 	openLabel,
 	resetLabel,
+	removeLabel,
 	modalTitle,
 	modalDescription
 }) => {
@@ -74,6 +88,12 @@ const IconControl = ({
 
 	const reset = onReset ?? (() => onChange(''));
 
+	// What the row's "-" button is for: taking the row away where that is on
+	// offer, and otherwise undoing an override there is one to undo.
+	const rowAction = onRemove
+		? {onClick: onRemove, label: removeLabel}
+		: value ? {onClick: reset, label: resetLabel} : null;
+
 	return (
 		<>
 			<IconPickerButton
@@ -81,9 +101,9 @@ const IconControl = ({
 				icon={preview}
 				label={label}
 				onOpen={() => setLibraryOpen(true)}
-				onReset={reset}
+				onReset={rowAction?.onClick}
 				openLabel={openLabel}
-				resetLabel={resetLabel}
+				resetLabel={rowAction?.label}
 			/>
 			{isLibraryOpen && (
 				<IconLibraryModal

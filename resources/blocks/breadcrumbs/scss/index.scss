@@ -133,7 +133,8 @@
 	// Compounded past core's `.components-button.has-icon.has-text`, which
 	// is three classes deep and otherwise wins on specificity, pinning the
 	// icon and label to the start of the stretched button.
-	&__add-toggle.components-button.has-icon.has-text {
+	&__add-toggle.components-button.has-icon.has-text,
+	&__add-toggle.components-button {
 		display: flex;
 		width: 100%;
 		justify-content: center;

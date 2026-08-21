@@ -22,7 +22,9 @@ import { post as fallbackControlIcon } from '@wordpress/icons';
 import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
-	CustomSelectControl
+	BaseControl,
+	CustomSelectControl,
+	ToggleControl
 } from '@wordpress/components';
 
 // Shared by every icon row below purely for CSS purposes: it lets adjacent
@@ -30,36 +32,43 @@ import {
 // presents its own Global Styles "Elements" list.
 const ROW_CLASS_NAME = 'x3p0-breadcrumbs-icon-control-item';
 
-// Icon/label visibility options are defined once in PHP via `IconVisibility`
-// and `LabelVisibility` and passed in on the `x3p0Breadcrumbs` global, so the
-// editor never recreates either list. Labels arrive pre-translated from the
-// server.
+// Icon visibility options are defined once in PHP via `IconVisibility` and
+// passed in on the `x3p0Breadcrumbs` global, so the editor never recreates the
+// list. Labels arrive pre-translated from the server. The matching label
+// visibility select lives in `SettingsPanel`.
 //
 // noinspection JSUnresolvedVariable
 const ICON_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.iconVisibilityOptions ?? [];
 
-// noinspection JSUnresolvedVariable
-const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions ?? [];
-
 // The options that always have a row, listed ahead of every other one: the
-// separator, which renders on every trail regardless of the icon settings,
-// and the home crumb, which all but the most unusual trails open with. Every
-// other option is added on demand from `IconOptionPicker`, so the panel's
-// length tracks what the user actually configured rather than how many
+// separator, which renders on every trail independently of the crumb icon
+// settings, and the home crumb, which all but the most unusual trails open
+// with. Every other option is added on demand from `IconOptionPicker`, so the
+// panel's length tracks what the user actually configured rather than how many
 // options happen to be registered.
 const PINNED_KEYS = [ICON_OPTION_KEYS.SEPARATOR, ICON_OPTION_KEYS.HOME];
 
 /**
  * Renders a `<ToolsPanel>` component with the block's icon controls: the
- * icon/label visibility selects, then one row per icon option the user is
- * configuring, all reading and writing the block's single `icons` map keyed
- * by option key.
+ * switches governing whether crumb icons and the separator render at all,
+ * then one row per icon option the user is configuring, all reading and
+ * writing the block's single `icons` map keyed by option key. Those switches
+ * live here rather than in `SettingsPanel` because each one gates rows in
+ * this panel, and a row has no business vanishing because of a control the
+ * user cannot see. The matching label visibility select is the exception: it
+ * gates nothing here, so it sits with the rest of the trail's text settings
+ * and explains its dependency on icon visibility in its own help text.
  * @param props
  * @returns {JSX.Element}
  */
 const IconsPanel = (props) => {
 	const {
-		attributes: { icons = {}, iconVisibility, labelVisibility },
+		attributes: {
+			icons = {},
+			iconVisibility,
+			showSeparator = true,
+			showTrailingSeparator
+		},
 		setAttributes
 	} = props;
 
@@ -76,11 +85,6 @@ const IconsPanel = (props) => {
 	// set for the block metadata; fall back to a literal as a last resort.
 	const defaultIconVisibility = useMemo(
 		() => getBlockType('x3p0/breadcrumbs')?.attributes?.iconVisibility?.default ?? 'none',
-		[]
-	);
-
-	const defaultLabelVisibility = useMemo(
-		() => getBlockType('x3p0/breadcrumbs')?.attributes?.labelVisibility?.default ?? 'all',
 		[]
 	);
 
@@ -103,16 +107,23 @@ const IconsPanel = (props) => {
 				(option) => shown.has(option.key) && ! PINNED_KEYS.includes(option.key)
 			)
 		].filter(Boolean).filter(
-			// Crumb icon rows are hidden while icon visibility is "none";
-			// the separator row stays, since it isn't a crumb icon and
-			// renders regardless.
-			(option) => ICON_OPTION_KEYS.SEPARATOR === option.key || ! iconsHidden
+			// A row only earns its place when the icon it configures can
+			// actually render: crumb icon rows are hidden while icon
+			// visibility is "none", and the separator row — which isn't a
+			// crumb icon and is governed separately — while the separator
+			// itself is turned off.
+			(option) => ICON_OPTION_KEYS.SEPARATOR === option.key
+				? showSeparator
+				: ! iconsHidden
 		);
-	}, [icons, addedKeys, iconsHidden]);
+	}, [icons, addedKeys, iconsHidden, showSeparator]);
 
-	// Everything left for `IconOptionPicker` to offer.
+	// Everything left for `IconOptionPicker` to offer. Pinned options are
+	// never on offer even when the filter above took their row away: their
+	// row is gated on a setting, not on being added, so re-adding it would
+	// do nothing.
 	const available = useMemo(() => {
-		const shown = new Set(rows.map((option) => option.key));
+		const shown = new Set([...PINNED_KEYS, ...rows.map((option) => option.key)]);
 
 		return ICON_OPTIONS.filter((option) => ! shown.has(option.key));
 	}, [rows]);
@@ -131,67 +142,98 @@ const IconsPanel = (props) => {
 		setAttributes({ icons: updatedIcons });
 	};
 
-	// Clears an option's override and, unless it's a pinned row, takes the
-	// row away with it: an added row exists to hold an override, so there's
-	// nothing left for it to do once that override is gone.
+	// Puts an option's icon back to its registered default while keeping the
+	// row — what the library modal's own "Reset Icon" does, and what a pinned
+	// row's "-" button does. Resetting the icon says nothing about whether
+	// the row is still wanted, and the user may well pick again in a moment,
+	// so the row is held open for the rest of the session, which takes
+	// remembering it: without an override it is no longer implied by the
+	// `icons` map. Pinned rows are permanent already and stay out of
+	// `addedKeys`, since nothing there needs holding open.
 	const onIconReset = (key) => {
+		onIconChange(key, '');
+
+		if (! PINNED_KEYS.includes(key)) {
+			setAddedKeys((keys) => keys.includes(key) ? keys : [...keys, key]);
+		}
+	};
+
+	// Takes a row out of the panel, clearing any override along with it —
+	// otherwise the row would come straight back, since a key in `icons` is
+	// what puts one there. Only offered for rows that were added on demand;
+	// pinned rows have nowhere to go.
+	const onIconRemove = (key) => {
 		onIconChange(key, '');
 		setAddedKeys((keys) => keys.filter((added) => key !== added));
 	};
 
 	return (
 		<ToolsPanel
-			// Remounting when the visibility gate flips rebuilds the
-			// panel's item and dropdown-menu registration from scratch, so
-			// the label visibility item that unmounts can't linger as a
-			// selectable entry in the panel's own menu.
-			key={iconsHidden ? 'icons-hidden' : 'icons-visible'}
 			label={__('Icons', 'x3p0-breadcrumbs')}
 			resetAll={() => {
 				setAttributes({
 					icons: undefined,
 					iconVisibility: defaultIconVisibility,
-					labelVisibility: defaultLabelVisibility
+					showSeparator: true,
+					showTrailingSeparator: false
 				});
 				setAddedKeys([]);
 			}}
 			panelId={panelId}
 		>
 			<ToolsPanelItem
-				label={__('Icon Visibility', 'x3p0-breadcrumbs')}
+				label={__('Icon visibility', 'x3p0-breadcrumbs')}
 				hasValue={() => iconVisibility !== defaultIconVisibility}
 				onDeselect={() => setAttributes({ iconVisibility: defaultIconVisibility })}
 				panelId={panelId}
 				isShownByDefault
 			>
-				<CustomSelectControl
-					label={__('Icon Visibility', 'x3p0-breadcrumbs')}
-					options={ICON_VISIBILITY_OPTIONS}
-					value={ICON_VISIBILITY_OPTIONS.find(
-						(option) => option.key === iconVisibility
-					)}
-					onChange={({ selectedItem }) => setAttributes({
-						iconVisibility: selectedItem.key
-					})}
-				/>
-			</ToolsPanelItem>
-			{! iconsHidden && (
-				<ToolsPanelItem
-					label={__('Label Visibility', 'x3p0-breadcrumbs')}
-					hasValue={() => labelVisibility !== defaultLabelVisibility}
-					onDeselect={() => setAttributes({ labelVisibility: defaultLabelVisibility })}
-					panelId={panelId}
-					isShownByDefault
+				<BaseControl
+					help={__('Which breadcrumbs show their own icon. The separator icon is not affected.', 'x3p0-breadcrumbs')}
 				>
 					<CustomSelectControl
-						label={__('Label Visibility', 'x3p0-breadcrumbs')}
-						options={LABEL_VISIBILITY_OPTIONS}
-						value={LABEL_VISIBILITY_OPTIONS.find(
-							(option) => option.key === labelVisibility
+						label={__('Icon visibility', 'x3p0-breadcrumbs')}
+						options={ICON_VISIBILITY_OPTIONS}
+						value={ICON_VISIBILITY_OPTIONS.find(
+							(option) => option.key === iconVisibility
 						)}
 						onChange={({ selectedItem }) => setAttributes({
-							labelVisibility: selectedItem.key
+							iconVisibility: selectedItem.key
 						})}
+					/>
+				</BaseControl>
+			</ToolsPanelItem>
+			<ToolsPanelItem
+				label={__('Show separator', 'x3p0-breadcrumbs')}
+				hasValue={() => ! showSeparator}
+				onDeselect={() => setAttributes({ showSeparator: true })}
+				panelId={panelId}
+			>
+				<ToggleControl
+					label={__('Show separator', 'x3p0-breadcrumbs')}
+					checked={showSeparator}
+					onChange={() => setAttributes({
+						showSeparator: ! showSeparator
+					})}
+					__nextHasNoMarginBottom={true}
+				/>
+			</ToolsPanelItem>
+			{showSeparator && (
+				<ToolsPanelItem
+					label={__('Show trailing separator', 'x3p0-breadcrumbs')}
+					hasValue={() => !! showTrailingSeparator}
+					onDeselect={() => setAttributes({
+						showTrailingSeparator: false
+					})}
+					panelId={panelId}
+				>
+					<ToggleControl
+						label={__('Show trailing separator', 'x3p0-breadcrumbs')}
+						checked={showTrailingSeparator}
+						onChange={() => setAttributes({
+							showTrailingSeparator: ! showTrailingSeparator
+						})}
+						__nextHasNoMarginBottom={true}
 					/>
 				</ToolsPanelItem>
 			)}
@@ -219,11 +261,15 @@ const IconsPanel = (props) => {
 								value={icons[option.key] || ''}
 								onChange={(value) => onIconChange(option.key, value)}
 								onReset={() => onIconReset(option.key)}
+								onRemove={PINNED_KEYS.includes(option.key)
+									? undefined
+									: () => onIconRemove(option.key)}
 								defaultIcon={option.icon}
 								label={option.name}
 								controlIcon={fallbackControlIcon}
 								openLabel={sprintf(__('Replace %s icon', 'x3p0-breadcrumbs'), option.name)}
-								resetLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), option.name)}
+								resetLabel={sprintf(__('Reset %s icon', 'x3p0-breadcrumbs'), option.name)}
+								removeLabel={sprintf(__('Remove %s icon', 'x3p0-breadcrumbs'), option.name)}
 								modalTitle={sprintf(__('%s Icon', 'x3p0-breadcrumbs'), option.name)}
 								modalDescription={sprintf(__('Pick an icon for the %s breadcrumb item.', 'x3p0-breadcrumbs'), option.name)}
 							/>

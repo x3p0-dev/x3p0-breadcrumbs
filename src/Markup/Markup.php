@@ -135,20 +135,41 @@ abstract class Markup
 	}
 
 	/**
-	 * Determines whether a given crumb should be rendered, primarily by
-	 * ensuring that it has a valid label. It is also hidden when it is the
-	 * first or last item and the config is set to suppress that position.
+	 * Determines whether a given crumb should be rendered. Position is the
+	 * only thing that suppresses one: the first or last crumb, when the
+	 * config is set to hide that position. Label-less crumbs never reach
+	 * this point — `BreadcrumbsGenerator` drops them from the collection
+	 * outright, so every crumb here has something to render.
 	 */
 	protected function isCrumbRenderable(Crumb $crumb): bool
 	{
-		if (! $crumb->getLabel()) {
-			return false;
-		}
-
 		return ! (
 			($this->crumbs->isFirst() && ! $this->config->showFirstCrumb())
 			|| ($this->crumbs->isLast() && ! $this->config->showLastCrumb())
 		);
+	}
+
+	/**
+	 * Determines whether the crumb currently being rendered is the last one
+	 * that actually reaches the output. This is not the same question as
+	 * `CrumbCollection::isLast()`, which reports a crumb's position in the
+	 * accumulated trail and keeps reporting it whether or not the crumb is
+	 * rendered: with the last crumb suppressed, the one before it is what
+	 * closes the trail visually. Callers that care about how the trail ends
+	 * on screen — rather than which crumb is last in the trail itself — want
+	 * this one.
+	 */
+	protected function isLastRenderedCrumb(): bool
+	{
+		if ($this->crumbs->isLast()) {
+			return true;
+		}
+
+		// Position is all that can suppress a crumb, and the first is
+		// already behind us, so the final crumb is the only one left that
+		// might not render — making its predecessor the end of the trail.
+		return $this->crumbs->position() === $this->crumbs->count() - 1
+			&& ! $this->config->showLastCrumb();
 	}
 
 	/**

@@ -245,11 +245,14 @@ class Html extends Markup implements MarkupBlockOption
 	/**
 	 * Determines whether the separator is rendered after this crumb: between
 	 * every crumb, and after the last one too when the config opts in via
-	 * `showTrailingSeparator()`.
+	 * `showTrailingSeparator()`. Keyed to the last *rendered* crumb rather
+	 * than the last crumb in the trail, so suppressing the last crumb via
+	 * `showLastCrumb()` doesn't leave a separator dangling off the end of
+	 * what remains.
 	 */
 	protected function shouldRenderSeparator(): bool
 	{
-		return ! $this->crumbs->isLast() || $this->config->showTrailingSeparator();
+		return ! $this->isLastRenderedCrumb() || $this->config->showTrailingSeparator();
 	}
 
 	/**

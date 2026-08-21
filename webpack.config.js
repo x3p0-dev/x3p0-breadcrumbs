@@ -16,6 +16,10 @@ module.exports = {
 			'../editor/index': path.resolve(
 				__dirname,
 				'resources/editor/index.js'
+			),
+			'../admin/edit-term/index': path.resolve(
+				__dirname,
+				'resources/admin/edit-term/index.js'
 			)
 		}),
 

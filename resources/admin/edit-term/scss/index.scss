@@ -1,0 +1,23 @@
+////
+/// Admin stylesheet for the taxonomy screens' breadcrumb icon field.
+///
+/// @author Justin Tadlock <justintadlock@gmail.com>
+/// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
+////
+
+// The icon library picker, shared with the block inspector, which also carries
+// the chosen icon's preview swatch.
+@use '../../../blocks/breadcrumbs/scss/icon-library';
+
+// The button carries the chosen icon's name, which can run longer than the
+// column it sits in — `Truncate` in `TermIconControl` clamps it to a line and
+// hands the browser the trailing ellipsis, but only once the button is free to
+// stop growing.
+//
+// `Truncate` hides its own overflow and so is already free to shrink past its
+// text, a flex item's automatic minimum size being zero once its overflow isn't
+// visible. The button around it has to be told.
+.x3p0-breadcrumbs-term-icon__toggle.components-button {
+	min-width: 0;
+	max-width: 100%;
+}

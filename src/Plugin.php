@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
+use X3P0\Breadcrumbs\Admin\AdminServiceProvider;
 use X3P0\Breadcrumbs\Assembler\AssemblerServiceProvider;
 use X3P0\Breadcrumbs\Block\BlockServiceProvider;
 use X3P0\Breadcrumbs\Crumb\CrumbServiceProvider;
@@ -39,6 +40,7 @@ final class Plugin extends Application
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const PROVIDERS = [
+		AdminServiceProvider::class,
 		AssemblerServiceProvider::class,
 		BreadcrumbsServiceProvider::class,
 		BlockServiceProvider::class,

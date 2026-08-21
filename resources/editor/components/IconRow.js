@@ -8,7 +8,7 @@
  */
 
 // Internal dependencies.
-import { IconLibraryModal } from '../../blocks/breadcrumbs/components/ui';
+import { IconLibraryModal, IconPreview } from '../../blocks/breadcrumbs/components/ui';
 import { META_KEYS } from '../../blocks/breadcrumbs/utils/meta-keys';
 
 // WordPress dependencies.
@@ -20,26 +20,8 @@ import {
 } from '@wordpress/components';
 import { PluginPostStatusInfo, store as editorStore } from '@wordpress/editor';
 import { store as coreStore, useEntityProp } from '@wordpress/core-data';
-import { safeHTML } from '@wordpress/dom';
 import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
-
-/**
- * Renders the icon's registered SVG markup, which the REST API returns as a
- * sanitized string rather than JSX and so has to be injected. Kept a component
- * rather than a bare element because `Button` hands its `icon` prop to `Icon`,
- * which clones a plain element with `size`/`width`/`height` props — meaningless
- * on a `span`, and passed straight through to the DOM. A component absorbs them
- * instead, and the size comes from CSS.
- * @param props
- * @returns {JSX.Element}
- */
-const IconPreview = ({content}) => (
-	<span
-		className="x3p0-breadcrumbs-post-icon__preview"
-		dangerouslySetInnerHTML={{__html: safeHTML(content)}}
-	/>
-);
 
 /**
  * Renders the post's breadcrumb icon as a row in the editor's Summary panel —

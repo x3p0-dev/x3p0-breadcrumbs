@@ -2,8 +2,9 @@
 /// Editor stylesheet for the icon library picker components.
 ///
 /// Kept apart from the block's own editor styles because the picker is shared:
-/// the block inspector opens it, and so does the post editor's breadcrumb icon
-/// row, which is built and shipped as its own bundle.
+/// the block inspector opens it, the post editor's breadcrumb icon row opens it,
+/// and so does the taxonomy screens' term icon field — each built and shipped as
+/// its own bundle.
 ///
 /// @author Justin Tadlock <justintadlock@gmail.com>
 /// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
@@ -144,4 +145,16 @@
 		font-size: variables.$font-size-small;
 		overflow-wrap: break-word;
 	}
+}
+
+// The swatch showing which icon is currently chosen, rendered by `IconPreview`
+// wherever the picker is opened from. Registered icons carry their own
+// `width`/`height`, which core's picker normalizes in CSS rather than in the
+// markup; the same is done here so an icon sized for something else still sits
+// on its control's baseline.
+.x3p0-breadcrumbs-icon-preview svg {
+	display: block;
+	width: variables.$icon-size;
+	height: variables.$icon-size;
+	fill: currentColor;
 }

@@ -68,7 +68,7 @@ final class Endpoint extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	protected function iconOptionKey(): string
 	{
 		return EndpointSlug::tryFrom($this->endpoint)?->optionKey() ?? $this->getSlug();
 	}

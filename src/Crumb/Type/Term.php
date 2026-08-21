@@ -81,7 +81,7 @@ final class Term extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	protected function iconOptionKey(): string
 	{
 		return IconOptionKey::taxonomy($this->term->taxonomy);
 	}

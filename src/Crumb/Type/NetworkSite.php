@@ -33,7 +33,7 @@ final class NetworkSite extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey
+	protected function iconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::NetworkSite;
 	}

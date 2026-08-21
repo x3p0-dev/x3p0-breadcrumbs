@@ -34,7 +34,7 @@ final class Error404 extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey
+	protected function iconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::Error404;
 	}

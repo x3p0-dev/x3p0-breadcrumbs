@@ -59,7 +59,7 @@ final class Shop extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey|string
+	protected function iconOptionKey(): IconOptionKey|string
 	{
 		return $this->decoratedCrumb->iconOptionKey();
 	}

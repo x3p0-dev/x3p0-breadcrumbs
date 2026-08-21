@@ -82,7 +82,7 @@ final class CatalogOrder extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	protected function iconOptionKey(): string
 	{
 		return CatalogOrderSlug::tryFrom($this->orderby)?->optionKey() ?? $this->getSlug();
 	}

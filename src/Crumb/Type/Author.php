@@ -62,7 +62,7 @@ final class Author extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey
+	protected function iconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::User;
 	}

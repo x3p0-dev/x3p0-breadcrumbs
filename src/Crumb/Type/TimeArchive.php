@@ -30,7 +30,7 @@ abstract class TimeArchive extends Date
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey
+	protected function iconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::Time;
 	}

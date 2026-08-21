@@ -92,7 +92,7 @@ final class Post extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey|string
+	protected function iconOptionKey(): IconOptionKey|string
 	{
 		return match (true) {
 			'private' === get_post_status($this->post) => IconOptionKey::PrivatePost,

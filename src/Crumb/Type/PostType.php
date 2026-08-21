@@ -68,7 +68,7 @@ final class PostType extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	protected function iconOptionKey(): string
 	{
 		return IconOptionKey::postTypeArchive($this->postType->name);
 	}

@@ -34,7 +34,7 @@ final class Archive extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): IconOptionKey
+	protected function iconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::Archive;
 	}

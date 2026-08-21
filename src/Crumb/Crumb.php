@@ -66,6 +66,33 @@ abstract class Crumb
 	}
 
 	/**
+	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
+	 * key or a `{collection}/{name}` icon library reference), left for the
+	 * `Markup` layer to resolve to real markup.
+	 *
+	 * Every crumb names one icon option key, and this states the resolution
+	 * order once, for every type, in descending order of how explicit each
+	 * source is:
+	 *
+	 * 1. `explicitIcon()` — a choice the site owner made.
+	 * 2. The icon configured for this crumb's option key.
+	 * 3. The default registered for that key.
+	 * 4. The default registered for {@see IconOptionKey::Fallback}.
+	 *
+	 * A type that wants a different default names a different key rather
+	 * than splicing an icon into the chain. Subclasses contribute through
+	 * `iconOptionKey()` and `explicitIcon()` rather than overriding this
+	 * method.
+	 */
+	final public function getIcon(): string
+	{
+		return $this->explicitIcon()
+			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
+			?: $this->context->iconOptions->icon($this->iconOptionKey())
+			?: $this->context->iconOptions->icon(IconOptionKey::Fallback);
+	}
+
+	/**
 	 * Returns the key of the icon option this crumb pulls its icon from — the
 	 * lookup key for both a site-owner override (see `IconConfig::getIcon()`)
 	 * and a registered default. A built-in crumb names its key as an
@@ -82,46 +109,9 @@ abstract class Crumb
 	 * contract, where renaming either side quietly resolved the fallback icon
 	 * instead of failing.
 	 */
-	public function iconOptionKey(): IconOptionKey|string
+	protected function iconOptionKey(): IconOptionKey|string
 	{
 		return $this->getSlug();
-	}
-
-	/**
-	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
-	 * key or a `{collection}/{name}` icon library reference), left for the
-	 * `Markup` layer to resolve to real markup. Whether a crumb's icon is
-	 * actually shown is controlled separately, by the `Markup` layer's icon
-	 * visibility setting.
-	 *
-	 * Every crumb names one icon option key, and this states the resolution
-	 * order once, for every type, in descending order of how explicit each
-	 * source is:
-	 *
-	 * 1. `explicitIcon()` — a choice the site owner made against this exact
-	 *    crumb, which outranks even their configured option.
-	 * 2. The icon configured for this crumb's option key.
-	 * 3. The default registered for that key.
-	 * 4. The default registered for {@see IconOptionKey::Fallback}, so a crumb
-	 *    whose key nothing is registered under still renders with something —
-	 *    the archive crumb of a post type that declares no archive, say. That
-	 *    icon is held in the registry like every other one the plugin renders,
-	 *    rather than as a literal here, so it is retargetable on the same terms
-	 *    and there is one place to read what a trail can put on screen.
-	 *
-	 * A type that wants a different default names a different key rather than
-	 * splicing an icon into the chain: keeping one key per crumb is what makes
-	 * the order above the whole story. Subclasses contribute through
-	 * `iconOptionKey()` and `explicitIcon()` rather than overriding this
-	 * method, so a decorating crumb cannot inherit steps buried in an override
-	 * (see `Extension\WooCommerce\Crumb\StorePage`).
-	 */
-	final public function getIcon(): string
-	{
-		return $this->explicitIcon()
-			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
-			?: $this->context->iconOptions->icon($this->iconOptionKey())
-			?: $this->context->iconOptions->icon(IconOptionKey::Fallback);
 	}
 
 	/**

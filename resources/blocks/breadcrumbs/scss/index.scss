@@ -13,6 +13,10 @@
 @use '~@wordpress/base-styles/variables';
 @use '~@wordpress/base-styles/mixins';
 
+// The icon library picker, shared with the post editor's icon row and so
+// kept in a file of its own rather than inline here.
+@use 'icon-library';
+
 // Icon settings row, used by `IconPickerButton` (home and separator icon
 // controls). Mirrors the Background Image panel's row design in Global
 // Styles — a bordered preview box with a toggle button and a reset button
@@ -219,135 +223,5 @@
 		padding: variables.$grid-unit-20 variables.$grid-unit-15;
 		margin: 0;
 		color: colors.$gray-700;
-	}
-}
-
-// Modeled on core's own icon picker styles for the Icon block.
-// @link https://github.com/WordPress/gutenberg/blob/trunk/packages/block-library/src/icon/editor.scss
-.x3p0-breadcrumbs-icon-library-modal {
-	&__inserter {
-		padding: 0 variables.$grid-unit-30;
-		margin: 0 (-1 * variables.$grid-unit-30);
-	}
-
-	&__description {
-		margin: 0 0 variables.$grid-unit-20;
-	}
-
-	&__header {
-		display: flex;
-		align-items: flex-start;
-		gap: variables.$grid-unit-20;
-		margin-bottom: variables.$grid-unit-20;
-
-		.x3p0-breadcrumbs-icon-library-modal__search {
-			flex: 1;
-		}
-	}
-
-	&__loading {
-		display: flex;
-		justify-content: center;
-		padding: variables.$grid-unit-30;
-	}
-
-	// `TabPanel` couples its tab list and panel into one wrapper, so the
-	// sidebar/content split core achieves with separate `Tabs`/`Stack`
-	// components is done here with flexbox on that shared wrapper instead.
-	&__tabs {
-		@include mixins.break-medium() {
-			display: flex;
-			align-items: flex-start;
-			gap: variables.$grid-unit-30;
-		}
-
-		.components-tab-panel__tabs {
-			padding-bottom: variables.$grid-unit-20;
-
-			@include mixins.break-medium() {
-				flex: 0 0 200px;
-			}
-		}
-
-		.components-tab-panel__tabs-item {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-		}
-
-		.components-tab-panel__tab-content {
-			min-width: 0;
-
-			@include mixins.break-medium() {
-				flex: 1;
-			}
-		}
-	}
-
-	// Mirrors the hover/active chevron core's `Tabs` component draws itself
-	// for vertical tabs ({@see IconLibraryModal}); hidden until the tab is
-	// hovered, focused, or active.
-	&__tab-chevron {
-		flex-shrink: 0;
-		opacity: 0;
-
-		&:dir(rtl) {
-			transform: scaleX(-1);
-		}
-	}
-
-	.components-tab-panel__tabs-item:is(:hover, :focus-visible, .is-active) &__tab-chevron {
-		opacity: 1;
-	}
-}
-
-.x3p0-breadcrumbs-icon-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-
-	&__no-results {
-		display: flex;
-		justify-content: center;
-	}
-
-	&__item {
-		display: flex !important;
-		flex-direction: column;
-		height: auto !important;
-	}
-
-	// Sized identically (border-box, so padding doesn't grow the box) so a
-	// text/glyph tile's box always matches a real SVG icon's box, regardless
-	// of the glyph's own font metrics.
-	&__item-svg,
-	&__item-text {
-		box-sizing: border-box;
-		padding: variables.$grid-unit-15;
-		width: calc(#{variables.$icon-size} + #{variables.$grid-unit-15} * 2);
-		height: calc(#{variables.$icon-size} + #{variables.$grid-unit-15} * 2);
-	}
-
-	&__item-svg {
-		// Fit any icon within 24x24. The viewBox preserves the aspect ratio,
-		// so non-square icons are scaled and centered without distortion.
-		svg {
-			display: block;
-			width: variables.$icon-size;
-			height: variables.$icon-size;
-		}
-	}
-
-	&__item-text {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: calc(#{variables.$icon-size} * 0.7);
-		line-height: 1;
-	}
-
-	&__item-label {
-		padding: variables.$grid-unit-05 variables.$grid-unit-05 variables.$grid-unit-10;
-		font-size: variables.$font-size-small;
-		overflow-wrap: break-word;
 	}
 }

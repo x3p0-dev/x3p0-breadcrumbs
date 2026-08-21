@@ -50,3 +50,20 @@ export const ICON_OPTION_KEYS = Object.freeze({
 	HOME:           'home',
 	POST_TYPE_PAGE: 'post-type:page'
 });
+
+/**
+ * The icon option key registered for each viewable post type's single-post
+ * crumbs, keyed by post type name — see `BlockAssets::postTypeIconKeys()`. The
+ * canvas previews the icon of whatever post is open by looking its post type up
+ * here and resolving the key it finds.
+ *
+ * PHP resolves these for the same reason it resolves `group` and `slug` above:
+ * `IconOptionKey` owns the `post-type:{slug}` scheme, and rebuilding it here
+ * would be a second copy of it. The two fields the options already carry are no
+ * substitute — an option can be regrouped after registration (WooCommerce moves
+ * its product options into a group of its own), and a post type's archive
+ * option carries the very same slug as its singular one, so neither field
+ * identifies which option a post belongs to.
+ */
+// noinspection JSUnresolvedVariable
+export const POST_TYPE_ICON_OPTION_KEYS = window.x3p0Breadcrumbs?.postTypeIconKeys ?? {};

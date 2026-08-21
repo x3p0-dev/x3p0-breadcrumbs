@@ -9,12 +9,14 @@
 
 // Internal dependencies.
 import { SEPARATOR_ICONS } from '../../utils/constants';
-import { ICON_OPTION_KEYS } from '../../utils/icon-options';
+import { ICON_OPTION_KEYS, POST_TYPE_ICON_OPTION_KEYS } from '../../utils/icon-options';
+import { META_KEYS } from '../../utils/meta-keys';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
 import {RichText, useBlockProps, useInnerBlocksProps} from '@wordpress/block-editor';
-import { store as coreStore } from '@wordpress/core-data';
+import { store as coreStore, useEntityProp } from '@wordpress/core-data';
+import { store as editorStore } from '@wordpress/editor';
 import { safeHTML } from '@wordpress/dom';
 import { useSelect } from '@wordpress/data';
 
@@ -141,6 +143,45 @@ const BlockContent = ({
 	// The generic Ancestor/Parent/Current placeholder crumbs stand in for a
 	// post, so they use the real Page single-post icon.
 	const pageIcon = resolveIcon(ICON_OPTION_KEYS.POST_TYPE_PAGE);
+
+	// The post the editor has open, if it has one. The block is edited in a
+	// template as often as on a post, and a template has no single post the
+	// trail could end on, so `viewable` is what says whether there is a real
+	// thing here to stand at the end of it — the same question `IconRow` asks.
+	//
+	// The post is named outright rather than left to the entity context, which
+	// a block in the site editor's canvas is not guaranteed to inherit from the
+	// page being edited. What the editor store reports is true either way.
+	const {postType, postId, isViewable} = useSelect((select) => {
+		const {getCurrentPostType, getCurrentPostId} = select(editorStore);
+		const type = getCurrentPostType();
+
+		return {
+			postType: type,
+			postId: getCurrentPostId(),
+			isViewable: Boolean(type && select(coreStore).getPostType(type)?.viewable)
+		};
+	}, []);
+
+	const [postTitle] = useEntityProp('postType', postType, 'title', postId);
+	const [postMeta]  = useEntityProp('postType', postType, 'meta', postId);
+
+	// What the trail's last crumb stands for: the open post, when the block is
+	// being edited on one and it has a title yet, and the generic placeholder
+	// otherwise. Its icon reads the way the crumb resolves one — the post's own
+	// icon meta, which `Crumb\Type\Post::explicitIcon()` ranks above everything
+	// else, then the icon for its post type, then the generic page icon the
+	// placeholder crumbs stand on.
+	const currentLabel = (isViewable && postTitle)
+		|| __('Current', 'x3p0-breadcrumbs');
+
+	const postTypeIcon = isViewable && POST_TYPE_ICON_OPTION_KEYS[postType]
+		? resolveIcon(POST_TYPE_ICON_OPTION_KEYS[postType])
+		: '';
+
+	const currentIcon = (isViewable && postMeta?.[META_KEYS.icon])
+		|| postTypeIcon
+		|| pageIcon;
 
 	const homeIconValue = resolveIcon(ICON_OPTION_KEYS.HOME);
 
@@ -301,24 +342,24 @@ const BlockContent = ({
 				<CrumbLink>
 					{showIcon && (
 						<CrumbIcon
-							value={pageIcon}
+							value={currentIcon}
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
 					<CrumbLabel hidden={labelHidden}>
-						{__('Current', 'x3p0-breadcrumbs')}
+						{currentLabel}
 					</CrumbLabel>
 				</CrumbLink>
 			) : (
 				<span className="wp-block-x3p0-breadcrumbs__crumb-content">
 					{showIcon && (
 						<CrumbIcon
-							value={pageIcon}
+							value={currentIcon}
 							className="wp-block-x3p0-breadcrumbs__crumb-icon"
 						/>
 					)}
 					<CrumbLabel hidden={labelHidden}>
-						{__('Current', 'x3p0-breadcrumbs')}
+						{currentLabel}
 					</CrumbLabel>
 				</span>
 			)

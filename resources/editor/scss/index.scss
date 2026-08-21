@@ -1,0 +1,55 @@
+////
+/// Editor stylesheet for the post editor's breadcrumb icon row.
+///
+/// @author Justin Tadlock <justintadlock@gmail.com>
+/// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
+////
+
+// Import the WordPress variables Sass file. We'll use this to make sure we're
+// using the core UI units and values.
+//
+// @link https://github.com/WordPress/gutenberg/tree/trunk/packages/base-styles
+@use '~@wordpress/base-styles/variables';
+
+// The icon library picker, shared with the block inspector.
+@use '../../blocks/breadcrumbs/scss/icon-library';
+
+// `PluginPostStatusInfo` wraps every fill in a `PanelRow` of its own, whose
+// flex layout, top margin, and 36px floor all sit between the Summary panel's
+// stack and the row inside. The row mirrors core's `PostPanelRow` and lays
+// itself out (see `IconRow`), so the wrapper is flattened back out of its way.
+.x3p0-breadcrumbs-post-icon.components-panel__row {
+	display: block;
+	margin-top: 0;
+	min-height: 0;
+}
+
+// Core lets a Summary row's value wrap over as many lines as it takes, which
+// suits a post title but leaves a long icon name sprawling down the sidebar.
+// The name is clamped to a single line instead (`Truncate` in `IconRow`),
+// which hands the browser the trailing ellipsis.
+//
+// `Truncate` hides its own overflow and so is already free to shrink past its
+// text — a flex item's automatic minimum size is zero once its overflow isn't
+// visible — but the boxes between it and the row have to give way as well, or
+// they hold the button open at the full width of the name.
+.x3p0-breadcrumbs-post-icon {
+	.editor-post-panel__row-control {
+		min-width: 0;
+	}
+
+	&__toggle.components-button {
+		min-width: 0;
+		max-width: 100%;
+	}
+}
+
+// Registered icons carry their own `width`/`height`, which core's picker
+// normalizes in CSS rather than in the markup; the same is done here so an
+// icon sized for something else still sits on the row's baseline.
+.x3p0-breadcrumbs-post-icon__preview svg {
+	display: block;
+	width: variables.$icon-size;
+	height: variables.$icon-size;
+	fill: currentColor;
+}

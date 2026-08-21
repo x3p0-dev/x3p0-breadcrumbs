@@ -26,10 +26,12 @@
 		"@wordpress/core-data": "^7.53.0",
 		"@wordpress/data": "^10.53.0",
 		"@wordpress/dom": "^4.53.0",
+		"@wordpress/editor": "^14.53.0",
 		"@wordpress/element": "^8.5.0",
 		"@wordpress/hooks": "^4.53.0",
 		"@wordpress/i18n": "^6.26.0",
 		"@wordpress/icons": "^15.4.0",
+		"@wordpress/plugins": "^7.53.0",
 		"@wordpress/primitives": "^4.53.0",
 		"clsx": "^2.1.1"
 	}

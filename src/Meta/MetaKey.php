@@ -20,4 +20,21 @@ namespace X3P0\Breadcrumbs\Meta;
 enum MetaKey: string
 {
 	case Icon = 'x3p0-breadcrumbs-icon';
+
+	/**
+	 * Returns the meta keys handed to the editor scripts, named rather than
+	 * listed so the JavaScript reaches for `metaKeys.icon` instead of matching
+	 * on the literal it is trying not to know. Both editor bundles read post
+	 * meta — the block previews the open post's icon on its last crumb, and the
+	 * Summary panel's row writes it — so the pair is assembled once here rather
+	 * than in each of the classes that pass it over.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function forEditor(): array
+	{
+		return [
+			'icon' => self::Icon->value
+		];
+	}
 }

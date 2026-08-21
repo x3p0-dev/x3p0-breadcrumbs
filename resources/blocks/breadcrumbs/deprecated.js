@@ -9,6 +9,7 @@
 
 // Internal dependencies.
 import metadata from './block.json';
+import { ICON_OPTION_KEYS } from './utils/icon-options';
 
 /**
  * Every deprecation must declare the block supports its era had — a
@@ -149,9 +150,9 @@ const v5_0_0 = {
 		// the same icon, and an explicit entry is indistinguishable from
 		// the attribute default WordPress fills in during parsing anyway.
 		const icons = {
-			...(homeIcon && { home: mapDeprecatedIcon(homeIcon) }),
+			...(homeIcon && { [ICON_OPTION_KEYS.HOME]: mapDeprecatedIcon(homeIcon) }),
 			...(separatorIcon && 'svg-chevron' !== separatorIcon && {
-				separator: mapDeprecatedIcon(separatorIcon)
+				[ICON_OPTION_KEYS.SEPARATOR]: mapDeprecatedIcon(separatorIcon)
 			})
 		};
 
@@ -253,9 +254,9 @@ const v4_0_0 = {
 		}
 
 		const icons = {
-			...(homeIcon && { home: homeIcon }),
+			...(homeIcon && { [ICON_OPTION_KEYS.HOME]: homeIcon }),
 			...(separatorIcon && 'x3p0-breadcrumbs/chevron' !== separatorIcon && {
-				separator: separatorIcon
+				[ICON_OPTION_KEYS.SEPARATOR]: separatorIcon
 			})
 		};
 

@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Crumb for a 404 (not found) page. Outputs the configured error label and has
@@ -28,6 +29,14 @@ final class Error404 extends Crumb
 	public function getSlug(): string
 	{
 		return 'error-404';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function iconOptionKey(): IconOptionKey
+	{
+		return IconOptionKey::Error404;
 	}
 
 	/**

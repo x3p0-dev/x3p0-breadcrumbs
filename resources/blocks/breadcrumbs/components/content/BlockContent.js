@@ -9,6 +9,7 @@
 
 // Internal dependencies.
 import { SEPARATOR_ICONS } from '../../utils/constants';
+import { ICON_OPTION_KEYS } from '../../utils/icon-options';
 
 // WordPress dependencies.
 import { __ } from '@wordpress/i18n';
@@ -138,11 +139,11 @@ const BlockContent = ({
 
 	// The generic Ancestor/Parent/Current placeholder crumbs stand in for a
 	// post, so they use the real Page single-post icon.
-	const pageIcon = resolveIcon('post-type:page');
+	const pageIcon = resolveIcon(ICON_OPTION_KEYS.POST_TYPE_PAGE);
 
-	const homeIconValue = resolveIcon('home');
+	const homeIconValue = resolveIcon(ICON_OPTION_KEYS.HOME);
 
-	const separatorIconValue = resolveIcon('separator');
+	const separatorIconValue = resolveIcon(ICON_OPTION_KEYS.SEPARATOR);
 
 	// Mirrors `Html::isCrumbIconVisible()`: which crumbs show an icon depends
 	// on their position in the *rendered* trail, not on their kind — e.g., if

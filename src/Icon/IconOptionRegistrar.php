@@ -109,11 +109,11 @@ final class IconOptionRegistrar implements Bootable
 	 */
 	private function registerGroups(): void
 	{
-		$this->options->addGroup(IconOption::GROUP_GENERAL, __('General', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOption::GROUP_POST_TYPE, __('Post Types', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOption::GROUP_POST_TYPE_ARCHIVE, __('Post Type Archives', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOption::GROUP_TAXONOMY, __('Taxonomies', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOption::GROUP_MEDIA, __('Media', 'x3p0-breadcrumbs'));
+		$this->options->addGroup(IconOptionGroup::General, __('General', 'x3p0-breadcrumbs'));
+		$this->options->addGroup(IconOptionGroup::PostType, __('Post Types', 'x3p0-breadcrumbs'));
+		$this->options->addGroup(IconOptionGroup::PostTypeArchive, __('Post Type Archives', 'x3p0-breadcrumbs'));
+		$this->options->addGroup(IconOptionGroup::Taxonomy, __('Taxonomies', 'x3p0-breadcrumbs'));
+		$this->options->addGroup(IconOptionGroup::Media, __('Media', 'x3p0-breadcrumbs'));
 	}
 
 	/**
@@ -147,28 +147,28 @@ final class IconOptionRegistrar implements Bootable
 	private function registerStaticOptions(): void
 	{
 		$this->options->add(
-			new IconOption('separator',       Icon::Chevron,     __('Separator', 'x3p0-breadcrumbs')),
-			new IconOption('home',            'core/home',       __('Home', 'x3p0-breadcrumbs')),
-			new IconOption('date',            'core/calendar',   __('Date archives', 'x3p0-breadcrumbs')),
-			new IconOption('time',            'core/scheduled',  __('Time archives', 'x3p0-breadcrumbs')),
-			new IconOption('user',            'core/people',     __('User', 'x3p0-breadcrumbs')),
-			new IconOption('search',          'core/search',     __('Search', 'x3p0-breadcrumbs')),
-			new IconOption('error-404',       'core/error',      __('Page not found', 'x3p0-breadcrumbs')),
-			new IconOption('paged',           Icon::Description, __('Pagination', 'x3p0-breadcrumbs')),
-			new IconOption('private-post',    Icon::Unseen,      __('Private', 'x3p0-breadcrumbs')),
-			new IconOption('protected-post',  'core/key',        __('Password protected', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Separator,     Icon::Chevron,     __('Separator', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Home,          'core/home',       __('Home', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Date,          'core/calendar',   __('Date archives', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Time,          'core/scheduled',  __('Time archives', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::User,          'core/people',     __('User', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Search,        'core/search',     __('Search', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Error404,      'core/error',      __('Page not found', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::Paged,         Icon::Description, __('Pagination', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::PrivatePost,   Icon::Unseen,      __('Private', 'x3p0-breadcrumbs')),
+			new IconOption(IconOptionKey::ProtectedPost, 'core/key',        __('Password protected', 'x3p0-breadcrumbs')),
 			// Registered without a label: every icon the plugin can render is
 			// an option, but not every one is worth a block control.
-			new IconOption('archive',        Icon::Archive),
-			new IconOption('custom',         Icon::Article),
-			new IconOption('fallback',       Icon::Article),
-			new IconOption('privacy-policy', 'core/shield'),
-			new IconOption('posts-page',     Icon::Archive)
+			new IconOption(IconOptionKey::Archive,       Icon::Archive),
+			new IconOption(IconOptionKey::Custom,        Icon::Article),
+			new IconOption(IconOptionKey::Fallback,      Icon::Article),
+			new IconOption(IconOptionKey::PrivacyPolicy, 'core/shield'),
+			new IconOption(IconOptionKey::PostsPage,     Icon::Archive)
 		);
 
 		if (is_multisite()) {
 			$this->options->add(new IconOption(
-				'network-site',
+				IconOptionKey::NetworkSite,
 				'core/desktop',
 				__('Network Site', 'x3p0-breadcrumbs')
 			));
@@ -240,9 +240,9 @@ final class IconOptionRegistrar implements Bootable
 	 */
 	private function setCoreObjectIcons(): void
 	{
-		$this->options->update(IconOption::postTypeKey('post'),        icon: 'core/pencil');
-		$this->options->update(IconOption::taxonomyKey('category'),    icon: 'core/category');
-		$this->options->update(IconOption::taxonomyKey('post_format'), icon: Icon::Category);
+		$this->options->update(IconOptionKey::postType('post'),        icon: 'core/pencil');
+		$this->options->update(IconOptionKey::taxonomy('category'),    icon: 'core/category');
+		$this->options->update(IconOptionKey::taxonomy('post_format'), icon: Icon::Category);
 	}
 
 	/**
@@ -262,15 +262,15 @@ final class IconOptionRegistrar implements Bootable
 	private function registerMediaOptions(): void
 	{
 		$this->options->add(
-			new IconOption('media-image', 'core/image',         __('Image', 'x3p0-breadcrumbs'), IconOption::GROUP_MEDIA),
-			new IconOption('media-audio', 'core/audio',         __('Audio', 'x3p0-breadcrumbs'), IconOption::GROUP_MEDIA),
-			new IconOption('media-video', 'core/capture-video', __('Video', 'x3p0-breadcrumbs'), IconOption::GROUP_MEDIA)
+			new IconOption(IconOptionKey::MediaImage, 'core/image',         __('Image', 'x3p0-breadcrumbs'), IconOptionGroup::Media),
+			new IconOption(IconOptionKey::MediaAudio, 'core/audio',         __('Audio', 'x3p0-breadcrumbs'), IconOptionGroup::Media),
+			new IconOption(IconOptionKey::MediaVideo, 'core/capture-video', __('Video', 'x3p0-breadcrumbs'), IconOptionGroup::Media)
 		);
 
 		$this->options->update(
-			IconOption::postTypeKey('attachment'),
+			IconOptionKey::postType('attachment'),
 			icon: 'core/file',
-			group: IconOption::GROUP_MEDIA
+			group: IconOptionGroup::Media
 		);
 	}
 }

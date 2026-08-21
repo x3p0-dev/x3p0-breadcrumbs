@@ -17,6 +17,7 @@ use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
@@ -154,11 +155,11 @@ final class Breadcrumbs implements BlockRenderer
 		}
 
 		if (! empty($attributes['homeIcon'])) {
-			$attributes['icons']['home'] = $attributes['homeIcon'];
+			$attributes['icons'][IconOptionKey::Home->value] = $attributes['homeIcon'];
 		}
 
 		if (! empty($attributes['separatorIcon'])) {
-			$attributes['icons']['separator'] = $attributes['separatorIcon'];
+			$attributes['icons'][IconOptionKey::Separator->value] = $attributes['separatorIcon'];
 		}
 
 		if (array_key_exists('showHomeLabel', $attributes) && ! $attributes['showHomeLabel']) {

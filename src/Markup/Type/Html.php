@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
@@ -253,9 +254,9 @@ class Html extends Markup implements MarkupBlockOption
 
 	/**
 	 * Renders the separator icon — the caller's choice from the icon config,
-	 * falling back to the registered `separator` option default — or an
-	 * empty string when the separator is turned off or should not be
-	 * rendered for this crumb.
+	 * falling back to the default registered for
+	 * {@see IconOptionKey::Separator} — or an empty string when the separator
+	 * is turned off or should not be rendered for this crumb.
 	 */
 	protected function renderSeparator(): string
 	{
@@ -264,7 +265,8 @@ class Html extends Markup implements MarkupBlockOption
 		}
 
 		return $this->renderIcon(
-			$this->iconConfig->getIcon('separator') ?: $this->iconOptions->icon('separator'),
+			$this->iconConfig->getIcon(IconOptionKey::Separator)
+				?: $this->iconOptions->icon(IconOptionKey::Separator),
 			'crumb-separator'
 		);
 	}

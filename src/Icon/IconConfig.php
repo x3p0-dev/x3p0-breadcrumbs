@@ -30,7 +30,10 @@ final class IconConfig
 
 	/**
 	 * Stores the caller's chosen icons as an option key → icon attribute
-	 * value map (e.g., `home`, `date`, `separator`, `post-type:page`).
+	 * value map (e.g., `home`, `date`, `separator`, `post-type:page`). Keyed
+	 * by the raw string form, since the map arrives off a block attribute
+	 * saved in post content; {@see IconOptionKey} names the keys this plugin
+	 * owns among them.
 	 *
 	 * @param array<string, string> $icons
 	 */
@@ -41,8 +44,8 @@ final class IconConfig
 	 * Returns the icon attribute value the caller configured for the given
 	 * icon option key, or an empty string if none is configured.
 	 */
-	public function getIcon(string $key): string
+	public function getIcon(IconOptionKey|string $key): string
 	{
-		return $this->icons[$key] ?? '';
+		return $this->icons[IconOptionKey::normalize($key)] ?? '';
 	}
 }

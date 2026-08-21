@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * An open-ended crumb built entirely from the values passed to it: a label and
@@ -48,6 +49,14 @@ final class Custom extends Crumb
 	/**
 	 * @inheritDoc
 	 */
+	public function iconOptionKey(): IconOptionKey
+	{
+		return IconOptionKey::Custom;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public function getLabel(): string
 	{
 		return $this->label;
@@ -67,7 +76,7 @@ final class Custom extends Crumb
 	 * derive anything from, so whoever built it is the only source of a
 	 * meaningful icon — which makes it an explicit choice rather than a
 	 * derived default, and the caller has no option key to configure against
-	 * anyway (every `Custom` shares the one `custom` key).
+	 * anyway (every `Custom` shares {@see IconOptionKey::Custom}).
 	 *
 	 * @inheritDoc
 	 */

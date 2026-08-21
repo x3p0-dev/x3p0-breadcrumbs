@@ -16,6 +16,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_User;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -61,8 +62,8 @@ final class Author extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey
 	{
-		return 'user';
+		return IconOptionKey::User;
 	}
 }

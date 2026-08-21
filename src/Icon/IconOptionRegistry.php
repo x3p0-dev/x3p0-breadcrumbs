@@ -64,9 +64,9 @@ final class IconOptionRegistry
 	 * WooCommerce group holding its shop and endpoint options, say — lands
 	 * after them.
 	 */
-	public function addGroup(string $key, string $label): void
+	public function addGroup(IconOptionGroup|string $key, string $label): void
 	{
-		$this->groups[$key] = $label;
+		$this->groups[IconOptionGroup::normalize($key)] = $label;
 	}
 
 	/**
@@ -83,9 +83,9 @@ final class IconOptionRegistry
 	 *     $options->update($key, label: __('Shop', 'my-plugin'));
 	 *     $options->update($key, group: 'woocommerce');
 	 *
-	 * An argument left null is left alone. The icon is passed straight through
-	 * to the option, so it takes an {@see Icon} case or a raw reference string
-	 * on the same terms as the constructor.
+	 * An argument left null is left alone. The icon and group are passed
+	 * straight through to the option, so each takes an enum case or a raw
+	 * string on the same terms as the constructor.
 	 *
 	 * Updating a key nothing is registered under does nothing, deliberately:
 	 * an extension speaking for objects that may or may not exist on a given
@@ -94,10 +94,10 @@ final class IconOptionRegistry
 	 * Registering is `add()`'s job.
 	 */
 	public function update(
-		string $key,
+		IconOptionKey|string $key,
 		Icon|string|null $icon = null,
 		?string $label = null,
-		?string $group = null
+		IconOptionGroup|string|null $group = null
 	): void {
 		$option = $this->get($key);
 
@@ -115,24 +115,24 @@ final class IconOptionRegistry
 	/**
 	 * Determines whether an option is registered for the given key.
 	 */
-	public function has(string $key): bool
+	public function has(IconOptionKey|string $key): bool
 	{
-		return isset($this->options[$key]);
+		return isset($this->options[IconOptionKey::normalize($key)]);
 	}
 
 	/**
 	 * Returns the option registered for the given key, or `null` if none is.
 	 */
-	public function get(string $key): ?IconOption
+	public function get(IconOptionKey|string $key): ?IconOption
 	{
-		return $this->options[$key] ?? null;
+		return $this->options[IconOptionKey::normalize($key)] ?? null;
 	}
 
 	/**
 	 * Returns the default icon attribute value registered for the given key,
 	 * or an empty string if the key has no option (or no default icon).
 	 */
-	public function icon(string $key): string
+	public function icon(IconOptionKey|string $key): string
 	{
 		return $this->get($key)?->icon ?? '';
 	}
@@ -159,7 +159,7 @@ final class IconOptionRegistry
 					'name'  => $option->label,
 					'group' => isset($this->groups[$option->group])
 						? $option->group
-						: IconOption::GROUP_GENERAL,
+						: IconOptionGroup::General->value,
 					'slug'  => $option->slug
 				];
 			}

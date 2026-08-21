@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Crumb for the site home. Outputs the configured home label and links to the
@@ -28,6 +29,14 @@ final class Home extends Crumb
 	public function getSlug(): string
 	{
 		return 'home';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function iconOptionKey(): IconOptionKey
+	{
+		return IconOptionKey::Home;
 	}
 
 	/**

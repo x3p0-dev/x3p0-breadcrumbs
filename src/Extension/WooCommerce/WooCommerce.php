@@ -27,6 +27,7 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
 use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconOption;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
@@ -105,12 +106,12 @@ final class WooCommerce extends Extension
 	{
 		$event->options->addGroup(self::ICON_GROUP, __('WooCommerce', 'x3p0-breadcrumbs'));
 
-		$event->options->update(IconOption::postTypeKey('product'),       icon: Icon::Package);
-		$event->options->update(IconOption::taxonomyKey('product_brand'), icon: Icon::BrandingWatermark);
-		$event->options->update(IconOption::taxonomyKey('product_cat'),   icon: 'core/category');
-		$event->options->update(IconOption::taxonomyKey('product_tag'),   icon: 'core/tag');
-		$event->options->update(IconOption::taxonomyKey('pa_color'),      icon: Icon::Color);
-		$event->options->update(IconOption::taxonomyKey('pa_size'),       icon: Icon::Straighten);
+		$event->options->update(IconOptionKey::postType('product'),       icon: Icon::Package);
+		$event->options->update(IconOptionKey::taxonomy('product_brand'), icon: Icon::BrandingWatermark);
+		$event->options->update(IconOptionKey::taxonomy('product_cat'),   icon: 'core/category');
+		$event->options->update(IconOptionKey::taxonomy('product_tag'),   icon: 'core/tag');
+		$event->options->update(IconOptionKey::taxonomy('pa_color'),      icon: Icon::Color);
+		$event->options->update(IconOptionKey::taxonomy('pa_size'),       icon: Icon::Straighten);
 
 		// The shop *is* the product post type archive — the `Shop` crumb
 		// decorates that crumb wherever it appears — so the archive's option
@@ -120,7 +121,7 @@ final class WooCommerce extends Extension
 		// archive's own label, so the option is left to do the same. Passing
 		// null leaves it alone.
 		$event->options->update(
-			IconOption::postTypeArchiveKey('product'),
+			IconOptionKey::postTypeArchive('product'),
 			icon: 'core/store',
 			label: $this->shopPageTitle() ?: null
 		);
@@ -179,12 +180,12 @@ final class WooCommerce extends Extension
 	private function groupProductObjectOptions(IconOptionsRegistered $event): void
 	{
 		$keys = [
-			IconOption::postTypeKey('product'),
-			IconOption::postTypeArchiveKey('product')
+			IconOptionKey::postType('product'),
+			IconOptionKey::postTypeArchive('product')
 		];
 
 		foreach (get_object_taxonomies('product') as $taxonomy) {
-			$keys[] = IconOption::taxonomyKey($taxonomy);
+			$keys[] = IconOptionKey::taxonomy($taxonomy);
 		}
 
 		foreach ($keys as $key) {

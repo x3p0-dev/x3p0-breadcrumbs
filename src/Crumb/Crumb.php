@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Abstract base for a single item in the breadcrumb trail. A crumb is created
@@ -26,18 +27,6 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
  */
 abstract class Crumb
 {
-	/**
-	 * Key of the option holding the icon a crumb falls back on when nothing
-	 * more specific resolves — a crumb whose own key nothing is registered
-	 * under, such as the archive crumb of a post type that declares no
-	 * archive. Held in the registry like every other icon the plugin renders,
-	 * rather than as a literal here, so it is retargetable on the same terms
-	 * and there is one place to read what a trail can put on screen.
-	 *
-	 * @var string
-	 */
-	private const FALLBACK_OPTION = 'fallback';
-
 	/**
 	 * Read-only trail config, re-exposed from the context so concrete types
 	 * can read the thing they reach for most (labels and the like) directly,
@@ -77,15 +66,23 @@ abstract class Crumb
 	}
 
 	/**
-	 * Returns the key of the icon option this crumb pulls its icon from —
-	 * the lookup key for both a site-owner override and a registered default
-	 * (see `BreadcrumbsConfig::getIcon()`). Defaults to the crumb's own
-	 * slug, so most types declare nothing; a family sharing one option
-	 * overrides this once on its base class (e.g., `Date` returns `date`),
-	 * and the dynamically-keyed types compute it (e.g., `Post` returns
+	 * Returns the key of the icon option this crumb pulls its icon from — the
+	 * lookup key for both a site-owner override (see `IconConfig::getIcon()`)
+	 * and a registered default. A built-in crumb names its key as an
+	 * {@see IconOptionKey} case; a family sharing one option overrides this
+	 * once on its base class (e.g., `Date` returns `IconOptionKey::Date`), and
+	 * the dynamically-keyed types compute it (e.g., `Post` returns
 	 * `post-type:{$type}`).
+	 *
+	 * The fallback is the crumb's own slug, which is the seam a third-party
+	 * crumb registering an option under its slug rides on (see
+	 * `Extension\WooCommerce\Crumb\StorePage`). Built-in crumbs whose key and
+	 * slug happen to read the same still name their case outright: leaving
+	 * them to this default made the slug an undeclared part of the icon
+	 * contract, where renaming either side quietly resolved the fallback icon
+	 * instead of failing.
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey|string
 	{
 		return $this->getSlug();
 	}
@@ -106,8 +103,12 @@ abstract class Crumb
 	 * 3. `fallbackIcon()` — a type-specific guess better than the registered
 	 *    default, but still only a guess, so it yields to the configured icon.
 	 * 4. The default registered for the option key.
-	 * 5. The default registered for the generic fallback option, so a crumb
-	 *    whose key nothing is registered under still renders with something.
+	 * 5. The default registered for {@see IconOptionKey::Fallback}, so a crumb
+	 *    whose key nothing is registered under still renders with something —
+	 *    the archive crumb of a post type that declares no archive, say. That
+	 *    icon is held in the registry like every other one the plugin renders,
+	 *    rather than as a literal here, so it is retargetable on the same terms
+	 *    and there is one place to read what a trail can put on screen.
 	 *
 	 * Subclasses contribute through the two seams rather than overriding this
 	 * method: a type that reorders the chain locally puts its own defaults
@@ -120,7 +121,7 @@ abstract class Crumb
 			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
 			?: $this->fallbackIcon()
 			?: $this->context->iconOptions->icon($this->iconOptionKey())
-			?: $this->context->iconOptions->icon(self::FALLBACK_OPTION);
+			?: $this->context->iconOptions->icon(IconOptionKey::Fallback);
 	}
 
 	/**

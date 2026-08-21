@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Base for the crumbs that mark the current page of something paginated
@@ -56,8 +57,8 @@ abstract class PagedArchive extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey
 	{
-		return 'paged';
+		return IconOptionKey::Paged;
 	}
 }

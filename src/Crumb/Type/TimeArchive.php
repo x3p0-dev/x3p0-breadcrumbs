@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
+
 /**
  * Base for the sub-day time archives (Hour, Minute, Second), which WordPress
  * has no permastruct function for. Builds the archive URL from the date
@@ -28,9 +30,9 @@ abstract class TimeArchive extends Date
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey
 	{
-		return 'time';
+		return IconOptionKey::Time;
 	}
 
 	/**

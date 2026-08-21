@@ -11,7 +11,7 @@
 import IconControl          from './IconControl';
 import IconOptionPicker     from './IconOptionPicker';
 import SeparatorIconControl from './SeparatorIconControl';
-import { ICON_OPTIONS }     from '../../utils/icon-options';
+import { ICON_OPTIONS, ICON_OPTION_KEYS } from '../../utils/icon-options';
 
 // WordPress dependencies.
 import { getBlockType } from '@wordpress/blocks';
@@ -47,7 +47,7 @@ const LABEL_VISIBILITY_OPTIONS = window.x3p0Breadcrumbs?.labelVisibilityOptions 
 // other option is added on demand from `IconOptionPicker`, so the panel's
 // length tracks what the user actually configured rather than how many
 // options happen to be registered.
-const PINNED_KEYS = ['separator', 'home'];
+const PINNED_KEYS = [ICON_OPTION_KEYS.SEPARATOR, ICON_OPTION_KEYS.HOME];
 
 /**
  * Renders a `<ToolsPanel>` component with the block's icon controls: the
@@ -106,7 +106,7 @@ const IconsPanel = (props) => {
 			// Crumb icon rows are hidden while icon visibility is "none";
 			// the separator row stays, since it isn't a crumb icon and
 			// renders regardless.
-			(option) => 'separator' === option.key || ! iconsHidden
+			(option) => ICON_OPTION_KEYS.SEPARATOR === option.key || ! iconsHidden
 		);
 	}, [icons, addedKeys, iconsHidden]);
 
@@ -208,7 +208,7 @@ const IconsPanel = (props) => {
 			<div className="x3p0-breadcrumbs-icons-panel__overrides">
 				{rows.map((option) => (
 					<div className={ROW_CLASS_NAME} key={option.key}>
-						{'separator' === option.key ? (
+						{ICON_OPTION_KEYS.SEPARATOR === option.key ? (
 							<SeparatorIconControl
 								value={icons[option.key] || ''}
 								onChange={(value) => onIconChange(option.key, value)}

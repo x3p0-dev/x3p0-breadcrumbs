@@ -16,7 +16,7 @@
  * change needed.
  *
  * `group` and `slug` arrive resolved rather than derived here. PHP owns the
- * key namespacing (`IconOption::postTypeKey()` and its siblings), and having
+ * key namespacing (`IconOptionKey::postType()` and its siblings), and having
  * the editor parse those prefixes back apart would be a second copy of that
  * scheme, silently wrong the moment PHP's changed.
  */
@@ -30,3 +30,23 @@ export const ICON_OPTIONS = window.x3p0Breadcrumbs?.iconOptions ?? [];
  */
 // noinspection JSUnresolvedVariable
 export const OPTION_GROUPS = window.x3p0Breadcrumbs?.iconOptionGroups ?? [];
+
+/**
+ * The option keys the editor itself names, mirroring the cases of the
+ * `IconOptionKey` enum on the PHP side. Everything else the panel renders is
+ * driven by `ICON_OPTIONS` and needs no key spelled out here; these three are
+ * the ones the editor branches on — the separator gets a control of its own
+ * and outlives the icon visibility setting, the home crumb is pinned beside
+ * it, and the page post type backs the canvas placeholder crumbs.
+ *
+ * PHP enums do not cross the wire, so this is a hand-written mirror. It is
+ * kept to the keys with a consumer rather than reproducing the whole enum: a
+ * mirrored key nothing reads is a copy that can rot unnoticed. Note that a
+ * derived key is spelled out whole, not rebuilt from its parts, for the reason
+ * given above — the namespacing scheme stays PHP's alone.
+ */
+export const ICON_OPTION_KEYS = Object.freeze({
+	SEPARATOR:      'separator',
+	HOME:           'home',
+	POST_TYPE_PAGE: 'post-type:page'
+});

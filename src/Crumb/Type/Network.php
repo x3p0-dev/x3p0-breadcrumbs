@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Crumb for the multisite network home. Uses the configured home label and
@@ -31,7 +32,8 @@ final class Network extends Crumb
 	}
 
 	/**
-	 * Resolves the `home` option rather than one of its own. On a network this
+	 * Resolves {@see IconOptionKey::Home} rather than an option of its own. On
+	 * a network this
 	 * crumb *is* the home of the trail — it takes the home label and links to
 	 * the network home — so a site owner configuring the home icon has
 	 * configured this crumb, and a second option beside it would only be a
@@ -39,9 +41,9 @@ final class Network extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey
 	{
-		return 'home';
+		return IconOptionKey::Home;
 	}
 
 	/**

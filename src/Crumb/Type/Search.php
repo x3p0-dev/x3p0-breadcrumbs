@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Crumb representing a search results page. Its label is the configured
@@ -29,6 +30,14 @@ final class Search extends Crumb
 	public function getSlug(): string
 	{
 		return 'search';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function iconOptionKey(): IconOptionKey
+	{
+		return IconOptionKey::Search;
 	}
 
 	/**

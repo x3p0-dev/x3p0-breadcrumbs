@@ -379,6 +379,50 @@ special-case defaults storage.
    class re-exposing `$this->config` so concrete types keep their direct
    label lookups.
 
+## Decision 8 (2026-08-20): key identity is an enum
+
+**`IconOptionKey` and `IconOptionGroup` name the closed sets; the registrar
+still assembles the options.** As built, an option key was written down in
+`IconOptionRegistrar` and read somewhere else entirely — a crumb's
+`iconOptionKey()`, `Markup\Type\Html`'s separator, `Post`'s media and
+role-page branches — with nothing linking the two. Seven keys were worse
+than magic strings: `Home`, `Search`, `Error404`, `Archive`, `Custom`,
+`User`, and `NetworkSite` were defined only by each crumb's `getSlug()`
+literal, picked up through the `iconOptionKey()` default, and re-typed by
+hand in the registrar. Renaming either side degraded silently to the
+`fallback` option rather than failing.
+
+Both enums are backed and cover only what this plugin owns. Every method
+taking a key or group takes `IconOptionKey|string` /
+`IconOptionGroup|string` and normalizes on the way in, exactly as
+`IconOption` already did for `Icon|string` — a case for this plugin's, a raw
+string for an extension's or for a key derived from a WordPress object.
+`IconOption::postTypeKey()` and its siblings moved onto `IconOptionKey` as
+`postType()`/`postTypeArchive()`/`taxonomy()`, so one type owns the whole key
+vocabulary: closed cases plus open derivation. `Crumb::FALLBACK_OPTION` is
+gone in favor of `IconOptionKey::Fallback`, and the built-in crumbs listed
+above now name their case outright instead of riding the slug default — which
+survives as the seam a third-party crumb registering under its slug uses
+(`Extension\WooCommerce\Crumb\StorePage`).
+
+**Deliberately not done: moving `label`, `icon`, and `group` into enum match
+arms.** Tempting, since `Icon::label()` and `Support\Endpoint` already do it,
+and it would buy match exhaustiveness. But it fixes nothing about the
+fragility above — the definition site was never the problem — and it costs
+the aligned key/icon/label table in `registerStaticOptions()`, whose docblock
+argument about which options go unlabeled and why has nowhere to live once
+it is split across three methods. It also cannot absorb the conditional
+registration (`network-site` only on multisite). The line drawn instead:
+**enums own identity, `IconOptionRegistrar` owns assembly.** Adding a
+built-in option is a case plus a table row, and the compiler links them.
+
+The editor mirrors this by hand in `utils/icon-options.js` as
+`ICON_OPTION_KEYS`, since PHP enums do not cross the wire. It carries only
+the keys the editor branches on — separator, home, and the page post type
+behind the canvas placeholders — because a mirrored key nothing reads is a
+copy that can rot unnoticed. Derived keys are spelled out whole there rather
+than rebuilt from their parts, keeping the namespacing scheme PHP's alone.
+
 ## Suggested implementation order
 
 1. `IconOption` + `IconOptions` + seeding in `IconServiceProvider`; delete

@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
  * Crumb for a generic "Archives" label. Carries no URL; it acts as a
@@ -28,6 +29,14 @@ final class Archive extends Crumb
 	public function getSlug(): string
 	{
 		return 'archive';
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function iconOptionKey(): IconOptionKey
+	{
+		return IconOptionKey::Archive;
 	}
 
 	/**

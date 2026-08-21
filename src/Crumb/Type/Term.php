@@ -17,7 +17,7 @@ use WP_Term;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Meta\MetaKey;
-use X3P0\Breadcrumbs\Icon\IconOption;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -83,7 +83,7 @@ final class Term extends Crumb
 	 */
 	public function iconOptionKey(): string
 	{
-		return IconOption::taxonomyKey($this->term->taxonomy);
+		return IconOptionKey::taxonomy($this->term->taxonomy);
 	}
 
 	/**

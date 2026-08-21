@@ -18,7 +18,7 @@ use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Meta\MetaKey;
-use X3P0\Breadcrumbs\Icon\IconOption;
+use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -88,13 +88,13 @@ final class Post extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function iconOptionKey(): string
+	public function iconOptionKey(): IconOptionKey|string
 	{
 		return match (true) {
-			'private' === get_post_status($this->post) => 'private-post',
-			post_password_required($this->post)        => 'protected-post',
+			'private' === get_post_status($this->post) => IconOptionKey::PrivatePost,
+			post_password_required($this->post)        => IconOptionKey::ProtectedPost,
 			'attachment' === $this->post->post_type    => $this->mediaOptionKey(),
-			default => IconOption::postTypeKey($this->post->post_type)
+			default => IconOptionKey::postType($this->post->post_type)
 		};
 	}
 
@@ -128,11 +128,11 @@ final class Post extends Crumb
 	protected function fallbackIcon(): string
 	{
 		if ($this->isPrivacyPolicy()) {
-			return $this->context->iconOptions->icon('privacy-policy');
+			return $this->context->iconOptions->icon(IconOptionKey::PrivacyPolicy);
 		}
 
 		if ($this->isPostsPage()) {
-			return $this->context->iconOptions->icon('posts-page');
+			return $this->context->iconOptions->icon(IconOptionKey::PostsPage);
 		}
 
 		return '';
@@ -179,13 +179,13 @@ final class Post extends Crumb
 	 * off `post_mime_type`, so the same rules WordPress applies elsewhere
 	 * decide what counts as an image, an audio file, or a video.
 	 */
-	private function mediaOptionKey(): string
+	private function mediaOptionKey(): IconOptionKey|string
 	{
 		return match (true) {
-			wp_attachment_is('image', $this->post) => 'media-image',
-			wp_attachment_is('audio', $this->post) => 'media-audio',
-			wp_attachment_is('video', $this->post) => 'media-video',
-			default => IconOption::postTypeKey('attachment')
+			wp_attachment_is('image', $this->post) => IconOptionKey::MediaImage,
+			wp_attachment_is('audio', $this->post) => IconOptionKey::MediaAudio,
+			wp_attachment_is('video', $this->post) => IconOptionKey::MediaVideo,
+			default => IconOptionKey::postType('attachment')
 		};
 	}
 }

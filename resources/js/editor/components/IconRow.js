@@ -8,8 +8,8 @@
  */
 
 // Internal dependencies.
-import { IconLibraryModal, IconPreview } from '../../blocks/breadcrumbs/components/ui';
-import { META_KEYS } from '../../blocks/breadcrumbs/utils/meta-keys';
+import { IconLibraryModal, IconPreview } from '../../../blocks/breadcrumbs/components/ui';
+import { META_KEYS } from '../../../blocks/breadcrumbs/utils/meta-keys';
 
 // WordPress dependencies.
 import { __, sprintf } from '@wordpress/i18n';

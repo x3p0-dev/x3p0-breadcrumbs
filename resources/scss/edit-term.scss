@@ -5,9 +5,15 @@
 /// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
 ////
 
+// Import the WordPress variables Sass file. We'll use this to make sure we're
+// using the core UI units and values.
+//
+// @link https://github.com/WordPress/gutenberg/tree/trunk/packages/base-styles
+@use '~@wordpress/base-styles/variables';
+
 // The icon library picker, shared with the block inspector, which also carries
 // the chosen icon's preview swatch.
-@use '../../../blocks/breadcrumbs/scss/icon-library';
+@use '../blocks/breadcrumbs/scss/icon-library';
 
 // The button carries the chosen icon's name, which can run longer than the
 // column it sits in — `Truncate` in `TermIconControl` clamps it to a line and
@@ -17,7 +23,10 @@
 // `Truncate` hides its own overflow and so is already free to shrink past its
 // text, a flex item's automatic minimum size being zero once its overflow isn't
 // visible. The button around it has to be told.
+// The gap is the same unit core puts between the post editor's Status row icon
+// and its label, so the field reads as part of the same UI.
 .x3p0-breadcrumbs-term-icon__toggle.components-button {
+	gap: variables.$grid-unit-05;
 	min-width: 0;
 	max-width: 100%;
 }

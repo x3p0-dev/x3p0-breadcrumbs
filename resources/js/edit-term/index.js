@@ -7,9 +7,6 @@
  * @link      https://github.com/x3p0-dev/x3p0-breadcrumbs
  */
 
-// Import stylesheets.
-import './scss/index.scss';
-
 // Import dependencies.
 import { createRoot } from '@wordpress/element';
 

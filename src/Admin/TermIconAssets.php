@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Admin;
 
 use X3P0\Breadcrumbs\Editor\EditorAssets;
-
-use const X3P0\Breadcrumbs\PLUGIN_DIR;
-use const X3P0\Breadcrumbs\PLUGIN_FILE;
+use X3P0\Breadcrumbs\Packages\Asset\AssetResolver;
 
 /**
  * Loads the script and styles behind {@see TermIconField}, which is the whole
@@ -42,16 +40,32 @@ final class TermIconAssets
 	private const HANDLE = 'x3p0-breadcrumbs-edit-term';
 
 	/**
-	 * Path to the built assets, relative to the plugin folder. The screen
-	 * they belong to is named in the path because the admin is not one
+	 * Path to the built script, relative to the plugin folder. The screen the
+	 * bundle belongs to is named in the file because the admin is not one
 	 * surface: anything the plugin later adds to a different screen is a
-	 * different bundle, and `public/admin/index.js` would have claimed the
-	 * whole of it for this one field.
+	 * different bundle, and `admin.js` would have claimed the whole of it for
+	 * this one field.
 	 *
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	private const ASSET_PATH = 'public/admin/edit-term';
+	private const SCRIPT_PATH = 'public/js/edit-term.js';
+
+	/**
+	 * Path to the built stylesheet, relative to the plugin folder. It is its
+	 * own build entry, so it carries its own `.asset.php` file and answers for
+	 * its own dependencies and version.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const STYLE_PATH = 'public/css/edit-term.css';
+
+	/**
+	 * Accepts the resolver the built files are minted from.
+	 */
+	public function __construct(private readonly AssetResolver $assets)
+	{}
 
 	/**
 	 * Enqueues the script and its styles. Call from a hook that runs within
@@ -60,13 +74,14 @@ final class TermIconAssets
 	 */
 	public function enqueue(): void
 	{
-		$asset = require PLUGIN_DIR . '/' . self::ASSET_PATH . '/index.asset.php';
+		$script = $this->assets->asset(self::SCRIPT_PATH);
+		$style  = $this->assets->asset(self::STYLE_PATH);
 
 		wp_enqueue_script(
 			self::HANDLE,
-			$this->assetUrl('index.js'),
-			$asset['dependencies'],
-			$asset['version'],
+			$script->fileUrl(),
+			$script->dependencies(),
+			$script->version(),
 			true
 		);
 
@@ -78,22 +93,14 @@ final class TermIconAssets
 		// the icon library modal is unusable without them.
 		wp_enqueue_style(
 			self::HANDLE,
-			$this->assetUrl('index.css'),
+			$style->fileUrl(),
 			['wp-components'],
-			$asset['version']
+			$style->version()
 		);
 
 		// The build writes a flipped stylesheet beside the original, which
 		// block registration would have picked up on its own. A hand-enqueued
 		// style has to be told where it is.
 		wp_style_add_data(self::HANDLE, 'rtl', 'replace');
-	}
-
-	/**
-	 * Returns the URL to one of the built assets.
-	 */
-	private function assetUrl(string $file): string
-	{
-		return plugin_dir_url(PLUGIN_FILE) . self::ASSET_PATH . '/' . $file;
 	}
 }

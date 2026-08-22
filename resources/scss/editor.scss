@@ -5,9 +5,15 @@
 /// @link   https://github.com/x3p0-dev/x3p0-breadcrumbs
 ////
 
+// Import the WordPress variables Sass file. We'll use this to make sure we're
+// using the core UI units and values.
+//
+// @link https://github.com/WordPress/gutenberg/tree/trunk/packages/base-styles
+@use '~@wordpress/base-styles/variables';
+
 // The icon library picker, shared with the block inspector, which also carries
 // the chosen icon's preview swatch.
-@use '../../blocks/breadcrumbs/scss/icon-library';
+@use '../blocks/breadcrumbs/scss/icon-library';
 
 // `PluginPostStatusInfo` wraps every fill in a `PanelRow` of its own, whose
 // flex layout, top margin, and 36px floor all sit between the Summary panel's
@@ -33,7 +39,10 @@
 		min-width: 0;
 	}
 
+	// Sets the space between the icon swatch and its name to the same unit
+	// core puts between the Status row's icon and label.
 	&__toggle.components-button {
+		gap: variables.$grid-unit-05;
 		min-width: 0;
 		max-width: 100%;
 	}

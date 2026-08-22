@@ -42,6 +42,7 @@ final class Plugin extends Application
 	protected const PROVIDERS = [
 		AdminServiceProvider::class,
 		AssemblerServiceProvider::class,
+		AssetServiceProvider::class,
 		BreadcrumbsServiceProvider::class,
 		BlockServiceProvider::class,
 		CrumbServiceProvider::class,

@@ -4,8 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc3ec1b417f671559e26afb896ad24be",
+    "content-hash": "5751c3f5904e24fcd4a6bdd3057abfbf",
     "packages": [
+        {
+            "name": "x3p0-dev/x3p0-asset",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/x3p0-dev/x3p0-asset.git",
+                "reference": "618150e7f22ce07b40c903680927cc62b2a2d6e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/x3p0-dev/x3p0-asset/zipball/618150e7f22ce07b40c903680927cc62b2a2d6e9",
+                "reference": "618150e7f22ce07b40c903680927cc62b2a2d6e9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "phpcompatibility/phpcompatibility-wp": "*",
+                "wp-coding-standards/wpcs": "^3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "X3P0\\Asset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Justin Tadlock",
+                    "email": "justintadlock@gmail.com",
+                    "homepage": "https://github.com/justintadlock"
+                }
+            ],
+            "description": "A small, modern asset-resolution library for WordPress plugins and themes.",
+            "keywords": [
+                "assets",
+                "enqueue",
+                "plugin",
+                "theme",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/x3p0-dev/x3p0-asset/issues",
+                "source": "https://github.com/x3p0-dev/x3p0-asset"
+            },
+            "time": "2026-07-09T18:22:31+00:00"
+        },
         {
             "name": "x3p0-dev/x3p0-event",
             "version": "dev-master",
@@ -841,16 +895,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v7.4.15",
+            "version": "v7.4.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "04ba4add636a95ff437af3a5a9499bb1d6c6d4bd"
+                "reference": "53712df8727da1744490202eeb9cb50d4b95419d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/04ba4add636a95ff437af3a5a9499bb1d6c6d4bd",
-                "reference": "04ba4add636a95ff437af3a5a9499bb1d6c6d4bd",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/53712df8727da1744490202eeb9cb50d4b95419d",
+                "reference": "53712df8727da1744490202eeb9cb50d4b95419d",
                 "shasum": ""
             },
             "require": {
@@ -904,7 +958,7 @@
                 "dump"
             ],
             "support": {
-                "source": "https://github.com/symfony/var-dumper/tree/v7.4.15"
+                "source": "https://github.com/symfony/var-dumper/tree/v7.4.17"
             },
             "funding": [
                 {
@@ -924,7 +978,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-21T15:13:06+00:00"
+            "time": "2026-08-21T12:09:28+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -1075,6 +1129,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "x3p0-dev/x3p0-asset": 20,
         "x3p0-dev/x3p0-event": 20,
         "x3p0-dev/x3p0-framework": 20,
         "x3p0-dev/x3p0-prelude": 20,

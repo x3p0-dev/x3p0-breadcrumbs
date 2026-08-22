@@ -15,10 +15,8 @@ namespace X3P0\Breadcrumbs\Editor;
 
 use X3P0\Breadcrumbs\Block\BlockAssets;
 use X3P0\Breadcrumbs\Meta\MetaKey;
+use X3P0\Breadcrumbs\Packages\Asset\AssetResolver;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
-
-use const X3P0\Breadcrumbs\PLUGIN_DIR;
-use const X3P0\Breadcrumbs\PLUGIN_FILE;
 
 /**
  * Loads the plugin's editor UI that isn't the block's own — currently the
@@ -46,12 +44,28 @@ final class EditorAssets implements Bootable
 	private const SCRIPT_GLOBAL = 'x3p0Breadcrumbs';
 
 	/**
-	 * Path to the built editor assets, relative to the plugin folder.
+	 * Path to the built editor script, relative to the plugin folder.
 	 *
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
-	private const ASSET_PATH = 'public/editor';
+	private const SCRIPT_PATH = 'public/js/editor.js';
+
+	/**
+	 * Path to the built editor stylesheet, relative to the plugin folder.
+	 * It is its own build entry, so it carries its own `.asset.php` file and
+	 * answers for its own dependencies and version.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const STYLE_PATH = 'public/css/editor.css';
+
+	/**
+	 * Accepts the resolver the built editor files are minted from.
+	 */
+	public function __construct(private readonly AssetResolver $assets)
+	{}
 
 	/**
 	 * @inheritDoc
@@ -67,17 +81,18 @@ final class EditorAssets implements Bootable
 	 */
 	private function enqueue(): void
 	{
-		if (! $this->isBlockEditorScreen()) {
+		if (! get_current_screen()?->is_block_editor()) {
 			return;
 		}
 
-		$asset = require PLUGIN_DIR . '/' . self::ASSET_PATH . '/index.asset.php';
+		$script = $this->assets->asset(self::SCRIPT_PATH);
+		$style  = $this->assets->asset(self::STYLE_PATH);
 
 		wp_enqueue_script(
 			self::HANDLE,
-			$this->assetUrl('index.js'),
-			$asset['dependencies'],
-			$asset['version'],
+			$script->fileUrl(),
+			$script->dependencies(),
+			$script->version(),
 			true
 		);
 
@@ -100,40 +115,14 @@ final class EditorAssets implements Bootable
 
 		wp_enqueue_style(
 			self::HANDLE,
-			$this->assetUrl('index.css'),
-			[],
-			$asset['version']
+			$style->fileUrl(),
+			$style->dependencies(),
+			$style->version()
 		);
 
 		// The build writes a flipped stylesheet beside the original, which
 		// block registration would have picked up on its own. A hand-enqueued
 		// style has to be told where it is.
 		wp_style_add_data(self::HANDLE, 'rtl', 'replace');
-	}
-
-	/**
-	 * Whether a block editor is being loaded, which is as much as this side can
-	 * usefully say. The `enqueue_block_editor_assets` hook also fires for the
-	 * widget screens, and there is no Summary panel there for the icon row to
-	 * fill.
-	 *
-	 * Which editor it is, and what is being edited in it, is deliberately left
-	 * to the script. A screen is the wrong thing to ask: the post editor and the
-	 * site editor both show the Summary panel, but the site editor answers for
-	 * the whole of itself, so by the time it is editing a page there is nothing
-	 * here left to read. `IconRow` settles it against the post type the editor
-	 * reports instead, which is true in either one.
-	 */
-	private function isBlockEditorScreen(): bool
-	{
-		return (bool) get_current_screen()?->is_block_editor();
-	}
-
-	/**
-	 * Returns the URL to one of the built editor assets.
-	 */
-	private function assetUrl(string $file): string
-	{
-		return plugin_dir_url(PLUGIN_FILE) . self::ASSET_PATH . '/' . $file;
 	}
 }

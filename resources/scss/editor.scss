@@ -39,10 +39,13 @@
 		min-width: 0;
 	}
 
-	// Sets the space between the icon swatch and its name to the same unit
-	// core puts between the Status row's icon and label.
+	// Sets the space between the icon swatch and its name — and the space
+	// above and below both — to the same unit core puts around the Status
+	// row's icon and label.
 	&__toggle.components-button {
 		gap: variables.$grid-unit-05;
+		padding-top: variables.$grid-unit-05;
+		padding-bottom: variables.$grid-unit-05;
 		min-width: 0;
 		max-width: 100%;
 	}

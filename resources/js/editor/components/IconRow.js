@@ -108,8 +108,12 @@ export const IconRow = () => {
 					{__('Icon', 'x3p0-breadcrumbs')}
 				</div>
 				<div className="editor-post-panel__row-control">
+					{/* `Button` only adds `has-text` when it has both an
+					    icon and children, so a post with no icon yet would
+					    lose the text padding that every other Summary row's
+					    button has. The class is set outright instead. */}
 					<Button
-						className="x3p0-breadcrumbs-post-icon__toggle"
+						className="x3p0-breadcrumbs-post-icon__toggle has-text"
 						variant="tertiary"
 						size="compact"
 						icon={icon?.content && <IconPreview content={icon.content}/>}

@@ -28,11 +28,11 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
  * taxonomy as a whole.
  *
  * The field is a mount point rather than markup: a hidden input and the icon
- * library picker are rendered into it by the script {@see TermIconAssets} loads, so
- * a term is picked from the same library, in the same modal, as everything else
- * in the plugin. The value still rides out on the form's own post, which leaves
- * WordPress's save path in charge and keeps this from writing terms behind the
- * screen's back.
+ * library picker are rendered into it by the script {@see TermIconAssets} loads,
+ * so a term is picked from the same library, in the same modal, as everything
+ * else in the plugin. The value still rides out on the form's own post, which
+ * leaves WordPress's save path in charge and keeps this from writing terms
+ * behind the screen's back.
  */
 final class TermIconField implements Bootable
 {
@@ -168,9 +168,9 @@ final class TermIconField implements Bootable
 
 	/**
 	 * Renders the control: the nonce the save path checks for, and an empty
-	 * node carrying everything the script needs to render into it — the ID the
-	 * label points at, the name the value posts under, and the icon already
-	 * stored, if any.
+	 * node carrying everything the script needs to render into it — the ID
+	 * the label points at, the name the value posts under, and the icon
+	 * already stored, if any.
 	 */
 	private function renderControl(string $value): void
 	{
@@ -200,18 +200,18 @@ final class TermIconField implements Bootable
 	/**
 	 * Stores the posted icon on the term.
 	 *
-	 * Everything above the write is here to establish that this term, in this
-	 * request, is the one the form was submitted for. The hooks it runs on are
-	 * fired by `wp_insert_term()` and `wp_update_term()`, which any code may
-	 * call at any time, so a request carrying the field could otherwise write
-	 * its icon onto some unrelated term created alongside it — and a request
-	 * carrying no field at all, a REST update or a WP-CLI run, would read
-	 * `$_POST` as an instruction to blank the icon out.
+	 * Everything above the write is here to establish that this term, in
+	 * this request, is the one the form was submitted for. The hooks it
+	 * runs on are fired by `wp_insert_term()` and `wp_update_term()`, which
+	 * any code may call at any time, so a request carrying the field could
+	 * otherwise write its icon onto some unrelated term created alongside
+	 * it — and a request carrying no field at all, a REST update or a
+	 * WP-CLI run, would read `$_POST` as an instruction reset the icon.
 	 *
-	 * The value is passed on as posted. Whether it names a registered icon is
-	 * settled by the sanitize callback {@see MetaRegistrar} registered with the
-	 * meta key itself, which `update_term_meta()` runs on the way in, so this
-	 * has no whitelist of its own to fall out of step with.
+	 * The value is passed on as posted. Whether it names a registered icon
+	 * is settled by the sanitize callback {@see MetaRegistrar} registered
+	 * with the meta key itself, which `update_term_meta()` runs on the way
+	 * in, so this has no whitelist of its own to fall out of step with.
 	 */
 	private function save(int $termId, int $termTaxonomyId, string $taxonomy): void
 	{
@@ -223,11 +223,12 @@ final class TermIconField implements Bootable
 			return;
 		}
 
-		// Both forms name themselves in `action` and carry the taxonomy they
-		// belong to; the edit form also names the term it is editing, which
-		// settles which term this is outright. The add form has no term to
-		// name — there is none until the moment this hook fires — so its own
-		// submission is as far as the question can be taken there.
+		// Both forms name themselves in `action` and carry the taxonomy
+		// they belong to; the edit form also names the term it is
+		// editing, which settles which term this is outright. The add
+		// form has no term to name — there is none until the moment
+		// this hook fires — so its own submission is as far as the
+		// question can be taken there.
 		$action = isset($_POST['action'])
 			? sanitize_key(wp_unslash($_POST['action']))
 			: '';

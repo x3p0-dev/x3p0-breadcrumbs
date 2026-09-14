@@ -19,9 +19,9 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
  * the ones this plugin specifically references, shared by the `Assembler`
  * (which decides trail structure) and `Crumb` (which decides which icon option
  * it resolves) `Endpoint` classes and by the extension registering those
- * options, so the slugs live in exactly one place. Not every
- * WooCommerce endpoint needs a case here — only the ones this plugin's code
- * branches on or has an opinion about.
+ * options, so the slugs live in exactly one place. Not every WooCommerce
+ * endpoint needs a case here — only the ones this plugin's code branches on or
+ * has an opinion about.
  */
 enum Endpoint: string
 {
@@ -34,14 +34,14 @@ enum Endpoint: string
 	case LostPassword   = 'lost-password';
 	case OrderPay       = 'order-pay';
 	case OrderReceived  = 'order-received';
-	case Wishlist      = 'wishlist';
+	case Wishlist       = 'wishlist';
 
 	/**
 	 * Returns the icon option key for this endpoint. Every endpoint crumb
-	 * shares the one `woocommerce-endpoint` slug, which is all an unrecognized
-	 * endpoint has to resolve an icon from; the endpoints named here get a key
-	 * apiece under it, so each carries its own registered default rather than
-	 * the crumb hardcoding one.
+	 * shares the one `woocommerce-endpoint` slug, which is all an
+	 * unrecognized endpoint has to resolve an icon from; the endpoints
+	 * named here get a key apiece under it, so each carries its own
+	 * registered default rather than the crumb hardcoding one.
 	 */
 	public function optionKey(): string
 	{
@@ -55,8 +55,8 @@ enum Endpoint: string
 	 * same name in the block editor that their customers read on the page.
 	 * The endpoint crumb itself takes its label from WooCommerce at render
 	 * time — a store may have retitled its endpoints — but that needs the
-	 * query for the view being rendered, which there is none of when the icon
-	 * options are registered.
+	 * query for the view being rendered, which there is none of when the
+	 * icon options are registered.
 	 */
 	public function label(): string
 	{

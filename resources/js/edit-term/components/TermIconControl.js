@@ -111,7 +111,7 @@ export const TermIconControl = ({id, name, value: initialValue}) => {
 				onClick={() => setLibraryOpen(true)}
 				aria-label={value
 					? sprintf(
-						// translators: %s: Name of the term's current breadcrumb icon.
+						// Translators: %s: Name of the current breadcrumb icon.
 						__('Change icon: %s', 'x3p0-breadcrumbs'),
 						label
 					)

@@ -83,17 +83,14 @@ final class WooCommerce extends Extension
 	}
 
 	/**
-	 * Registers the icon options for the store, in the extension's own group so
-	 * a site owner finds them together. Two kinds of thing end up there.
+	 * Registers the icon options for the store, in the extension's own group
+	 * so a site owner finds them together. Two kinds of thing end up there.
 	 *
 	 * The product post type and its taxonomies are already registered by the
-	 * time this runs — they are an ordinary public post type and taxonomies —
-	 * so they are amended with `update()`, which swaps the icon and moves them
-	 * into the group while leaving the label and slug the registrar derived
-	 * from each object in place. They belong under WooCommerce rather than
-	 * among the generic post types and taxonomies: what a store owner thinks
-	 * of as a category of their catalog isn't the same thing as a blog
-	 * category, even though WordPress models both the same way.
+	 * time this runs, so they are amended with `update()`, which swaps the
+	 * icon and moves them into the group while leaving the label and slug
+	 * the registrar derived from each object in place. They belong under
+	 * WooCommerce rather than among the generic post types and taxonomies.
 	 *
 	 * The extension's own crumb types have no such counterpart and are
 	 * registered outright. Every key is a crumb slug from this extension,
@@ -113,13 +110,13 @@ final class WooCommerce extends Extension
 		$event->options->update(IconOptionKey::taxonomy('pa_color'),      icon: Icon::Color);
 		$event->options->update(IconOptionKey::taxonomy('pa_size'),       icon: Icon::Straighten);
 
-		// The shop *is* the product post type archive — the `Shop` crumb
-		// decorates that crumb wherever it appears — so the archive's option
-		// is the shop's option, and there is no separate one for it. The name
-		// follows the crumb's: with a shop page configured, both read as that
-		// page's title; without one, the crumb falls back to the post type
-		// archive's own label, so the option is left to do the same. Passing
-		// null leaves it alone.
+		// The shop *is* the product post type archive — the `Shop`
+		// crumb decorates that crumb wherever it appears — so the
+		// archive's option is the shop's option. The name follows the
+		// crumb's: with a shop page configured, both read as that
+		// page's title; without one, the crumb falls back to the post
+		// type archive's label, so the option is left to do the same.
+		// Passing null leaves it alone.
 		$event->options->update(
 			IconOptionKey::postTypeArchive('product'),
 			icon: 'core/store',
@@ -130,9 +127,8 @@ final class WooCommerce extends Extension
 
 		// The store pages are ordinary pages the site owner picked under
 		// WooCommerce's settings, so their icons belong to the pages
-		// themselves — set on each page, the way any other page's is — rather
-		// than to a control here that names four of them out of every page on
-		// the site. These carry their defaults and stay out of the editor.
+		// themselves rather than to a control here. These carry their
+		// defaults and stay out of the editor.
 		$event->options->add(
 			new IconOption('woocommerce-cart',      'core/cart',    group: self::ICON_GROUP),
 			new IconOption('woocommerce-checkout',  'core/payment', group: self::ICON_GROUP),
@@ -194,12 +190,12 @@ final class WooCommerce extends Extension
 	}
 
 	/**
-	 * Registers a labeled option per endpoint the plugin names, keyed under the
-	 * shared `woocommerce-endpoint` option so each carries its own default
-	 * without the crumb hardcoding one and can be set on its own in the block
-	 * editor. Endpoints WooCommerce or a third party adds that aren't named in
-	 * {@see EndpointSlug} have no key of their own and resolve the shared
-	 * option instead.
+	 * Registers a labeled option per endpoint the plugin names, keyed under
+	 * the shared `woocommerce-endpoint` option so each carries its own
+	 * default without the crumb hardcoding one and can be set on its own in
+	 * the block editor. Endpoints WooCommerce or a third party adds that
+	 * aren't named in {@see EndpointSlug} have no key of their own and
+	 * resolve the shared option instead.
 	 */
 	private function addEndpointIconOptions(IconOptionsRegistered $event): void
 	{
@@ -218,9 +214,9 @@ final class WooCommerce extends Extension
 	 * under the shared `woocommerce-orderby` option on the same terms as the
 	 * endpoints above. The sorting's own name is qualified for the block
 	 * editor: "Latest" and "Default" say nothing on their own in a list of
-	 * icon settings, where they name the crumb that says a product listing is
-	 * sorted that way. Sorting options a third party adds have no key of their
-	 * own and resolve the shared option instead.
+	 * icon settings, where they name the crumb that says a product listing
+	 * is sorted that way. Sorting options a third party adds have no key of
+	 * their own and resolve the shared option instead.
 	 */
 	private function addCatalogOrderIconOptions(IconOptionsRegistered $event): void
 	{

@@ -27,9 +27,9 @@ final class AdminServiceProvider extends ServiceProvider
 {
 	/**
 	 * Boots `TermIconField`, which decides on its own whether the screen it
-	 * landed on is one of the taxonomy screens. `TermIconAssets` is left to the
-	 * container to autowire, since the field is the only thing that asks for
-	 * it and only once it has decided to render.
+	 * landed on is one of the taxonomy screens. `TermIconAssets` is left to
+	 * the container to autowire, since the field is the only thing that asks
+	 * for it and only once it has decided to render.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.

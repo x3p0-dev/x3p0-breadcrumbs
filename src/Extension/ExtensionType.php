@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension;
 
 use X3P0\Breadcrumbs\Contracts\EnumDefinition;
-use X3P0\Breadcrumbs\Extension\SenseiLms\SenseiLms;
 use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
 
 /**
@@ -26,7 +25,6 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\WooCommerce;
  */
 enum ExtensionType implements EnumDefinition
 {
-	case SenseiLms;
 	case WooCommerce;
 
 	/**
@@ -36,7 +34,6 @@ enum ExtensionType implements EnumDefinition
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return match ($this) {
-			self::SenseiLms   => SenseiLms::class,
 			self::WooCommerce => WooCommerce::class
 		};
 	}
@@ -48,7 +45,6 @@ enum ExtensionType implements EnumDefinition
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return match ($this) {
-			self::SenseiLms   => function_exists('Sensei'),
 			self::WooCommerce => class_exists('WooCommerce')
 		};
 	}

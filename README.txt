@@ -10,7 +10,7 @@ Stable tag: 5.0.0
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add breadcrumb navigation to any site. Auto-detects site structure, includes built-in WooCommerce & Sensei LMS support, and improves SEO.
+Add breadcrumb navigation to any site. Auto-detects site structure, includes built-in WooCommerce support, and improves SEO.
 
 == Description ==
 
@@ -29,7 +29,7 @@ Core's Breadcrumbs block covers the basics: a text separator, a few visibility t
 - 🧩 **Smarter post relationships** – Choose the taxonomy per post type, map rewrite tags (`%category%`, `%author%`, dates) automatically
 - 🌐 **Multisite network crumb** – Optional link back to the network home
 - 🎯 **Full control of the current page** – Show it, hide it, or link it
-- 🛒 **Built-in WooCommerce and Sensei LMS support** – See "Built-in Plugin Support" below
+- 🛒 **Built-in WooCommerce support** – See "Built-in Plugin Support" below
 - 🔄 **Switch from another breadcrumbs block** – One-click transform that carries your settings over — see "Switch From Another Breadcrumbs Plugin" below
 
 **For developers:**
@@ -86,12 +86,6 @@ Detected and wired up automatically — no configuration required.
 - Cart, checkout, and My Account, rooted at the shop
 - Account/checkout endpoints (Orders, View Order, Order Received, Edit Address, Payment Methods, etc.) — View Order nests under Orders, Edit Address adds a Billing/Shipping crumb
 
-**🎓 Sensei LMS**
-
-- Full Courses → Course → Module → Lesson → Quiz trail, built from Sensei's post meta and module taxonomy
-- Course archive relabeled to your configured Courses page; Quiz crumbs no longer duplicate the parent lesson's title
-- Course Results and Course Completed pages rooted at their course; Learner Profile rooted at Home
-
 = 🔄 Switch From Another Breadcrumbs Plugin =
 
 Select the block in the editor, use "Transform to," and pick X3P0 Breadcrumbs — then save the template like any other edit. Supported source blocks:
@@ -121,7 +115,7 @@ Shared settings (alignment, spacing, color) carry over wherever the source block
 - Custom assembler classes for conditional breadcrumb display
 - Custom crumb classes for specialized breadcrumb items
 - Filter hooks for modifying which breadcrumbs are shown
-- The built-in WooCommerce and Sensei LMS integrations are ordinary extensions built on this same system — a reference for adding support for other plugins
+- The built-in WooCommerce integration is an ordinary extension built on this same system — a reference for adding support for other plugins
 
 = ⚙️ How It Works =
 

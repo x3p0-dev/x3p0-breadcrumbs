@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Query;
 
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
+
 /**
  * Builds the trail for the Cart page.
  */
@@ -23,6 +25,6 @@ final class Cart extends StorePage
 	 */
 	protected function pageId(): int
 	{
-		return wc_get_page_id('cart');
+		return StorePageSlug::Cart->pageId();
 	}
 }

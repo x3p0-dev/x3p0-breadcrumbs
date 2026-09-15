@@ -15,6 +15,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbContext;
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
 
 /**
  * Crumb representing one of the WooCommerce store pages — the cart, checkout,
@@ -33,23 +34,27 @@ final class StorePage extends Crumb
 {
 	/**
 	 * Stores the crumb being decorated, which the label and URL delegate to,
-	 * and the store page's key as `wc_get_page_id()` accepts it (`cart`,
-	 * `checkout`, or `myaccount`).
+	 * and the store page this one stands for.
 	 */
 	public function __construct(
 		CrumbContext $context,
 		private readonly Crumb $decoratedCrumb,
-		private readonly string $page
+		private readonly StorePageSlug $page
 	) {
 		parent::__construct(context: $context);
 	}
 
 	/**
+	 * Takes the slug from the store page's own icon option key, rather than
+	 * the other way around: every store page is its own option, so the two
+	 * are one string, and sourcing it here is what lets `iconOptionKey()`
+	 * stay at its default.
+	 *
 	 * @inheritDoc
 	 */
 	public function getSlug(): string
 	{
-		return 'woocommerce-' . $this->page;
+		return $this->page->optionKey();
 	}
 
 	/**

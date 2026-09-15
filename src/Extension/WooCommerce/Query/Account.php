@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Query;
 
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
+
 /**
  * Builds the trail for the My Account page and its endpoints (orders,
  * view-order, downloads, edit-address, payment-methods, and the rest), which
@@ -27,6 +29,6 @@ final class Account extends StorePage
 	 */
 	protected function pageId(): int
 	{
-		return wc_get_page_id('myaccount');
+		return StorePageSlug::MyAccount->pageId();
 	}
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Query;
 
+use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
+
 /**
  * Builds the trail for the Checkout page and its endpoints — pay for order
  * (order-pay) and order received (order-received) — which WooCommerce serves as
@@ -26,6 +28,6 @@ final class Checkout extends StorePage
 	 */
 	protected function pageId(): int
 	{
-		return wc_get_page_id('checkout');
+		return StorePageSlug::Checkout->pageId();
 	}
 }

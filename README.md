@@ -507,11 +507,12 @@ add_action('x3p0/breadcrumbs/register', function ($plugin) {
 
 #### The Extension System
 
-The event examples above are the raw seams. When you're integrating an entire platform or plugin — routing several pages through custom queries *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is exactly how the plugin's own built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) and [Sensei LMS](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/SenseiLms) integrations work, and third parties use the same mechanism with no core edits.
+The event examples above are the raw seams. When you're integrating an entire platform or plugin — routing several pages through custom queries *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is how the plugin's own built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) integration works, and third parties use the same mechanism with no core edits.
 
-An extension extends `X3P0\Breadcrumbs\Extension\Extension`, which implements the event package's `ListenerSubscriber` contract, and defines one method:
+An extension extends `X3P0\Breadcrumbs\Extension\Extension`, which implements the event package's `ListenerSubscriber` contract, and defines up to two methods:
 
-- **`subscribeTo(Listenable $registry): void`** — registers the extension's listeners on the registry it is given, typically a handful of `$registry->listenTo(...)` calls. This is how you subscribe to `QueryTypeResolving`, `CrumbsBuilt`, and `MarkupRendering` without reaching for the global action bridges.
+- **`subscribeTo(Listenable $registry): void`** — registers the extension's listeners on the registry it is given, typically a handful of `$registry->listenTo(...)` or `$registry->listen(...)` calls. This is how you subscribe to `QueryTypeResolving`, `CrumbsBuilt`, and `MarkupRendering` without reaching for the global action bridges.
+- **`boot(): void`** — optional, and a no-op by default. Runs once, before the extension's listeners are subscribed, for wiring that isn't an event subscription — hooking WordPress actions and the like.
 
 There's no `isActive()` or `register()` on the base class — an extension is treated as active the moment it's tagged (see below), so the platform guard (checking for a class or function the target platform defines) belongs in the code doing the tagging. And there's nothing to register: any custom `Query`, `Assembler`, or `Crumb` types the extension needs are just classes dispatched by their `::class` name, exactly as described above.
 
@@ -556,6 +557,21 @@ final class MyExtension extends Extension
 }
 ```
 
+For anything larger than a couple of small handlers, register a listener by class name instead of by method. The registry builds it through the container the first time its event actually fires:
+
+```php
+final class MyExtension extends Extension
+{
+	public function subscribeTo(Listenable $registry): void
+	{
+		$registry->listen(QueryTypeResolving::class, RerouteThingQueries::class);
+		$registry->listen(CrumbsBuilt::class, RelabelThingCrumbs::class);
+	}
+}
+```
+
+Each listener is then a class of its own with a single `__invoke()` method taking the event, and may declare its own constructor dependencies for the container to resolve. `listen()` names the event explicitly, since a class name carries no signature to read it from — in exchange, `subscribeTo()` reads as a manifest of everything the extension does, and each behavior can be swapped, removed, or reasoned about on its own. The built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) integration is written this way.
+
 To activate it, guard on the target platform, bind the extension in the container, and tag it with `Extension::TAG` on the `x3p0/breadcrumbs/register` action. Tagged extensions are subscribed automatically, right alongside the built-ins:
 
 ```php
@@ -571,7 +587,7 @@ add_action('x3p0/breadcrumbs/register', function ($plugin) {
 });
 ```
 
-That's the whole lifecycle in one class: the platform guard gating the single tag call, and the event listeners doing the real work — opted into the same boot sequence the plugin uses for its own WooCommerce and Sensei LMS integrations.
+That's the whole lifecycle in one class: the platform guard gating the single tag call, and the event listeners doing the real work — opted into the same boot sequence the plugin uses for its own WooCommerce integration.
 
 ## License
 

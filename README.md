@@ -507,7 +507,7 @@ add_action('x3p0/breadcrumbs/register', function ($plugin) {
 
 #### The Extension System
 
-The event examples above are the raw seams. When you're integrating an entire platform or plugin — routing several pages through custom queries *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is how the plugin's own built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) integration works, and third parties use the same mechanism with no core edits.
+The event examples above are the raw seams. When you're integrating an entire platform or plugin — routing several pages through custom queries *and* wiring up listeners — the plugin offers a tidier way to bundle it all into a single class: an **extension**. This is how the plugin's own built-in [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) integration works (which requires WooCommerce 11.1 or later), and third parties use the same mechanism with no core edits.
 
 An extension extends `X3P0\Breadcrumbs\Extension\Extension`, which implements the event package's `ListenerSubscriber` contract, and defines up to two methods:
 

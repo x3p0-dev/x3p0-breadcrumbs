@@ -39,7 +39,7 @@ final class RelabelStoreCrumbs
 	/**
 	 * When the shop page is the site's front page, removes the product post
 	 * type archive crumb entirely, since the home crumb already represents
-	 * it. Otherwise replaces that crumb with the shop crumb wherever it
+	 * it. Otherwise, replaces that crumb with the shop crumb wherever it
 	 * appears, so the archive reads as the shop.
 	 */
 	public function __invoke(CrumbsBuilt $event): void
@@ -65,10 +65,10 @@ final class RelabelStoreCrumbs
 
 	/**
 	 * Replaces the store page crumbs — the cart, checkout, My Account, and
-	 * terms pages — with the store page crumb, matched by post ID, since each
+	 * terms pages — with the store page crumb, matched by post ID. Each
 	 * is just an ordinary `page`-type post the site owner configured under
-	 * WooCommerce's settings and nothing about the post itself says which one
-	 * it is.
+	 * WooCommerce's settings and nothing about the post itself says which
+	 * one it is.
 	 */
 	private function replaceStorePages(CrumbsBuilt $event): void
 	{

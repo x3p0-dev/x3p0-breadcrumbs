@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
 
+use Automattic\WooCommerce\Enums\CatalogSortOrder;
+
 /**
  * The catalog sorting options WooCommerce offers on the shop, product taxonomy
  * archives, and product searches, each named by the `orderby` request var. This
@@ -20,26 +22,38 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
  * shared by the `CatalogOrder` crumb and the extension registering their icon
  * options, in the same way {@see Endpoint} is for the account endpoints.
  *
+ * The request values are taken from WooCommerce's own `CatalogSortOrder` rather
+ * than copied here, which is the reason this enum is not backed by them: a case
+ * value must be evaluatable while the enum's own file is being compiled, and a
+ * class reached through WooCommerce's autoloader has not been declared by then,
+ * so backing the cases with those constants fatals on PHP 8.1, this plugin's
+ * minimum. A method body is resolved at call time instead, which is why the
+ * values live in {@see self::orderby()}. The one cost is having to hand-roll
+ * {@see self::fromRequest()}, which a backed enum would get from `tryFrom()`.
+ *
+ * `relevance` is the exception, written out because WooCommerce has no constant
+ * for it: `CatalogSortOrder` names the values its
+ * `woocommerce_default_catalog_orderby` option accepts, and relevance is not
+ * one, being offered on searches rather than as a store's default ordering.
+ *
  * WooCommerce builds the option labels inline in `woocommerce_catalog_ordering()`
  * and echoes them straight into a `<select>`, with no way to ask for them: its
  * own Catalog Sorting block output-buffers that function and rewrites the HTML.
  * Buffering it here is not an option either, since it bails unless the shop
  * loop props are set up, and merely reading them sets them — which would fix
  * the wrong values in place for the real loop rendered later. So the labels are
- * recreated below and run back through WooCommerce's own filter, the same way
- * {@see \X3P0\Breadcrumbs\Extension\WooCommerce\Crumb\Address} recreates the
- * address titles, so a plugin that renames, adds, or removes a sorting option
- * is still honored.
+ * recreated below and run back through WooCommerce's own filter so a plugin
+ * that renames, adds, or removes a sorting option is still honored.
  */
-enum CatalogOrder: string
+enum CatalogOrder
 {
-	case MenuOrder  = 'menu_order';
-	case Popularity = 'popularity';
-	case Rating     = 'rating';
-	case Date       = 'date';
-	case Price      = 'price';
-	case PriceDesc  = 'price-desc';
-	case Relevance  = 'relevance';
+	case MenuOrder;
+	case Popularity;
+	case Rating;
+	case Date;
+	case Price;
+	case PriceDesc;
+	case Relevance;
 
 	/**
 	 * Returns the sorting option the current request asks for, or an empty
@@ -70,6 +84,23 @@ enum CatalogOrder: string
 	}
 
 	/**
+	 * Returns the case a request value names, or `null` when it names none
+	 * of them — a sorting option registered by a third party, most likely.
+	 * This is what `tryFrom()` would do for a backed enum; see the class
+	 * doc for why this one is not backed.
+	 */
+	public static function fromRequest(string $orderby): ?self
+	{
+		foreach (self::cases() as $case) {
+			if ($case->orderby() === $orderby) {
+				return $case;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns the sorting options as a map of request value to label, run
 	 * through WooCommerce's own filter so a plugin that renames, adds, or
 	 * removes an option is honored here too. An option missing from the map
@@ -83,11 +114,29 @@ enum CatalogOrder: string
 		$labels = [];
 
 		foreach (self::cases() as $case) {
-			$labels[$case->value] = $case->label();
+			$labels[$case->orderby()] = $case->label();
 		}
 
 		// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
 		return apply_filters('woocommerce_catalog_orderby', $labels);
+	}
+
+	/**
+	 * Returns the `orderby` request value that names this option, taken
+	 * from WooCommerce wherever it has a constant for it.
+	 */
+	public function orderby(): string
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return match ($this) {
+			self::MenuOrder  => CatalogSortOrder::MENU_ORDER,
+			self::Popularity => CatalogSortOrder::POPULARITY,
+			self::Rating     => CatalogSortOrder::RATING,
+			self::Date       => CatalogSortOrder::DATE,
+			self::Price      => CatalogSortOrder::PRICE,
+			self::PriceDesc  => CatalogSortOrder::PRICE_DESC,
+			self::Relevance  => 'relevance'
+		};
 	}
 
 	/**
@@ -118,7 +167,7 @@ enum CatalogOrder: string
 	public function optionKey(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
-		return 'woocommerce-orderby:' . $this->value;
+		return 'woocommerce-orderby:' . $this->orderby();
 	}
 
 	/**

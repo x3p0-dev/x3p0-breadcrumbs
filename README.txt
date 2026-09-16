@@ -80,7 +80,7 @@ Add this to `header.php` or any template file where you want breadcrumbs to appe
 
 Detected and wired up automatically — no configuration required.
 
-**🛒 WooCommerce**
+**🛒 WooCommerce** (requires WooCommerce 11.1 or later)
 
 - Shop, products, and product category/tag archives — the product archive crumb is relabeled to your configured shop page
 - Cart, checkout, and My Account, rooted at the shop

@@ -39,13 +39,23 @@ enum ExtensionType implements EnumDefinition
 	}
 
 	/**
-	 * Returns whether this extension case is active.
+	 * Returns whether this extension case is active: the platform is present
+	 * and is a version the extension supports. Note that the two `WooCommerce`
+	 * names below are different classes — `class_exists('WooCommerce')` tests
+	 * for WooCommerce's own global class, while `WooCommerce::MIN_VERSION`
+	 * is the constant on this plugin's extension, imported above.
+	 *
+	 * A platform too old to support is treated exactly as an absent one, so
+	 * nothing is bound and no part of the extension runs against an API it
+	 * was not written for.
 	 */
 	public function isActive(): bool
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return match ($this) {
 			self::WooCommerce => class_exists('WooCommerce')
+				&& defined('WC_VERSION')
+				&& version_compare(WC_VERSION, WooCommerce::MIN_VERSION, '>=')
 		};
 	}
 

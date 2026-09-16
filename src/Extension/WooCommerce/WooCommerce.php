@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce;
 
+use Automattic\WooCommerce\Utilities\FeaturesUtil;
 use X3P0\Breadcrumbs\Crumb\Event\CrumbsBuilt;
 use X3P0\Breadcrumbs\Extension\Extension;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\AddCatalogOrderCrumb;
@@ -22,6 +23,8 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\RerouteStoreQueries;
 use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
+
+use const X3P0\Breadcrumbs\PLUGIN_FILE;
 
 /**
  * Built-in WooCommerce integration. The base queries already build correct
@@ -40,6 +43,16 @@ use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
  */
 final class WooCommerce extends Extension
 {
+	/**
+	 * The lowest WooCommerce version this extension supports, checked by
+	 * {@see \X3P0\Breadcrumbs\Extension\ExtensionType::isActive()} before
+	 * any of it is bound.
+	 *
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	public const MIN_VERSION = '11.1.0';
+
 	/**
 	 * @inheritDoc
 	 */

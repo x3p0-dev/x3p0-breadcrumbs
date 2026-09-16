@@ -47,7 +47,7 @@ final class AddCatalogOrderCrumb
 
 		// The default sorting is what the listing already shows without
 		// an `orderby` var at all, so it is not a step in the trail.
-		if ('' === $orderby || CatalogOrderSlug::MenuOrder->value === $orderby) {
+		if ('' === $orderby || CatalogOrderSlug::MenuOrder->orderby() === $orderby) {
 			return;
 		}
 
@@ -69,10 +69,6 @@ final class AddCatalogOrderCrumb
 			static fn (Crumb $item) => $item instanceof PagedArchive
 		);
 
-		if ($paged) {
-			$event->crumbs->insertBefore($paged, $crumb);
-		} else {
-			$event->crumbs->push($crumb);
-		}
+		$paged ? $event->crumbs->insertBefore($paged, $crumb) : $event->crumbs->push($crumb);
 	}
 }

@@ -80,7 +80,7 @@ final class Custom extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getExplicitIcon(): string
+	public function getIcon(): string
 	{
 		return $this->icon;
 	}

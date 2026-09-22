@@ -56,8 +56,7 @@ abstract class Crumb
 	}
 
 	/**
-	 * Returns the key of the icon option this crumb's icon resolves through —
-	 * the lookup key for both a site-owner override and a registered default.
+	 * Returns the key of the icon option tied to this crumb.
 	 */
 	public function getIconOptionKey(): IconOptionKey|string
 	{
@@ -65,12 +64,11 @@ abstract class Crumb
 	}
 
 	/**
-	 * Returns an icon pinned to this specific crumb — a choice the site
-	 * owner made, which outranks the configured icon option (e.g., `Post`
-	 * returns the icon stored in post meta). Empty for most types, which
-	 * have no such per-instance choice to read.
+	 * Returns an explicit icon for this specific crumb, such as a choice
+	 * the site owner made (e.g., `Post` returns the icon stored in post
+	 * meta). The icon must be registered via the Icon Registration API.
 	 */
-	public function getExplicitIcon(): string
+	public function getIcon(): string
 	{
 		return '';
 	}

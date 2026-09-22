@@ -81,8 +81,8 @@ final class StorePage extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getExplicitIcon(): string
+	public function getIcon(): string
 	{
-		return $this->decoratedCrumb->getExplicitIcon();
+		return $this->decoratedCrumb->getIcon();
 	}
 }

@@ -24,8 +24,8 @@ use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 /**
  * Adds a breadcrumb icon field to the taxonomy screens' add and edit forms, and
  * writes what it collects to {@see MetaKey::Icon} on the term — the value
- * {@see Term} reads as its explicit icon, outranking the icon configured for the
- * taxonomy as a whole.
+ * {@see Term} reads as the icon pinned to that term, outranking the icon
+ * configured for the taxonomy as a whole.
  *
  * The field is a mount point rather than markup: a hidden input and the icon
  * library picker are rendered into it by the script {@see TermIconAssets} loads,

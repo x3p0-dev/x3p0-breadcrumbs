@@ -93,7 +93,7 @@ final class Term extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getExplicitIcon(): string
+	public function getIcon(): string
 	{
 		return (string) get_term_meta($this->term->term_id, MetaKey::Icon->value, true);
 	}

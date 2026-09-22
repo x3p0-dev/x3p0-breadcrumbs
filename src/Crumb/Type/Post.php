@@ -86,7 +86,7 @@ final class Post extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getExplicitIcon(): string
+	public function getIcon(): string
 	{
 		return (string) get_post_meta($this->post->ID, MetaKey::Icon->value, true);
 	}

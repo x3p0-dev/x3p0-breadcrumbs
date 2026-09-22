@@ -197,7 +197,7 @@ abstract class Markup
 	 */
 	protected function crumbIcon(Crumb $crumb): string
 	{
-		return $crumb->getExplicitIcon() ?: $this->iconResolver->resolve($crumb->getIconOptionKey());
+		return $crumb->getIcon() ?: $this->iconResolver->resolve($crumb->getIconOptionKey());
 	}
 
 	/**

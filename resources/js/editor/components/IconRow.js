@@ -32,7 +32,7 @@ import { useState } from '@wordpress/element';
  * by hand — two class names and an `HStack`.
  *
  * The value is the post's own icon meta, which `Crumb\Type\Post` reads as its
- * `getExplicitIcon()` and so outranks every icon option the site owner configured
+ * `getIcon()` and so outranks every icon option the site owner configured
  * for the post type. That is what makes this an editorial choice about one post
  * rather than a setting, and why the row previews nothing when the meta is
  * empty: the icon that would render instead belongs to the post type, and

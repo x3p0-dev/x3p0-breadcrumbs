@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
-use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 use const X3P0\Breadcrumbs\PLUGIN_DIR;

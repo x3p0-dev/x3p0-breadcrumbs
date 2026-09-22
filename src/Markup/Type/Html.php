@@ -18,12 +18,12 @@ use X3P0\Breadcrumbs\Crumb\CrumbCollection;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Icon\IconOptionResolver;
 use X3P0\Breadcrumbs\Icon\IconRenderer;
-use X3P0\Breadcrumbs\Markup\IconVisibility;
-use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\Markup;
 use X3P0\Breadcrumbs\Markup\MarkupBlockOption;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupType;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**

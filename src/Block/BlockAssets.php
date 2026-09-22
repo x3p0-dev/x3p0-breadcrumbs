@@ -17,9 +17,9 @@ use X3P0\Breadcrumbs\Icon\IconOptionGroupKey;
 use X3P0\Breadcrumbs\Icon\IconOptionGroupRegistry;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
-use X3P0\Breadcrumbs\Markup\IconVisibility;
-use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
 use X3P0\Breadcrumbs\Meta\MetaKey;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 

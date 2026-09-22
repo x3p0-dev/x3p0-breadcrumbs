@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace X3P0\Breadcrumbs\Markup;
+namespace X3P0\Breadcrumbs\Markup\Support;
 
 /**
  * Controls which crumbs in the trail render their icon. Independent of

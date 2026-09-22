@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
 use X3P0\Breadcrumbs\Support\BuildsFromArray;
 
 /**

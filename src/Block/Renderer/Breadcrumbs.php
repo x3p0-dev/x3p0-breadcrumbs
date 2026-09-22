@@ -18,9 +18,9 @@ use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
-use X3P0\Breadcrumbs\Markup\IconVisibility;
-use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
 
 /**
  * Server-renders the Breadcrumbs block. Translates the block's saved

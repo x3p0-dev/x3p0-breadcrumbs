@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
+use X3P0\Breadcrumbs\Icon\IconOptionResolver;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
@@ -38,12 +40,14 @@ final class BreadcrumbsRenderer
 {
 	/**
 	 * Sets up the initial renderer state with the breadcrumbs generator and
-	 * the markup factory used to build and render a breadcrumb trail, plus
-	 * the dispatcher that lets listeners retarget rendering.
+	 * the markup factory used to build and render a breadcrumb trail, the
+	 * icon options the caller's icon choices are laid over, and the
+	 * dispatcher that lets listeners retarget rendering.
 	 */
 	public function __construct(
 		private readonly BreadcrumbsGenerator $generator,
 		private readonly MarkupFactory        $markupFactory,
+		private readonly IconOptionRegistry   $iconOptions,
 		private readonly Dispatcher           $events
 	) {}
 
@@ -79,15 +83,15 @@ final class BreadcrumbsRenderer
 		// listener stopped propagation, so `add_action()` callbacks can
 		// retarget it alongside the typed listeners.
 		$event = $this->events->dispatch(new MarkupRendering(
-			crumbs:     $this->generator->generate($breadcrumbsConfig, $iconConfig),
+			crumbs:     $this->generator->generate($breadcrumbsConfig),
 			markupType: $markupType,
 			config:     $markupConfig
 		))->broadcast();
 
 		$markup = $this->markupFactory->make($event->markupType, [
-			'crumbs'     => $event->crumbs,
-			'config'     => $event->config,
-			'iconConfig' => $iconConfig
+			'crumbs'       => $event->crumbs,
+			'config'       => $event->config,
+			'iconResolver' => new IconOptionResolver($this->iconOptions, $iconConfig)
 		]);
 
 		return $markup?->render() ?? '';

@@ -15,10 +15,9 @@ namespace X3P0\Breadcrumbs\Markup\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
-use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
-use X3P0\Breadcrumbs\Icon\IconResolver;
+use X3P0\Breadcrumbs\Icon\IconOptionResolver;
+use X3P0\Breadcrumbs\Icon\IconRenderer;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
 use X3P0\Breadcrumbs\Markup\LabelVisibility;
 use X3P0\Breadcrumbs\Markup\Markup;
@@ -35,20 +34,18 @@ use X3P0\Breadcrumbs\Support\Pagination;
 class Html extends Markup implements MarkupBlockOption
 {
 	/**
-	 * Stores the crumb collection, configs, and pagination inherited from
-	 * `Markup`, plus the resolver used to turn an icon attribute value into
-	 * real markup and the icon options registry supplying the default for
-	 * the markup layer's own icon option keys (e.g., `separator`).
+	 * Stores the crumb collection, config, pagination, and icon option
+	 * resolver inherited from `Markup`, plus the renderer used to turn a
+	 * resolved icon value into real markup.
 	 */
 	public function __construct(
 		CrumbCollection $crumbs,
 		MarkupConfig $config,
 		Pagination $pagination,
-		IconConfig $iconConfig,
-		private readonly IconResolver $iconResolver,
-		private readonly IconOptionRegistry $iconOptions
+		IconOptionResolver $iconResolver,
+		private readonly IconRenderer $iconRenderer
 	) {
-		parent::__construct($crumbs, $config, $pagination, $iconConfig);
+		parent::__construct($crumbs, $config, $pagination, $iconResolver);
 	}
 
 	/**
@@ -174,14 +171,14 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders a crumb's own icon (see `Crumb::getIcon()`), gated by
+	 * Renders a crumb's icon (see `Markup::crumbIcon()`), gated by
 	 * `isCrumbIconVisible()`. Whatever occupies the first position — `Home`
 	 * on a normal site, `Network` on a multisite subsite — is treated as the
 	 * trail's home anchor.
 	 */
 	protected function renderCrumbIcon(Crumb $crumb): string
 	{
-		return $this->isCrumbIconVisible() ? $this->renderIcon($crumb->getIcon(), 'crumb-icon') : '';
+		return $this->isCrumbIconVisible() ? $this->renderIcon($this->crumbIcon($crumb), 'crumb-icon') : '';
 	}
 
 	/**
@@ -256,8 +253,7 @@ class Html extends Markup implements MarkupBlockOption
 	}
 
 	/**
-	 * Renders the separator icon — the caller's choice from the icon config,
-	 * falling back to the default registered for
+	 * Renders the separator icon — the icon in effect for
 	 * {@see IconOptionKey::Separator} — or an empty string when the separator
 	 * is turned off or should not be rendered for this crumb.
 	 */
@@ -267,15 +263,11 @@ class Html extends Markup implements MarkupBlockOption
 			return '';
 		}
 
-		return $this->renderIcon(
-			$this->iconConfig->getIcon(IconOptionKey::Separator)
-				?: $this->iconOptions->icon(IconOptionKey::Separator),
-			'crumb-separator'
-		);
+		return $this->renderIcon($this->iconResolver->resolve(IconOptionKey::Separator), 'crumb-separator');
 	}
 
 	/**
-	 * Resolves an icon attribute value to real markup via {@see IconResolver}
+	 * Renders an icon attribute value as real markup via {@see IconRenderer}
 	 * and wraps it in an `aria-hidden` span scoped with the given BEM class.
 	 * Returns an empty string when the value is empty or does not resolve to
 	 * an icon, so there is nothing to render. Shared by the home and
@@ -283,7 +275,7 @@ class Html extends Markup implements MarkupBlockOption
 	 */
 	protected function renderIcon(string $value, string $class): string
 	{
-		$html = $this->iconResolver->resolve($value);
+		$html = $this->iconRenderer->render($value);
 
 		if ('' === $html) {
 			return '';

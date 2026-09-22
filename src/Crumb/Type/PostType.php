@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post_Type;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -29,10 +29,10 @@ final class PostType extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post_Type $postType
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -68,7 +68,7 @@ final class PostType extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): string
+	public function getIconOptionKey(): string
 	{
 		return IconOptionKey::postTypeArchive($this->postType->name);
 	}

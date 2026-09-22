@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Icon resolver.
+ * Icon renderer.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Icon;
 
 /**
- * Resolves an icon attribute value to real markup: a built-in text/glyph
- * character, or an icon fetched from the registered icon library, remapping
- * any deprecated pre-7.1 icon key (e.g., `svg-arrow`) to its current
- * `{collection}/{name}` reference first. Registered as a singleton by
- * `IconServiceProvider`, so the container shares one instance per request
- * rather than constructing a new one for every `Markup` type resolved.
+ * Renders an icon attribute value — the kind `IconOptionResolver` returns — as
+ * real markup: a built-in text/glyph character, or an icon fetched from the
+ * registered icon library.
  */
-final class IconResolver
+final class IconRenderer
 {
 	/**
 	 * Built-in text/glyph icon values mapped to their literal character.
@@ -39,8 +36,8 @@ final class IconResolver
 	];
 
 	/**
-	 * Deprecated icons mapped to their current `{collection}/{name}`
-	 * reference in the registered icon library.
+	 * Deprecated pre-7.1 icon keys mapped to their current
+	 * `{collection}/{name}` reference in the registered icon library.
 	 *
 	 * @var  array<string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
@@ -60,15 +57,12 @@ final class IconResolver
 	];
 
 	/**
-	 * Resolves an icon value to real markup. Checks the built-in text/glyph
-	 * icons first, then falls through to the registered icon library: remaps
-	 * a deprecated key to its current reference, then looks it up by its
-	 * `{collection}/{name}` identifier (recognized by containing a `/`,
-	 * which no built-in or deprecated key does). Returns an empty string
-	 * when the value is empty or does not resolve to an icon, leaving
-	 * callers with nothing to render.
+	 * Renders an icon value as markup, or an empty string when it names no
+	 * icon. Text/glyph icons are checked first, then the library, a
+	 * reference to which is recognized by its `/` — which no built-in or
+	 * deprecated key contains.
 	 */
-	public function resolve(string $value): string
+	public function render(string $value): string
 	{
 		if (isset(self::TEXT_ICONS[$value])) {
 			return self::TEXT_ICONS[$value];

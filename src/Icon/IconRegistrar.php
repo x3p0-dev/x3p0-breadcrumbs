@@ -7,14 +7,12 @@ namespace X3P0\Breadcrumbs\Icon;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
- * Wires the plugin's {@see Icon} cases into WordPress's icon registry by
- * hooking {@see self::register()} onto the `init` action.
+ * Registers the plugin's {@see Icon} cases with WordPress's icon API on `init`.
  */
 final class IconRegistrar implements Bootable
 {
 	/**
-	 * Entry point for the class. Call once during plugin bootstrap to hook
-	 * icon registration into WordPress's `init` action.
+	 * @inheritDoc
 	 */
 	public function boot(): void
 	{
@@ -22,9 +20,7 @@ final class IconRegistrar implements Bootable
 	}
 
 	/**
-	 * Registers the icon collection via `wp_register_icon_collection()`,
-	 * then registers every case of {@see Icon} within it via
-	 * `wp_register_icon()`, using each icon's handle, label, and file path.
+	 * Registers the icon collection, then every {@see Icon} case within it.
 	 */
 	private function register(): void
 	{

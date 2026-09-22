@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
 
 /**
@@ -37,17 +37,17 @@ final class StorePage extends Crumb
 	 * and the store page this one stands for.
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		private readonly Crumb $decoratedCrumb,
 		private readonly StorePageSlug $page
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
 	 * Takes the slug from the store page's own icon option key, rather than
 	 * the other way around: every store page is its own option, so the two
-	 * are one string, and sourcing it here is what lets `iconOptionKey()`
+	 * are one string, and sourcing it here is what lets `getIconOptionKey()`
 	 * stay at its default.
 	 *
 	 * @inheritDoc
@@ -81,8 +81,8 @@ final class StorePage extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	protected function explicitIcon(): string
+	public function getExplicitIcon(): string
 	{
-		return $this->decoratedCrumb->explicitIcon();
+		return $this->decoratedCrumb->getExplicitIcon();
 	}
 }

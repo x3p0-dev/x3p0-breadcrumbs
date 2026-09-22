@@ -17,12 +17,8 @@ use X3P0\Breadcrumbs\Support\BuildsFromArray;
 
 /**
  * Immutable configuration object holding the caller's chosen icons, keyed by
- * icon option key. Icons are their own configuration domain — an icon option
- * isn't tied to trail building (`BreadcrumbsConfig`) or display flags
- * (`MarkupConfig`), and its consumers span both pipelines: crumbs resolve
- * their own keys, and the `Markup` layer resolves presentation keys such as
- * `separator`. Holds overrides only; the registered defaults live in the
- * `IconOptions` registry, which consumers pair this with.
+ * icon option key. Holds overrides only; the registered defaults live in the
+ * `IconOptionRegistry`, which consumers pair this with.
  */
 final class IconConfig
 {
@@ -30,10 +26,9 @@ final class IconConfig
 
 	/**
 	 * Stores the caller's chosen icons as an option key → icon attribute
-	 * value map (e.g., `home`, `date`, `separator`, `post-type:page`). Keyed
-	 * by the raw string form, since the map arrives off a block attribute
-	 * saved in post content; {@see IconOptionKey} names the keys this plugin
-	 * owns among them.
+	 * value map (e.g., `home`, `separator`, `post-type:page`). Keyed by the
+	 * raw string form, since the map arrives off a block attribute saved in
+	 * post content.
 	 *
 	 * @param array<string, string> $icons
 	 */

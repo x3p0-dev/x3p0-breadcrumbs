@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 
 /**
  * Crumb representing one of the two sub-views of the account `edit-address`
@@ -36,10 +36,10 @@ final class Address extends Crumb
 	 * which may be a localized slug.
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		public readonly string $type
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**

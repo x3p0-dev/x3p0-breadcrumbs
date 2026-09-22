@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Crumb\CrumbCollection;
-use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconOptionResolver;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -68,14 +68,15 @@ abstract class Markup
 
 	/**
 	 * Stores the crumb collection to render, the config that governs how the
-	 * trail is displayed, and the caller's icon choices for the markup
-	 * layer's own icon option keys (e.g., `separator`).
+	 * trail is displayed, and the resolver that answers which icon is in
+	 * effect for an option key — the crumbs' and the markup layer's own
+	 * (e.g., the separator) alike.
 	 */
 	public function __construct(
-		protected readonly CrumbCollection $crumbs,
-		protected readonly MarkupConfig    $config,
-		protected readonly Pagination      $pagination,
-		protected readonly IconConfig      $iconConfig = new IconConfig()
+		protected readonly CrumbCollection    $crumbs,
+		protected readonly MarkupConfig       $config,
+		protected readonly Pagination         $pagination,
+		protected readonly IconOptionResolver $iconResolver
 	) {}
 
 	/**
@@ -186,6 +187,17 @@ abstract class Markup
 		$isLast = $this->crumbs->count() === $this->crumbs->position();
 
 		return ! $isLast || $this->config->linkLastCrumb();
+	}
+
+	/**
+	 * Returns the icon attribute value to render for a crumb: one pinned to
+	 * the crumb itself, if it carries one, else the icon in effect for its
+	 * option key (see `IconOptionResolver::resolve()`, which states that
+	 * order once for every consumer).
+	 */
+	protected function crumbIcon(Crumb $crumb): string
+	{
+		return $crumb->getExplicitIcon() ?: $this->iconResolver->resolve($crumb->getIconOptionKey());
 	}
 
 	/**

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Support\CatalogOrder as CatalogOrderSlug;
 
 /**
@@ -34,10 +34,10 @@ final class CatalogOrder extends Crumb
 	 * (e.g. `popularity` or `price-desc`).
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		public readonly string $orderby
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -82,7 +82,7 @@ final class CatalogOrder extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): string
+	public function getIconOptionKey(): string
 	{
 		return CatalogOrderSlug::fromRequest($this->orderby)?->optionKey() ?? $this->getSlug();
 	}

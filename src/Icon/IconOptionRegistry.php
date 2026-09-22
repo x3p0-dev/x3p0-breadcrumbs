@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Icon options registry class.
+ * Icon option registry class.
  *
  * @author    Justin Tadlock <justintadlock@gmail.com>
  * @copyright Copyright (c) 2009-2026, Justin Tadlock
@@ -13,21 +13,23 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Icon;
 
+use ArrayIterator;
+use Countable;
+use InvalidArgumentException;
+use IteratorAggregate;
+
 /**
- * Registry of the available icon options, keyed by their option key. The
- * built-ins — including one option per viewable post type and public taxonomy
- * — are seeded by `IconOptionRegistrar` late on `init`; third-party code adds
- * (or retargets) options with the same single `add()` call, so there is one
- * mechanism for everyone. `add()` is last-write-wins, letting an extension
- * replace a built-in default by re-registering its key.
+ * Registry of the available icon options, keyed by option key. It stores
+ * options and knows nothing about building them: callers construct an
+ * {@see IconOption} and register it, or take a copy of a registered one and
+ * replace it. The built-ins are seeded by `IconOptionRegistrar` late on
+ * `init`, which then dispatches `IconOptionsRegistering` so third-party code
+ * can register its own with the same calls. The groups the block editor sorts
+ * these into live in their own {@see IconOptionGroupRegistry}.
  *
- * The registry also holds the groups the block editor sorts those options
- * into. A group is a key and a translated label; options name their group by
- * key. Extensions register groups of their own with the same `addGroup()` the
- * built-ins use, so an extension with a family of its own options can gather
- * them under its own heading instead of scattering them through the catch-all.
+ * @implements IteratorAggregate<string, IconOption>
  */
-final class IconOptionRegistry
+final class IconOptionRegistry implements IteratorAggregate, Countable
 {
 	/**
 	 * Stores the registered options by key.
@@ -37,79 +39,55 @@ final class IconOptionRegistry
 	private array $options = [];
 
 	/**
-	 * Stores the registered group labels by group key, in the order the block
-	 * editor lists them.
+	 * Registers an option under a key nothing else holds. Registering a key
+	 * twice is a mistake rather than an override, so it throws; to change a
+	 * registered option, use `replace()`.
 	 *
-	 * @var array<string, string>
+	 * @throws InvalidArgumentException If the key is already registered.
 	 */
-	private array $groups = [];
-
-	/**
-	 * Adds one or more options to the registry. Re-adding an existing key
-	 * overwrites that option in place, keeping its original position.
-	 */
-	public function add(IconOption ...$options): void
+	public function register(IconOptionKey|string $key, IconOption $option): void
 	{
-		foreach ($options as $option) {
-			$this->options[$option->key] = $option;
+		$key = IconOptionKey::normalize($key);
+
+		if (isset($this->options[$key])) {
+			throw new InvalidArgumentException(sprintf(
+				'Icon option "%s" is already registered. Use replace() to change it.',
+				esc_html($key)
+			));
 		}
+
+		$this->options[$key] = $option;
 	}
 
 	/**
-	 * Registers the translated label for a group of options, or relabels an
-	 * existing group in place. Groups are listed in the block editor in the
-	 * order they were first registered, which needs no explicit ordering to
-	 * come out right: the built-ins are seeded before the
-	 * `IconOptionsRegistered` event, so an extension's own group — a
-	 * WooCommerce group holding its shop and endpoint options, say — lands
-	 * after them.
+	 * Replaces the option registered under the key, keeping its original
+	 * position. Pairs with the option's `with*()` methods for changing one
+	 * part of a built-in:
+	 *
+	 *     $options->replace($key, $options->get($key)->withIcon(Icon::Package));
+	 *
+	 * @throws InvalidArgumentException If the key is not registered.
 	 */
-	public function addGroup(IconOptionGroup|string $key, string $label): void
+	public function replace(IconOptionKey|string $key, IconOption $option): void
 	{
-		$this->groups[IconOptionGroup::normalize($key)] = $label;
+		$key = IconOptionKey::normalize($key);
+
+		if (! isset($this->options[$key])) {
+			throw new InvalidArgumentException(sprintf(
+				'Icon option "%s" is not registered. Use register() to add it.',
+				esc_html($key)
+			));
+		}
+
+		$this->options[$key] = $option;
 	}
 
 	/**
-	 * Changes one or more parts of a registered option, leaving the rest as
-	 * they are. This is the partial override `add()` cannot express: `add()`
-	 * replaces an option wholesale, which would drop the label and slug the
-	 * registrar derived from a post type or taxonomy object. Retargeting a
-	 * built-in default, renaming an option to suit the vocabulary of the
-	 * plugin that owns the thing it names, and gathering options into an
-	 * extension's own group are all the same operation on different parts, so
-	 * they share one method and read as what they are at the call site:
-	 *
-	 *     $options->update($key, icon: Icon::Package);
-	 *     $options->update($key, label: __('Shop', 'my-plugin'));
-	 *     $options->update($key, group: 'woocommerce');
-	 *
-	 * An argument left null is left alone. The icon and group are passed
-	 * straight through to the option, so each takes an enum case or a raw
-	 * string on the same terms as the constructor.
-	 *
-	 * Updating a key nothing is registered under does nothing, deliberately:
-	 * an extension speaking for objects that may or may not exist on a given
-	 * site — WooCommerce naming product attribute taxonomies a store need not
-	 * have — would otherwise conjure an option for a thing that isn't there.
-	 * Registering is `add()`'s job.
+	 * Removes the option registered under the key, if there is one.
 	 */
-	public function update(
-		IconOptionKey|string $key,
-		Icon|string|null $icon = null,
-		?string $label = null,
-		IconOptionGroup|string|null $group = null
-	): void {
-		$option = $this->get($key);
-
-		if (null === $option) {
-			return;
-		}
-
-		$this->add($option->with(array_filter([
-			'icon'  => $icon,
-			'label' => $label,
-			'group' => $group
-		], static fn ($value) => null !== $value)));
+	public function unregister(IconOptionKey|string $key): void
+	{
+		unset($this->options[IconOptionKey::normalize($key)]);
 	}
 
 	/**
@@ -129,64 +107,29 @@ final class IconOptionRegistry
 	}
 
 	/**
-	 * Returns the default icon attribute value registered for the given key,
-	 * or an empty string if the key has no option (or no default icon).
+	 * Returns every registered option, keyed by option key, in registration
+	 * order.
+	 *
+	 * @return array<string, IconOption>
 	 */
-	public function icon(IconOptionKey|string $key): string
+	public function all(): array
 	{
-		return $this->get($key)?->icon ?? '';
+		return $this->options;
 	}
 
 	/**
-	 * Returns the options offered as block editor controls — those with a
-	 * label — in registration order. This is the single source the editor
-	 * script consumes; unlabeled options are default-carriers only and are
-	 * omitted. An option naming a group nobody registered falls back to the
-	 * catch-all rather than disappearing, since the editor renders its rows
-	 * group by group and would have nowhere to put it.
-	 *
-	 * @return array<int, array{key: string, icon: string, name: string, group: string, slug: string}>
+	 * @inheritDoc
 	 */
-	public function forBlock(): array
+	public function getIterator(): ArrayIterator
 	{
-		$options = [];
-
-		foreach ($this->options as $option) {
-			if ('' !== $option->label) {
-				$options[] = [
-					'key'   => $option->key,
-					'icon'  => $option->icon,
-					'name'  => $option->label,
-					'group' => isset($this->groups[$option->group])
-						? $option->group
-						: IconOptionGroup::General->value,
-					'slug'  => $option->slug
-				];
-			}
-		}
-
-		return $options;
+		return new ArrayIterator($this->options);
 	}
 
 	/**
-	 * Returns the registered groups as `key`/`name` pairs in registration
-	 * order, for the editor to lay its option controls out under. Groups with
-	 * no labeled options in them are left for the editor to skip, since only
-	 * it knows which options are still on offer at any moment.
-	 *
-	 * @return array<int, array{key: string, name: string}>
+	 * @inheritDoc
 	 */
-	public function groupsForBlock(): array
+	public function count(): int
 	{
-		$groups = [];
-
-		foreach ($this->groups as $key => $label) {
-			$groups[] = [
-				'key'  => $key,
-				'name' => $label
-			];
-		}
-
-		return $groups;
+		return count($this->options);
 	}
 }

@@ -7,11 +7,8 @@ namespace X3P0\Breadcrumbs\Icon;
 use const X3P0\Breadcrumbs\PLUGIN_DIR;
 
 /**
- * Enum of icons registered with and used throughout the plugin. Each case
- * represents a single SVG icon shipped with the plugin. The case's backed
- * string value doubles as both the icon's file name (without the `.svg`
- * extension) and the suffix used to build its registration handle. See
- * {@see self::name()} and {@see self::filePath()}.
+ * Enum of the SVG icons shipped with the plugin. Each case's backed value
+ * doubles as the icon's file name and the suffix of its registration handle.
  */
 enum Icon: string
 {
@@ -41,25 +38,23 @@ enum Icon: string
 	case Unseen            = 'unseen';
 
 	/**
-	 * Collection namespace for all registered icons. Used as the prefix for
-	 * each icon's registration handle and as the name under which the icon
-	 * collection itself is registered.
+	 * Collection namespace for all registered icons.
 	 *
-	 * @var string
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	public const COLLECTION = 'x3p0-breadcrumbs';
 
 	/**
-	 * Absolute path to the icon folder where the SVGs are stored.
+	 * Absolute path to the folder where the SVGs are stored.
 	 *
-	 * @var string
+	 * @var  string
+	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const ICONS_PATH = PLUGIN_DIR . '/public/media/svg';
 
 	/**
-	 * Returns the icon's translated label. Used as the human-readable name
-	 * shown for the icon wherever WordPress displays registered icons
-	 * (e.g., the icon picker).
+	 * Returns the icon's translated label.
 	 */
 	public function label(): string
 	{
@@ -92,10 +87,8 @@ enum Icon: string
 	}
 
 	/**
-	 * Returns the icon's full name with the namespace for registration.
-	 * Combines {@see self::COLLECTION} with the case's value (e.g.,
-	 * `devblog-restaurant/bakery`) to form the handle WordPress uses to
-	 * identify the icon when registered via `wp_register_icon()`.
+	 * Returns the icon's namespaced registration handle, as
+	 * `{collection}/{name}`.
 	 */
 	public function name(): string
 	{
@@ -103,9 +96,7 @@ enum Icon: string
 	}
 
 	/**
-	 * Returns the absolute file path to the icon's SVG file. Combines
-	 * {@see self::ICONS_PATH} with the case's value to locate the
-	 * icon's SVG source file on disk.
+	 * Returns the absolute path to the icon's SVG file.
 	 */
 	public function filePath(): string
 	{

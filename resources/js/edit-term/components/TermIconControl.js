@@ -31,7 +31,7 @@ import { useEffect, useState } from '@wordpress/element';
  * and nothing is stored twice when they do.
  *
  * The value is the term's own icon meta, which `Crumb\Type\Term` reads as its
- * `explicitIcon()` and so outranks the icon configured for the taxonomy. That
+ * `getExplicitIcon()` and so outranks the icon configured for the taxonomy. That
  * is what makes this an editorial choice about one term rather than a setting,
  * and why the field previews nothing when the meta is empty: the icon that
  * would render instead belongs to the taxonomy, and showing it here would read

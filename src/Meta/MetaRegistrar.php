@@ -57,7 +57,7 @@ final class MetaRegistrar implements Bootable
 	 * icon registry: any value that is not a currently registered
 	 * `{collection}/{name}` icon (including empty, malformed, or
 	 * deregistered values) is rejected in favor of an empty string. Unlike
-	 * `Icon\IconResolver`, which also resolves the plugin's built-in
+	 * `Icon\IconRenderer`, which also renders the plugin's built-in
 	 * text/glyph icons and remaps deprecated keys for legacy block
 	 * attributes, this meta is a fresh, user-authored value with no
 	 * backward-compatibility baggage, so only real registered icon library

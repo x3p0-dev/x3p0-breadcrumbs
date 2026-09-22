@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Support\Endpoint as EndpointSlug;
 
 /**
@@ -29,10 +29,10 @@ final class Endpoint extends Crumb
 	 * Stores the WooCommerce endpoint key (e.g. `orders` or `edit-address`).
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		public readonly string $endpoint
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -68,7 +68,7 @@ final class Endpoint extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): string
+	public function getIconOptionKey(): string
 	{
 		return EndpointSlug::tryFrom($this->endpoint)?->optionKey() ?? $this->getSlug();
 	}

@@ -9,7 +9,7 @@
 
 /**
  * The registered icon options, as `{key, icon, name, group, slug}` records —
- * see `IconOptionRegistry::forBlock()` on the PHP side. PHP enumerates
+ * see `BlockAssets::iconOptionsForBlock()` on the PHP side. PHP enumerates
  * everything, including one option per viewable post type and public taxonomy
  * (via `IconOptionRegistrar`), so the editor never enumerates them
  * client-side and a newly registered option becomes available with no JS

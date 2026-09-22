@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Support\Pagination;
 
 /**
@@ -27,10 +27,10 @@ final class PagedQueryBlock extends PagedArchive
 	 * @inheritDoc
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		private readonly Pagination $pagination
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**

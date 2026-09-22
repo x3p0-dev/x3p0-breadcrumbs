@@ -13,125 +13,64 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Icon;
 
-use X3P0\Breadcrumbs\Support\BuildsFromArray;
-
 /**
- * A named icon slot: the unit of icon configuration, defaults, and UI. An
- * option is deliberately not tied to a crumb type — crumbs *consume* options
- * by key (see `Crumb::iconOptionKey()`), several crumbs may share one option
- * (the date archives all pull from `date`), and an option may exist that no
- * built-in crumb uses. Options are collected in the `IconOptionRegistry`.
- *
- * Options with a key derived from a WordPress object have a named constructor
- * apiece — `forPostType()`, `forPostTypeArchive()`, `forTaxonomy()` — so the
- * key, group, and slug are all derived and the option constructed in one call.
- * Options with a flat key of their own ({@see IconOptionKey::Home}, an
- * extension's `woocommerce-cart`) are built with the constructor directly;
- * there is no named alias for it, since nothing about the key needs deriving.
+ * A named icon slot: the unit of icon configuration, defaults, and UI.
+ * Immutable: to change part of a registered option, take a copy through one
+ * of the `with*()` methods and hand it to `IconOptionRegistry::replace()`.
  */
 final class IconOption
 {
-	use BuildsFromArray;
-
 	/**
-	 * The option key, normalized to a string. Declared rather than promoted
-	 * because the constructor also accepts an {@see IconOptionKey} case for
-	 * it, which is resolved to its backing value on the way in.
-	 */
-	public readonly string $key;
-
-	/**
-	 * The default icon attribute value, normalized to a string. Declared
-	 * rather than promoted because the constructor also accepts an {@see Icon}
-	 * case for it, which is resolved to its registered name on the way in.
+	 * The default icon attribute value, normalized to a string.
 	 */
 	public readonly string $icon;
 
 	/**
-	 * The group key, normalized to a string, on the same terms as the two
-	 * above.
+	 * The group key, normalized to a string.
 	 */
 	public readonly string $group;
 
 	/**
-	 * Sets up the option. The `$key` is the config lookup key: either an
-	 * {@see IconOptionKey} case, for a key this plugin owns, or a raw string
-	 * for anyone else's — an extension's `woocommerce-cart`, or one of the
-	 * `post-type:page`/`taxonomy:category` keys derived from a WordPress
-	 * object. The `$icon` is the default icon rendered when the site owner
-	 * hasn't chosen one, and the value previewed for the option's block
-	 * control: either an {@see Icon} case, for an icon this plugin ships, or a
-	 * `{collection}/{name}` icon library reference as a string, for anyone
-	 * else's — core's `core/home`, say, which has no case here. An option with
-	 * a translated `$label` is offered as a control in the block editor; one
-	 * without is a pure default-carrier — resolvable, but invisible in the UI.
-	 *
-	 * The `$group` is the group the block editor lists the option under,
-	 * taking an {@see IconOptionGroup} case or a raw string on the same open
-	 * terms as the key, and defaulting to the catch-all. The `$slug` is the
-	 * bare slug of the WordPress object the option was derived from, shown
-	 * beside the label to tell apart two objects declaring the same one (core's
-	 * `post_tag` and WooCommerce's `product_tag` are both "Tag"). The named
-	 * constructors below fill in both; an option with a flat key of its own has
-	 * no object to name, so its slug stays empty and the editor shows the label
-	 * alone. Carrying the slug rather than deriving it means the key
-	 * namespacing is never parsed back apart, here or in the editor.
+	 * Sets up the option. The `$icon` is the default rendered when the site
+	 * owner hasn't chosen one: an {@see Icon} case for an icon this plugin
+	 * ships, or a `{collection}/{name}` library reference for anyone else's.
+	 * An option with a translated `$label` is offered as a block editor
+	 * control; one without is a default-carrier only. The `$slug` names the
+	 * WordPress object the option was derived from, if any, so the editor can
+	 * tell apart two objects declaring the same label.
 	 */
 	public function __construct(
-		IconOptionKey|string $key,
 		Icon|string $icon = '',
 		public readonly string $label = '',
-		IconOptionGroup|string $group = IconOptionGroup::General,
+		IconOptionGroupKey|string $group = IconOptionGroupKey::General,
 		public readonly string $slug = ''
 	) {
-		$this->key   = IconOptionKey::normalize($key);
 		$this->icon  = $icon instanceof Icon ? $icon->name() : $icon;
-		$this->group = IconOptionGroup::normalize($group);
+		$this->group = IconOptionGroupKey::normalize($group);
 	}
 
 	/**
-	 * Builds the option for a post type's single-post crumbs, keyed by
-	 * {@see IconOptionKey::postType()} and grouped with the other post types.
+	 * Returns a copy of the option with a different default icon.
 	 */
-	public static function forPostType(string $postType, Icon|string $icon = '', string $label = ''): self
+	public function withIcon(Icon|string $icon): self
 	{
-		return new self(
-			IconOptionKey::postType($postType),
-			$icon,
-			$label,
-			IconOptionGroup::PostType,
-			$postType
-		);
+		return new self($icon, $this->label, $this->group, $this->slug);
 	}
 
 	/**
-	 * Builds the option for a post type's archive crumb, keyed by
-	 * {@see IconOptionKey::postTypeArchive()} and grouped with the other
-	 * archives.
+	 * Returns a copy of the option with a different label. An empty label
+	 * withdraws the option's block control, leaving it a default-carrier.
 	 */
-	public static function forPostTypeArchive(string $postType, Icon|string $icon = '', string $label = ''): self
+	public function withLabel(string $label): self
 	{
-		return new self(
-			IconOptionKey::postTypeArchive($postType),
-			$icon,
-			$label,
-			IconOptionGroup::PostTypeArchive,
-			$postType
-		);
+		return new self($this->icon, $label, $this->group, $this->slug);
 	}
 
 	/**
-	 * Builds the option for a taxonomy's term crumbs, keyed by
-	 * {@see IconOptionKey::taxonomy()} and grouped with the other taxonomies.
+	 * Returns a copy of the option listed under a different group.
 	 */
-	public static function forTaxonomy(string $taxonomy, Icon|string $icon = '', string $label = ''): self
+	public function withGroup(IconOptionGroupKey|string $group): self
 	{
-		return new self(
-			IconOptionKey::taxonomy($taxonomy),
-			$icon,
-			$label,
-			IconOptionGroup::Taxonomy,
-			$taxonomy
-		);
+		return new self($this->icon, $this->label, $group, $this->slug);
 	}
 }

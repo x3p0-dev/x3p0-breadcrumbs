@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_User;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
@@ -31,11 +31,11 @@ final class User extends Crumb
 	 * @inheritDoc
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_User $user,
 		public readonly string $url = ''
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -49,7 +49,7 @@ final class User extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): IconOptionKey
+	public function getIconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::User;
 	}

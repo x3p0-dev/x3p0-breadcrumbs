@@ -18,55 +18,64 @@ use X3P0\Breadcrumbs\Packages\Event\Dispatcher;
 use X3P0\Breadcrumbs\Packages\Framework\Contracts\Bootable;
 
 /**
- * Seeds the `IconOptionRegistry` with the built-in groups and options: the
- * static options (home, date archives, search, …) plus one per viewable post
- * type and public taxonomy, enumerated from what's actually registered with
- * WordPress, each under the group it belongs to. Runs
- * very late on `init` so every post type and taxonomy — core, theme, or
- * plugin — is already registered, and so the block editor can consume the
- * finished list instead of re-enumerating them client-side.
- *
- * Once seeded, the `IconOptionsRegistered` event hands the finished registry
- * to listeners. That event is the sole extension point: seeding overwrites, so
- * registering an option before this runs accomplishes nothing. A listener sees
- * the complete set and has the final say over it, with no hook order to reason
- * about.
+ * Seeds the `IconOptionGroupRegistry` and `IconOptionRegistry` with the
+ * built-in groups and options — each declared by its own
+ * {@see IconOptionGroupKey} or {@see IconOptionKey} case — plus one option per
+ * viewable post type and public taxonomy. Runs very late on `init` so every
+ * post type and taxonomy is registered first, then dispatches
+ * `IconOptionsRegistering` for third-party code to add to or amend the result.
  */
 final class IconOptionRegistrar implements Bootable
 {
 	/**
-	 * Icon every enumerated post type's single-post option gets, absent a
-	 * better one from `setCoreObjectIcons()` or a listener.
-	 *
 	 * @var  Icon
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const POST_TYPE_ICON = Icon::Article;
 
 	/**
-	 * Icon every enumerated post type's archive option gets.
-	 *
 	 * @var  Icon
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const POST_TYPE_ARCHIVE_ICON = Icon::Archive;
 
 	/**
-	 * Icon every enumerated taxonomy's term option gets.
-	 *
 	 * @var  string
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	private const TAXONOMY_ICON = 'core/tag';
 
 	/**
-	 * Stores the registry the built-in options are seeded into and the
-	 * dispatcher the `IconOptionsRegistered` event is announced on once they
-	 * are.
+	 * Core post types worth more than the generic icon above, by name.
+	 * Consulted as each type is enumerated.
+	 *
+	 * @var  array<string, Icon|string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const CORE_POST_TYPE_ICONS = [
+		'post'       => 'core/pencil',
+		'attachment' => 'core/file'
+	];
+
+	/**
+	 * Core taxonomies worth more than the generic taxonomy icon, by name.
+	 *
+	 * @var  array<string, Icon|string>
+	 * @todo Type hint with PHP 8.3+ requirement.
+	 */
+	private const CORE_TAXONOMY_ICONS = [
+		'category'    => 'core/category',
+		'post_format' => Icon::Category
+	];
+
+	/**
+	 * Stores the registries seeded here and the dispatcher the
+	 * `IconOptionsRegistering` event is announced on.
 	 */
 	public function __construct(
-		private readonly Dispatcher $events,
-		private readonly IconOptionRegistry $options
+		private readonly Dispatcher              $events,
+		private readonly IconOptionRegistry      $options,
+		private readonly IconOptionGroupRegistry $groups
 	) {}
 
 	/**
@@ -79,198 +88,100 @@ final class IconOptionRegistrar implements Bootable
 	}
 
 	/**
-	 * Registers the built-in options: static ones first, then one per viewable
-	 * post type (plus its archive, when it has one) and one per public
-	 * taxonomy, then the handful of core-object icons worth more than the
-	 * generic default. Announces the finished registry afterward so listeners
-	 * can add or retarget options, then broadcasts the same event to
-	 * WordPress so `add_action()` callbacks can do the same.
+	 * Seeds the built-in groups and options, then opens the registries to
+	 * listeners and bridges the event to WordPress.
 	 */
 	private function register(): void
 	{
 		$this->registerGroups();
-		$this->registerStaticOptions();
+		$this->registerBuiltInOptions();
 		$this->registerPostTypeOptions();
 		$this->registerTaxonomyOptions();
-		$this->setCoreObjectIcons();
-		$this->registerMediaOptions();
 
 		$this->events->dispatch(
-			new IconOptionsRegistered($this->options)
+			new IconOptionsRegistered($this->options, $this->groups)
 		)->broadcast();
 	}
 
 	/**
-	 * Registers the groups the block editor sorts its icon controls into,
-	 * first and in listing order. The catch-all leads, since it holds the
-	 * options a site owner reaches for most; the WordPress object families
-	 * follow. An extension adding a group of its own on
-	 * `IconOptionsRegistered` lands after all of these.
+	 * Registers the built-in groups in declaration order.
 	 */
 	private function registerGroups(): void
 	{
-		$this->options->addGroup(IconOptionGroup::General, __('General', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOptionGroup::PostType, __('Post Types', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOptionGroup::PostTypeArchive, __('Post Type Archives', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOptionGroup::Taxonomy, __('Taxonomies', 'x3p0-breadcrumbs'));
-		$this->options->addGroup(IconOptionGroup::Media, __('Media', 'x3p0-breadcrumbs'));
+		foreach (IconOptionGroupKey::cases() as $key) {
+			$this->groups->register($key, $key->group());
+		}
 	}
 
 	/**
-	 * Registers the fixed, built-in options: one per crumb type that resolves
-	 * a key of its own rather than one derived from a post type or taxonomy
-	 * (those are enumerated below). Most are labeled, so the crumbs the plugin
-	 * puts in a trail have a control behind them.
-	 *
-	 * The last five are registered without one. Every icon the plugin can put
-	 * on screen is an option — nothing renders from a literal buried in a
-	 * crumb — but a label is a promise that a site owner can act on the
-	 * setting, and these are icons rather than settings:
-	 *
-	 * - `archive` is the general fallback for archive views with nothing more
-	 *   specific to resolve; the views that do — dates, times, post types,
-	 *   taxonomies — all have options of their own above and below.
-	 * - `custom` backs a crumb that is whatever the code building it made it,
-	 *   and that code passes its own icon, which outranks anything configured
-	 *   here; a control could only reach the ones built without one.
-	 * - `fallback` is the last resort in `Crumb::getIcon()`, reached by a
-	 *   crumb whose own key nothing is registered under.
-	 * - `privacy-policy` and `posts-page` each name one particular page, and a
-	 *   page's icon belongs to that page's own icon meta. They carry the
-	 *   default `Post::iconOptionKey()` resolves for those two pages.
-	 *
-	 * The `network-site` option is registered only on a multisite network,
-	 * since nowhere else can a trail contain the crumb that resolves it. The
-	 * network home crumb has no option at all: it *is* the home crumb when a
-	 * network is running, so it resolves `home` and is configured there.
+	 * Registers the option each {@see IconOptionKey} case ships with.
 	 */
-	private function registerStaticOptions(): void
+	private function registerBuiltInOptions(): void
 	{
-		$this->options->add(
-			new IconOption(IconOptionKey::Separator,     Icon::Chevron,     __('Separator', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Home,          'core/home',       __('Home', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Date,          'core/calendar',   __('Date archives', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Time,          'core/scheduled',  __('Time archives', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::User,          'core/people',     __('User', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Search,        'core/search',     __('Search', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Error404,      'core/error',      __('Page not found', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::Paged,         Icon::Description, __('Pagination', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::PrivatePost,   Icon::Unseen,      __('Private', 'x3p0-breadcrumbs')),
-			new IconOption(IconOptionKey::ProtectedPost, 'core/key',        __('Password protected', 'x3p0-breadcrumbs')),
-			// Registered without a label: every icon the plugin can render is
-			// an option, but not every one is worth a block control.
-			new IconOption(IconOptionKey::Archive,       Icon::Archive),
-			new IconOption(IconOptionKey::Custom,        Icon::Article),
-			new IconOption(IconOptionKey::Fallback,      Icon::Article),
-			new IconOption(IconOptionKey::PrivacyPolicy, 'core/shield'),
-			new IconOption(IconOptionKey::PostsPage,     Icon::Archive)
-		);
-
-		if (is_multisite()) {
-			$this->options->add(new IconOption(
-				IconOptionKey::NetworkSite,
-				'core/desktop',
-				__('Network Site', 'x3p0-breadcrumbs')
-			));
+		foreach (IconOptionKey::cases() as $key) {
+			$this->options->register($key, $key->option());
 		}
 	}
 
 	/**
 	 * Registers a labeled option per viewable post type's single-post crumb
 	 * and, for post types with an archive, one per archive crumb. Labels come
-	 * straight off the post type object: WordPress fills `singular_name` and
-	 * `archives` from its own defaults for every registered type, so neither
-	 * can be empty. Two types may well declare the same label (core's
-	 * `post_tag` and WooCommerce's `product_tag` are both "Tag"); each is
-	 * registered as declared regardless, since a duplicate label is only a
-	 * problem for the block editor's panel, which disambiguates its own
-	 * controls (see `IconsPanel.js`).
+	 * off the post type object, which WordPress always fills. Attachments are
+	 * listed with the media options rather than the post types.
 	 */
 	private function registerPostTypeOptions(): void
 	{
 		$postTypes = array_filter(
 			get_post_types([], 'objects'),
-			'is_post_type_viewable'
+			is_post_type_viewable(...)
 		);
 
 		foreach ($postTypes as $type) {
-			$this->options->add(IconOption::forPostType(
-				$type->name,
-				self::POST_TYPE_ICON,
-				$type->labels->singular_name
-			));
+			$this->options->register(
+				IconOptionKey::postType($type->name),
+				new IconOption(
+					self::CORE_POST_TYPE_ICONS[$type->name] ?? self::POST_TYPE_ICON,
+					$type->labels->singular_name,
+					'attachment' === $type->name ? IconOptionGroupKey::Media : IconOptionGroupKey::PostType,
+					$type->name
+				)
+			);
 
 			if ($type->has_archive) {
-				$this->options->add(IconOption::forPostTypeArchive(
-					$type->name,
-					self::POST_TYPE_ARCHIVE_ICON,
-					$type->labels->archives
-				));
+				$this->options->register(
+					IconOptionKey::postTypeArchive($type->name),
+					new IconOption(
+						self::POST_TYPE_ARCHIVE_ICON,
+						$type->labels->archives,
+						IconOptionGroupKey::PostTypeArchive,
+						$type->name
+					)
+				);
 			}
 		}
 	}
 
 	/**
-	 * Registers a labeled option per public taxonomy's term crumb, taking its
-	 * label from the taxonomy object the same way as the post type loop.
+	 * Registers a labeled option per public taxonomy's term crumb, taking
+	 * its label from the taxonomy object the same way as the post type loop.
 	 */
 	private function registerTaxonomyOptions(): void
 	{
 		$taxonomies = array_filter(
 			get_taxonomies([], 'objects'),
-			'is_taxonomy_viewable'
+			is_taxonomy_viewable(...)
 		);
 
 		foreach ($taxonomies as $taxonomy) {
-			$this->options->add(IconOption::forTaxonomy(
-				$taxonomy->name,
-				self::TAXONOMY_ICON,
-				$taxonomy->labels->singular_name
-			));
+			$this->options->register(
+				IconOptionKey::taxonomy($taxonomy->name),
+				new IconOption(
+					self::CORE_TAXONOMY_ICONS[$taxonomy->name] ?? self::TAXONOMY_ICON,
+					$taxonomy->labels->singular_name,
+					IconOptionGroupKey::Taxonomy,
+					$taxonomy->name
+				)
+			);
 		}
-	}
-
-	/**
-	 * Retargets the few core post types and taxonomies whose crumbs deserve
-	 * something better than the generic icon the enumeration gave them. Runs
-	 * after that enumeration and goes through `update()`, so each keeps the
-	 * label and slug derived from its object — the same call an extension
-	 * makes on `IconOptionsRegistered`. Core objects not listed here are
-	 * already served by the generic default.
-	 */
-	private function setCoreObjectIcons(): void
-	{
-		$this->options->update(IconOptionKey::postType('post'),        icon: 'core/pencil');
-		$this->options->update(IconOptionKey::taxonomy('category'),    icon: 'core/category');
-		$this->options->update(IconOptionKey::taxonomy('post_format'), icon: Icon::Category);
-	}
-
-	/**
-	 * Registers an option per kind of media an attachment crumb can tell apart
-	 * — see `Crumb\Type\Post::iconOptionKey()`, which resolves them — and
-	 * gathers them with the attachment post type's own option under the media
-	 * group. What kind of file a piece of media is says more about it than the
-	 * fact that WordPress stores it as an attachment, and being an image or a
-	 * video is a state any attachment can be in rather than a fact about a
-	 * particular one, so each is configurable for all of them at once.
-	 *
-	 * The attachment post type's option stays where it is and keeps the label
-	 * WordPress derived for it; it is the catch-all for media that is none of
-	 * these — a PDF, an archive — so it belongs in the group beside them.
-	 * Runs after the post types are enumerated, since it amends one of them.
-	 */
-	private function registerMediaOptions(): void
-	{
-		$this->options->add(
-			new IconOption(IconOptionKey::MediaImage, 'core/image',         __('Image', 'x3p0-breadcrumbs'), IconOptionGroup::Media),
-			new IconOption(IconOptionKey::MediaAudio, 'core/audio',         __('Audio', 'x3p0-breadcrumbs'), IconOptionGroup::Media),
-			new IconOption(IconOptionKey::MediaVideo, 'core/capture-video', __('Video', 'x3p0-breadcrumbs'), IconOptionGroup::Media)
-		);
-
-		$this->options->update(
-			IconOptionKey::postType('attachment'),
-			icon: 'core/file',
-			group: IconOptionGroup::Media
-		);
 	}
 }

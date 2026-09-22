@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use WP_Post;
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Meta\MetaKey;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
@@ -32,10 +32,10 @@ final class Post extends Crumb
 	 * Stores the post this crumb represents.
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		#[NoAutowire] public readonly WP_Post $post
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -69,30 +69,9 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Resolves this post's icon option per post type, except where the site
-	 * owner restricted access to it, WordPress assigned the page a role under
-	 * its settings, or it is a piece of media. Being private, locked, the
-	 * privacy policy, an image, or a video is a state a post can be in rather
-	 * than a fact about a particular one, so none of them can be named per-post
-	 * and each gets an option covering all of them at once.
-	 *
-	 * The arms read top to bottom as precedence. Restricted access leads:
-	 * whether the post is reachable at all matters more to the person reading
-	 * the trail than what sort of place it is. Both of those checks report the
-	 * state that reader is in, so a locked post stops reading as locked once
-	 * they unlock it, and the private check leads.
-	 *
-	 * The privacy policy and posts page resolve here, which is what puts them
-	 * ahead of the icon config: the icon implied by the role WordPress gave the
-	 * page should beat a generic `page` icon the site owner configured. Their
-	 * options carry no label and so no control, since a page's icon belongs to
-	 * that page — a site owner wanting something else for one of them sets it
-	 * on the page itself, where `explicitIcon()` reads it, and it outranks
-	 * everything here.
-	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): IconOptionKey|string
+	public function getIconOptionKey(): IconOptionKey|string
 	{
 		return match (true) {
 			'private' === get_post_status($this->post) => IconOptionKey::PrivatePost,
@@ -105,23 +84,15 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns the icon stored in this post's own meta — the site owner's
-	 * editorial choice for this exact post, so it outranks the icon they
-	 * configured for the post type.
-	 *
 	 * @inheritDoc
 	 */
-	protected function explicitIcon(): string
+	public function getExplicitIcon(): string
 	{
 		return (string) get_post_meta($this->post->ID, MetaKey::Icon->value, true);
 	}
 
 	/**
 	 * Whether this post is the page assigned as the site's privacy policy.
-	 * Matched by ID against the option rather than with `is_privacy_policy()`,
-	 * which only answers for the queried object — the page can also appear in
-	 * the trail as an ancestor of one of its children, and it should read the
-	 * same either way.
 	 */
 	private function isPrivacyPolicy(): bool
 	{
@@ -131,14 +102,7 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Whether this post is the page assigned to list the site's blog posts,
-	 * and that assignment is actually in effect — WordPress keeps the option's
-	 * value when the front page is switched back to showing posts, at which
-	 * point the page is just a page again.
-	 *
-	 * The page is an ordinary page everywhere else, which is what WordPress
-	 * makes it; the option it resolves here only borrows the archive icon,
-	 * since listing posts is what it does.
+	 * Whether this post is the page assigned to list the site's blog posts.
 	 */
 	private function isPostsPage(): bool
 	{
@@ -150,12 +114,7 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns the option key for the kind of media this attachment is, or the
-	 * attachment post type's own key when it is none of them — a PDF, an
-	 * archive — which is the catch-all the media group carries for exactly
-	 * that. Mime types are matched with `wp_attachment_is()` rather than read
-	 * off `post_mime_type`, so the same rules WordPress applies elsewhere
-	 * decide what counts as an image, an audio file, or a video.
+	 * Returns the option key for the kind of media this attachment is.
 	 */
 	private function mediaOptionKey(): IconOptionKey|string
 	{

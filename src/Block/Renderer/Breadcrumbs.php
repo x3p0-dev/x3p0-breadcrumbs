@@ -129,7 +129,7 @@ final class Breadcrumbs implements BlockRenderer
 	 * Maps deprecated attributes to new attributes. A deprecated
 	 * `homeIcon`/`separatorIcon` value produced here (e.g., `svg-arrow`) is
 	 * remapped to its current icon library reference later, by
-	 * `Icon\IconResolver`, when the `Markup` layer resolves it. The
+	 * `Icon\IconRenderer`, when the `Markup` layer resolves it. The
 	 * deprecated `homeIcon` and `separatorIcon` attributes themselves are
 	 * folded into the generic `icons` map (keyed by icon option key) that
 	 * replaced them. The deprecated `showHomeLabel` boolean maps onto

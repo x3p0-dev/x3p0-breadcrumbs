@@ -19,20 +19,22 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Support\StorePage as StorePageSlug;
 use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
 use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconOption;
+use X3P0\Breadcrumbs\Icon\IconOptionGroup;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 
 /**
  * Registers the store's icon options: the defaults every crumb this extension
  * builds resolves its icon through, and the controls a site owner sets them
  * from in the block editor.
  *
- * The defaults belong here rather than in a crumb's own `getIcon()`, so that a
+ * The defaults belong here rather than on the crumbs themselves, so that a
  * site owner's configured icon still outranks them and another extension can
  * retarget them. Everything lands in the extension's own group, so a site owner
  * finds it together rather than scattered through the catch-all and the post
  * type and taxonomy groups.
  */
-final class RegisterStoreIcons
+final class RegisterIcons
 {
 	/**
 	 * Key of the icon option group everything to do with the store is listed
@@ -44,51 +46,80 @@ final class RegisterStoreIcons
 	/**
 	 * Two kinds of thing end up in the group. The product post type and its
 	 * taxonomies are already registered by the time this runs, so they are
-	 * amended with `update()`, which swaps the icon and moves them into the
-	 * group while leaving the label and slug the registrar derived from each
-	 * object in place: they belong under WooCommerce rather than among the
-	 * generic post types and taxonomies.
-	 *
-	 * The extension's own crumb types have no such counterpart and are added
-	 * outright, each under the key its crumb resolves its icon through.
+	 * replaced with a copy that changes only the icon or group, keeping the
+	 * label and slug the registrar derived from each object. The extension's
+	 * own crumb types have no such counterpart and are registered outright,
+	 * each under the key its crumb resolves its icon through.
 	 */
 	public function __invoke(IconOptionsRegistered $event): void
 	{
-		$event->options->addGroup(self::ICON_GROUP, __('WooCommerce', 'x3p0-breadcrumbs'));
+		$options = $event->options;
 
-		$event->options->update(IconOptionKey::postType('product'),       icon: Icon::Package);
-		$event->options->update(IconOptionKey::taxonomy('product_brand'), icon: Icon::BrandingWatermark);
-		$event->options->update(IconOptionKey::taxonomy('product_cat'),   icon: 'core/category');
-		$event->options->update(IconOptionKey::taxonomy('product_tag'),   icon: 'core/tag');
-		$event->options->update(IconOptionKey::taxonomy('pa_color'),      icon: Icon::Color);
-		$event->options->update(IconOptionKey::taxonomy('pa_size'),       icon: Icon::Straighten);
-
-		// The shop *is* the product post type archive — the `Shop`
-		// crumb decorates that crumb wherever it appears — so the
-		// archive's option is the shop's option. The name follows the
-		// crumb's: with a shop page configured, both read as that
-		// page's title; without one, the crumb falls back to the post
-		// type archive's label, so the option is left to do the same.
-		// Passing null leaves it alone.
-		$event->options->update(
-			IconOptionKey::postTypeArchive('product'),
-			icon: 'core/store',
-			label: $this->shopPageTitle() ?: null
+		$event->groups->register(
+			self::ICON_GROUP,
+			new IconOptionGroup(__('WooCommerce', 'x3p0-breadcrumbs'))
 		);
 
-		$this->groupProductObjectOptions($event);
+		$this->setProductObjectIcons($options);
+		$this->setShopIcon($options);
+		$this->groupProductObjectOptions($options);
 
-		$this->addStorePageIconOptions($event);
+		$options->register('woocommerce-billing-address', new IconOption(Icon::ReceiptLong, __('Billing Address', 'x3p0-breadcrumbs'), self::ICON_GROUP));
+		$options->register('woocommerce-shipping-address', new IconOption(Icon::Shipping, __('Shipping Address', 'x3p0-breadcrumbs'), self::ICON_GROUP));
+		$options->register('woocommerce-endpoint', new IconOption('core/more-vertical', __('Endpoint', 'x3p0-breadcrumbs'), self::ICON_GROUP));
+		$options->register('woocommerce-orderby', new IconOption('core/chevron-up-down', __('Product Sorting', 'x3p0-breadcrumbs'), self::ICON_GROUP));
 
-		$event->options->add(
-			new IconOption('woocommerce-billing-address',  Icon::ReceiptLong,      __('Billing Address', 'x3p0-breadcrumbs'),  self::ICON_GROUP),
-			new IconOption('woocommerce-shipping-address', Icon::Shipping,         __('Shipping Address', 'x3p0-breadcrumbs'), self::ICON_GROUP),
-			new IconOption('woocommerce-endpoint',         'core/more-vertical',   __('Endpoint', 'x3p0-breadcrumbs'),         self::ICON_GROUP),
-			new IconOption('woocommerce-orderby',          'core/chevron-up-down', __('Product Sorting', 'x3p0-breadcrumbs'),  self::ICON_GROUP)
-		);
+		$this->addStorePageIconOptions($options);
+		$this->addEndpointIconOptions($options);
+		$this->addCatalogOrderIconOptions($options);
+	}
 
-		$this->addEndpointIconOptions($event);
-		$this->addCatalogOrderIconOptions($event);
+	/**
+	 * Retargets the icons of the WordPress objects the store owns. Only
+	 * objects with an option already registered are touched: the product
+	 * attribute taxonomies differ per store, and `product_brand` arrived in a
+	 * later WooCommerce release, so several of these keys name a thing a
+	 * given site may not have. Registering one outright would conjure an
+	 * option for a taxonomy that isn't there.
+	 */
+	private function setProductObjectIcons(IconOptionRegistry $options): void
+	{
+		$icons = [
+			IconOptionKey::postType('product')       => Icon::Package,
+			IconOptionKey::taxonomy('product_brand') => Icon::BrandingWatermark,
+			IconOptionKey::taxonomy('product_cat')   => 'core/category',
+			IconOptionKey::taxonomy('product_tag')   => 'core/tag',
+			IconOptionKey::taxonomy('pa_color')      => Icon::Color,
+			IconOptionKey::taxonomy('pa_size')       => Icon::Straighten
+		];
+
+		foreach ($icons as $key => $icon) {
+			if ($option = $options->get($key)) {
+				$options->replace($key, $option->withIcon($icon));
+			}
+		}
+	}
+
+	/**
+	 * Points the product archive's option at the shop. The shop *is* the
+	 * product post type archive — the `Shop` crumb decorates that crumb
+	 * wherever it appears — so the archive's option is the shop's option. The
+	 * name follows the crumb's: with a shop page configured, both read as that
+	 * page's title; without one, the crumb falls back to the post type
+	 * archive's label, so the option is left to do the same.
+	 */
+	private function setShopIcon(IconOptionRegistry $options): void
+	{
+		$key = IconOptionKey::postTypeArchive('product');
+
+		if (! $option = $options->get($key)) {
+			return;
+		}
+
+		$option = $option->withIcon('core/store');
+		$title  = $this->shopPageTitle();
+
+		$options->replace($key, '' !== $title ? $option->withLabel($title) : $option);
 	}
 
 	/**
@@ -115,9 +146,9 @@ final class RegisterStoreIcons
 	 * which differ per store) and any a third party registers against products
 	 * are gathered up on the same terms as the ones WooCommerce ships. Keys
 	 * with no registered option — a taxonomy that isn't publicly viewable —
-	 * are passed over by `update()`.
+	 * are passed over, for the reason given in `setProductObjectIcons()`.
 	 */
-	private function groupProductObjectOptions(IconOptionsRegistered $event): void
+	private function groupProductObjectOptions(IconOptionRegistry $options): void
 	{
 		$keys = [
 			IconOptionKey::postType('product'),
@@ -129,27 +160,27 @@ final class RegisterStoreIcons
 		}
 
 		foreach ($keys as $key) {
-			$event->options->update($key, group: self::ICON_GROUP);
+			if ($option = $options->get($key)) {
+				$options->replace($key, $option->withGroup(self::ICON_GROUP));
+			}
 		}
 	}
 
 	/**
 	 * Registers an option per store page, under the key its crumb resolves,
 	 * so each carries its own default without the crumb hardcoding one.
-	 * Unlike the endpoints and sorting options below, these are
-	 * unlabeled: the pages are ordinary pages the site owner picked under
-	 * WooCommerce's settings, so an icon for one belongs on the page itself
-	 * rather than on a control here. They stay out of the editor and only
-	 * carry the default.
+	 * Unlike the endpoints and sorting options below, these are unlabeled:
+	 * the pages are ordinary pages the site owner picked under WooCommerce's
+	 * settings, so an icon for one belongs on the page itself rather than on
+	 * a control here. They stay out of the editor and only carry the default.
 	 */
-	private function addStorePageIconOptions(IconOptionsRegistered $event): void
+	private function addStorePageIconOptions(IconOptionRegistry $options): void
 	{
 		foreach (StorePageSlug::cases() as $page) {
-			$event->options->add(new IconOption(
+			$options->register(
 				$page->optionKey(),
-				$page->icon(),
-				group: self::ICON_GROUP
-			));
+				new IconOption($page->icon(), group: self::ICON_GROUP)
+			);
 		}
 	}
 
@@ -161,15 +192,13 @@ final class RegisterStoreIcons
 	 * aren't named in {@see EndpointSlug} have no key of their own and
 	 * resolve the shared option instead.
 	 */
-	private function addEndpointIconOptions(IconOptionsRegistered $event): void
+	private function addEndpointIconOptions(IconOptionRegistry $options): void
 	{
 		foreach (EndpointSlug::cases() as $endpoint) {
-			$event->options->add(new IconOption(
+			$options->register(
 				$endpoint->optionKey(),
-				$endpoint->icon(),
-				$endpoint->label(),
-				self::ICON_GROUP
-			));
+				new IconOption($endpoint->icon(), $endpoint->label(), self::ICON_GROUP)
+			);
 		}
 	}
 
@@ -182,19 +211,21 @@ final class RegisterStoreIcons
 	 * is sorted that way. Sorting options a third party adds have no key of
 	 * their own and resolve the shared option instead.
 	 */
-	private function addCatalogOrderIconOptions(IconOptionsRegistered $event): void
+	private function addCatalogOrderIconOptions(IconOptionRegistry $options): void
 	{
 		foreach (CatalogOrderSlug::cases() as $order) {
-			$event->options->add(new IconOption(
+			$options->register(
 				$order->optionKey(),
-				$order->icon(),
-				sprintf(
-				// Translators: %s: Post sorting name, e.g. "Popularity".
-					__('Sorted by: %s', 'x3p0-breadcrumbs'),
-					$order->label()
-				),
-				self::ICON_GROUP
-			));
+				new IconOption(
+					$order->icon(),
+					sprintf(
+						// Translators: %s: Post sorting name, e.g. "Popularity".
+						__('Sorted by: %s', 'x3p0-breadcrumbs'),
+						$order->label()
+					),
+					self::ICON_GROUP
+				)
+			);
 		}
 	}
 }

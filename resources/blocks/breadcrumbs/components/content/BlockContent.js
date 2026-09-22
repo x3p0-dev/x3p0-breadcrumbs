@@ -129,7 +129,7 @@ const BlockContent = ({
 	setAttributes,
 	isSelected
 }) => {
-	// Mirrors `Crumb::getIcon()`: an option key resolves to the user's
+	// Mirrors `IconOptionResolver::resolve()`: an option key resolves to the user's
 	// chosen icon from the `icons` attribute, falling back to the option's
 	// registered default (passed from PHP via `IconOptions::forBlock()`).
 	// Whether an icon actually renders is controlled separately by
@@ -169,7 +169,7 @@ const BlockContent = ({
 	// What the trail's last crumb stands for: the open post, when the block is
 	// being edited on one and it has a title yet, and the generic placeholder
 	// otherwise. Its icon reads the way the crumb resolves one — the post's own
-	// icon meta, which `Crumb\Type\Post::explicitIcon()` ranks above everything
+	// icon meta, which `Crumb\Type\Post::getExplicitIcon()` ranks above everything
 	// else, then the icon for its post type, then the generic page icon the
 	// placeholder crumbs stand on.
 	const currentLabel = (isViewable && postTitle)

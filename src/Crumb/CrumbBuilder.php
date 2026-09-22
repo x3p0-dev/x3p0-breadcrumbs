@@ -25,24 +25,15 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 final class CrumbBuilder
 {
 	/**
-	 * Read-only trail config, re-exposed from the context so
-	 * `AssemblerContext` can re-expose it in turn without reaching through
-	 * `$context` itself.
-	 */
-	public readonly BreadcrumbsConfig $config;
-
-	/**
-	 * Stores the factory crumbs are built through, the shared context every
-	 * crumb is built against, and the mutable crumb collection crumbs are
-	 * appended to, then re-exposes the context's trail config.
+	 * Stores the factory crumbs are built through, and the shared, read-only
+	 * trail config and mutable crumb collection every crumb is built or
+	 * appended against.
 	 */
 	public function __construct(
-		private readonly CrumbFactory    $crumbFactory,
-		public  readonly CrumbContext    $context,
-		public  readonly CrumbCollection $crumbs
-	) {
-		$this->config = $context->config;
-	}
+		private readonly CrumbFactory      $crumbFactory,
+		public  readonly BreadcrumbsConfig $config,
+		public  readonly CrumbCollection   $crumbs
+	) {}
 
 	/**
 	 * Builds a crumb by type and returns it without adding it to the
@@ -51,7 +42,7 @@ final class CrumbBuilder
 	public function makeCrumb(CrumbDefinition|string $type, array $params = []): ?Crumb
 	{
 		return $this->crumbFactory->make($type, [
-			'context' => $this->context,
+			'config' => $this->config,
 			...$params
 		]);
 	}

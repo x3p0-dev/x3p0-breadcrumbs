@@ -19,30 +19,20 @@ use X3P0\Breadcrumbs\Icon\IconOptionKey;
 /**
  * Abstract base for a single item in the breadcrumb trail. A crumb is created
  * by a `Query` or `Assembler` and exposes everything needed to output the item:
- * a text label and, optionally, a URL. Concrete crumbs live under `Type` and
- * read shared state from the supplied `CrumbContext`. This class is the
- * contract that the rest of the system typehints against; subclasses must
- * implement `getSlug()` and `getLabel()` (and override `getUrl()` where the
- * crumb links somewhere).
+ * a text label, optionally a URL, and the name of the icon option it resolves
+ * its icon through. Concrete crumbs live under `Type` and read the trail
+ * config they are given. This class is the contract that the rest of the
+ * system typehints against; subclasses must implement `getSlug()` and
+ * `getLabel()` (and override `getUrl()` where the crumb links somewhere).
  */
 abstract class Crumb
 {
 	/**
-	 * Read-only trail config, re-exposed from the context so concrete types
-	 * can read the thing they reach for most (labels and the like) directly,
-	 * without going through `$this->context` — mirroring how
-	 * `AssemblerContext` re-exposes it from `CrumbBuilder`.
+	 * Stores the shared, read-only trail config, which concrete types read
+	 * their labels from.
 	 */
-	protected readonly BreadcrumbsConfig $config;
-
-	/**
-	 * Stores the shared context every crumb reads from, then re-exposes its
-	 * trail config for direct access.
-	 */
-	public function __construct(protected readonly CrumbContext $context)
-	{
-		$this->config = $context->config;
-	}
+	public function __construct(protected readonly BreadcrumbsConfig $config)
+	{}
 
 	/**
 	 * Returns the crumb's type slug, used for its `crumb--{slug}` CSS class
@@ -66,61 +56,21 @@ abstract class Crumb
 	}
 
 	/**
-	 * Returns the crumb's icon attribute value (e.g., a built-in text/glyph
-	 * key or a `{collection}/{name}` icon library reference), left for the
-	 * `Markup` layer to resolve to real markup.
-	 *
-	 * Every crumb names one icon option key, and this states the resolution
-	 * order once, for every type, in descending order of how explicit each
-	 * source is:
-	 *
-	 * 1. `explicitIcon()` — a choice the site owner made.
-	 * 2. The icon configured for this crumb's option key.
-	 * 3. The default registered for that key.
-	 * 4. The default registered for {@see IconOptionKey::Fallback}.
-	 *
-	 * A type that wants a different default names a different key rather
-	 * than splicing an icon into the chain. Subclasses contribute through
-	 * `iconOptionKey()` and `explicitIcon()` rather than overriding this
-	 * method.
+	 * Returns the key of the icon option this crumb's icon resolves through —
+	 * the lookup key for both a site-owner override and a registered default.
 	 */
-	final public function getIcon(): string
-	{
-		return $this->explicitIcon()
-			?: $this->context->iconConfig->getIcon($this->iconOptionKey())
-			?: $this->context->iconOptions->icon($this->iconOptionKey())
-			?: $this->context->iconOptions->icon(IconOptionKey::Fallback);
-	}
-
-	/**
-	 * Returns the key of the icon option this crumb pulls its icon from — the
-	 * lookup key for both a site-owner override (see `IconConfig::getIcon()`)
-	 * and a registered default. A built-in crumb names its key as an
-	 * {@see IconOptionKey} case; a family sharing one option overrides this
-	 * once on its base class (e.g., `Date` returns `IconOptionKey::Date`), and
-	 * the dynamically-keyed types compute it (e.g., `Post` returns
-	 * `post-type:{$type}`).
-	 *
-	 * The fallback is the crumb's own slug, which is the seam a third-party
-	 * crumb registering an option under its slug rides on (see
-	 * `Extension\WooCommerce\Crumb\StorePage`). Built-in crumbs whose key and
-	 * slug happen to read the same still name their case outright: leaving
-	 * them to this default made the slug an undeclared part of the icon
-	 * contract, where renaming either side quietly resolved the fallback icon
-	 * instead of failing.
-	 */
-	protected function iconOptionKey(): IconOptionKey|string
+	public function getIconOptionKey(): IconOptionKey|string
 	{
 		return $this->getSlug();
 	}
 
 	/**
-	 * Returns an icon the site owner set against this specific crumb — the
-	 * only thing that outranks the icon they configured for its option (e.g.,
-	 * `Post` returns the icon stored in the post's own meta). Empty for most
-	 * types, which have no such per-instance choice to read.
+	 * Returns an icon pinned to this specific crumb — a choice the site
+	 * owner made, which outranks the configured icon option (e.g., `Post`
+	 * returns the icon stored in post meta). Empty for most types, which
+	 * have no such per-instance choice to read.
 	 */
-	protected function explicitIcon(): string
+	public function getExplicitIcon(): string
 	{
 		return '';
 	}

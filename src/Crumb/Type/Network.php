@@ -32,16 +32,9 @@ final class Network extends Crumb
 	}
 
 	/**
-	 * Resolves {@see IconOptionKey::Home} rather than an option of its own. On
-	 * a network this
-	 * crumb *is* the home of the trail — it takes the home label and links to
-	 * the network home — so a site owner configuring the home icon has
-	 * configured this crumb, and a second option beside it would only be a
-	 * control that quietly replaces the one they already set.
-	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): IconOptionKey
+	public function getIconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::Home;
 	}

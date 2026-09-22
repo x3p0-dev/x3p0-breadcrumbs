@@ -16,31 +16,25 @@ namespace X3P0\Breadcrumbs\Icon;
 use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 
 /**
- * Wires the Icon subsystem into the container. Boots `IconRegistrar`, which
- * registers the plugin's built-in SVGs (see the {@see Icon} enum) with
- * WordPress's icon API on `init`, and `IconOptionRegistrar`, which seeds the
- * `IconOptions` registry late on `init`. Binds `IconResolver` and
- * `IconOptions` as shared singletons so every consumer gets the same
- * instances.
+ * Wires the Icon subsystem into the container.
  */
 final class IconServiceProvider extends ServiceProvider
 {
 	/**
-	 * Shares single `IconResolver` and `IconOptions` instances per request.
+	 * Shared per request, so every consumer gets the same instances.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS = [
-		IconResolver::class,
-		IconOptionRegistry::class
+		IconRenderer::class,
+		IconOptionRegistry::class,
+		IconOptionGroupRegistry::class
 	];
 
 	/**
-	 * Boots `IconRegistrar` so the plugin's icons are registered before
-	 * anything needs to fetch one via `wp_get_icon()`, and
-	 * `IconOptionRegistrar` so the built-in icon options are seeded before
-	 * anything resolves or lists them.
+	 * Booted so the plugin's icons are registered before anything fetches one,
+	 * and the built-in options seeded before anything resolves or lists them.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.

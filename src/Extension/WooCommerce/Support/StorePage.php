@@ -55,7 +55,7 @@ enum StorePage: string
 	 * shared slug and key their cases beneath it, a store page has no shared
 	 * option to sit under and so is its own key — which is why this doubles
 	 * as the crumb's slug, the seam `Crumb\StorePage` leaves
-	 * `iconOptionKey()` at its default in order to ride.
+	 * `getIconOptionKey()` at its default in order to ride.
 	 *
 	 * Not to be read as the page's slug: that is the `post_name` of whichever
 	 * page the store owner configured, which this has nothing to do with.

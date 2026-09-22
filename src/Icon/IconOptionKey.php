@@ -14,31 +14,20 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Icon;
 
 /**
- * The icon option keys this plugin owns. The set of keys is open — extensions
- * register options under keys of their own, and one key per registered post
- * type and taxonomy is derived at runtime — so anywhere a key is accepted, the
- * type is `IconOptionKey|string`: a case for the ones named here, a raw string
- * for everyone else's. This mirrors how {@see Icon} names the icons this plugin
- * ships within the open namespace of every registered icon.
+ * The icon option keys this plugin owns, each able to hand over the option it
+ * ships with. The set is open — extensions register keys of their
+ * own, and one per registered post type and taxonomy is derived at runtime —
+ * so anywhere a key is accepted, the type is `IconOptionKey|string`.
  *
- * Naming the closed set is what keeps the vocabulary from being a scattering of
- * literals. A key is written down in one place (`IconOptionRegistrar`, which
- * registers the option) and read in another (a `Crumb` or the `Markup` layer,
- * which resolves it); as bare strings those two had nothing linking them, and a
- * rename on either side degraded silently to the `Fallback` option rather than
- * failing. The `Separator` case, for one, is written in `IconOptionRegistrar`
- * and read in `Markup\Type\Html`.
+ * What `option()` answers is what `IconOptionRegistrar` seeds the
+ * {@see IconOptionRegistry} with. Once seeded, the registry is what the block
+ * editor lists and what renders — an extension may have retargeted a built-in
+ * — so consumers read the registry (or `IconOptionResolver`), not the case.
  *
- * The enum is backed because these values are the wire format: they key the
- * block's `icons` attribute, so they are saved into post content and read back
- * by the editor through `window.x3p0Breadcrumbs` (see `utils/icon-options.js`,
- * which mirrors the cases the editor names). Renaming a case value is a
- * migration, not a refactor.
- *
- * Keys derived from a WordPress object have no case they could be — a site's
- * post types and taxonomies are not known until `init` — so they are built by
- * the static methods below instead. Those return strings rather than cases,
- * which is the same open/closed split the union above expresses.
+ * The values are the wire format: they key the block's `icons` attribute, so
+ * they are saved into post content and read back by the editor (see
+ * `utils/icon-options.js`, which mirrors the cases it branches on). Renaming a
+ * case value is a migration, not a refactor.
  */
 enum IconOptionKey: string
 {
@@ -63,13 +52,49 @@ enum IconOptionKey: string
 	case MediaVideo    = 'media-video';
 
 	/**
-	 * Builds the option key for a post type's single-post crumbs. Consumers
-	 * resolving an icon need the key alone (see `Crumb::iconOptionKey()`), so
-	 * this stays separate from the `IconOption::forPostType()` constructor
-	 * that uses it.
+	 * Returns the option this key ships with: its default icon (an
+	 * {@see Icon} case for an icon this plugin bundles, or a
+	 * `{collection}/{name}` library reference for anyone else's), its
+	 * translated label, and the group the block editor lists it under.
 	 *
-	 * The `:` namespace separator keeps derived keys visually distinct from
-	 * icon *references*, which use `/`.
+	 * Every icon the plugin can render is an option, but not every one is
+	 * worth a block control: the unlabeled options carry a default and
+	 * nothing more. The network site option is labeled only on a network,
+	 * since its crumb can only appear on one.
+	 */
+	public function option(): IconOption
+	{
+		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
+		return match ($this) {
+			self::Separator     => new IconOption(Icon::Chevron, __('Separator', 'x3p0-breadcrumbs')),
+			self::Home          => new IconOption('core/home', __('Home', 'x3p0-breadcrumbs')),
+			self::Date          => new IconOption('core/calendar', __('Date archives', 'x3p0-breadcrumbs')),
+			self::Time          => new IconOption('core/scheduled', __('Time archives', 'x3p0-breadcrumbs')),
+			self::User          => new IconOption('core/people', __('User', 'x3p0-breadcrumbs')),
+			self::Search        => new IconOption('core/search', __('Search', 'x3p0-breadcrumbs')),
+			self::Error404      => new IconOption('core/error', __('Page not found', 'x3p0-breadcrumbs')),
+			self::Paged         => new IconOption(Icon::Description, __('Pagination', 'x3p0-breadcrumbs')),
+			self::PrivatePost   => new IconOption(Icon::Unseen, __('Private', 'x3p0-breadcrumbs')),
+			self::ProtectedPost => new IconOption('core/key', __('Password protected', 'x3p0-breadcrumbs')),
+			self::PrivacyPolicy => new IconOption('core/shield'),
+			self::Archive,
+			self::PostsPage     => new IconOption(Icon::Archive),
+			self::Custom,
+			self::Fallback      => new IconOption(Icon::Article),
+			self::NetworkSite   => new IconOption(
+				'core/desktop',
+				is_multisite() ? __('Network Site', 'x3p0-breadcrumbs') : ''
+			),
+			self::MediaImage    => new IconOption('core/image', __('Image', 'x3p0-breadcrumbs'), IconOptionGroupKey::Media),
+			self::MediaAudio    => new IconOption('core/audio', __('Audio', 'x3p0-breadcrumbs'), IconOptionGroupKey::Media),
+			self::MediaVideo    => new IconOption('core/capture-video', __('Video', 'x3p0-breadcrumbs'), IconOptionGroupKey::Media)
+		};
+	}
+
+	/**
+	 * Builds the option key for a post type's single-post crumbs. The `:`
+	 * namespace separator keeps derived keys visually distinct from icon
+	 * *references*, which use `/`.
 	 */
 	public static function postType(string $postType): string
 	{
@@ -94,9 +119,7 @@ enum IconOptionKey: string
 
 	/**
 	 * Reduces a key to the string the registry and config store it under,
-	 * passing a raw string through untouched. Called at the boundary of every
-	 * method accepting the `IconOptionKey|string` union, so the union is
-	 * resolved once, on the way in, and nothing downstream carries it.
+	 * passing a raw string through untouched.
 	 */
 	public static function normalize(IconOptionKey|string $key): string
 	{

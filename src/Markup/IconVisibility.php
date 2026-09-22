@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Markup;
 
 /**
  * Controls which crumbs in the trail render their icon. Independent of
- * whether a crumb actually has an icon configured (see `Crumb::getIcon()`,
+ * whether a crumb actually has an icon configured (see `Markup::crumbIcon()`,
  * which always resolves to a value) — this is purely a show/hide switch.
  * Backed by string so a block attribute value can map onto it directly.
  */

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
@@ -31,10 +31,10 @@ final class Shop extends Crumb
 	 * when no shop page is configured.
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		private readonly Crumb $decoratedCrumb
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -59,9 +59,9 @@ final class Shop extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): IconOptionKey|string
+	public function getIconOptionKey(): IconOptionKey|string
 	{
-		return $this->decoratedCrumb->iconOptionKey();
+		return $this->decoratedCrumb->getIconOptionKey();
 	}
 
 	/**

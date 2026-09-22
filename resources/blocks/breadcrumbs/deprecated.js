@@ -25,7 +25,7 @@ const { supports } = metadata;
  * Maps the built-in `homeIcon`/`separatorIcon` values used before icons were
  * registered with WordPress's icon API to their `{collection}/{name}`
  * registered-icon equivalent. Mirrors
- * `X3P0\Breadcrumbs\Icon\IconResolver::DEPRECATED_ICONS` on the
+ * `X3P0\Breadcrumbs\Icon\IconRenderer::DEPRECATED_ICONS` on the
  * PHP side, which performs the same remap for content saved before this
  * migration.
  */

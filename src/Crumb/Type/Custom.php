@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
+use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Crumb\CrumbContext;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 
 /**
@@ -30,12 +30,12 @@ final class Custom extends Crumb
 	 * Stores the crumb's label and optional URL and icon.
 	 */
 	public function __construct(
-		CrumbContext $context,
+		BreadcrumbsConfig $config,
 		public readonly string $label,
 		public readonly string $url  = '',
 		public readonly string $icon = ''
 	) {
-		parent::__construct(context: $context);
+		parent::__construct(config: $config);
 	}
 
 	/**
@@ -49,7 +49,7 @@ final class Custom extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	protected function iconOptionKey(): IconOptionKey
+	public function getIconOptionKey(): IconOptionKey
 	{
 		return IconOptionKey::Custom;
 	}
@@ -72,15 +72,15 @@ final class Custom extends Crumb
 
 	/**
 	 * Returns the icon passed in with the crumb's other values. Unlike the
-	 * other crumb types, `Custom` has no queried object or fixed semantics to
-	 * derive anything from, so whoever built it is the only source of a
+	 * other crumb types, `Custom` has no queried object or fixed semantics
+	 * to derive anything from, so whoever built it is the only source of a
 	 * meaningful icon — which makes it an explicit choice rather than a
 	 * derived default, and the caller has no option key to configure against
 	 * anyway (every `Custom` shares {@see IconOptionKey::Custom}).
 	 *
 	 * @inheritDoc
 	 */
-	protected function explicitIcon(): string
+	public function getExplicitIcon(): string
 	{
 		return $this->icon;
 	}

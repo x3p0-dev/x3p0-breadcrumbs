@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Block;
 
+use X3P0\Breadcrumbs\Icon\IconOptionGroupKey;
+use X3P0\Breadcrumbs\Icon\IconOptionGroupRegistry;
 use X3P0\Breadcrumbs\Icon\IconOptionKey;
 use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
 use X3P0\Breadcrumbs\Markup\IconVisibility;
@@ -48,8 +50,9 @@ final class BlockAssets implements Bootable
 	 * Stores the icon and markup options passed to the editor.
 	 */
 	public function __construct(
-		private readonly IconOptionRegistry $iconOptions,
-		private readonly MarkupOptions      $markupOptions
+		private readonly IconOptionRegistry      $iconOptions,
+		private readonly IconOptionGroupRegistry $iconGroups,
+		private readonly MarkupOptions           $markupOptions
 	) {}
 
 	/**
@@ -91,8 +94,8 @@ final class BlockAssets implements Bootable
 							],
 							LabelVisibility::cases()
 						),
-						'iconOptions'      => $this->iconOptions->forBlock(),
-						'iconOptionGroups' => $this->iconOptions->groupsForBlock(),
+						'iconOptions'      => $this->iconOptionsForBlock(),
+						'iconOptionGroups' => $this->iconOptionGroupsForBlock(),
 						'postTypeIconKeys' => $this->postTypeIconKeys(),
 						'metaKeys'         => MetaKey::forEditor()
 					],
@@ -101,6 +104,58 @@ final class BlockAssets implements Bootable
 			),
 			'before'
 		);
+	}
+
+	/**
+	 * Returns the icon options offered as editor controls — those with a
+	 * label — in registration order. Unlabeled options are default-carriers
+	 * only and are omitted. An option naming a group nobody registered falls
+	 * back to the catch-all rather than disappearing, since the editor renders
+	 * its rows group by group and would have nowhere to put it.
+	 *
+	 * @return array<int, array{key: string, icon: string, name: string, group: string, slug: string}>
+	 */
+	private function iconOptionsForBlock(): array
+	{
+		$options = [];
+
+		foreach ($this->iconOptions->all() as $key => $option) {
+			if ('' !== $option->label) {
+				$options[] = [
+					'key'   => $key,
+					'icon'  => $option->icon,
+					'name'  => $option->label,
+					'group' => $this->iconGroups->has($option->group)
+						? $option->group
+						: IconOptionGroupKey::General->value,
+					'slug'  => $option->slug
+				];
+			}
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Returns the registered icon option groups as `key`/`name` pairs in
+	 * registration order, for the editor to lay its option controls out under.
+	 * Groups with no labeled options in them are left for the editor to skip,
+	 * since only it knows which options are still on offer at any moment.
+	 *
+	 * @return array<int, array{key: string, name: string}>
+	 */
+	private function iconOptionGroupsForBlock(): array
+	{
+		$groups = [];
+
+		foreach ($this->iconGroups->all() as $key => $group) {
+			$groups[] = [
+				'key'  => $key,
+				'name' => $group->label
+			];
+		}
+
+		return $groups;
 	}
 
 	/**

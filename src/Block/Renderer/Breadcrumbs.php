@@ -26,8 +26,7 @@ use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
  * Server-renders the Breadcrumbs block. Translates the block's saved
  * attributes (remapping any deprecated ones) into breadcrumb and markup
  * configuration, then delegates building the trail markup to the injected
- * breadcrumbs renderer. Icon attribute values are passed through as-is; the
- * `Markup` layer resolves them to real markup at render time.
+ * breadcrumbs renderer.
  */
 final class Breadcrumbs implements BlockRenderer
 {
@@ -59,12 +58,12 @@ final class Breadcrumbs implements BlockRenderer
 				'showFirstCrumb'        => $attributes['showTrailStart']        ?? true,
 				'showLastCrumb'         => $attributes['showTrailEnd']          ?? true,
 				'linkLastCrumb'         => $attributes['linkTrailEnd']          ?? false,
+				'icons'                 => $attributes['icons']                 ?? [],
 				'iconVisibility'        => IconVisibility::tryFrom($attributes['iconVisibility'] ?? '') ?? IconVisibility::None,
 				'labelVisibility'       => LabelVisibility::tryFrom($attributes['labelVisibility'] ?? '') ?? LabelVisibility::All,
 				'showSeparator'         => $attributes['showSeparator']         ?? true,
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
-			iconConfig: $attributes['icons'] ?? [],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
 	}

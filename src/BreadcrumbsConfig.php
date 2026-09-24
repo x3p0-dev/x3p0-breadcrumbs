@@ -20,7 +20,7 @@ use X3P0\Breadcrumbs\Support\BuildsFromArray;
  * controls how the trail is built: the labels used for generated crumbs, which
  * taxonomy represents a given post type, whether a post type's permalink
  * rewrite tags are mapped into crumbs, and whether the network (multisite)
- * crumb is shown. Icon choices live in their own `Icon\IconConfig`.
+ * crumb is shown.
  */
 final class BreadcrumbsConfig
 {

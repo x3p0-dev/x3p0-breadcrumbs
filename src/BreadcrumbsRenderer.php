@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs;
 
-use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Icon\IconPresets;
 use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
@@ -56,15 +55,14 @@ final class BreadcrumbsRenderer
 	 *
 	 * Each argument accepts either a typed object or the loose value it is
 	 * built from: `breadcrumbsConfig` and `markupConfig` may be passed as
-	 * arrays (coerced via their `fromArray()` factories), `iconConfig` as a
-	 * flat preset key => icon value map, and the markup type may be passed as a
-	 * `MarkupDefinition` enum, `Markup` class-string, or tagged slug. If
-	 * the markup type cannot be created, it will return an empty string.
+	 * arrays (coerced via their `fromArray()` factories), and the markup type
+	 * may be passed as a `MarkupDefinition` enum, `Markup` class-string, or
+	 * tagged slug. If the markup type cannot be created, it will return an
+	 * empty string.
 	 */
 	public function render(
 		BreadcrumbsConfig|array $breadcrumbsConfig = [],
 		MarkupConfig|array      $markupConfig      = [],
-		IconConfig|array        $iconConfig        = [],
 		MarkupDefinition|string $markupType        = MarkupType::Html
 	): string {
 		$breadcrumbsConfig = is_array($breadcrumbsConfig)
@@ -74,10 +72,6 @@ final class BreadcrumbsRenderer
 		$markupConfig = is_array($markupConfig)
 			? MarkupConfig::fromArray($markupConfig)
 			: $markupConfig;
-
-		$iconConfig = is_array($iconConfig)
-			? new IconConfig($iconConfig)
-			: $iconConfig;
 
 		// Let listeners retarget the markup type or config for this
 		// request, then broadcast the same event to WordPress unless a
@@ -92,7 +86,10 @@ final class BreadcrumbsRenderer
 		$markup = $this->markupFactory->make($event->markupType, [
 			'crumbs'       => $event->crumbs,
 			'config'       => $event->config,
-			'iconResolver' => new IconResolver($this->iconPresets, $iconConfig)
+			'iconResolver' => new IconResolver(
+				$this->iconPresets,
+				$event->config->icons()
+			)
 		]);
 
 		return $markup?->render() ?? '';

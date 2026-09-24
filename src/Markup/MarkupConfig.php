@@ -13,18 +13,28 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Markup;
 
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
 use X3P0\Breadcrumbs\Support\BuildsFromArray;
 
 /**
  * Immutable configuration object passed into markup objects to control how the
- * breadcrumb trail is displayed: the class namespace, container attributes, and
- * the flags governing the first/last crumb and front-page visibility.
+ * breadcrumb trail is displayed: the class namespace, container attributes, the
+ * flags governing the first/last crumb and front-page visibility, and the icons
+ * the trail renders.
  */
 final class MarkupConfig
 {
 	use BuildsFromArray;
+
+	/**
+	 * Stores the icons chosen for the trail. Declared outside the promoted
+	 * parameters so the constructor can accept the flat map the block
+	 * attribute arrives as and settle it into the typed config here.
+	 */
+	private readonly IconConfig $icons;
 
 	/**
 	 * Stores the config values as caller overrides only. The namespace is
@@ -32,7 +42,8 @@ final class MarkupConfig
 	 * (class, navigation role, ARIA label, and Interactivity API bindings)
 	 * lazily in the accessors, so only what the caller passes is stored.
 	 *
-	 * @param array<string, string> $containerAttr
+	 * @param array<string, string>                 $containerAttr
+	 * @param IconConfig|array<string, Icon|string> $icons
 	 */
 	public function __construct(
 		private readonly string          $namespace             = 'breadcrumbs',
@@ -41,11 +52,14 @@ final class MarkupConfig
 		private readonly bool            $showFirstCrumb        = true,
 		private readonly bool            $showLastCrumb         = true,
 		private readonly bool            $linkLastCrumb         = false,
+		IconConfig|array                 $icons                 = [],
 		private readonly IconVisibility  $iconVisibility        = IconVisibility::None,
 		private readonly LabelVisibility $labelVisibility       = LabelVisibility::All,
 		private readonly bool            $showSeparator         = true,
 		private readonly bool            $showTrailingSeparator = false
-	) {}
+	) {
+		$this->icons = is_array($icons) ? new IconConfig($icons) : $icons;
+	}
 
 	/**
 	 * Returns the markup namespace, which can be used for class prefixes.
@@ -110,6 +124,15 @@ final class MarkupConfig
 	}
 
 	/**
+	 * Returns the icons chosen for the trail, which `Icon\IconResolver`
+	 * lays over the registered presets to decide what each key renders.
+	 */
+	public function icons(): IconConfig
+	{
+		return $this->icons;
+	}
+
+	/**
 	 * Returns which crumbs in the trail should render their label.
 	 */
 	public function labelVisibility(): LabelVisibility
@@ -119,7 +142,7 @@ final class MarkupConfig
 
 	/**
 	 * Determines whether the separator is rendered at all, independent of
-	 * which separator icon the `Icon\IconConfig` configures.
+	 * which separator icon `icons()` names for it.
 	 */
 	public function showSeparator(): bool
 	{

@@ -80,11 +80,10 @@ It doesn't get any simpler than that for outputting breadcrumbs. Of course, that
 
 #### Defining Breadcrumbs Parameters
 
-The `breadcrumbs()->render()` method accepts four optional parameters:
+The `breadcrumbs()->render()` method accepts three optional parameters:
 
 - **`breadcrumbsConfig`:** Accepts either an instance of the `BreadcrumbsConfig` class or an array of arguments for configuring breadcrumbs.
-- **`markupConfig`:** Accepts either an instance of the `MarkupConfig` class or an array of arguments for configuring the final HTML markup of the breadcrumb trail.
-- **`iconConfig`:** Accepts either an instance of the `IconConfig` class or a flat array mapping icon preset keys to the icons the trail should render for them.
+- **`markupConfig`:** Accepts either an instance of the `MarkupConfig` class or an array of arguments for configuring the final HTML markup of the breadcrumb trail, including the icons it renders.
 - **`markupType`:** Accepts a case of the `MarkupType` enum: `MarkupType::Html` (the default), `MarkupType::Microdata`, `MarkupType::Rdfa`, or `MarkupType::JsonLinkedData`. It also accepts the class name of a custom `Markup` implementation.
 
 These parameters are described in the followup sections below. For now, just know that you have options for customizing the breadcrumbs to your liking.
@@ -98,18 +97,16 @@ use function X3P0\Breadcrumbs\breadcrumbs;
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      [],              // Optional: MarkupConfig or array
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
-If you use array-type configuration for `breadcrumbsConfig`, `markupConfig`, or `iconConfig`, they are automatically converted to `BreadcrumbsConfig`, `MarkupConfig`, and `IconConfig` instances for you. Using arrays is just for convenience.
+If you use array-type configuration for `breadcrumbsConfig` or `markupConfig`, they are automatically converted to `BreadcrumbsConfig` and `MarkupConfig` instances for you. Using arrays is just for convenience.
 
 But if you prefer to use the `*Config` classes, you're welcome to do that:
 
 ```php
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
-use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
@@ -117,7 +114,6 @@ use function X3P0\Breadcrumbs\breadcrumbs;
 echo breadcrumbs()->render(
 	breadcrumbsConfig: new BreadcrumbsConfig(), // Optional: BreadcrumbsConfig or array
 	markupConfig:      new MarkupConfig(),      // Optional: MarkupConfig or array
-	iconConfig:        new IconConfig(),        // Optional: IconConfig or array
 	markupType:        MarkupType::Html         // Optional: MarkupType case or Markup class name
 );
 ```
@@ -159,7 +155,6 @@ $breadcrumbsConfig = [
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],              // Optional: MarkupConfig or array
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
@@ -179,7 +174,6 @@ $breadcrumbsConfig = new BreadcrumbsConfig(
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],              // Optional: MarkupConfig or array
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
@@ -200,6 +194,7 @@ The `MarkupConfig` class accepts several parameters:
 - **`showLastCrumb`:** Whether to display the last (current page) breadcrumb. Defaults to `true`.
 - **`linkLastCrumb`:** Whether to link the last (current page) breadcrumb. Defaults to `false`. The `showLastCrumb` parameter must be enabled for this to work.
 - **`iconVisibility`:** Which crumbs render their icon, as a `Markup\Support\IconVisibility` case: `None` (default), `First`, `AllButLast`, or `All`. **Crumb icons are off by default**, so this is the switch to flip when the icons you configure aren't showing up. It does not govern the separator, which has its own flag below.
+- **`icons`:** The icons the trail renders, as an `Icon\IconConfig` instance or a flat array mapping icon preset keys to icon values. Covered in full under [Icon Configuration](#icon-configuration).
 - **`labelVisibility`:** Which crumbs render their text label, as a `Markup\Support\LabelVisibility` case: `All` (default), `AllButFirst`, `Last`, or `None`. A hidden label is still output for assistive tech behind a visually-hidden class rather than dropped, and it is only ever hidden when the same crumb's icon is visible — otherwise the crumb would have nothing to show at all.
 - **`showSeparator`:** Whether the separator is rendered between crumbs. Defaults to `true`.
 - **`showTrailingSeparator`:** Whether the separator is also rendered after the last crumb rather than only between crumbs. Defaults to `false`.
@@ -218,7 +213,6 @@ $markupConfig = [
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
@@ -238,16 +232,15 @@ $markupConfig = new MarkupConfig(
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
 #### Icon Configuration
 
-The `IconConfig` class holds the icons you've picked for one trail. It takes a single argument: a map of **icon preset key** to **icon value**.
+The icons you've picked for one trail are part of how that trail is presented, so they travel with the rest of the markup configuration: the `markupConfig` parameter's `icons` option. It takes a map of **icon preset key** to **icon value**, or an `X3P0\Breadcrumbs\Icon\IconConfig` instance holding the same map.
 
-An icon preset key names something that can carry an icon — the separator, the home crumb, single posts of a given post type. Every key is *preset* to an icon by the plugin or an extension, and this config is where you override that. The keys the plugin owns are the cases of `X3P0\Breadcrumbs\Icon\IconPresetKey`, and that enum is how you should name them: reach for a case, not the string it happens to be backed by.
+An icon preset key names something that can carry an icon — the separator, the home crumb, single posts of a given post type. Every key is *preset* to an icon by the plugin or an extension, and the `icons` option is where you override that. The keys the plugin owns are the cases of `X3P0\Breadcrumbs\Icon\IconPresetKey`, and that enum is how you should name them: reach for a case, not the string it happens to be backed by.
 
 | Case | What it covers |
 | --- | --- |
@@ -279,7 +272,7 @@ An **icon value** is one of:
 - A `{collection}/{name}` reference to any icon registered with WordPress's icon library — `core/home`, `core/search`, `core/pencil`, and the rest of core's set. These are another API's identifiers, so a string is the right way to name them; don't mirror them into constants of your own.
 - One of the built-in text/glyph values, which are literal characters rather than SVGs: `text-slash` (`/`), `text-bar` (`|`), `text-middot` (`·`), `text-black-circle` (`●`), or `text-white-circle` (`○`).
 
-You only need to name the keys you want to change. A key you leave out carries no opinion and falls through to whatever it's preset to. There's no way to configure a key to *nothing*, because "show no icons" isn't a fact about any one key — that's `iconVisibility` on the [markup config](#markup-configuration), which governs the trail rather than one key within it.
+You only need to name the keys you want to change. A key you leave out carries no opinion and falls through to whatever it's preset to. There's no way to configure a key to *nothing*, because "show no icons" isn't a fact about any one key — that's the sibling `iconVisibility` option, which governs the trail rather than one key within it.
 
 Here is an example that uses a slash separator, an outlined house for the home crumb, a pencil for single posts, and the bundled category icon for post format terms:
 
@@ -290,17 +283,19 @@ use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
-$iconConfig = [
-	IconPresetKey::Separator->value             => 'text-slash',
-	IconPresetKey::Home->value                  => Icon::HouseOutline,
-	IconPresetKey::postType('post')             => 'core/pencil',
-	IconPresetKey::taxonomy('post_format')      => Icon::Category
+$icons = [
+	IconPresetKey::Separator->value        => 'text-slash',
+	IconPresetKey::Home->value             => Icon::HouseOutline,
+	IconPresetKey::postType('post')        => 'core/pencil',
+	IconPresetKey::taxonomy('post_format') => Icon::Category
 ];
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
-	markupConfig:      ['iconVisibility' => IconVisibility::All],
-	iconConfig:        $iconConfig,
+	markupConfig:      [
+		'iconVisibility' => IconVisibility::All,
+		'icons'          => $icons
+	],
 	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
@@ -318,11 +313,13 @@ use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
-	markupConfig: new MarkupConfig(iconVisibility: IconVisibility::All),
-	iconConfig:   (new IconConfig())
-		->withIcon(IconPresetKey::Separator, 'text-slash')
-		->withIcon(IconPresetKey::Home, Icon::HouseOutline)
-		->withIcon(IconPresetKey::postType('post'), 'core/pencil')
+	markupConfig: new MarkupConfig(
+		iconVisibility: IconVisibility::All,
+		icons:          (new IconConfig())
+			->withIcon(IconPresetKey::Separator, 'text-slash')
+			->withIcon(IconPresetKey::Home, Icon::HouseOutline)
+			->withIcon(IconPresetKey::postType('post'), 'core/pencil')
+	)
 );
 ```
 
@@ -348,7 +345,6 @@ use function X3P0\Breadcrumbs\breadcrumbs;
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      [],              // Optional: MarkupConfig or array
-	iconConfig:        [],              // Optional: IconConfig or array
 	markupType:        MarkupType::Rdfa // Optional: MarkupType case or Markup class name
 );
 ```
@@ -374,11 +370,11 @@ echo breadcrumbs()->render(
 	markupConfig: [
 		'showFirstCrumb' => false,
 		'linkLastCrumb'  => true,
-		'iconVisibility' => IconVisibility::All
-	],
-	iconConfig: [
-		IconPresetKey::Separator->value => Icon::Arrow,
-		IconPresetKey::Home->value      => 'core/home'
+		'iconVisibility' => IconVisibility::All,
+		'icons'          => [
+			IconPresetKey::Separator->value => Icon::Arrow,
+			IconPresetKey::Home->value      => 'core/home'
+		]
 	],
 	markupType: MarkupType::Rdfa
 );
@@ -404,11 +400,11 @@ echo breadcrumbs()->render(
 	markupConfig: new MarkupConfig(
 		showFirstCrumb: false,
 		linkLastCrumb:  true,
-		iconVisibility: IconVisibility::All
+		iconVisibility: IconVisibility::All,
+		icons:          (new IconConfig())
+			->withIcon(IconPresetKey::Separator, Icon::Arrow)
+			->withIcon(IconPresetKey::Home, 'core/home')
 	),
-	iconConfig: (new IconConfig())
-		->withIcon(IconPresetKey::Separator, Icon::Arrow)
-		->withIcon(IconPresetKey::Home, 'core/home'),
 	markupType: MarkupType::Rdfa
 );
 ```

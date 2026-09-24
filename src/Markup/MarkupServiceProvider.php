@@ -19,10 +19,12 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 /**
  * Wires the markup subsystem into the container: binds the factory and options
  * as shared singletons and, from the `MarkupType` enum as the source of truth,
- * tags each built-in class under `Markup::TAG` with its key as the `slug`
- * attribute. `MarkupFactory` resolves a class-string directly and a string key
- * by looking it up among the tagged classes, which stays open to third parties
- * that tag their own classes under the same names. The default block markup
+ * tags each built-in class under `Markup::TAG`. `MarkupFactory` resolves a
+ * class-string directly and a string key by matching it against the static
+ * `key()` of the tagged classes that implement `MarkupBlockOption`, which stays
+ * open to third parties that tag their own classes under the same tag. A type
+ * that does not opt into that interface is reachable only by its enum case or
+ * class name, which is why JSON-LD has no string key. The default block markup
  * class is stored as a named container parameter rather than baked into the
  * `MarkupOptions` binding, so an extension can override just that value via
  * `setParam()` without needing to reconstruct the rest of the binding.

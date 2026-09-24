@@ -87,20 +87,21 @@ The `breadcrumbs()->render()` method accepts four optional parameters:
 - **`breadcrumbsConfig`:** Accepts either an instance of the `BreadcrumbsConfig` class or an array of arguments for configuring breadcrumbs.
 - **`markupConfig`:** Accepts either an instance of the `MarkupConfig` class or an array of arguments for configuring the final HTML markup of the breadcrumb trail.
 - **`iconConfig`:** Accepts either an instance of the `IconConfig` class or a flat array mapping icon preset keys to the icons the trail should render for them.
-- **`markupType`:** Accepts a string representing the markup type. The plugin's available types are `html` (default), `microdata`, `rdfa`, and `json-ld`. It also accepts a `MarkupType` enum case or a custom `Markup` class name.
+- **`markupType`:** Accepts a case of the `MarkupType` enum: `MarkupType::Html` (the default), `MarkupType::Microdata`, `MarkupType::Rdfa`, or `MarkupType::JsonLinkedData`. It also accepts the class name of a custom `Markup` implementation.
 
 These parameters are described in the followup sections below. For now, just know that you have options for customizing the breadcrumbs to your liking.
 
 Here's an example of configuring the breadcrumbs with array configs:
 
 ```php
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
-	markupConfig:      [],    // Optional: MarkupConfig or array
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
+	markupConfig:      [],              // Optional: MarkupConfig or array
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -112,13 +113,14 @@ But if you prefer to use the `*Config` classes, you're welcome to do that:
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: new BreadcrumbsConfig(), // Optional: BreadcrumbsConfig or array
 	markupConfig:      new MarkupConfig(),      // Optional: MarkupConfig or array
 	iconConfig:        new IconConfig(),        // Optional: IconConfig or array
-	markupType:        'html'                   // Optional: html, microdata, rdfa, or json-ld
+	markupType:        MarkupType::Html         // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -148,6 +150,7 @@ The `BreadcrumbsConfig` class accepts multiple parameters:
 Here is an example of disabling post rewrite tags and enabling the category taxonomy for single posts:
 
 ```php
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $breadcrumbsConfig = [
@@ -157,9 +160,9 @@ $breadcrumbsConfig = [
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
-	markupConfig:      [],    // Optional: MarkupConfig or array
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	markupConfig:      [],              // Optional: MarkupConfig or array
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -167,6 +170,7 @@ If you prefer to work with the `BreadcrumbsConfig` class directly, use this:
 
 ```php
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $breadcrumbsConfig = new BreadcrumbsConfig(
@@ -176,9 +180,9 @@ $breadcrumbsConfig = new BreadcrumbsConfig(
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
-	markupConfig:      [],    // Optional: MarkupConfig or array
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	markupConfig:      [],              // Optional: MarkupConfig or array
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -207,6 +211,7 @@ Unlike the rest of the config, these two are enum-typed rather than scalar, so a
 Here is an example of using array-style formatting to disable the first breadcrumb and link the last one:
 
 ```php
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $markupConfig = [
@@ -215,10 +220,10 @@ $markupConfig = [
 ];
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
+	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -226,6 +231,7 @@ Or if you prefer to work directly with the `MarkupConfig` class, use this method
 
 ```php
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 $markupConfig = new MarkupConfig(
@@ -234,10 +240,10 @@ $markupConfig = new MarkupConfig(
 );
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
+	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -284,6 +290,7 @@ Here is an example that uses a slash separator, an outlined house for the home c
 ```php
 use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconPresetKey;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
@@ -295,10 +302,10 @@ $iconConfig = [
 ];
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
+	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
 	markupConfig:      ['iconVisibility' => IconVisibility::All],
 	iconConfig:        $iconConfig,
-	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+	markupType:        MarkupType::Html // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -327,23 +334,26 @@ echo breadcrumbs()->render(
 
 The plugin comes with four classes for rendering the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
 
-The `markupType` parameter of `breadcrumbs()->render()` can be one of four values:
+Name the one you want with a case of the `X3P0\Breadcrumbs\Markup\MarkupType` enum, which is the canonical list of the built-in types:
 
-- **`html`:** Renders a plain HTML list of breadcrumbs. This is the default.
-- **`microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
-- **`rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs (_recommended for most use cases_).
-- **`json-ld`:** Renders a JSON-LD script tag rather than a visible trail, for the document `<head>`. See [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld).
+- **`MarkupType::Html`:** Renders a plain HTML list of breadcrumbs. This is the default.
+- **`MarkupType::Microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
+- **`MarkupType::Rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs (_recommended for most use cases_).
+- **`MarkupType::JsonLinkedData`:** Renders a JSON-LD script tag rather than a visible trail, for the document `<head>`. See [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld).
+
+The first three also answer to the short string keys `html`, `microdata`, and `rdfa`, since those are the types offered in the block editor's markup control and the block stores its choice as one of those keys. Reach for the enum in PHP — it's typed, it's discoverable in your editor, and it covers all four types. JSON-LD is not a block editor option and therefore has no string key at all: it can only be named by its enum case or class name.
 
 This example uses RDFa schema attributes:
 
 ```php
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
-	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
-	markupConfig:      [],    // Optional: MarkupConfig or array
-	iconConfig:        [],    // Optional: IconConfig or array
-	markupType:        'rdfa' // Optional: html, microdata, rdfa, or json-ld
+	breadcrumbsConfig: [],              // Optional: BreadcrumbsConfig or array
+	markupConfig:      [],              // Optional: MarkupConfig or array
+	iconConfig:        [],              // Optional: IconConfig or array
+	markupType:        MarkupType::Rdfa // Optional: MarkupType case or Markup class name
 );
 ```
 
@@ -356,6 +366,7 @@ Here's a look at what a few config options could look like using array-style syn
 ```php
 use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconPresetKey;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
@@ -373,7 +384,7 @@ echo breadcrumbs()->render(
 		IconPresetKey::Separator->value => Icon::Arrow,
 		IconPresetKey::Home->value      => 'core/home'
 	],
-	markupType: 'rdfa'
+	markupType: MarkupType::Rdfa
 );
 ```
 
@@ -385,6 +396,7 @@ use X3P0\Breadcrumbs\Icon\Icon;
 use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
@@ -401,7 +413,7 @@ echo breadcrumbs()->render(
 	iconConfig: (new IconConfig())
 		->withIcon(IconPresetKey::Separator, Icon::Arrow)
 		->withIcon(IconPresetKey::Home, 'core/home'),
-	markupType: 'rdfa'
+	markupType: MarkupType::Rdfa
 );
 ```
 
@@ -411,13 +423,14 @@ echo breadcrumbs()->render(
 
 The plugin has a markup implementation for outputting JSON-LD style formats in the `<head>` of your webpage. This feature is not currently enabled by default since the plugin's primary purpose is to make displayable breadcrumbs via the block editor.
 
-To enable it, you can call the normal `breadcrumbs()->render()` method and just pass in the `json-ld` markup type. And, of course, hook it to `wp_head`:
+To enable it, you can call the normal `breadcrumbs()->render()` method and pass in the `MarkupType::JsonLinkedData` enum case as the markup type. And, of course, hook it to `wp_head`:
 
 ```php
+use X3P0\Breadcrumbs\Markup\MarkupType;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 add_action('wp_head', function() {
-	echo breadcrumbs()->render(markupType: 'json-ld');
+	echo breadcrumbs()->render(markupType: MarkupType::JsonLinkedData);
 });
 ```
 

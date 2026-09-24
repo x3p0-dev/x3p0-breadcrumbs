@@ -50,8 +50,6 @@ That will output the block with the defaults. Of course, you can configure it by
 <!-- wp:x3p0/breadcrumbs {"icons":{"separator":"x3p0-breadcrumbs/arrow"},"iconVisibility":"all"} /-->
 ```
 
-The `icons` attribute is a map of *icon preset key* → *icon value*. Block markup is literal JSON, so both sides are spelled out as strings here, but in PHP you name them through the `IconPresetKey` and `Icon` enums instead. See [Icon Configuration](#icon-configuration) for what goes on either side of that map.
-
 ### Classic Themes
 
 If you're using or building a classic theme, you can wrap the Breadcrumbs block markup inside the WordPress `do_blocks()` function to parse the markup with PHP. Place the following code in your `header.php` template or in another template where you want to output the breadcrumbs:
@@ -203,9 +201,7 @@ The `MarkupConfig` class accepts several parameters:
 - **`linkLastCrumb`:** Whether to link the last (current page) breadcrumb. Defaults to `false`. The `showLastCrumb` parameter must be enabled for this to work.
 - **`iconVisibility`:** Which crumbs render their icon, as a `Markup\Support\IconVisibility` case: `None` (default), `First`, `AllButLast`, or `All`. **Crumb icons are off by default**, so this is the switch to flip when the icons you configure aren't showing up. It does not govern the separator, which has its own flag below.
 - **`labelVisibility`:** Which crumbs render their text label, as a `Markup\Support\LabelVisibility` case: `All` (default), `AllButFirst`, `Last`, or `None`. A hidden label is still output for assistive tech behind a visually-hidden class rather than dropped, and it is only ever hidden when the same crumb's icon is visible — otherwise the crumb would have nothing to show at all.
-
-Unlike the rest of the config, these two are enum-typed rather than scalar, so an array-style `markupConfig` must still hand them a case: `['iconVisibility' => IconVisibility::All]`. Their backed string values (`all`, `all-but-last`, and so on) are the block attribute format.
-- **`showSeparator`:** Whether the separator is rendered between crumbs. Defaults to `true`. This is independent of `iconVisibility` and of which separator icon `IconConfig` names.
+- **`showSeparator`:** Whether the separator is rendered between crumbs. Defaults to `true`.
 - **`showTrailingSeparator`:** Whether the separator is also rendered after the last crumb rather than only between crumbs. Defaults to `false`.
 
 Here is an example of using array-style formatting to disable the first breadcrumb and link the last one:

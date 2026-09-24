@@ -16,7 +16,8 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_User;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -49,9 +50,9 @@ final class User extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::User;
+		return IconPresetKey::User;
 	}
 
 	/**

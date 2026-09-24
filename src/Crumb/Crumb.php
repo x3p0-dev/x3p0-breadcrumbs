@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * Abstract base for a single item in the breadcrumb trail. A crumb is created
  * by a `Query` or `Assembler` and exposes everything needed to output the item:
- * a text label, optionally a URL, and the name of the icon option it resolves
- * its icon through. Concrete crumbs live under `Type` and read the trail
+ * a text label, optionally a URL, and the icon preset key it resolves its
+ * icon through. Concrete crumbs live under `Type` and read the trail
  * config they are given. This class is the contract that the rest of the
  * system typehints against; subclasses must implement `getSlug()` and
  * `getLabel()` (and override `getUrl()` where the crumb links somewhere).
@@ -56,9 +57,12 @@ abstract class Crumb
 	}
 
 	/**
-	 * Returns the key of the icon option tied to this crumb.
+	 * Returns the icon preset key this crumb resolves its icon through — the
+	 * one description of itself it wants an icon for. A crumb that could be
+	 * described several ways picks the narrowest that fits. Defaults to the
+	 * crumb's own slug.
 	 */
-	public function getIconOptionKey(): IconOptionKey|string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
 		return $this->getSlug();
 	}

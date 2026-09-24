@@ -46,3 +46,7 @@ function breadcrumbs(): BreadcrumbsRenderer
 {
 	return container()->get(BreadcrumbsRenderer::class);
 }
+
+add_action('wp_head', function() {
+	echo breadcrumbs()->render(markupType: 'json-ld');
+});

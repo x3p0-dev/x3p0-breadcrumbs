@@ -17,7 +17,7 @@ use WP_Block;
 use WP_Block_Supports;
 use X3P0\Breadcrumbs\Block\BlockRenderer;
 use X3P0\Breadcrumbs\BreadcrumbsRenderer;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Markup\MarkupOptions;
 use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use X3P0\Breadcrumbs\Markup\Support\LabelVisibility;
@@ -64,9 +64,7 @@ final class Breadcrumbs implements BlockRenderer
 				'showSeparator'         => $attributes['showSeparator']         ?? true,
 				'showTrailingSeparator' => $attributes['showTrailingSeparator'] ?? false
 			],
-			iconConfig: [
-				'icons' => $attributes['icons'] ?? []
-			],
+			iconConfig: $attributes['icons'] ?? [],
 			markupType: $attributes['markup'] ?? $this->markupOptions->getBlockDefaultKey()
 		);
 	}
@@ -156,11 +154,11 @@ final class Breadcrumbs implements BlockRenderer
 		}
 
 		if (! empty($attributes['homeIcon'])) {
-			$attributes['icons'][IconOptionKey::Home->value] = $attributes['homeIcon'];
+			$attributes['icons'][IconPresetKey::Home->value] = $attributes['homeIcon'];
 		}
 
 		if (! empty($attributes['separatorIcon'])) {
-			$attributes['icons'][IconOptionKey::Separator->value] = $attributes['separatorIcon'];
+			$attributes['icons'][IconPresetKey::Separator->value] = $attributes['separatorIcon'];
 		}
 
 		if (array_key_exists('showHomeLabel', $attributes) && ! $attributes['showHomeLabel']) {

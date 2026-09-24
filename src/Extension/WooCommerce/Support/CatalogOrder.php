@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
 
 use Automattic\WooCommerce\Enums\CatalogSortOrder;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
 
 /**
  * The catalog sorting options WooCommerce offers on the shop, product taxonomy
@@ -45,7 +46,7 @@ use Automattic\WooCommerce\Enums\CatalogSortOrder;
  * recreated below and run back through WooCommerce's own filter so a plugin
  * that renames, adds, or removes a sorting option is still honored.
  */
-enum CatalogOrder
+enum CatalogOrder implements IconPresetDefinition
 {
 	case MenuOrder;
 	case Popularity;
@@ -158,13 +159,15 @@ enum CatalogOrder
 	}
 
 	/**
-	 * Returns the icon option key for this sorting option. Every sorting
+	 * Returns the icon preset key for this sorting option. Every sorting
 	 * crumb shares the one `woocommerce-orderby` slug, which is all an
 	 * option registered by a third party has to resolve an icon from; the
 	 * options named here get a key apiece under it, so each carries its own
-	 * registered default rather than the crumb hardcoding one.
+	 * registered preset rather than the crumb hardcoding an icon.
+	 *
+	 * @inheritDoc
 	 */
-	public function optionKey(): string
+	public function presetKey(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return 'woocommerce-orderby:' . $this->orderby();

@@ -47,14 +47,14 @@ final class StorePage extends Crumb
 	/**
 	 * Takes the slug from the store page's own icon option key, rather than
 	 * the other way around: every store page is its own option, so the two
-	 * are one string, and sourcing it here is what lets `getIconOptionKey()`
+	 * are one string, and sourcing it here is what lets `getIconPresetKey()`
 	 * stay at its default.
 	 *
 	 * @inheritDoc
 	 */
 	public function getSlug(): string
 	{
-		return $this->page->optionKey();
+		return $this->page->presetKey();
 	}
 
 	/**

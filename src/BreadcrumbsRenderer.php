@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs;
 
 use X3P0\Breadcrumbs\Icon\IconConfig;
-use X3P0\Breadcrumbs\Icon\IconOptionRegistry;
-use X3P0\Breadcrumbs\Icon\IconOptionResolver;
+use X3P0\Breadcrumbs\Icon\IconPresets;
+use X3P0\Breadcrumbs\Icon\IconResolver;
 use X3P0\Breadcrumbs\Markup\Event\MarkupRendering;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use X3P0\Breadcrumbs\Markup\MarkupDefinition;
@@ -41,13 +41,13 @@ final class BreadcrumbsRenderer
 	/**
 	 * Sets up the initial renderer state with the breadcrumbs generator and
 	 * the markup factory used to build and render a breadcrumb trail, the
-	 * icon options the caller's icon choices are laid over, and the
+	 * icon presets the caller's icon choices are laid over, and the
 	 * dispatcher that lets listeners retarget rendering.
 	 */
 	public function __construct(
 		private readonly BreadcrumbsGenerator $generator,
 		private readonly MarkupFactory        $markupFactory,
-		private readonly IconOptionRegistry   $iconOptions,
+		private readonly IconPresets          $iconPresets,
 		private readonly Dispatcher           $events
 	) {}
 
@@ -55,8 +55,9 @@ final class BreadcrumbsRenderer
 	 * Builds and renders a breadcrumb trail, returning the markup as a string.
 	 *
 	 * Each argument accepts either a typed object or the loose value it is
-	 * built from: the configs may be passed as arrays (coerced via their
-	 * `fromArray()` factories), and the markup type may be passed as a
+	 * built from: `breadcrumbsConfig` and `markupConfig` may be passed as
+	 * arrays (coerced via their `fromArray()` factories), `iconConfig` as a
+	 * flat preset key => icon value map, and the markup type may be passed as a
 	 * `MarkupDefinition` enum, `Markup` class-string, or tagged slug. If
 	 * the markup type cannot be created, it will return an empty string.
 	 */
@@ -75,7 +76,7 @@ final class BreadcrumbsRenderer
 			: $markupConfig;
 
 		$iconConfig = is_array($iconConfig)
-			? IconConfig::fromArray($iconConfig)
+			? new IconConfig($iconConfig)
 			: $iconConfig;
 
 		// Let listeners retarget the markup type or config for this
@@ -91,7 +92,7 @@ final class BreadcrumbsRenderer
 		$markup = $this->markupFactory->make($event->markupType, [
 			'crumbs'       => $event->crumbs,
 			'config'       => $event->config,
-			'iconResolver' => new IconOptionResolver($this->iconOptions, $iconConfig)
+			'iconResolver' => new IconResolver($this->iconPresets, $iconConfig)
 		]);
 
 		return $markup?->render() ?? '';

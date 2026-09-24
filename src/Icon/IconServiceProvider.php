@@ -21,26 +21,30 @@ use X3P0\Breadcrumbs\Packages\Framework\Core\ServiceProvider;
 final class IconServiceProvider extends ServiceProvider
 {
 	/**
-	 * Shared per request, so every consumer gets the same instances.
+	 * Shared per request, so every consumer gets the same instances — which
+	 * matters for `IconPresets` above all, since what an extension registers
+	 * on `init` has to be what the trail resolves against and what the editor
+	 * lists.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const SINGLETONS = [
 		IconRenderer::class,
-		IconOptionRegistry::class,
-		IconOptionGroupRegistry::class
+		IconPresets::class,
+		IconOptions::class
 	];
 
 	/**
-	 * Booted so the plugin's icons are registered before anything fetches one,
-	 * and the built-in options seeded before anything resolves or lists them.
+	 * Booted so the plugin's icons are registered before anything fetches
+	 * one, and extensions get their moment to register before anything
+	 * resolves or lists.
 	 *
 	 * @var  array<int|string, string>
 	 * @todo Type hint with PHP 8.3+ requirement.
 	 */
 	protected const BOOTABLE = [
 		IconRegistrar::class,
-		IconOptionRegistrar::class
+		IconPresetRegistrar::class
 	];
 }

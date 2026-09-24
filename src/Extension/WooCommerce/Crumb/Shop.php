@@ -15,7 +15,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Crumb;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * Crumb representing the WooCommerce shop. It replaces the product post type
@@ -59,9 +59,9 @@ final class Shop extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey|string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return $this->decoratedCrumb->getIconOptionKey();
+		return $this->decoratedCrumb->getIconPresetKey();
 	}
 
 	/**

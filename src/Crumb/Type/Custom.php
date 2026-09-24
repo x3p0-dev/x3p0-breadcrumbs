@@ -15,7 +15,8 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * An open-ended crumb built entirely from the values passed to it: a label and
@@ -49,9 +50,9 @@ final class Custom extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::Custom;
+		return IconPresetKey::Custom;
 	}
 
 	/**
@@ -76,7 +77,7 @@ final class Custom extends Crumb
 	 * to derive anything from, so whoever built it is the only source of a
 	 * meaningful icon — which makes it an explicit choice rather than a
 	 * derived default, and the caller has no option key to configure against
-	 * anyway (every `Custom` shares {@see IconOptionKey::Custom}).
+	 * anyway (every `Custom` shares {@see IconPresetKey::Custom}).
 	 *
 	 * @inheritDoc
 	 */

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
 
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+
 /**
  * WooCommerce uses magic strings instead of a constant or enum to reference
  * its own account/checkout endpoints. This is the single source of truth for
@@ -23,7 +25,7 @@ namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
  * endpoint needs a case here — only the ones this plugin's code branches on or
  * has an opinion about.
  */
-enum Endpoint: string
+enum Endpoint: string implements IconPresetDefinition
 {
 	case Orders         = 'orders';
 	case ViewOrder      = 'view-order';
@@ -37,13 +39,13 @@ enum Endpoint: string
 	case Wishlist       = 'wishlist';
 
 	/**
-	 * Returns the icon option key for this endpoint. Every endpoint crumb
+	 * Returns the icon preset key for this endpoint. Every endpoint crumb
 	 * shares the one `woocommerce-endpoint` slug, which is all an
 	 * unrecognized endpoint has to resolve an icon from; the endpoints
 	 * named here get a key apiece under it, so each carries its own
 	 * registered default rather than the crumb hardcoding one.
 	 */
-	public function optionKey(): string
+	public function presetKey(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return 'woocommerce-endpoint:' . $this->value;
@@ -76,7 +78,7 @@ enum Endpoint: string
 	}
 
 	/**
-	 * Returns the default icon registered for this endpoint's option key.
+	 * Returns the icon this endpoint's preset is registered with.
 	 */
 	public function icon(): string
 	{

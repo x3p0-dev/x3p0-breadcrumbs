@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Icon;
 
 /**
- * Renders an icon attribute value — the kind `IconOptionResolver` returns — as
+ * Renders an icon attribute value — the kind `IconResolver` returns — as
  * real markup: a built-in text/glyph character, or an icon fetched from the
  * registered icon library.
  */

@@ -16,7 +16,8 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 use WP_Post_Type;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -68,8 +69,8 @@ final class PostType extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::postTypeArchive($this->postType->name);
+		return IconPresetKey::postTypeArchive($this->postType->name);
 	}
 }

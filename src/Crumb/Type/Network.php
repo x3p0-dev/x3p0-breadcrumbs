@@ -15,7 +15,8 @@ namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * Crumb for the multisite network home. Uses the configured home label and
@@ -34,9 +35,9 @@ final class Network extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::Home;
+		return IconPresetKey::Home;
 	}
 
 	/**

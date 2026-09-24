@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * Base for the sub-day time archives (Hour, Minute, Second), which WordPress
@@ -30,9 +31,9 @@ abstract class TimeArchive extends Date
 	 *
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::Time;
+		return IconPresetKey::Time;
 	}
 
 	/**

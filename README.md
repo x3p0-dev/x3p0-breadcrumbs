@@ -18,11 +18,13 @@ In 2009, I [launched the first version of this script](https://justintadlock.com
 		- [Defining Breadcrumbs Parameters](#defining-breadcrumbs-parameters)
 		- [Breadcrumbs Configuration](#breadcrumbs-configuration)
 		- [Markup Configuration](#markup-configuration)
+		- [Icon Configuration](#icon-configuration)
 		- [Markup Types](#markup-types)
 		- [Putting It All Together](#putting-it-all-together)
 	- [Advanced Use Cases](#advanced-use-cases)
 		- [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld)
 		- [Modifying the Breadcrumb Trail with Events](#modifying-the-breadcrumb-trail-with-events)
+		- [The Icon API](#the-icon-api)
 		- [Available Hooks](#available-hooks)
 		- [Building Custom Query, Assembler, Crumb, and Markup Types](#building-custom-query-assembler-crumb-and-markup-types)
 		- [The Extension System](#the-extension-system)
@@ -42,11 +44,13 @@ If you're a block theme author, you can include support for the Breadcrumbs bloc
 <!-- wp:x3p0/breadcrumbs /-->
 ```
 
-That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block (see [`block.json`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/resources/blocks/breadcrumbs/block.json) for all attributes). Here is an example that changes the `separatorIcon` attribute to show an arrow:
+That will output the block with the defaults. Of course, you can configure it by customizing the attributes available for the block (see [`block.json`](https://github.com/x3p0-dev/x3p0-breadcrumbs/blob/master/resources/blocks/breadcrumbs/block.json) for all attributes). Here is an example that uses the `icons` attribute to show an arrow separator and turns on crumb icons via `iconVisibility`:
 
 ```html
-<!-- wp:x3p0/breadcrumbs {"separatorIcon":"svg-arrow"} /-->
+<!-- wp:x3p0/breadcrumbs {"icons":{"separator":"x3p0-breadcrumbs/arrow"},"iconVisibility":"all"} /-->
 ```
+
+The `icons` attribute is a map of *icon preset key* → *icon value*. Block markup is literal JSON, so both sides are spelled out as strings here, but in PHP you name them through the `IconPresetKey` and `Icon` enums instead. See [Icon Configuration](#icon-configuration) for what goes on either side of that map.
 
 ### Classic Themes
 
@@ -78,11 +82,12 @@ It doesn't get any simpler than that for outputting breadcrumbs. Of course, that
 
 #### Defining Breadcrumbs Parameters
 
-The `breadcrumbs()->render()` method accepts three optional parameters:
+The `breadcrumbs()->render()` method accepts four optional parameters:
 
 - **`breadcrumbsConfig`:** Accepts either an instance of the `BreadcrumbsConfig` class or an array of arguments for configuring breadcrumbs.
 - **`markupConfig`:** Accepts either an instance of the `MarkupConfig` class or an array of arguments for configuring the final HTML markup of the breadcrumb trail.
-- **`markupType`:** Accepts a string representing the markup type. The plugin's available types are `html` (default), `microdata`, and `rdfa`.
+- **`iconConfig`:** Accepts either an instance of the `IconConfig` class or a flat array mapping icon preset keys to the icons the trail should render for them.
+- **`markupType`:** Accepts a string representing the markup type. The plugin's available types are `html` (default), `microdata`, `rdfa`, and `json-ld`. It also accepts a `MarkupType` enum case or a custom `Markup` class name.
 
 These parameters are described in the followup sections below. For now, just know that you have options for customizing the breadcrumbs to your liking.
 
@@ -94,23 +99,26 @@ use function X3P0\Breadcrumbs\breadcrumbs;
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
 	markupConfig:      [],    // Optional: MarkupConfig or array
-	markupType:        'html' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
-If you use array-type configuration for either `breadcrumbsConfig` or `markupConfig`, they are automatically converted to `BreadcrumbsConfig` and `MarkupConfig` instances for you. Using arrays is just for convenience.
+If you use array-type configuration for `breadcrumbsConfig`, `markupConfig`, or `iconConfig`, they are automatically converted to `BreadcrumbsConfig`, `MarkupConfig`, and `IconConfig` instances for you. Using arrays is just for convenience.
 
 But if you prefer to use the `*Config` classes, you're welcome to do that:
 
 ```php
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Icon\IconConfig;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
 	breadcrumbsConfig: new BreadcrumbsConfig(), // Optional: BreadcrumbsConfig or array
 	markupConfig:      new MarkupConfig(),      // Optional: MarkupConfig or array
-	markupType:        'html'                   // Optional: html, microdata, or rdfa
+	iconConfig:        new IconConfig(),        // Optional: IconConfig or array
+	markupType:        'html'                   // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
@@ -150,7 +158,8 @@ $breadcrumbsConfig = [
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],    // Optional: MarkupConfig or array
-	markupType:        'html' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
@@ -168,7 +177,8 @@ $breadcrumbsConfig = new BreadcrumbsConfig(
 echo breadcrumbs()->render(
 	breadcrumbsConfig: $breadcrumbsConfig,
 	markupConfig:      [],    // Optional: MarkupConfig or array
-	markupType:        'html' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
@@ -187,6 +197,12 @@ The `MarkupConfig` class accepts several parameters:
 - **`showFirstCrumb`:** Whether to display the first (homepage) breadcrumb. Defaults to `true`.
 - **`showLastCrumb`:** Whether to display the last (current page) breadcrumb. Defaults to `true`.
 - **`linkLastCrumb`:** Whether to link the last (current page) breadcrumb. Defaults to `false`. The `showLastCrumb` parameter must be enabled for this to work.
+- **`iconVisibility`:** Which crumbs render their icon, as a `Markup\Support\IconVisibility` case: `None` (default), `First`, `AllButLast`, or `All`. **Crumb icons are off by default**, so this is the switch to flip when the icons you configure aren't showing up. It does not govern the separator, which has its own flag below.
+- **`labelVisibility`:** Which crumbs render their text label, as a `Markup\Support\LabelVisibility` case: `All` (default), `AllButFirst`, `Last`, or `None`. A hidden label is still output for assistive tech behind a visually-hidden class rather than dropped, and it is only ever hidden when the same crumb's icon is visible — otherwise the crumb would have nothing to show at all.
+
+Unlike the rest of the config, these two are enum-typed rather than scalar, so an array-style `markupConfig` must still hand them a case: `['iconVisibility' => IconVisibility::All]`. Their backed string values (`all`, `all-but-last`, and so on) are the block attribute format.
+- **`showSeparator`:** Whether the separator is rendered between crumbs. Defaults to `true`. This is independent of `iconVisibility` and of which separator icon `IconConfig` names.
+- **`showTrailingSeparator`:** Whether the separator is also rendered after the last crumb rather than only between crumbs. Defaults to `false`.
 
 Here is an example of using array-style formatting to disable the first breadcrumb and link the last one:
 
@@ -201,7 +217,8 @@ $markupConfig = [
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	markupType:        'html' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
@@ -219,19 +236,103 @@ $markupConfig = new MarkupConfig(
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
 	markupConfig:      $markupConfig,
-	markupType:        'html' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+);
+```
+
+#### Icon Configuration
+
+The `IconConfig` class holds the icons you've picked for one trail. It takes a single argument: a map of **icon preset key** to **icon value**.
+
+An icon preset key names something that can carry an icon — the separator, the home crumb, single posts of a given post type. Every key is *preset* to an icon by the plugin or an extension, and this config is where you override that. The keys the plugin owns are the cases of `X3P0\Breadcrumbs\Icon\IconPresetKey`, and that enum is how you should name them: reach for a case, not the string it happens to be backed by.
+
+| Case | What it covers |
+| --- | --- |
+| `IconPresetKey::Separator` | The separator rendered between crumbs |
+| `IconPresetKey::Home` | The home crumb |
+| `IconPresetKey::Date` | Date archive crumbs |
+| `IconPresetKey::Time` | Time archive crumbs |
+| `IconPresetKey::User` | User and author crumbs |
+| `IconPresetKey::Search` | The search results crumb |
+| `IconPresetKey::Error404` | The 404 crumb |
+| `IconPresetKey::Paged` | Pagination crumbs |
+| `IconPresetKey::Archive` | Generic archive crumbs |
+| `IconPresetKey::Custom` | `Custom` crumbs that don't carry their own icon |
+| `IconPresetKey::Fallback` | The last resort for any key nothing answers for |
+| `IconPresetKey::PrivacyPolicy` | The page assigned as the site's privacy policy |
+| `IconPresetKey::PostsPage` | The page assigned to list blog posts |
+| `IconPresetKey::NetworkSite` | The site crumb on multisite |
+| `IconPresetKey::MediaImage`, `MediaAudio`, `MediaVideo` | Attachment crumbs, by media type |
+
+Three more families of keys are registered at runtime, one per viewable post type, post type archive, and taxonomy. There's no case to reach for, so the enum hands you a builder for each:
+
+- **`IconPresetKey::postType('page')`** — single posts of a post type.
+- **`IconPresetKey::postTypeArchive('book')`** — a post type's archive crumb.
+- **`IconPresetKey::taxonomy('category')`** — term crumbs of a taxonomy.
+
+An **icon value** is one of:
+
+- An `X3P0\Breadcrumbs\Icon\Icon` case — `Icon::Chevron`, `Icon::Arrow`, and the rest of the icons this plugin bundles. See [The Icon API](#the-icon-api) for the full list.
+- A `{collection}/{name}` reference to any icon registered with WordPress's icon library — `core/home`, `core/search`, `core/pencil`, and the rest of core's set. These are another API's identifiers, so a string is the right way to name them; don't mirror them into constants of your own.
+- One of the built-in text/glyph values, which are literal characters rather than SVGs: `text-slash` (`/`), `text-bar` (`|`), `text-middot` (`·`), `text-black-circle` (`●`), or `text-white-circle` (`○`).
+
+You only need to name the keys you want to change. A key you leave out carries no opinion and falls through to whatever it's preset to. There's no way to configure a key to *nothing*, because "show no icons" isn't a fact about any one key — that's `iconVisibility` on the [markup config](#markup-configuration), which governs the trail rather than one key within it.
+
+Here is an example that uses a slash separator, an outlined house for the home crumb, a pencil for single posts, and the bundled category icon for post format terms:
+
+```php
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use function X3P0\Breadcrumbs\breadcrumbs;
+
+$iconConfig = [
+	IconPresetKey::Separator->value             => 'text-slash',
+	IconPresetKey::Home->value                  => Icon::HouseOutline,
+	IconPresetKey::postType('post')             => 'core/pencil',
+	IconPresetKey::taxonomy('post_format')      => Icon::Category
+];
+
+echo breadcrumbs()->render(
+	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
+	markupConfig:      ['iconVisibility' => IconVisibility::All],
+	iconConfig:        $iconConfig,
+	markupType:        'html' // Optional: html, microdata, rdfa, or json-ld
+);
+```
+
+Note the `iconVisibility` above: crumb icons are hidden by default, so configuring one isn't enough on its own. The separator is the exception — it's governed by `showSeparator` instead and renders out of the box.
+
+Keys arrive as strings because the same map comes off the block's `icons` attribute, saved in post content, which is why `->value` appears above. Values don't have that constraint, so an `Icon` case can be passed directly. If you'd rather not write `->value` at all, build the config through the class instead:
+
+```php
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
+use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
+use function X3P0\Breadcrumbs\breadcrumbs;
+
+echo breadcrumbs()->render(
+	markupConfig: new MarkupConfig(iconVisibility: IconVisibility::All),
+	iconConfig:   (new IconConfig())
+		->withIcon(IconPresetKey::Separator, 'text-slash')
+		->withIcon(IconPresetKey::Home, Icon::HouseOutline)
+		->withIcon(IconPresetKey::postType('post'), 'core/pencil')
 );
 ```
 
 #### Markup Types
 
-The plugin comes with three classes for rendering the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
+The plugin comes with four classes for rendering the final HTML of the breadcrumb trail, which are implementations of the `X3P0\Breadcrumbs\Markup\Markup` contract. Unless you're wanting to create your own markup implementations, you don't need to worry about those. Instead, you just need to know what types are available.
 
-The `markupType` parameter of `breadcrumbs()->render()` can be one of three values:
+The `markupType` parameter of `breadcrumbs()->render()` can be one of four values:
 
 - **`html`:** Renders a plain HTML list of breadcrumbs. This is the default.
 - **`microdata`:** Renders an HTML list of breadcrumbs using Schema.org microdata.
 - **`rdfa`:** Renders an RDFa (Resource Description Framework in Attributes) compliant HTML list of breadcrumbs (_recommended for most use cases_).
+- **`json-ld`:** Renders a JSON-LD script tag rather than a visible trail, for the document `<head>`. See [Outputting JSON Linked Data (JSON-LD)](#outputting-json-linked-data-json-ld).
 
 This example uses RDFa schema attributes:
 
@@ -241,7 +342,8 @@ use function X3P0\Breadcrumbs\breadcrumbs;
 echo breadcrumbs()->render(
 	breadcrumbsConfig: [],    // Optional: BreadcrumbsConfig or array
 	markupConfig:      [],    // Optional: MarkupConfig or array
-	markupType:        'rdfa' // Optional: html, microdata, or rdfa
+	iconConfig:        [],    // Optional: IconConfig or array
+	markupType:        'rdfa' // Optional: html, microdata, rdfa, or json-ld
 );
 ```
 
@@ -252,6 +354,9 @@ The PHP under the hood for rendering breadcrumbs is very complex because each Wo
 Here's a look at what a few config options could look like using array-style syntax:
 
 ```php
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
@@ -261,7 +366,12 @@ echo breadcrumbs()->render(
 	],
 	markupConfig: [
 		'showFirstCrumb' => false,
-		'linkLastCrumb'  => true
+		'linkLastCrumb'  => true,
+		'iconVisibility' => IconVisibility::All
+	],
+	iconConfig: [
+		IconPresetKey::Separator->value => Icon::Arrow,
+		IconPresetKey::Home->value      => 'core/home'
 	],
 	markupType: 'rdfa'
 );
@@ -271,7 +381,11 @@ Of course, you're welcome to continue using the `*Config` classes if you prefer 
 
 ```php
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconConfig;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Markup\MarkupConfig;
+use X3P0\Breadcrumbs\Markup\Support\IconVisibility;
 use function X3P0\Breadcrumbs\breadcrumbs;
 
 echo breadcrumbs()->render(
@@ -281,8 +395,12 @@ echo breadcrumbs()->render(
 	),
 	markupConfig: new MarkupConfig(
 		showFirstCrumb: false,
-		linkLastCrumb:  true
+		linkLastCrumb:  true,
+		iconVisibility: IconVisibility::All
 	),
+	iconConfig: (new IconConfig())
+		->withIcon(IconPresetKey::Separator, Icon::Arrow)
+		->withIcon(IconPresetKey::Home, 'core/home'),
 	markupType: 'rdfa'
 );
 ```
@@ -425,6 +543,196 @@ add_action(MarkupRendering::NAME, function (MarkupRendering $event) {
 
 As with the other events, you may register a typed listener for `MarkupRendering::class` on the dispatcher instead of using the action bridge.
 
+#### The Icon API
+
+Everything under [Icon Configuration](#icon-configuration) is the caller's half of the icon system: overriding what a key is preset to. This section is the other half — what does the presetting, and how an extension joins in.
+
+##### How an Icon Is Chosen
+
+For every crumb it renders, and for the separator, the markup layer settles on exactly one icon value:
+
+1. **An icon pinned to the crumb itself**, via `Crumb::getIcon()` — the icon saved in a post's or term's meta. That's a decision about one specific object, so nothing overrides it.
+2. **The trail's `IconConfig`** for the crumb's key, then **the preset registered** for it.
+3. **`IconPresetKey::Fallback`**, so a key nothing answers for still renders something.
+
+Step 1 is applied by `Markup\Type\Html::crumbIcon()`, which is the only place that has a crumb in hand. Steps 2 and 3 are `IconResolver::resolve()`, which never sees a crumb — it takes a list of keys and answers with an icon value, which `IconRenderer` then turns into markup.
+
+**A crumb names one key**, picking the narrowest description of itself that fits. The `Post` crumb decides like this:
+
+```php
+return match (true) {
+	$this->isPrivacyPolicy()                => IconPresetKey::PrivacyPolicy,
+	$this->isPostsPage()                    => IconPresetKey::PostsPage,
+	'attachment' === $this->post->post_type => $this->mediaPresetKey(),
+	default                                 => IconPresetKey::postType($this->post->post_type)
+};
+```
+
+So the privacy policy asks about `privacy-policy`, not about `post-type:page` — an icon you set for pages in general doesn't reach it, because it isn't describing that page.
+
+Some of those narrow keys carry no editor control, deliberately. The privacy policy shows a shield because the plugin has an opinion about that page, not because you asked for one, and it isn't worth a row in the inspector. They're still overridable: an icon saved in that page's own meta outranks everything above, and is the natural place to say something about one specific page.
+
+Note what the `Post` key deliberately leaves out. A post's *visibility state* — private, password protected — gets no key, because a breadcrumb hides nothing: it only ever renders for someone already permitted to see the post.
+
+##### The Bundled Icon Collection
+
+The plugin registers its own icons with WordPress's icon library on `init`, in a collection named `x3p0-breadcrumbs`. Each is a case of the `X3P0\Breadcrumbs\Icon\Icon` enum, which is how you should name them. `IconPreset` takes a case directly; `IconConfig` and the block attribute take the `{collection}/{name}` reference that `Icon::name()` returns.
+
+`Icon::Archive`, `Icon::Arrow`, `Icon::Article`, `Icon::Box`, `Icon::BrandingWatermark`, `Icon::Category`, `Icon::Chevron`, `Icon::ChevronDouble`, `Icon::Color`, `Icon::Description`, `Icon::EmojiHouse`, `Icon::EmojiHouseGarden`, `Icon::EmojiHouses`, `Icon::HomeFill`, `Icon::HomeOutline`, `Icon::HouseFill`, `Icon::HouseOutline`, `Icon::List`, `Icon::Package`, `Icon::ReceiptLong`, `Icon::Shipping`, `Icon::Straighten`, `Icon::Triangle`, `Icon::Unseen`
+
+Nothing in the plugin's icon handling is special-cased to this collection. An icon registered by core, a theme, or another plugin is named and rendered exactly the same way — those come from someone else's registry, so a `{collection}/{name}` string is how you name them and there's no local constant to invent.
+
+##### Presets
+
+A **preset** is everything the plugin, or an extension, has to say about one key. It is an `IconPreset`, and it carries four things:
+
+- **`icon`:** What the key shows. Required — every preset shows something. An `Icon` case, or a `{collection}/{name}` reference.
+- **`label`:** The translated label for the key's block editor control. **A preset with a label is an option; one without is not.** Several built-ins are deliberately unlabeled: they supply an icon and stay out of the editor.
+- **`group`:** The heading the control is filed under, as an `IconGroup` case or the key of a group an extension declared. Defaults to `IconGroup::General`.
+- **`slug`:** The name of the WordPress object the preset was derived from, if any (`page`, `category`), so the editor can tell apart two objects with the same label.
+
+It's immutable. `withIcon()`, `withLabel()`, and `withGroup()` return copies, which is what `IconPresets::amend()` expects its callback to hand back.
+
+Presets live in a single registry, `IconPresets`. Everything goes in on `init` via `IconPresetRegistrar` — the plugin's own keys from the `IconPresetKey` cases, plus one per viewable post type, per post type archive, and per viewable taxonomy, each labeled from the WordPress object itself. Your listener runs after all of that, so the set you see is complete.
+
+##### Registering Presets
+
+The plugin dispatches `IconPresetsRegistered` very late on `init` — after every post type and taxonomy is registered, so a listener checking whether one exists finds a complete answer. The event carries the shared registry, so what you register is what the trail resolves against *and* what the editor lists.
+
+```php
+use X3P0\Breadcrumbs\Icon\Event\IconPresetsRegistered;
+use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconPreset;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
+
+add_action(IconPresetsRegistered::NAME, function (IconPresetsRegistered $event) {
+	$presets = $event->presets;
+
+	// A group of this plugin's own, so its controls get a heading.
+	$presets->registerGroup('my-plugin', __('My Plugin', 'my-plugin'));
+
+	// A key of its own: an icon, and a control for setting it.
+	$presets->register('my-plugin:course', new IconPreset(
+		Icon::Article,
+		__('Courses', 'my-plugin'),
+		'my-plugin'
+	));
+
+	// A key with an icon and no control.
+	$presets->register('my-plugin:lesson', new IconPreset(Icon::Description));
+
+	// Change something already registered — including a post type or
+	// taxonomy preset this extension doesn't own.
+	$presets->amend(
+		IconPresetKey::Separator,
+		static fn (IconPreset $preset) => $preset->withIcon(Icon::Arrow)
+	);
+});
+```
+
+The registry's surface:
+
+- **`register(key, IconPreset)`:** Claims a key. Registering one twice is a mistake rather than an override, so it **throws** — including for the plugin's own keys, which are registered before this event fires. Use `amend()` to change one.
+- **`amend(key, callable)`:** Changes a key's preset. The callback receives it and returns a copy. This is how you retarget a preset you don't own — the icon or grouping of a post type or taxonomy — and a key with no preset is passed over, so amending a taxonomy a given site may not have needs no check first. Amendments compose — two of them on the same key both apply, in order.
+- **`unregister(key)`:** Drops a registration. The key falls back to whatever it derives to.
+- **`has(key)` / `get(key)`:** Whether a preset is registered, and the preset itself with any amendments applied. `get()` returns `null` for a key nothing registered, and `IconResolver` falls through to the trail's fallback.
+- **`all()`:** Every preset, keyed, in registration order.
+- **`registerGroup(key, label)` / `groups()`:** Group headings. The built-ins are the cases of `IconGroup` — `General`, `PostType`, `PostTypeArchive`, `Taxonomy`, `Media` — listed first, then any an extension declared. A preset naming a group nobody declared is filed under the catch-all.
+
+**Why grouping is a separate call.** A preset *names* the group it belongs to but never labels one, so two presets filed together can't disagree about what their group is called.
+
+##### Per-Post and Per-Term Icons
+
+The plugin registers one meta key, `x3p0-breadcrumbs-icon` (the `MetaKey::Icon` case), for both posts and terms, with an empty object subtype so it applies across every post type and taxonomy — including ones registered later. It's exposed in the REST API, and the plugin writes it from a row in the block editor's Summary panel and from a field on the term add/edit screens.
+
+The value is sanitized against WordPress's icon registry on save: only a currently registered `{collection}/{name}` reference is kept, and anything else — empty, malformed, or pointing at a deregistered icon — stores an empty string. Unlike `IconConfig` values, the text/glyph keys and the deprecated pre-7.1 keys aren't accepted here, since this is a fresh, user-authored value with no backward compatibility to carry.
+
+`Post::getIcon()` and `Term::getIcon()` read that meta, which is how an icon chosen for one specific post or term becomes step 1 of the order above and outranks anything preset for its kind.
+
+##### Icons on Custom Crumbs
+
+A custom `Crumb` joins in through two methods it inherits:
+
+- **`getIconPresetKey(): IconPresetDefinition|string`** — the key it resolves its icon through. Defaults to `$this->getSlug()`. Override it when your crumb belongs to a key you or the plugin registered, picking the narrowest description that fits.
+- **`getIcon(): string`** — an icon pinned to this crumb specifically, overriding everything else. Empty by default. Override it when the crumb has an icon of its own to report, the way `Post` and `Term` return the icon saved in their meta.
+
+```php
+use X3P0\Breadcrumbs\Crumb\Crumb;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+
+final class MyCrumb extends Crumb
+{
+	public function getSlug(): string
+	{
+		return 'my-plugin-course';
+	}
+
+	public function getLabel(): string
+	{
+		return __('Courses', 'my-plugin');
+	}
+
+	public function getIconPresetKey(): IconPresetDefinition|string
+	{
+		return 'my-plugin:course';
+	}
+}
+```
+
+Register a preset under the same key and the crumb picks up an icon *and* a block editor control, with no further wiring.
+
+The general-purpose `Custom` crumb needs neither override: it takes its icon as a constructor argument alongside its label and URL, since it has no queried object to derive anything from.
+
+```php
+use X3P0\Breadcrumbs\Crumb\CrumbType;
+use X3P0\Breadcrumbs\Icon\Icon;
+
+$event->addCrumb(CrumbType::Custom, [
+	'label' => __('Courses', 'my-plugin'),
+	'url'   => home_url('/courses/'),
+	'icon'  => Icon::Article->name()
+]);
+```
+
+##### Keys Derived From Your Own Enum
+
+Writing `'my-plugin:course'` at every call site is the same problem the plugin solves for itself with `IconPresetKey`. If your keys are derived from a domain enum you already have, implement `IconPresetDefinition` and the case *becomes* the key:
+
+```php
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+
+enum Lesson: string implements IconPresetDefinition
+{
+	case Quiz = 'quiz';
+	case Video = 'video';
+
+	public function presetKey(): string
+	{
+		return 'my-plugin:lesson:' . $this->value;
+	}
+}
+```
+
+```php
+$presets->register(Lesson::Quiz, new IconPreset(
+	Icon::Article,
+	__('Quiz', 'my-plugin')
+));
+```
+
+And in the crumb, with no conversion in sight:
+
+```php
+public function getIconPresetKey(): IconPresetDefinition|string
+{
+	return Lesson::tryFrom($this->kind) ?? $this->getSlug();
+}
+```
+
+Every signature that accepts a key accepts the interface, so nothing has to convert first. It extends `UnitEnum` rather than `BackedEnum`, so a pure enum — one deliberately carrying no backing value because it mirrors constants another plugin owns — can implement it too. This is how the plugin's own [WooCommerce](https://github.com/x3p0-dev/x3p0-breadcrumbs/tree/master/src/Extension/WooCommerce) integration names its endpoint, store page, and catalog sorting keys.
+
+Note that this is *not* one of the `Contracts\EnumDefinition` family. Those map a case to a concrete class for a factory to build; this maps a case to a string, and there's no class behind an icon preset key.
+
 #### Available Hooks
 
 Beyond the event bridges above, the plugin fires one lifecycle action.
@@ -468,7 +776,7 @@ add_action(QueryTypeResolving::NAME, function (QueryTypeResolving $event) {
 
 The same pattern applies to a custom `Assembler` — dispatched via `$context->assemble(MyAssembler::class)` — and a custom `Crumb` — dispatched via `$context->makeCrumb(MyCrumb::class)` or `$context->addCrumb(MyCrumb::class)`. Please study the plugin's existing classes under `src/` if you need to understand the conventions and, more precisely, the abstract contracts to extend.
 
-Note that `$context` isn't the same object for every subsystem: a `Query` receives a `QueryContext` (`query()`, `assemble()`, `makeCrumb()`, `addCrumb()`), while an `Assembler` receives the narrower `AssemblerContext` (everything but `query()`) — an assembler can delegate to other assemblers and build crumbs, but it cannot dispatch a query, by design. A `Crumb` doesn't receive a context at all; its constructor takes `BreadcrumbsConfig $config` directly, since a crumb only ever needs to read config to produce its label and URL.
+Note that `$context` isn't the same object for every subsystem: a `Query` receives a `QueryContext` (`query()`, `assemble()`, `makeCrumb()`, `addCrumb()`), while an `Assembler` receives the narrower `AssemblerContext` (everything but `query()`) — an assembler can delegate to other assemblers and build crumbs, but it cannot dispatch a query, by design. A `Crumb` doesn't receive a context at all; its constructor takes `BreadcrumbsConfig $config` directly, since a crumb only ever needs to read config to produce its label and URL. For how a custom crumb picks up an icon, see [Icons on Custom Crumbs](#icons-on-custom-crumbs).
 
 ##### Custom Markup Types
 

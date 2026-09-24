@@ -19,7 +19,7 @@ use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\AddCatalogOrderCrumb;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\RegisterIcons;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\RelabelStoreCrumbs;
 use X3P0\Breadcrumbs\Extension\WooCommerce\Listener\RerouteStoreQueries;
-use X3P0\Breadcrumbs\Icon\Event\IconOptionsRegistered;
+use X3P0\Breadcrumbs\Icon\Event\IconPresetsRegistered;
 use X3P0\Breadcrumbs\Packages\Event\Listener\Listenable;
 use X3P0\Breadcrumbs\Query\Event\QueryTypeResolving;
 
@@ -58,6 +58,6 @@ final class WooCommerce extends Extension
 		$registry->listen(QueryTypeResolving::class, RerouteStoreQueries::class);
 		$registry->listen(CrumbsBuilt::class, RelabelStoreCrumbs::class);
 		$registry->listen(CrumbsBuilt::class, AddCatalogOrderCrumb::class);
-		$registry->listen(IconOptionsRegistered::class, RegisterIcons::class);
+		$registry->listen(IconPresetsRegistered::class, RegisterIcons::class);
 	}
 }

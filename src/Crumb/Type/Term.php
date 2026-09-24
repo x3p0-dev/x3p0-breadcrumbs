@@ -17,7 +17,8 @@ use WP_Term;
 use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Meta\MetaKey;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -81,9 +82,9 @@ final class Term extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::taxonomy($this->term->taxonomy);
+		return IconPresetKey::taxonomy($this->term->taxonomy);
 	}
 
 	/**

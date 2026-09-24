@@ -13,34 +13,61 @@ declare(strict_types=1);
 
 namespace X3P0\Breadcrumbs\Icon;
 
-use X3P0\Breadcrumbs\Support\BuildsFromArray;
-
 /**
- * Immutable configuration object holding the caller's chosen icons, keyed by
- * icon option key. Holds overrides only; the registered defaults live in the
- * `IconOptionRegistry`, which consumers pair this with.
+ * The icons chosen for one trail, keyed by icon preset key. Holds overrides
+ * only — what a key shows in the absence of one lives in {@see IconPresets},
+ * which {@see IconResolver} pairs this with.
+ *
+ * A key that isn't named here carries no opinion and falls through to its
+ * preset. The map is keyed by the raw string form because the same map arrives
+ * from block attribute saved in post content.
  */
 final class IconConfig
 {
-	use BuildsFromArray;
-
 	/**
-	 * Stores the caller's chosen icons as an option key → icon attribute
-	 * value map (e.g., `home`, `separator`, `post-type:page`). Keyed by the
-	 * raw string form, since the map arrives off a block attribute saved in
-	 * post content.
+	 * Stores the chosen icons.
 	 *
-	 * @param array<string, string> $icons
+	 * @var array<string, string>
 	 */
-	public function __construct(private readonly array $icons = [])
-	{}
+	private readonly array $icons;
 
 	/**
-	 * Returns the icon attribute value the caller configured for the given
-	 * icon option key, or an empty string if none is configured.
+	 * Sets up the config from a preset key → icon value map. Values may be
+	 * given as {@see Icon} cases and are reduced to their reference; keys
+	 * arrive as strings. Anything that isn't an icon is dropped rather than
+	 * stored, since this map arrives off a block attribute.
+	 *
+	 * @param array<string, Icon|string> $icons
 	 */
-	public function getIcon(IconOptionKey|string $key): string
+	public function __construct(array $icons = [])
 	{
-		return $this->icons[IconOptionKey::normalize($key)] ?? '';
+		$this->icons = array_filter(array_map(
+			static fn (mixed $icon) => match (true) {
+				$icon instanceof Icon => $icon->name(),
+				is_string($icon)      => $icon,
+				default               => ''
+			},
+			$icons
+		));
+	}
+
+	/**
+	 * Returns a copy of the config with the given key's icon set, taking
+	 * the key and the icon in whichever form the caller has on hand.
+	 */
+	public function withIcon(IconPresetDefinition|string $key, Icon|string $icon): self
+	{
+		return new self(array_merge($this->icons, [
+			IconPresetKey::normalize($key) => $icon
+		]));
+	}
+
+	/**
+	 * Returns the icon configured for the key, or an empty string when the
+	 * caller has no opinion about it.
+	 */
+	public function get(IconPresetDefinition|string $key): string
+	{
+		return $this->icons[IconPresetKey::normalize($key)] ?? '';
 	}
 }

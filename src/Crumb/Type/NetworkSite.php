@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Crumb\Type;
 
 use X3P0\Breadcrumbs\Crumb\Crumb;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 
 /**
  * Crumb for an individual site within a multisite network. Labels with the
@@ -33,9 +34,9 @@ final class NetworkSite extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return IconOptionKey::NetworkSite;
+		return IconPresetKey::NetworkSite;
 	}
 
 	/**

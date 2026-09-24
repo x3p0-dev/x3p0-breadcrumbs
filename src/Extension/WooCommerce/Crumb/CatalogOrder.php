@@ -82,8 +82,8 @@ final class CatalogOrder extends Crumb
 	 *
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
-		return CatalogOrderSlug::fromRequest($this->orderby)?->optionKey() ?? $this->getSlug();
+		return CatalogOrderSlug::fromRequest($this->orderby) ?? $this->getSlug();
 	}
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace X3P0\Breadcrumbs\Extension\WooCommerce\Support;
 
 use X3P0\Breadcrumbs\Icon\Icon;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
 
 /**
  * The WooCommerce store pages this plugin gives a crumb of its own, each named
@@ -29,7 +30,7 @@ use X3P0\Breadcrumbs\Icon\Icon;
  * key of its own rather than a suffix under a shared one — there is no
  * unrecognized store page for a shared option to catch.
  */
-enum StorePage: string
+enum StorePage: string implements IconPresetDefinition
 {
 	case Cart      = 'cart';
 	case Checkout  = 'checkout';
@@ -55,19 +56,19 @@ enum StorePage: string
 	 * shared slug and key their cases beneath it, a store page has no shared
 	 * option to sit under and so is its own key — which is why this doubles
 	 * as the crumb's slug, the seam `Crumb\StorePage` leaves
-	 * `getIconOptionKey()` at its default in order to ride.
+	 * `getIconPresetKey()` at its default in order to ride.
 	 *
 	 * Not to be read as the page's slug: that is the `post_name` of whichever
 	 * page the store owner configured, which this has nothing to do with.
 	 */
-	public function optionKey(): string
+	public function presetKey(): string
 	{
 		// phpcs:ignore PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext
 		return 'woocommerce-' . $this->value;
 	}
 
 	/**
-	 * Returns the default icon registered for this page's option key.
+	 * Returns the icon this page's preset is registered with.
 	 */
 	public function icon(): Icon|string
 	{

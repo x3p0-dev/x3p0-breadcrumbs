@@ -14,7 +14,7 @@
  * and the Summary panel's icon row each read post meta.
  *
  * These arrive from PHP rather than being mirrored here the way
- * `ICON_OPTION_KEYS` mirrors `IconOptionKey`. A drifted icon option key
+ * `ICON_OPTION_KEYS` mirrors `IconPresetKey`. A drifted icon option key
  * degrades to the fallback option and is visible on screen; a drifted meta key
  * is a database column name, so the editor would quietly read and write meta
  * nothing else in the plugin ever looks at.

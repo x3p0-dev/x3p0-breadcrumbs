@@ -18,7 +18,8 @@ use X3P0\Breadcrumbs\BreadcrumbsConfig;
 use X3P0\Breadcrumbs\BreadcrumbsLabel;
 use X3P0\Breadcrumbs\Crumb\Crumb;
 use X3P0\Breadcrumbs\Meta\MetaKey;
-use X3P0\Breadcrumbs\Icon\IconOptionKey;
+use X3P0\Breadcrumbs\Icon\IconPresetDefinition;
+use X3P0\Breadcrumbs\Icon\IconPresetKey;
 use X3P0\Breadcrumbs\Packages\Framework\Container\Attributes\NoAutowire;
 
 /**
@@ -71,15 +72,13 @@ final class Post extends Crumb
 	/**
 	 * @inheritDoc
 	 */
-	public function getIconOptionKey(): IconOptionKey|string
+	public function getIconPresetKey(): IconPresetDefinition|string
 	{
 		return match (true) {
-			'private' === get_post_status($this->post) => IconOptionKey::PrivatePost,
-			post_password_required($this->post)        => IconOptionKey::ProtectedPost,
-			$this->isPrivacyPolicy()                   => IconOptionKey::PrivacyPolicy,
-			$this->isPostsPage()                       => IconOptionKey::PostsPage,
-			'attachment' === $this->post->post_type    => $this->mediaOptionKey(),
-			default                                    => IconOptionKey::postType($this->post->post_type)
+			$this->isPrivacyPolicy()                => IconPresetKey::PrivacyPolicy,
+			$this->isPostsPage()                    => IconPresetKey::PostsPage,
+			'attachment' === $this->post->post_type => $this->mediaPresetKey(),
+			default                                 => IconPresetKey::postType($this->post->post_type)
 		};
 	}
 
@@ -114,15 +113,15 @@ final class Post extends Crumb
 	}
 
 	/**
-	 * Returns the option key for the kind of media this attachment is.
+	 * Returns the preset key for the kind of media this attachment is.
 	 */
-	private function mediaOptionKey(): IconOptionKey|string
+	private function mediaPresetKey(): IconPresetDefinition|string
 	{
 		return match (true) {
-			wp_attachment_is('image', $this->post) => IconOptionKey::MediaImage,
-			wp_attachment_is('audio', $this->post) => IconOptionKey::MediaAudio,
-			wp_attachment_is('video', $this->post) => IconOptionKey::MediaVideo,
-			default                                => IconOptionKey::postType('attachment')
+			wp_attachment_is('image', $this->post) => IconPresetKey::MediaImage,
+			wp_attachment_is('audio', $this->post) => IconPresetKey::MediaAudio,
+			wp_attachment_is('video', $this->post) => IconPresetKey::MediaVideo,
+			default                                => IconPresetKey::postType('attachment')
 		};
 	}
 }
